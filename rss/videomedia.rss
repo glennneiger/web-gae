@@ -1,0 +1,6 @@
+<?php
+global $D_R,$videoRssItemLimit;
+include_once($D_R."/lib/feed/_design_lib.php");
+$videoMedia	=	new feedViewer('11');
+$videoMedia->displayVideoMediaRSS($videoRssItemLimit);
+?>

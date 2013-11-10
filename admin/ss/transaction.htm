@@ -1,0 +1,151 @@
+<?
+global $D_R,$IMG_SERVER;
+$page="transaction";
+include("$ADMIN_PATH/_header.htm");
+/*============set up permissions=================*/
+$performtransaction=$AD->getPerm("ss_own_transaction");//can't create anything
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+	admin_error("You're not allowed to use this page.");
+}
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+include_once("$D_R/lib/layout_functions.php");
+include_once("$D_R/lib/ss/_ss_config.php");
+include_once("$D_R/lib/ss/_ss_design_lib.php");
+include_once("$D_R/admin/ss/ss_classes/class_Optiontransaction.php");
+
+$transobj=new Qtransaction();
+$optiontransobj = new optiontransaction();
+
+// Newly added
+$HTHOST=$HTADMINHOST;
+$STOCKACTBJSSCRIPT=$HTPFX.$HTHOST."/js/stock_actb.js";
+$ACTB_COMMONJSSCRIPT=$HTPFX.$HTHOST."/js/actb_common.js";
+// Newly added
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/datetimepicker.js" type="text/javascript"></script>
+<script src="<?php echo $STOCKACTBJSSCRIPT; ?>" language="javascript" type="text/javascript"></script>
+<script src="<?php echo $ACTB_COMMONJSSCRIPT;?>" language="javascript" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/sstransaction.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/optiontransaction.1.2.js" type="text/javascript"></script>
+</head>
+<body>
+<!-- addparentdiv starts -->
+<div id="addparentdiv" name="addparentdiv">
+<div id="linksdiv" name="linksdiv">
+	<table border=0 style="border-left:0px solid #cccccc; padding:0px;margin:0px; border-top:0px solid #cccccc; border-bottom:0px solid #cccccc;  border-right:0px solid #cccccc; padding:0px;margin:0px;" align="left" cellpadding="0" cellspacing="0" width="900px">
+	<tr>
+	<td><input type="radio" name="stockoption" value="option"  style="border:0px;" onclick="javascript:$('addstockparentdiv').hide();$('addoptionsparentdiv').show();$('optionview').show();" checked>Options&nbsp;<input type="radio" name="stockoption" value="stock" style="border:0px;" onClick="javascript:$('addoptionsparentdiv').hide();$('optionview').hide();$('addstockparentdiv').show();">Stock&nbsp;</td>
+	<td align="right"><!--<a href="transaction.htm" style="text-decoration:none;">Add / View Transactions</a>&nbsp;&nbsp;--><a href="option_sell.htm" style="text-decoration:none;">Sell Transactions</a></td></tr>
+	<tr><td colspan="2">&nbsp;</td></tr>
+	</table>
+</div>
+<!-- STOCK STARTED -->
+<!-- addstockparentdiv Starts -->
+<div id="addstockparentdiv" name="addstockparentdiv" style="display:none;">
+<!-- stocksadd start -->
+<div id="stocksadd" style="float:left;clear:both;border:0px solid red;">
+	<table border=0 style="border-left:0px solid #cccccc; padding:0px;margin:0px; border-top:0px solid #cccccc; border-bottom:0px solid #cccccc;  border-right:0px solid #cccccc; padding:0px;margin:0px;" align="left" cellpadding="0" cellspacing="0" width="900px">
+	<tr><td colspan="3">
+	<!-- ADD TRANSACTION START-->
+	<p><b>Add Transaction</b>&nbsp;(Symbol Format =<b>NYSE : AET</b>)</p>
+	<form name="frm" action="">
+	<table style="border-left:1px solid #cccccc; padding:0px;margin:0px; border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc; padding:0px;margin:0px;" width="100%" border=0 cellspacing="0" cellpadding="2" bordercolor=black>
+	<tr>
+	<td class="quintportfolio">Symbol<sup><font color=red>*</font></sup></td>
+	<td class="quintportfolio">Type</td>
+	<td class="quintportfolio"><nobr>Date(mm/dd/yyyy)</td>
+	<td class="quintportfolio">Shares</td>
+	<td class="quintportfolio">Price</td>
+	<td class="quintportfolio">Notes</td>
+	</tr>
+	<tr bgcolor="#EFEFEF">
+	<td><?php input_text("symbol",$symbol, 0, 40," autocomplete='off'")?><input type='hidden' id='sid_hid'>
+	<script>
+		var obj = actb(document.getElementById('symbol'),customarray);
+		</script></td>
+	<td><select id="type" name="type" onChange="javascript:redirectpage();">
+	<option value="0">Buy</option>
+	<option value="1">Sell</option>
+	<option value="2">Sell Short</option>
+	<option value="3">Buy to Cover</option>
+	</select></td>
+	<td>
+	<input type="text" size="10" id="demo2" name="date" readonly>&nbsp;<a href="javascript:NewCal('demo2','mmddyyyy')"><img src="<?php echo $IMG_SERVER; ?>/images/quint_images/cal.gif" width="16" height="16" border="0" alt="Pick a date" align="absmiddle"></a></td>
+	<td><input size="8" type="text" id="shares" onKeyup="javascript:chknosvalidation('frm',this);"></td>
+	<td><input size="8" type="text" name="price" id="price" onKeyup="javascript:chknosvalidation('frm',this);"></td>
+	<td><input type="text" name="notes" id="notes" size="55">
+	<input type="hidden" name="mode" id="mode" value="">
+	</td></tr>
+	<tr><td colspan="6"></td></tr>
+	<tr><td colspan="6">
+	<img id="addimg" src="<?php echo $IMG_SERVER; ?>/images/quint_images/addtoportfolio.gif" onClick="javascript:validateentry();" />
+	<div id="btcmsg"></div>
+	</td></tr>
+	</table>
+	</form>
+	<!-- ADD TRANSACTION END-->
+	</td></tr></table>
+</div>
+<!-- stocksadd Ends -->
+<!-- stocksview Starts -->
+	<br>&nbsp;<div id="transactionstocksviews">
+	<table border=0 style="border-left:0px solid #cccccc; padding:0px;margin:0px; border-top:0px solid #cccccc; border-bottom:0px solid #cccccc;  border-right:0px solid #cccccc; padding:0px;margin:0px;" align="left" cellpadding="0" cellspacing="0" width="900px">
+	<tr><td align="right" class="steveoptiontd"><!--<a href="edittransaction.htm">Edit Transactions</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="ss_selltransaction.htm">Sell Transaction</a>--></td></tr>
+	<tr><td width="100%" colspan="3">
+
+	<!-- changabletransactionview Start -->
+	<div id="changabletransactionview" style="border:0px solid green;">
+	<?
+	if($text_pass=='sortbylinks'){
+	$arrofsort=explode('=',$sortstr);
+	$fldname=$arrofsort[0];
+	$ord=$arrofsort[1];
+	echo $transobj->alltransaction("",$start,$end,$fldname,$ord,$items);
+	}else{
+	echo $transobj->alltransaction();
+	//**** echo $transobj->shortsellTransactionView();
+	}
+	?>
+	</div>
+	<!-- changabletransactionview Start -->
+	</td></tr>
+	</table>
+	</div>
+<!-- stocksview Ends -->
+</div>
+<!-- addstockparentdiv Ends -->
+<!-- STOCK ENDED -->
+
+<!-- addoptionsparentdiv starts -->
+<div id="addoptionsparentdiv" name="addoptionsparentdiv" style="width:100%;float:left;clear:both;border:0px solid red;">
+<?
+echo createAddOptionDiv();
+?>
+</div>
+<!-- addoptionsparentdiv starts -->
+<div id="optionview" style="border:0px solid red;padding-top:10px;float:left;width:100%;">
+<div id="optionchangabletransactionview" style="border:0px solid green;">
+<?
+   if($text_pass=='sortbylinks')
+   {
+	$arrofsort=explode('=',$sortstr);
+	$fldname=$arrofsort[0];
+	$ord=$arrofsort[1];
+	echo $optiontransobj->alltransaction("",$start,$end,$fldname,$ord,$items);
+   }
+   else
+   {
+	echo $optiontransobj->alltransaction();
+	//*** echo $optiontransobj->shortsellOptionTransactionView();
+   }
+?>
+</div>
+</div>
+</div>
+<!-- addparentdiv Ends -->
+</body>
+</html>

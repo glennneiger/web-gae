@@ -1,0 +1,115 @@
+<?
+include("$D_R/layout/dbconnect.php");
+include_once("$D_R/lib/_misc.php");
+include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
+include_once("$D_R/lib/config/_rss_config.php");
+include_once("$D_R/admin/lib/_contributor_class.php");
+global $HTPFX,$HTHOST;
+$objContrib= new contributor();
+$objDailyfeed= new Dailyfeed('daily_feed','');
+$queryString = $_SERVER['QUERY_STRING'];
+$currentFilter=$_GET['from'];
+if(isset($_GET['tag']))
+{
+	$topicVal 	="/".$_GET['tag']."/";
+	$getTopic		=	"SELECT id FROM ex_tags where url = '".$topicVal."'";
+	$resultTopic	=	 exec_query($getTopic,1);
+	if($resultTopic && count($resultTopic)>0)
+	{
+	$tagId	=	$resultTopic ['id'];
+	$sql	=	"select d.id,d.creation_date,d.updation_date,d.publish_date,d.title,d.excerpt,d.body,d.publish_date from daily_feed d, ex_item_tags T,contributors C where T.item_id= d.id and T.tag_id = ".$tagId." and T.item_type='18' and d.is_approved='1' and d.is_deleted='0' and d.is_live='1'";
+	}
+}
+elseif(isset($_GET['source']))
+{
+	$sourceVal 	= "/".$_GET['source']."/";
+	$getSource		=	"SELECT item_id FROM ex_source where url = '".$sourceVal."'";
+	$resultSource	=	 exec_query($getSource);
+	foreach($resultSource as $row){ $itemvalue[]=$row['item_id'];}
+	if($itemvalue){
+		$result=implode(",",$itemvalue);
+	}
+	if($resultSource && count($resultSource)>0)
+	{
+		$sql = "SELECT  d.id,d.title,d.body,s.source,s.source_link,d.creation_date,d.publish_date,d.updation_date  FROM  ex_source s, daily_feed d,contributors C where d.id in ($result) and s.item_type='18' and d.is_live='1' and d.is_approved='1' and d.is_deleted='0' and d.id=s.item_id";
+	}
+
+}
+else
+{
+	$sql = "SELECT d.id,d.title,d.body,d.creation_date,d.publish_date,d.updation_date  FROM daily_feed d,`contributors` C  where d.is_live='1' and d.is_approved='1' and d.is_deleted='0'";
+}
+$sql.=" and d.contrib_id=C.id";
+
+if($currentFilter){
+    $contribFilterId=$objContrib->getExcludedPartnerId();
+	$sql .= " and C.id IN (SELECT CGM.contributor_id FROM contributor_groups_mapping CGM,
+contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($contribFilterId))";
+	$urlPostFix = "?from=".$currentFilter;
+
+}
+$sql.= " order by d.publish_date desc,d.creation_date desc limit 10 ";
+header( 'Content-Type: application/rss+xml; charset=utf-8' );
+?>
+<rss version="2.0">
+<channel>
+<title>Minyanville - MV Premium</title>
+<description>The MV Premium of Stock Market News</description>
+<link>http://www.minyanville.com</link>
+<copyright>2007 Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
+
+<?
+$results = exec_query($sql);
+if(empty($results)){
+	$sqlPremium = "SELECT d.id, d.creation_date, d.updation_date, d.publish_date, d.title, d.excerpt, d.body, d.publish_date FROM daily_feed d, `contributors` C WHERE d.is_approved='1' AND d.is_deleted='0' AND d.is_live='1' 
+AND d.contrib_id=C.id ORDER BY d.publish_date DESC LIMIT 10";
+	$resPremium = exec_query($sqlPremium);
+	$results = $resPremium;
+}
+foreach ($results as $result) {
+
+//while ($result = mysql_fetch_assoc($results)) {
+	$numWords = 100;
+	//limit the first 100 words for the descriptions
+	//$artbodyarray=get_full_article_body($result['id']);
+	//$tempBody = htmlentities(strip_tags($artbodyarray[0]['body'],'ENT_QUOTES'));
+    $articlebody=strip_tag_style($result['body']);
+	$tempBody = htmlentities(strip_tags($articlebody,'ENT_QUOTES'));
+	$bodyArray = str_word_count($tempBody,1);
+        $bodyArray = preg_split("/[\s,]+/",$tempBody);
+	//print_r($bodyArray);
+	for($i=0;$i<$numWords;$i++) {
+		$body .= $bodyArray[$i] . " ";
+	}
+
+	if (count($bodyArray) > 100) {
+		$body .= "...";
+	}
+	$urltitle=$objDailyfeed->getDailyFeedUrl($result['id']);
+    $pubDate="";
+	if($result['publish_date'] && $result['publish_date']!=="0000-00-00 00:00:00"){
+	    $pubDate=date('D, j M Y H:i:s',strtotime($result['publish_date']));
+	}else{
+		$pubDate=date('D, j M Y H:i:s',strtotime($result['creation_date']));
+	}
+	if(substr_count($body,"{FLIKE}") > 0)
+	{
+		$body = str_replace("{FLIKE}","", $body);
+	}
+	$body = utf8_encode($body);
+	$result['title']=utf8_encode($result['title']);
+?>
+
+     <item>
+        <title> <?=htmlentities(strip_tags(article_body_word_replace($result['title']))); ?></title>
+		<description><?=$body;?></description>
+        <link><?=$HTPFX.$HTHOST.$urltitle.$urlPostFix;?></link>
+        <pubDate><?=$pubDate;?> EST</pubDate>
+     </item>
+<?
+	$body = "";
+	}
+?>
+
+</channel>
+</rss>

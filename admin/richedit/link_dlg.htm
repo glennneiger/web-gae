@@ -1,0 +1,120 @@
+<?
+$article_list="SELECT a.id,a.title,a.date,c.title,
+			 concat(c.title,'/',a.title)display,
+			 concat(c.url,'?id=',a.id)arturl
+			 FROM $ARTICLE_TABLE a, article_categories c
+			 WHERE find_in_set(c.id,a.category_ids)
+			 AND approved='1' and is_live='1' ORDER BY a.date DESC";
+$glossarylist="SELECT name FROM dictionary ORDER BY name";
+$characterlist="SELECT name FROM characters WHERE display='1' ORDER BY ordr";
+$productlist="SELECT p.id,concat(c.title,'/',p.title)name , c.id cat_id
+			  FROM $CAT_TABLE c, $PROD_TABLE p
+			  WHERE p.enabled=1
+			  AND find_in_set(c.id,p.cat_ids)
+			  ORDER BY c.title,p.title,p.ordr
+";
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Create/Edit Hyperlink</title>
+<link rel=stylesheet href="db_window.css">
+<script src="/_script.js"></script>
+<script>
+var feedBack=dialogArguments;
+
+function fillUrl(theurl){
+	document.all("url").value=fixUrl(theurl);
+}
+
+function save(){
+	var retval=[];
+	retval["URL"]=fixUrl(document.all("url").value);
+	if(document.all("newwin").checked)
+		retval["TARGET"]="_blank";
+	else
+		retval["TARGET"]=false;
+	window.returnValue=retval
+	window.close();
+}
+function cancel(){
+	window.returnValue="";
+	window.close();
+}
+window.onload=function(){
+	if(feedBack["urlVal"])
+		fillUrl(feedBack["urlVal"]);
+	if(feedBack["targetVal"]){
+		if(feedBack["targetVal"]=="_blank")
+			document.all("newwin").checked=true;
+	}else if(!feedBack["urlVal"])
+		document.all("newwin").checked=true;
+	var pidobj=document.all("pid");
+	for(i=0;i<pidobj.options.length;i++){
+		if(pidobj.options[i].value==feedBack["urlVal"]){
+			pidobj.selectedIndex=i;
+			break;
+		}
+	}
+}
+
+function decideForDictionary(urlval){
+	if(urlval.indexOf("dictionary")>-1){
+		findObj("newwin").checked=true
+	}
+}
+window.resizeTo(350,350)
+</script>
+</head>
+
+<body style="background:threedface" topmargin=0 leftmargin=0>
+<table>
+<TR>
+<TD>
+	<form name="linkform" onSubmit="return false">
+	<fieldset><legend>Hyperlink Information</legend>
+	<table>
+	<TR>
+	<TD align=right><label for="url">URL:</label></TD>
+	<TD><input type="text" size=40 name="url" id="url"></TD>
+	</TR>
+	<TR><TD>&nbsp;</TD><TD>or</TD></TR>
+	<TR>
+	<TD>&nbsp;</td>
+	<TD><label for="pid">Page on this site:</label><br>
+		<select name="pid" id="pid" onchange="fillUrl(this[this.selectedIndex].value);decideForDictionary(this[this.selectedIndex].value)" style="width:250">
+			<option value="">Select a page
+			<option value="/gazette/journal/">/journal/</option>
+			<?selectHashArr(exec_query($article_list),"arturl","display","--sldkfjsl")?>
+			<?foreach(exec_query($glossarylist) as $row){?>
+			<option value="/library/dictionary.htm?mvpopup=1#<?=lc($row[name])?>">/glossary/<?=$row[name]?></option>
+			<?}?>
+			<option value="/ourtown/characterbios.htm">/Character Bios
+			<?foreach(exec_query($characterlist) as $row){?>
+				<option value="/ourtown/characterbios.htm#<?=lc($row[name])?>">/Character Bios/<?=$row[name]?>
+			<?}?>
+			<option value="/shops/">/Shops
+			<?foreach($STORE_CAT_NAMES as $link=>$name){?>
+				<option value="<?=$link?>"><?=$name?></option>
+			<?}?>
+			<?foreach(exec_query($productlist) as $row){?>
+				<option value="<?=$STORE_CAT_FILES[$row[cat_id]]?>#prod<?=$row[id]?>"><?=$row[name]?></option>
+			<?}?>
+		</select></TD>
+	</TR>
+	<TR><TD colspan=2 align=center><label for="newwin">Open this link in a new window?</label> <input type="checkbox" name="newwin" id=newwin></TD></TR>
+	</table>
+	
+	</fieldset>
+	</form>
+</TD>
+<TD valign=top><br><input type="button" class=submit value="OK" onClick="save()"><br><br>
+	<input type="button" class=submit value="Cancel" onClick="cancel()">
+</TD>
+</TR>
+</table>
+
+</body>
+</html>

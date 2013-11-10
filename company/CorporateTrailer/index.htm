@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Minyanville Corporate Trailer</title>
+</head>
+<?
+global $STORAGE_SERVER;
+?>
+<body>
+<script type="text/javascript" src="http://www.minyanville.com/mvtv/flowplayer/flowplayer-3.2.0.min.js"></script>
+<!-- player container. display:block not needed-->
+<div style="width:640px;height:480px; margin:0 auto;" id="player"></div>
+
+<!-- this script block will install Flowplayer inside previous DIV tag -->
+<script language="JavaScript">
+   var storage_server = '<?=$STORAGE_SERVER?>';
+	flowplayer(
+		"player", 
+		"http://releases.flowplayer.org/swf/flowplayer-3.2.2.swf", 
+		storage_server+"/mvtv/videos/MV_Trailer_DVD_FL8_700kb.flv"
+	);
+</script>
+
+
+
+</body>
+</html>

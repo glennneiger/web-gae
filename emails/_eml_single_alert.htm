@@ -1,0 +1,100 @@
+<?
+global $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+$UNSUB=1;
+$SECTION="digest";
+$datestr="%m/%d/%Y";
+include("$D_R/lib/qp/_search_lib.php");
+$alertID=$_GET['aid'];
+
+
+$qry="SELECT a.id, a.id alert_id, UNIX_TIMESTAMP(a.date)udate, a.date, a.title, a.body as abody FROM
+			qp_alerts a WHERE a.id in ($alertID) and a.type = 'alert'
+	        AND a.sent='1' AND a.is_live='1' ORDER BY a.date DESC";
+  $row = exec_query($qry,1);
+?>
+
+<? // This is the header ... which should be seperated into a new file if it is reused in another email. And ideally, we would share the subject variable with the calling script. ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8;" />
+<title> Active Investor Newsletters <?= date("F jS, Y") ?> </title>
+</head>
+
+<body>
+<table width="680" cellpadding="0" cellspacing="0" border="0" style="padding: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333; " background="">
+	<tbody>
+		<tr style="height: 64px;" valign="bottom">
+			<td style="height: 64px;">
+			<a href="<?=$HTPFX.$HTHOST?>/active-investor" target="_blank"><img src="<?=$IMG_SERVER?>/images/active-investor/newsletter_header.png" alt="Active Investor" title="Active Investor" width="482" height="64" border="0" /></a>
+			</td>
+			<td style="height: 64px;" valign="bottom">
+				<div style="background-image: url('<?=$IMG_SERVER?>/images/active-investor/header_bg.png'); background-repeat: none; background-position: left top; width: 198px; height: 64px; margin:0; padding:0;" >
+				<ul style="list-style-type: none; margin:2px 10px 0 0; padding: 0; float: right; color: #ffcc66; font-size: 11px; font-weight:bold; height:9px; text-align: right;">
+					<li style="margin:0 0 1px 0; padding: 0;">
+					<a  style="color: #ffffff; text-decoration: none;" href="<?=$HTPFX.$HTHOST?>" target="_blank">Minyanville.com</a>
+					</li>
+					<li style="margin:0 0 1px 0; padding: 0; border: 0;">
+					<a style="color: #ffffff; text-decoration: none;" href="#" target="_blank">Active Investor Home</a>
+					</li>
+					<li style="margin:0 ;padding: 0; border: 0;">
+					<a style="color: #ffffff; text-decoration: none;" href="<?=$HTPFX.$HTHOST?>/subscription/" target="_blank">Subscriptions - Free Trial</a>
+					</li>
+					<li style="margin:0; padding: 0; border: 0;">
+					<a style="color: #ffffff; text-decoration: none;" href="<?=$HTPFX.$HTHOST?>/subscription/register/controlPanel.htm" target="_blank">Free Email Newsletters</a>
+					</li>
+				</ul>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table width="680" cellpadding="0" cellspacing="0" border="0" style="padding: 0 10px 10px 10px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333; text-align: left;">
+	<tbody>
+		<tr style="" valign="top">
+			<td valign="top">
+			<h1 style=" font-size: 42px; line-height: 48px; color: #000033; margin: 0; padding: 0; text-decoration: underline;"><a style="color: rgb(32,72,112); text-decoration: underline;" href="<?=$HTPFX.$HTHOST.makeAlertlink($row[id],1); ?>?frm=email" target="_blank"><?=$row['title']?></a></h1>
+				<p style=" margin: 35px 0 0 0;">
+				<?=substr(strip_tags($row['abody']), 0,300)?>
+				<br>
+                <br>
+                <a style="color: rgb(11,79,149); text-decoration: underline;" href="<?=$HTPFX.$HTHOST?><?php echo makeAlertlink($row[id],1); ?>?frm=email" target="_blank">Click here to view the full post </a>
+				<object><hr style="height:1px; border-width:0; color: rgb(229,137,0); background-color: rgb(229,137,0); margin: 20px 0 0 0;"></hr></object>
+				</p>
+				<p style=" margin: 10px 0 0 0; font-size: 14px; text-align:center;"><a style="color: rgb(11,79,149); text-decoration: underline;" href="<?=$HTPFX.$HTHOST?>" target="_blank">Go to the site: <b>Minyanville.com</b></a></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<table width="680" cellpadding="0" cellspacing="0" border="0" style="padding: 0 122px 10px 122px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333; text-align: left;">
+	<tbody>
+		<tr style=" width: 440px;" valign="top">
+			<td valign="top">
+			<p style="margin:0;"><a style="color: #996600; text-decoration: underline;" href="<?=$HTPFX.$HTHOST?>/company/help.htm" target="_blank">Help</a></p>
+			</td>
+			<td valign="top">
+			<p style="color: #996600; margin: 0 5px 0 5px;">|</p>
+			</td>
+			<td valign="top">
+			<p style="margin:0;"><a style="color: #996600; text-decoration: underline;" href="<?=$HTPFX.$HTHOST?>/company/privacy.htm" target="_blank">Privacy Policy</a></p>
+			</td>
+			<td valign="top">
+			<p style="color: #996600; margin: 0 5px 0 5px;">|</p>
+			</td>
+			<td valign="top">
+			<p style="margin:0;"><a style="color: #996600; text-decoration: underline;" href="<?=$HTPFX.$HTHOST?>/company/substerms.htm" target="_blank">Subscription Agreement &amp; Terms of Use</a></p>
+			</td>
+			<td valign="top">
+			<p style="color: #996600; margin: 0 5px 0 5px;">|</p>
+			</td>
+			<td valign="top">
+			<p style="margin:0;"><a style="color: #996600; text-decoration: underline;" href="<?=$HTPFX.$HTHOST?>/company/disclaimers.htm" target="_blank">Disclaimers</a></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+</body>
+</html>

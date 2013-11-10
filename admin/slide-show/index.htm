@@ -1,0 +1,17 @@
+<? 
+global $HTPFX,$HTHOST,$IMG_SERVER,$HTADMINHOST;
+include("$ADMIN_PATH/_header.htm");
+
+if(!($AD->getPerm($navpages[gazette][perms]))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Slideshow</div>
+	<div style="padding:10px;width:400px">
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/slideshow.htm">Create/ Edit Slideshow</a></li>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/approve_slideshow.htm">Approve Slideshow</a></li>
+		<br>
+		<br />
+	</div>	
+
+<? include("$ADMIN_PATH/_footer.htm");?>

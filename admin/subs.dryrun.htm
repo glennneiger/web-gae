@@ -1,0 +1,172 @@
+<?php
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$D_R/lib/_robots.php");
+include("./_header.htm");
+
+$robot=new Robot();
+
+if(!$yr)$yr=date("Y");
+if(!$day)$day=date("d");
+if(!$mo)$mo=date("m");
+$now=strtotime(date('Y-m-d 00:00:00'))
+
+$disabledate=$now-$RBT_GRACE_PERIOD;//disable date should be <= this date
+$killdate=$now-$RBT_STALE_LENGTH;
+$time1mo=$now-$RBT_GIFT_LENGTH;
+$time3mo=$now-month(3);
+$time6mo=$now-month(6);
+$time12mo=$now-year();
+$sqltime="UNIX_TIMESTAMP(FROM_UNIXTIME(s.date))";
+$time_fmt = "%m/%d/%Y";
+
+
+$queries=array(
+	recurring=>"SELECT *, id subscription_id
+			 FROM $robot->subsTable
+			 WHERE preferred_user='0'
+			 AND recurring_charge>0
+			 AND account_status='enabled' 
+			 AND (type='1mo' OR type='edu' OR type='prem' OR type='newyear')
+			 AND date_nextbill!='0' 
+			 AND UNIX_TIMESTAMP(FROM_UNIXTIME(date_nextbill))<=$now",
+
+	downgrade=>"SELECT *,id subscription_id
+				  FROM $robot->subsTable 
+				  WHERE preferred_user='0'
+				  AND account_status='enabled'
+				  AND type='12mo'
+				  AND premium='1'
+				  AND recurring_charge>0
+				  AND date_nextbill!='0' 
+				  AND UNIX_TIMESTAMP(FROM_UNIXTIME(date_nextbill)) <= $now ",
+
+	disable=>"SELECT *, id subscription_id
+			 FROM $robot->subsTable
+			 WHERE preferred_user='0'
+			 AND account_status='enabled'
+			 AND date_disabled!='0' 
+			 AND UNIX_TIMESTAMP(FROM_UNIXTIME(date_disabled)) <= $disabledate",
+	
+	legacy=>"SELECT *,id subscription_id
+			  FROM $robot->subsTable 
+			  WHERE preferred_user='0'
+			  AND account_status='enabled'
+			  AND type='12mo'
+			  AND expires!='0'
+			  AND UNIX_TIMESTAMP(FROM_UNIXTIME(expires))<= $now ",
+			  
+	stale=>"SELECT *,id subscription_id 
+		  FROM $robot->subsTable 
+		  WHERE account_status='disabled'
+		  AND preferred_user='0'
+		  AND date_disabled!='0'
+		  AND UNIX_TIMESTAMP(FROM_UNIXTIME(date_disabled)) <= $killdate",
+		  
+	gift=>"SELECT s.*, s.id subscription_id,FROM_UNIXTIME(s.date)mdate,sk.key1
+		 FROM $robot->subsTable s, subscription_keys sk
+		 WHERE type='gift'
+		 AND s.preferred_user='0'
+		 AND s.account_status='enabled'
+		 AND sk.user_id=s.id
+		 AND( 
+			  ( mid(sk.key1,1,3)='1mo' AND $sqltime < $time1mo )
+	       OR ( mid(sk.key1,1,3)='3mo' AND $sqltime < $time3mo )
+		   OR ( mid(sk.key1,1,3)='6mo' AND $sqltime < $time6mo )
+		   OR ( mid(sk.key1,1,3)='12m' AND $sqltime < $time12mo)
+		)
+		GROUP BY s.id"
+);
+
+$types=array(
+	"recurring"=>"Monthly Billing (includes EDU, 1mo legacy, and new 1mo accounts)",
+	"downgrade"=>"Annual w/ Premium Accounts",
+	"disable"=>"Accounts that will be disabled",
+	"legacy"=>"Annual accounts that will be converted",
+	"gift"=>"Gift Accounts to be removed",
+	"stale"=>"Expired accounts to be removed",
+);
+
+if(!$type)$type=key($types);
+if(!$s)$s="recurring_charge";
+$desc=$d?"DESC":"ASC";
+$qry=$queries[$type];
+$qry.=" ORDER BY $s $desc";
+
+$numrows=num_rows($qry);
+?>
+<script>
+var currow=0;
+function changeRow(lName){
+	if(currow){
+		findObj(currow).style.backgroundColor="#fff";
+	}
+	findObj(lName).style.backgroundColor="#ddd";
+	currow=lName;
+}
+</script>
+<div style="padding:20px">
+<form method="get">
+These reports show people who will be billed by the various robot scripts on a given date. It's not entirely accurate as this report doesn't take into account people whose credit cards may be declined or may be disabled for various reasons.
+<br><br>
+
+<table>
+<TR>
+<TD>Run</TD>
+<TD><select name="type">
+	<?selectHash($types,$type)?>
+</select></TD>
+</TR>
+<TR valign=top>
+<TD>Date</TD>
+<TD>	<?month_options("mo")?>
+		<?day_options("day")?>
+		<?year_options("yr",$yr,0,date("Y")+1,date("Y"))?><br>
+<span class="small">Dates too far in the past or too far in the future may return inaccurate results</span>
+</TD>
+</TR>
+<TR>
+<TD>&nbsp;</TD>
+<TD><input type="submit" value="get billing report"></TD>
+</TR>
+</table>
+</form>
+<br>
+<table border=1 bordercolor=black>
+<TR>
+<TD colspan=7 align=center><?=$numrows?> result(s)</TD>
+</TR>
+<TR>
+<TD><?=href($PHP_SELF.qsa(array(s=>"email",d=>!$d)),"email")?></TD>
+<TD nowrap><?=href($PHP_SELF.qsa(array(s=>"type",d=>!$d)),"account type")?></TD>
+<TD><?=href($PHP_SELF.qsa(array(s=>"recurring_charge",d=>!$d)),"charge")?></TD>
+<TD><?=href($PHP_SELF.qsa(array(s=>"account_status",d=>!$d)),"status")?></TD>
+<TD><?=href($PHP_SELF.qsa(array(s=>"date",d=>!$d)),"created")?></TD>
+<TD><?=href($PHP_SELF.qsa(array(s=>"date_lastbilled",d=>!$d)),"last billdate")?></TD>
+<TD><?=href($PHP_SELF.qsa(array(s=>"date_nextbill",d=>!$d)),"next billdate")?></TD>
+</TR>
+<?foreach(exec_query($qry) as $i=>$row){?>
+	<TR id="row<?=$i?>"
+		onclick="changeRow('row<?=$i?>')">
+	<TD><?=href("subs.edit.htm?id=${row[id]}",$row[email],"target=_search")?></TD>
+	<TD><?=$row[type]?></TD>
+	<TD>$<?=dollars(getSubsTotal($row))?></TD>
+	<TD><?=$row[account_status]?></TD>
+	<TD nowrap><?=date("m/d/Y h:ia",$row[date])?></TD>
+	<TD nowrap><?if(!$row[date_lastbilled]){?>
+			n/a
+		<?}else{?>
+			<?=date("m/d/Y h:ia",$row[date_lastbilled])?>
+		<?}?>
+	</TD>
+	<TD nowrap><?=date("m/d/Y h:ia",$row[date_nextbill])?></TD>	
+	</TR>
+<?}?>
+<?if(!$row){?>
+	<TR>
+	<TD colspan=7>nothing found</TD>
+	</TR>
+<?}?>
+</table>
+<?=mysql_error()?>
+</div>
+<?include("./_footer.htm")?>

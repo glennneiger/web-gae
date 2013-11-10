@@ -1,0 +1,25 @@
+<?
+$page="gazette";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("manage_worry create_worry"))){
+	admin_error();
+}
+?>
+<table align=center>
+<TR>
+	<TD nowrap><div class=adminheader>Wall of Worry</div><br><br
+	<div style="padding:5px;width:400px">
+		<br>
+		<?if($AD->getPerm("manage_worry")){?>
+		<li><a href="worry.htm">Create a new Worry</a>	
+        <br><br>
+		<?}?>
+		<?if($AD->getPerm("create_worry")){?>
+		<li><a href="manageworry.htm">Manage Worry type</a><br>
+		<?}?>
+		<br />
+	</div>	
+	</td>
+</tr>
+</table>
+<?include("$ADMIN_PATH/_footer.htm");?>

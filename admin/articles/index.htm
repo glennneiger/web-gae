@@ -1,0 +1,25 @@
+<? 
+global $HTPFX,$HTHOST,$IMG_SERVER,$HTADMINHOST;
+include("$ADMIN_PATH/_header.htm");
+
+if(!($AD->getPerm($navpages[gazette][perms]))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Articles</div>
+	<div style="padding:10px;width:400px">
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/articles.htm">Create/ Edit Articles</a></li>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/approve.htm">Approve Articles</a></li>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/locked_content.htm">Unlock Articles</a></li>
+		<? if($AD->getPerm("branded_logo")){ ?>
+			<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/brandedlogo.htm">Create/Edit Articles Branded Logo</a></li>
+		<? } ?>
+        <li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/thestreet_approve.htm">Articles from TheStreet</a>
+        <?if($AD->getPerm("observer_approve") || $AD->getPerm("observer_move")){?>
+			<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/observer/observer_approve.htm" target="_blank">Articles From Observer</a></li>
+		<?php } ?>
+		<br>
+		<br />
+	</div>	
+
+<? include("$ADMIN_PATH/_footer.htm");?>

@@ -1,0 +1,176 @@
+<?php
+
+
+global $is_ssl;
+include_once("$IMG_SERVER/lib/layout_functions.php");
+$pageName="mvalert";
+show_adds_checkmate($pageName);
+global $cm8_ads_Leaderboard, $$cm8_ads_MediumRectangle;
+$bannername1=$cm8_ads_Leaderboard;
+$bannername2=$cm8_ads_MediumRectangle;
+
+/* $zone_name="mvalert";
+$tile728x90=1;
+$tile300x250=2; */
+	$contestid=$_GET['contestid'];
+	$sqlQuery="SELECT * FROM serial_mapping WHERE id='$contestid'";
+	$result=exec_query($sqlQuery,1);
+?>
+
+<? // This is the header ... which should be seperated into a new file if it is reused in another email. And ideally, we would share the subject variable with the calling script. ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Get Positive Money Contest Result </title>
+<style type="text/css">
+body{margin:0px;}
+</style>
+<SCRIPT language="JavaScript" src="http://minyanvilledigital.checkm8.com/adam/cm8adam_1_call.js"></SCRIPT>
+<script language="Javascript" type="text/javascript">
+<!--
+var axel = Math.random() + "";
+var ord = axel * 1000000000000000000;
+//-->
+</script>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td><table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+      <!--<tr>
+        <td style="vertical-align:middle;text-align:center;"><? //CM8_ShowAd($bannername1); ?>
+			<? // php show_ads_operative($zone_name,$tile728x90,$ADS_SIZE['LeaderBoard'],"","ist",0); ?>
+			<A target="_blank" href="http://minyanville.checkm8.com/adam/ep/click/minyanville_main_site.mvalert/Leaderboard_728x90?cat=minyanville_main_site.mvalert">
+		<IMG src="http://minyanville.checkm8.com/adam/noscript?cat=minyanville_main_site.mvalert&format=Leaderboard_728x90" target="_blank" border=0></A>
+		</td>
+      </tr>-->
+      <tr>
+       <td background="<?=$IMG_SERVER;?>/images/email_alert/backrd_img.jpg">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+          <tr>
+            <td width="23%" rowspan="2"><img src="<?=$IMG_SERVER;?>/images/email_alert/mv_logo.jpg" width="165" height="83" /></td>
+          </tr>
+          <tr>
+
+            <td align="right" style="vertical-align:bottom; padding-bottom:5px;padding-right:5px;">
+			<table border="0" cellspacing="5" cellpadding="0" >
+            <tr>
+            <td colspan="5" align="right"><a href="<?=$HTNOSSLDOMAIN?>/library/search.htm" style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;"><span style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;">Search Minyanville</span></a></td>
+            </tr>
+              <tr >
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/community/home.htm" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">My Exchange</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/news_views" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">News &amp; Views</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/customproducts" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Subscription Products</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/register/new/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Two Week Free Trial</span></a>&nbsp;</td>
+                <td align="right"><a href="<?=$HTNOSSLDOMAIN?>" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Sign up for Email Newsletter</span></a></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+            <tr>
+	             <td  align=center>
+	  				<A target="_blank" href="http://minyanville.checkm8.com/adam/ep/click/minyanville_main_site.mvalert/1x1_Text?cat=minyanville_main_site.mvalert">
+	  				<IMG src="http://minyanville.checkm8.com/adam/noscript?cat=minyanville_main_site.mvalert&format=1x1_Text" target="_blank" border=0></A>
+	  			</td>
+	  		</tr>
+      <tr>
+        <td style="padding-left:15px;"><table align="left" width="100%" border="0" cellspacing="5" cellpadding="0">
+
+          <tr>
+            <td colspan="2" align="left">
+			<? if($result){?>
+			Dear Moderator,<br><br>
+<?		if($result['win']==1){
+?>
+			<b><?=ucwords($result['firstname'])?> <?=ucwords($result['lastname'])?></b> participated in "Get Positive On Money" contest.  He/She is a winner.<br>
+<?php
+		}
+		else{
+?>
+			<b><?=ucwords($result['firstname'])?> <?=ucwords($result['lastname'])?></b> participated in "Get Positive On Money" contest. Unfortunately he/she is not a winner.<br>
+<?php
+		}
+?>
+			</td>
+          </tr>
+		  <tr><td colspan="2">&nbsp;</td></tr>
+		    <tr><td width="15%" align="left"><b>First Name:</b></td><td align="left">&nbsp;<?=ucwords($result['firstname'])?></td></tr>
+			<tr><td align="left"><b>Last Name:</b></td><td align="left">&nbsp;<?=ucwords($result['lastname'])?></td></tr>
+			<tr><td align="left"><b>Email:</b></td><td align="left">&nbsp;<?=$result['email']?></td></tr>
+			<tr><td align="left"><b>Serial Number:</b></td><td align="left">&nbsp;<?=$result['serial_number']?></td></tr>
+			<tr><td align="left"><b>Zipcode:</b></td><td align="left">&nbsp;<?=$result['zipcode']?></td></tr>
+			<tr><td colspan="2" >&nbsp;</td></tr>
+			<?php	if(is_numeric($result['sid'])){
+					echo '<tr><td align="left" colspan="2"><b>This user created account on minyanville successfully.</b></td></tr>';
+				}
+
+ } ?>
+        </table></td>
+      </tr>
+
+      <tr>
+        <td style="height:5px;"></td>
+      </tr>
+
+      <tr>
+        <td valign="top" style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <!--<tr>
+            <td valign="top"><table width="100%" border="0" cellspacing="2" cellpadding="0">
+              <tr>
+                <td style="border:#000000 solid 1px; ">
+
+<img src="http://imglinks.industrybrains.com/imgct?sid=713&amp;ct=MINYANVILLE_HOMEPAGE_ROS&amp;tr=NEWSLETTER&amp;layt=2&amp;custarg=newMap" border="0" usemap="#ib_713_2"/>
+<map id="ib_713_2" name="ib_713_2">
+  <area shape="rect" coords="11,32,457,66" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=1" target="_blank"/>
+  <area shape="rect" coords="11,82,457,116" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=2" target="_blank"/>
+  <area shape="rect" coords="11,133,457,167" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=3" target="_blank"/>
+  <area shape="rect" coords="11,183,457,217" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=4" target="_blank"/>
+  <area shape="rect" coords="11,234,457,268" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=5" target="_blank"/>
+  <area shape="rect" coords="11,280,457,294" href="http://www.industrybrains.com/minyanville" target="_blank"/>
+</map>
+				</td>
+              </tr>
+            </table></td>
+            <td width="300px" valign="top"><table width="100%" border="0" cellspacing="2" cellpadding="0">
+              <tr>
+	            <td align="left" bgcolor="#FFFFFF" style="width:300px;vertical-align:middle; text-align:center;"><? //CM8_ShowAd($bannername2); ?>
+				<? // show_ads_operative($zone_name,$tile300x250,'300x250',"","",0);  ?>
+				<A target="_blank" href="http://minyanville.checkm8.com/adam/ep/click/minyanville_main_site.mvalert/MediumRectangle_300x250_300x600?cat=minyanville_main_site.mvalert">
+		<IMG src="http://minyanville.checkm8.com/adam/noscript?cat=minyanville_main_site.mvalert&format=MediumRectangle_300x250_300x600" target="_blank" border=0></A>
+				</td>
+              </tr>
+
+            </table></td>
+          </tr>-->
+        </table></td>
+      </tr>
+	  <tr>
+	  	<td style="height:5px;"></td>
+	  </tr>
+
+	  <tr>
+					<td colspan="4" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise With Us</a></p>
+					  </div></center></td>
+		</tr>
+				<tr>
+						<td >&nbsp;</td>
+		</tr>
+    </table></td>
+  </tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+*/
+googleanalytics();
+?>
+</body>
+</html>

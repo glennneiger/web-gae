@@ -1,0 +1,289 @@
+/* CSS Document */
+a{
+	color:#133a61;
+}
+.welcome{
+	width:950px;
+	float:left;
+	margin:5px 15px 0px 15px;
+}
+
+.welcomeText{
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:20px;
+	font-weight:bold;
+	color:#103c5f;
+}
+
+.logOut{
+	width:50px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	text-decoration:underline;
+	color:#808080;
+	padding:7px 0px 0px 7px ;
+}
+
+.settingsBox{
+	width:950px;
+	float:left;
+	margin:5px 15px 0px 15px;
+}
+
+.subscriptionBox{
+	width:301px;
+	float:left;
+	margin:5px 5px 5px 0px;
+}
+
+.exchangeBox{
+	width:301px;
+	float:left;
+	margin:5px 12px;
+}
+
+.watchListBox{
+	width:301px;
+	float:left;
+	margin:5px 0px 5px 5px;
+}
+
+.newsletterBox{
+	width:940px;
+	float:left;
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/adFreeBg.jpg);
+	margin:5px 15px 15px 15px;
+}
+
+.topBottomImage{
+	width:301px;
+	float:left;
+	margin:0px;
+	padding:0px;
+	/*background-repeat:no-repeat;
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/productBottom.jpg);*/
+}
+
+.boxContent{
+	width:301px;
+	float:left;
+	min-height:430px;
+	background-repeat:repeat-y;
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/productBg.jpg);
+	position:relative;
+}
+
+.boxContentHeading{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	color:#113c5f;
+	padding-left:10px;
+	padding:0px 0px 10px 10px;
+}
+
+.newslettertopImage{
+	width:940px;
+	float:left;
+}
+
+.boxContentOptions{
+	width:301px;
+	float:left;
+	border-bottom:1px #d9d9d9 solid;
+}
+
+.optionFont{
+	width:150px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+	padding:7px 0px 0px 10px;
+}
+
+.optionImage{
+	width:119px;
+	float:left;
+	padding:6px 0px 5px 10px;
+}
+
+.optionManage{
+	width:290px;
+	float:left;
+	bottom:0px;
+	font-size:11px;
+	font-weight:bold;
+	color:#133a61;
+	padding:10px 0px 10px 10px;
+	position: absolute;
+	font-family:Arial, Helvetica, sans-serif;
+}	
+
+.optionManageExchange{
+	width:280px;
+	float:left;
+	font-size:11px;
+	font-weight:bold;
+	color:#133a61;
+	padding:10px;
+	position:absolute;
+	bottom:0px;
+	font-family:Arial, Helvetica, sans-serif;
+}	
+
+.optionManageWatchList{
+	width:280px;
+	float:left;
+	font-size:11px;
+	font-weight:bold;
+	color:#133a61;
+	padding:10px;
+	position:absolute;
+	bottom:0px;
+	font-family:Arial, Helvetica, sans-serif;
+}	
+
+.saveButton{
+	width:940px;
+	float:left;
+	text-align:right;
+	margin:10px 0px 10px 10px;
+}
+
+.saveButtonText{
+	width:145px;
+	float:right;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#44802a;
+	padding:12px 0px;
+	margin:0px 7px;
+}
+
+.saveButtonImage{
+	width:120px;
+	float:right;
+}
+
+.saveButtonText a{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#44802a;
+}
+
+.innerNewsletterContainer{
+	width:450px;
+	float:left;
+	margin:0px 10px;
+}
+
+.nwsltrDrop{
+	width:55px;
+	float:left;
+}
+
+.nwsltrDrop select{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	color:#000000;
+	width:55px;
+}
+
+.newsletterOptions{
+	width:430px;
+	float:left;
+	padding:10px 10px 10px 6px;
+}
+
+.nwsltrHeading{
+	width:355px;
+	float:left;
+	padding:0px 10px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+}
+
+.mwsltrDesc{
+	width:355px;
+	float:left;
+	padding:0px 10px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	color:#000000;
+}
+
+.nwsltrGreenText{
+	width:145px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#44802a;
+	margin:0px 7px;
+}
+	
+.nwsltrBoxContent{
+	width:940px;
+	float:left;
+}	
+
+.nwsltrSaveButton{
+	width:500px;
+	float:right;
+	margin:0px 10px 0px 0px;
+}
+
+.subscribeAuthor{
+	width:440px;
+	float:left;
+	padding:2px 10px 2px 10px;
+}
+
+.subscribeAuthorData{
+	width:125px;
+	float:left;
+	padding:2px 5px;
+}
+
+.subscribeAuthorData input{
+	float:left;
+	border:1px solid #ccc;
+}
+
+.subscribeAuthorName{
+	width:105px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	/*white-space:nowrap;*/
+}
+
+.selectAuthorText{
+	width:200px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#616161;
+	font-weight:normal;
+}
+
+.selectAuthorList{
+	width:200px;
+	float:left;
+	margin:0px 0px 0px 33px;
+}
+
+.watchlist-images{
+  padding:0px 0px 0px 8px;
+}

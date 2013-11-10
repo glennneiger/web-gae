@@ -1,0 +1,169 @@
+<?
+header("location:../../library/search.htm");
+exit;
+include_once("$D_R/_authenticate.htm");
+
+$SECTION="gazette";
+$PAGE="buzzbanter";
+$HEADER="/assets/Searchbanner.jpg";
+
+$title="Minyanville : Library : Buzz and Banter Search";
+$headgfk=$advanced?"/assets/searchAdvSearch.gif":"/assets/keywordsearch.gif";
+
+
+
+$p=intval($p);
+$SEARCH_PAGESIZE=50;
+$offset=($p*$SEARCH_PAGESIZE);
+if(($p||$category_id||$conrib_id) && !isset($q))$q="";//set $q so search results show
+$q=lc($q);
+$qry="SELECT *,date_format(date,'%r') mdate,UNIX_TIMESTAMP(date)udate,
+	  concat('http://$HTTP_HOST/gazette/buzzbanter/?date=',date_format(date,'%m/%d/%Y'))url
+	   FROM buzzbanter
+	   WHERE is_live='1'
+	   AND approved='1'
+	   AND show_on_web='1'";
+
+if($q){
+	$qry.=" AND instr(LOWER(body),'".lc($q)."')\n";
+	$getresults=1;
+}
+if($mo){
+	$qry.=" AND(  month(date)='$mo' ) \n";
+	$getresults=1;
+}
+if($day){
+	$qry.=" AND( dayofmonth(date)='$day'  )\n";
+	$getresults=1;
+}
+if($year){
+	$qry.=" AND(  year(date)='$year' )\n";
+	$getresults=1;
+}
+if($author){
+	$qry.="  AND( LOWER(author)='".lc($author)."' ) \n";
+	$getresults=1;
+}
+
+
+$d="DESC";
+if(!$getresults){
+	$getresults=1;
+	$qry.=" GROUP BY DATE_FORMAT(date,'%m/%d/%y')";
+	$datesonly=1;
+}
+
+
+$resnum=num_rows($qry);
+$numpages=ceil($resnum/$SEARCH_PAGESIZE);
+
+$qry.=" ORDER BY date $d LIMIT $offset,$SEARCH_PAGESIZE";
+$pagelinks=array();
+if($numpages>1){
+	foreach(range(0,$numpages-1) as $i){
+		$here=($i==$p?1:0);
+		$pagelinks[]=href($PHP_SELF.qsa(array(p=>$i)),bold(($i+1),$here),0,$here  );
+	}
+	$pagelinks=implode(" | ",$pagelinks);
+}
+
+include("$D_R/_header.htm");
+$DATE_STR="D M jS, Y";
+?>
+<script>
+function submitForm(){
+	frm=findObj("myform");
+	frm.submit();
+}
+</script>
+	<div class=libseparator>
+		<div class=slimpadding><img src="<?=$headgfk?>" border=0></div>
+	</div>
+	<div class=padding>
+		<table cellspacing=5>
+		<form method="get" action="<?=$PHP_SELF?>" name="myform">
+		<?input_hidden("adv")?>
+		<TR>
+		<TD class="number" colspan=100>Buzz and Banter Search</TD>
+		</TR>
+		<?if(!$advanced){?>
+			<TR valign=middle>
+			<TD>Keyword</TD>
+			<TD><?input_text("q")?></TD>
+			<TD><?mOver("Searchup.gif","searchove.gif","javascript:submitForm()")?></TD>
+			<TD>&nbsp;  &nbsp;&nbsp; <a class=small href="<?=$PHP_SELF.qsa(array(advanced=>1))?>">Advanced Search</a></TD>
+			</TR>
+		<?}else{?>
+			<TR valign=top>
+			<TD width=1% nowrap><span class="number">1.</span> Keyword:<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and/or</TD>
+			<TD width=99%><?input_text("q")?></TD>
+			</TR>
+			<TR valign=top>
+			<TD rowspan=2><span class="number">2.</span> Date:</TD>
+			<TD><?month_options("mo")?>
+			&nbsp;&nbsp;
+			<?day_options("day")?>
+			&nbsp;&nbsp;
+			<?year_options2("year",$year,"",2004,date("Y"))?>
+			</TD>
+			</TR>
+			<TR>
+			<TD><select name="author">
+				<option value="">--All Authors--</option>
+				<?selectHashArr(get_active_contributors(),"name","name",$author)?>
+			</select>
+
+			</TD>
+			</TR>
+
+			<TR>
+			<TD><div class="number">3.</div></TD>
+			<TD><?mOver("Searchup.gif","searchove.gif","javascript:submitForm()")?></TD>
+			</TR>
+		<?}?>
+		</form>
+		</table>
+	</div>
+
+	<div class=libseparator>
+		<div class=slimpadding>
+			<?if($getresults){?>
+				<img src="/assets/Searchresults.gif" border=0>
+			<?}else{?>
+			 	&nbsp;
+			<?}?>
+		</div>
+	</div>
+	<?if($getresults){?>
+	<div class=padding>
+		<?if(!$resnum){?>
+		Couldn't find anything based on your search.
+		<?}else{?>
+			<?foreach(exec_query($qry) as $row){?>
+
+					<div class=searchdate><?=href($row[url],date($DATE_STR,$row[udate]))?></div>
+
+				<?if(!$datesonly){?>
+					<div class=searchauthor>By <?=ucwords($row[author])?></div>
+					<div class=searchblurb><?=strip_tags($row[body])?></div>
+					<div class=searchtitle><a href="<?=$row[url]?>#banter<?=$row[id]?>">view...</a></div>
+
+					<br><br>
+				<?}?>
+			<?}?>
+		<?}?>
+
+		</div>
+		<?if($resnum>5){?>
+		<div class=libseparator><div class=slimpadding><div class=topbutton><?mOver("topup.gif","topover.gif","#")?></div></div></div>
+		<?}?>
+		<?if($numpages>1){?>
+		<br>
+		<div class=searchpages><?=$pagelinks?></div>
+		<?}?>
+
+	<?}?>
+
+
+<?include("$D_R/_footer.htm");?>

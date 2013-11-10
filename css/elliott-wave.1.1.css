@@ -1,0 +1,503 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin:0;
+	padding:0;
+}
+
+h2{
+	text-transform: none;
+}
+
+#ewi_wrapper{
+	width:980px;
+	margin:0px auto;
+	background-color:#f5f5f5;
+}
+.clr{
+	clear:both;
+	margin:0px;
+	padding:0px;
+}
+/*Top Area Start*/
+.ewi_logo{
+	float: left;
+	width: 188px;
+	height: 49px;
+	display: block;
+	margin: 20px 40px;
+	background-position: left center;
+	background: url(http://storage.googleapis.com/mvassets/images/elliott-wave-insider/ewi_logo.jpg) no-repeat;
+}
+#ewi_header{
+	float: left;
+	width: 900px;
+	padding: 20px 40px;
+	border-top: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
+	background-color: #fafafa;
+}
+#ewi_header ul{
+	width: 700px;
+}
+#ewi_header ul li{
+	float: left;	
+	color:#666666;
+	list-style:none;
+	font-size: 16px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+#ewi_header ul li a{
+	color:#666666;
+}
+
+#ewi_header li{
+	margin: 0px 0px;
+	padding: 0px 20px 0px 0px;
+}
+#ewi_header .active{
+	color: #333333;
+	font-weight: bold;
+}
+
+#ewi_header .active a{
+	color: #333333;
+}
+
+.ewi_emailQust{
+	float: right;
+	width: 290px;
+	color:#666666;
+	font-size: 14px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+.ewi_emailQust a{
+	color:#167fc5;
+	text-decoration:none;
+}
+.ewi_emailQust a:hover{
+	color:#167fc5;
+	text-decoration:underline;
+}
+
+/*Content Area Start*/
+.ewi_contentPanel{
+	float: left;
+	padding: 40px 40px;
+}
+.ewi_contentPanel .ewiButton{
+	float:left;
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:14px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 18px 0px 0px 0px;
+	padding:5px 0px 5px 0px;
+	border-radius: 5px 5px;
+	background-color: #27378c;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.ewi_contentPanel .ewiButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+
+.ewi_contentPanel ewiButton a{
+	background-color: #0a8cf1;
+	text-decoration:none;
+}
+
+.ewi_lftPanel{
+	width: 580px;
+	float: left;
+	margin: 0px 40px 0px 0px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+.ewi_lftPanel h1{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	font-family: 'PT Sans Narrow', sans-serif;
+
+}
+
+.ewi_lftPanel h1 a hover{
+	color:#167FC5;
+}
+
+.ewi_lftPanel h1.ewi_about{
+	width:580px;
+	margin:0px 0px 15px 0px;
+	padding:0px 0px 15px 0px;
+	border-bottom: 1px dashed #aeaeae;
+}
+
+.ewi_lftPanel h1 a{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	margin:10px 0px 15px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.ewi_lftPanel h1 a:hover{
+	color:#27378c;
+	text-decoration:none;
+}
+
+.ewi_lftPanel h3{
+	float: left;
+	width: 580px;
+	color:#999999;
+	font-size:14px;
+	font-weight:normal;
+	margin:0px 0px 15px 0px;
+	padding:0px 0px 15px 0px;
+	border-bottom: 1px dashed #aeaeae;
+	text-transform: none;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-size: 14px;
+}
+.ewi_lftPanel p{
+	float: left;
+	color:#333333;
+	font-size:14px;
+	font-weight:normal;
+}
+.ewi_alertBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 14px 0px;
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+}
+
+.ewi_alertDetailBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 15px 0px;
+}
+
+.ewi_pagination{
+	float: left;
+	width: 580px;
+}
+.ewi_pagination .ewiPageButton{
+	float: left;
+	width: 20%;
+	height: 20px;
+	color: #ffffff;
+	font-size:14px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 20px 0px 0px 0px;
+	padding: 5px 0px 5px 0px;
+	border-radius: 5px 5px;
+	background-color: #20a532;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.ewi_pagination .ewiPageButton:hover{
+	background-color: #20a532;
+	}
+
+.ewi_pagination .ewiPageButton a{
+	color: #ffffff;
+}
+
+.ewi_pagination .prv_button{
+	float: left;
+}
+.ewi_pagination .nxt_button{
+	float: right;
+}
+.ewi_rght_panel .ewiBioButton{
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:14px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 15px 0px 0px 0px;
+	padding:5px 0px;
+	border-radius: 5px 5px;
+	background-color: #0670c1;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+	float: left;
+}
+
+.ewi_rght_panel{
+	width:280px;
+	float:left;
+}
+
+.ewi_rght_panel .ewiBioButton:hover{
+	background-color: #0a8cf1;
+}
+
+.ewi_rght_panel .ewiBioButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+.ewi_rght_panel h2{
+	float: left;
+	color:#333333;
+	font-size:28px;
+	font-weight:bold;
+	text-transform: none;
+	margin:10px 0px 20px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+.ewi_rght_panel input[type="text"]{
+	float: left;
+	width: 160px;
+	height: 28px;
+	color: #999999;
+	font-style:italic;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border:1px solid #e1e1e1;
+	padding: 0px 10px 0px 10px;
+}
+.ewi_rght_panel input[type="button"]{
+	float: left;
+	width: 91px;
+	height: 38px;
+	border:none;
+	background: url(http://storage.googleapis.com/mvassets/images/elliott-wave-insider/ewi_searchicon.jpg) no-repeat;
+}
+.ewi_rght_panel p{
+	width: 280px;
+	float: left;
+	color:#333333;
+	font-size:14px;
+	font-weight:normal;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.ewi_box_rght{
+	float: left;
+	clear:left;
+	width:282px;
+	padding:0px 0px 15px 0px;
+}
+.hr{
+	width:282px;
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+}
+
+.ewi_disclaimer{
+	float: left;
+	clear:left;
+	font-weight:normal;
+	font-style:italic;
+	padding:0px 0px 15px 0px;
+	color: #666666;
+    font-family: "Times New Roman",Times,serif;
+    font-size: 12px;
+}
+
+.ewi_alertBottom{
+	float: left;
+	clear:left;
+	width:565px;
+	margin:30px 0px 0px 0px;
+}
+
+.ewi_category{
+	float:left;	
+}
+
+.ewi_category span{
+	color:#1174ba;
+}
+#ewi_post{
+	float:left;
+	width:580px;
+	font-size: 16px;
+	color: #333333;		
+	overflow:hidden;
+}
+
+#ewi_post a{
+	color: #167FC5;		
+}
+
+#ewi_post a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+.no_post{
+	color: #333333;
+	font-size: 20px;
+	text-align: center;
+}
+
+#ewi_post ul{
+	margin: 5px 0px 0px 20px;		
+}
+
+#ewi_post ul li{
+	font-size: 16px;
+	color: #333333;		
+}
+
+#ewi_post h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#ewi_post h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+#ewi_alert_body{
+	float:left;
+	width:580px;
+	font-size: 16px;
+	color: #333333;	
+	overflow:hidden;	
+}
+
+#ewi_alert_body ul{
+	margin: 0px 0px 0px 5px;		
+}
+
+#ewi_alert_body a{
+	color: #167FC5;		
+}
+
+#ewi_alert_body a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+#ewi_alert_body ul li{
+	font-size: 16px;
+	color: #333333;	
+	margin:15px;	
+}
+
+#ewi_alert_body h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#ewi_alert_body h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+#ewi_alert_body span{
+	font-family: 'PT Sans Narrow', sans-serif; !important
+}
+
+.ewi_category span:hover{
+	color:#167FC5;	
+	text-decoration:underline;
+}
+
+
+.ewi_alertBottom .ewi_goTop{
+	float: right;
+	color:#1174ba;
+	cursor: pointer;
+}
+
+.ewi_goTop:hover{
+	color:#167FC5;	
+	text-decoration:underline;
+}
+
+#ewi_goTop:hover{
+	color:#167FC5;	
+	text-decoration:underline;
+}
+
+.ewi_bioImage{
+	float: left;
+    height: 100%;
+    margin: 0 20px 20px 0;
+    width: 175px;
+}
+
+.ewi_bioImage img{
+	height: auto;
+    width: 100%;	
+}
+.ptc_fancyBox{
+	float:left;
+	width:580px;
+}
+
+#fancybox-close{
+	top:-30px;
+	right:0px;
+	height:24px;
+	width:24px;
+	background-repeat:no-repeat;
+	background: url('http://storage.googleapis.com/mvassets/images/peter-tchir/popup_close.png');
+}
+
+.ewi_rightCol_list{
+	float:left;
+	color:#167fc5;
+	font-size:14px;
+	font-weight:normal;
+	list-style:none;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.ewi_rightCol_list a{
+	color:#167fc5;
+	text-decoration:none;
+}
+
+.ewi_rightCol_list a:hover{
+	text-decoration:none;
+}
+
+.no_result{
+	color: red;
+	font-size: 18px;
+	text-align: center;
+}
+.ptc_lftPanel p a{
+     color:#167FC5;
+}
+.ptc_lftPanel p a:hover{
+     text-decoration:underline;
+}

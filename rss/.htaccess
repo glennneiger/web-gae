@@ -1,0 +1,2 @@
+RedirectMatch permanent /index.htm /rss/minyanfeed.php
+AddType application/x-httpd-php .php .xml .rss

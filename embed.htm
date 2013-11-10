@@ -1,0 +1,24 @@
+<html>
+<script>
+window.resizeTo(<?=intval($w)?>,<?=intval($h)?>);
+</script>
+<link rel="stylesheet" href="/_style.htm">
+<style>
+body{
+	border:0px;
+	background-image:url("/assets/images/logo_bg.jpg");
+}
+.vborder{
+	border:1px black dashed;
+	width:100%;
+	height:100%;
+}
+</style>
+<body topmargin=0 bottommargin=0 leftmargin=0 rightmargin=0 marginwidth=0 marginheight=0>
+
+<table width=100% height=100% cellpadding=0 cellspacing=0 border=0>
+<TR><TD align=center valign=middle><div class=vborder><embed src="<?=$src?>" width=99% height=99% type="video/x-avi"></embed></div></TD></TR>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?php
+
+include_once($D_R."/lib/config/_recurly_config.php");
+include_once($D_R."/lib/recurly/recurly.php");
+include_once($D_R."/lib/recurly/_recurly_data_lib.php");
+global $recurlyApiKey;
+Recurly_Client::$apiKey = $recurlyApiKey;
+
+ $post_xml = stripslashes(file_get_contents ("php://input"));
+    $notification = new Recurly_PushNotification($post_xml);
+    $objRecurly= new recurlyData();
+    $objRecurly->setRecurlyUsersData($notification);
+
+
+?>

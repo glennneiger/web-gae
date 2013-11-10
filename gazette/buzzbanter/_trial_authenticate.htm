@@ -1,0 +1,73 @@
+<?
+$refer=refer(1);
+global $HTPFX,$HTHOST;
+$ERR_PAGE="/buzz/msg.htm";
+$SIGNIN_PAGE="/gazette/buzzbanter/trial_signin.htm";
+mcookie("autologin",1);
+include_once("$D_R/lib/_auth.php");
+session_start();
+
+if(!email_taken($_POST[email]) && $_POST[email]!="")
+{
+	$sub[email]=trim(strtolower($_POST[email]));
+    $sub[password]=$_POST[password];
+    $sub[date]=$date=time();
+    $sub[promo_code]=1000;
+    $sub[expires]=date('U')+week(2);
+    $sub[type]='trial';
+    $sub[recv_daily_journal]='1';
+    $sub[premium]='1';
+    $sub[agreed_privacy]='1';
+    $sub[agreed_terms]='1';
+    $sub[account_status]='enabled';
+    $sub[trial_status]='active';
+    $id= insert_query("subscription",$sub);
+    if($id)
+    {
+    	$TMPL=$HTPFX.$HTHOST."/emails/_eml_bb_email_welcome.htm?subid=".$id;
+	mymail("${sub[email]}",
+		$REG_EML_REPLYTO,
+		$SBJ_WELCOME_BUZZ,
+		inc_web($TMPL));
+	}
+}
+
+auth_from_cookie();//will try to resurrect session from cookie
+$s_user=($_POST[email]?$_POST[email]:$_SESSION[EMAIL]);
+$s_pass=($_POST[password]?$_POST[password]:$_SESSION[PASSWORD]);
+$USER = new user($s_user,$s_pass);
+
+//redirect for duplicate logins
+if($USER->isDupeLogin() && $ARCHIVER!="fishypop()" ){
+	$error="Only one login allowed per account! <i>msg:fr-auth</i>";
+	location($SIGNIN_PAGE.qsa(array(error=>$error),0,1));
+}
+
+if($_POST[email]){
+	$USER->resetAuthFields();//make curr user override existing
+	//isDupeLogin check later will fix the fields;
+}
+if(!$USER->isAuthed || ($USER->account_status=="disabled")){
+	//disabled account
+	if($USER->account_status=="disabled"){
+		$error="Your account has been disabled. Please go to $HTTP_HOST and manage your account";
+		location($ERR_PAGE.qsa(array(error=>$error)));
+		exit;
+	}
+	//doesn't have premimum services
+	if($USER->needsPremium && $USER->signedIn){
+		$error="In order to view buzz and banter you need
+				to order premimum services. Please go to $HTTP_HOST
+				and <a href=$MANAGE_URL target=_blank>manage your account</a>.<br><br>
+				Or <a href=signin.htm>Try Again</a><br><br><br>";
+		location($ERR_PAGE.qsa(array(error=>$error)));
+		exit;
+	}
+	//password failure
+	if($_POST[email] && $_POST[password]){
+		$BADLOGIN=1;
+	}
+	//redirect to sign-in page
+	location($SIGNIN_PAGE.qsa(array(error=>$error,BADLOGIN=>$BADLOGIN)));
+}
+?>

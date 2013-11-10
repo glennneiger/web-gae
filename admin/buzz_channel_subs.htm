@@ -1,0 +1,140 @@
+
+<?
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+$client_id= $_GET[client_id];
+$page="subscribers";
+$p=intval($p);
+$search_param=trim(lc($search_param));
+if(!$pagesize)$pagesize=40;
+
+$qry="SELECT SQL_CALC_FOUND_ROWS s.id ID,
+	  FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+	  	  s.email 'MemberID', s.password 'Password',
+		  s.fname 'FirstName',s.lname 'LastName',account_status 'Status'
+	      FROM subscription_bc s where s.client_id='$client_id' and account_status='enabled'";
+
+
+
+/*---------- end search params -------------*/
+
+
+$offset=($p*$pagesize);
+
+if(!$d)$d="DESC";
+if(!$s)$s="s.date";
+if($s){
+	if($s=="Modified")$s="s.modified";
+	if($s=="Created")$s="s.date";
+	$qry.=" ORDER BY $s $d";
+}
+$qry.=" LIMIT $offset,$pagesize ";
+
+$pagedata=exec_query($qry);
+
+$numrows=exec_query("SELECT FOUND_ROWS()c",1,"c");
+$numpages=ceil($numrows/$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$timeperiods=array(
+	thismonth => "This Month",
+	thisweek  => "This Week",
+	today     => "Today Only"
+);
+//$accounttypes=qw("gift edu 1mo prem newyear corp");
+$statustypes=qw("enabled disabled");
+$searchtypes=array(
+	"s.id"=>"ID",
+	"s.fname"=>"First Name",
+	"s.lname"=>"Last Name",
+	"s.email"=>"Email",
+	"s.password"=>"Password",
+	"s.premium"=>"Premium (1 or 0)"
+);
+
+$active_count=exec_query("SELECT  count(*) as active from subscription_bc where account_status='enabled' and client_id='$client_id' group by
+account_status",1 );
+
+?>
+<style>
+.whilite a:hover{color:#fff;}
+.smbutton{
+	height:14px;
+ 	padding:0px;
+	font-size:9px;
+
+}
+</style>
+<script>
+
+</script>
+
+<TABLE ALIGN=CENTER>
+<TR>
+<TD ><b>Number of Active Accounts:</b></TD>
+<? if (!$active_count[active])
+   $active_count[active]=0;
+?>
+<TD><?echo $active_count[active];?></TD>
+</TR>
+</TABLE>
+
+<TABLE WIDTH=600 ALIGN=CENTER>
+<TR align=center bgcolor=#bbbbbb>
+<?if(count($pagedata)){?>
+	<?foreach(array_keys($pagedata[0]) as $col){
+		$colcolor=($_GET[s]==$col?"#8da9e6":"");
+	?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><?=href($PHP_SELF.qsa(array(s=>$col,d=>($d=="ASC"?"DESC":"ASC"))),$col)?></TD>
+	<?}?>
+	<TD bgcolor="#ffffff">&nbsp;</TD>
+	</TR>
+	<form method="post" action="subscribers_mod.htm">
+	<?refer()?>
+	<?foreach($pagedata as $row){
+		$rowcolor=$i%2?"dddddd":"eeeeee";
+	?>
+		<TR bgcolor="<?=$rowcolor?>">
+		<?foreach($row as $k=>$v){
+
+			$colcolor=($_GET[s]==$k?"#8da9e6":"");
+		?>	<TD bgcolor="<?=$colcolor?>"><?=$v?></TD>
+
+		<?}?>
+
+		</TR>
+
+	<?}?>
+
+	</form>
+<?}else{//!count($pagedata)?>
+<TR>
+	<TD colspan=100>Nothing found.<br>
+	<?=mysql_error()?>
+	</TD>
+</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<hr />
+<?=$pagination?>
+<hr />
+
+
+</TD>
+</TR>
+</table>
+<br><br>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

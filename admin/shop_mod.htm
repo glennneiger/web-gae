@@ -1,0 +1,37 @@
+<?
+$img=$_FILES[img];
+$lgimg=$_FILES[lgimg];
+
+if($img[size]){
+	$imgname=$PROD_PATH."/".$img[name];
+	copy($img[tmp_name],$D_R.$imgname);
+	$prod[asset]=$imgname;
+}
+
+if($lgimg[size]){
+	$imgname=$PROD_PATH."/".$lgimg[name];
+	copy($lgimg[tmp_name],$D_R.$imgname);
+	$prod[lgasset]=$imgname;
+}
+
+
+if($delprod){
+	del_query("tmpshop","id",$id);
+	location("./shop.htm?cat_id=$cat_id");
+	exit;
+}
+
+if($prod && $id){
+	update_query("tmpshop",$prod,array(id=>$id));
+}else{
+	insert_query("tmpshop",$prod);
+	$prod=exec_query("select * from tmpshop where name='${pagedata[name]}'",1,"id");
+	$id=$prod[id];
+}
+if(is_array($catarr)){
+	foreach($catarr as $ordr=>$i){
+		update_query("tmpshop",array(ordr=>$ordr),array(id=>$i));
+	}
+}
+location("./shop.htm?id=$id&cat_id=$cat_id");
+?>

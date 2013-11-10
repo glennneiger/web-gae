@@ -1,0 +1,467 @@
+.mvtv_heading{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:24px;
+color:#062f56;
+font-weight:normal;
+}
+
+.audio_common_middle_container{
+background-image: url(http://storage.googleapis.com/mvassets/images/redesign/audio_video_middle_bg.gif);
+}
+.left_contant_audio{ 
+padding-left:10px;
+width:650px;
+margin-bottom:50px;
+float:left;
+}
+.mvtv_article_rating_area{
+font-family:Arial, Helvetica, sans-serif;
+font-weight:normal;
+font-size:12px;
+width:230px;
+vertical-align:top;
+text-align:left;
+float:left;
+padding-left:10px;
+}
+
+ .article_double_line{  
+ border-bottom:solid 1px #999999;
+ border-top:solid 1px #999999;
+ clear:both;
+ margin-bottom:10px;
+ }
+   .article_double_line img a{
+   border:none;
+   cursor:pointer;
+ }
+  #article_double_line{  
+ border-bottom:solid 1px #999999;
+ border-top:solid 1px #999999;
+ clear:both;
+ margin-top:10px;
+ margin-bottom:10px;
+ }
+   #article_double_line img a{
+   border:none;
+   cursor:pointer;
+ }
+   #article_double_line_bottom{  
+ border-bottom:solid 1px #999999;
+ border-top:solid 1px #999999;
+ clear:both;
+ float:left;
+ }
+   #article_double_line_bottom img a{
+   border:none;
+ }
+ 
+ .bottom_common_link{
+  font-family:Helvetica;
+  font-size:11px;
+  font-weight: normal;
+  margin:0px;
+  line-height:20px;
+  color:#083c6b;
+  text-transform:uppercase;
+ }
+ 
+ 
+ .combo_slide_outer{
+ width:140px;
+ float:left;
+ margin-right:15px;
+ height:160px;
+ }
+ .combo_slide{
+ float:left;
+ border:solid 1px #a4a4a4;
+ margin-top:10px;
+ }
+ 
+ .combo_tab {
+   padding:0px;
+   background-image: url(http://storage.googleapis.com/mvassets/images/redesign/combo_hide_tab_bg.gif);
+   margin:0px;
+   float:left;
+   width:100%;
+   }
+ 
+ .combo_tab li {list-style:none; float:left;
+ 
+  }
+ .combo_tab ul a  {
+   
+   display:block;
+   padding-top:4px;
+   border-right:solid 1px #000;
+   text-align:center;
+   padding-bottom:3px;
+   float:left;
+   width:129px;
+   text-decoration:none;
+   font-family: Arial, Helvetica, sans-serif;
+   font-size:11px;
+   font-weight:bold;
+   text-transform:uppercase;
+   color:#7a7874;
+   border-bottom:solid 1px #000;
+   cursor:pointer;  
+ }
+ .combo_tab ul li a.selectedcombo {
+   display:block;
+   padding-top:4px;
+   text-align:center;
+   width:auto;
+   padding-bottom:4px;
+   width:129px;
+   background-color:#eceaeb;
+   text-decoration:none;
+   font-family: Arial, Helvetica, sans-serif;
+   font-size:11px;
+   font-weight:bold;
+   text-transform:uppercase;
+   border-top:none;
+   border-right:solid 1px #000;
+   border-bottom:#eceaeb;
+   border-left:none;
+   color:#000;
+   }
+   .combo_tab ul li a.selectedlastcombo {
+   display:block;
+   padding-top:4px;
+   text-align:center;
+   width:auto;
+   padding-bottom:4px;
+   width:129px;
+   background-color:#eceaeb;
+   text-decoration:none;
+   font-family: Arial, Helvetica, sans-serif;
+   font-size:11px;
+   font-weight:bold;
+   text-transform:uppercase;
+   border-top:none;
+   border-right:solid 1px #ECEAEB;
+   border-bottom:#eceaeb;
+   border-left:none;
+   color:#000;
+   }
+   .video_container_table td
+   {
+   	padding-left:11px;
+ 	padding-right:4px;
+   }
+   .video_container
+   {
+   	width:138px;
+ 	border:1px solid #999896;
+ 	text-align:center;
+ 	margin-top:10px;
+ 	border:solid 1px #cccccc;
+ 	float:left;
+   }
+    .video_container img
+   {
+   	border:none;
+   }
+ .rate_video{
+ margin-top:8px;
+ float:left; 
+ padding-right:5px;
+ }
+ .combo_tab_main_content {
+ 
+ font-family:Arial, Helvetica, sans-serif;
+ font-size:12px;
+ padding:10px;
+ padding-bottom:0px;
+ width:630px;
+ float: left;
+ text-decoration:none;
+ background-color:#eceaeb;
+ text-align:center;
+ font-weight:bold;
+ color:#083d70;
+  }
+ .combo_tab_main_content a {
+ font-family:Arial, Helvetica, sans-serif;
+ font-size:12px;
+ text-decoration:none;
+ text-align:center;
+ padding:0px;
+ font-weight:bold;
+ color:#083d70;
+  }
+  .combo_bottom_title{
+  float:left; 
+  clear:both; 
+  padding-left:5px; 
+  text-align:center; 
+  width:130px; 
+  padding-top:5px;
+ }
+ 
+ 
+ .embed_input{
+ border:solid 1px #000;
+ padding-top:3px;
+ width:228px;
+ font-size:10px;
+ height:15px;
+ }
+ .combo_main_container{
+ width:650px;
+ height:230px;
+ background-color:#ECEAEB;
+ clear:both;
+ border:solid 1px #000;
+ margin-top:10px;
+ margin-bottom:10px;
+ clear:both;
+ float:left;
+ }
+ .sliding_combo_controller{ 
+ margin-top:10px; 
+ text-align:center; 
+ width:100%;
+ padding-top:2px;
+ border-top:1px solid #c3c3c3; 
+ clear:both;
+ }
+ 
+ .sliding_combo_controller td img{
+ border:0px;
+ margin:0px;
+}
+
+.common_article_heading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+text-transform:uppercase;
+color:#323232;
+padding-bottom:3px;
+font-weight:bold;
+}
+.common_article_heading a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+text-transform:uppercase;
+color:#323232;
+padding-bottom:3px;
+font-weight:bold;
+margin-right:7px;
+cursor:pointer;
+}
+.common_article_heading a:hover{
+color:#323232;
+}
+
+.common_article_headingTags{
+color:#323232;
+font-family:Arial,Helvetica,sans-serif;
+font-size:11px;
+font-weight:bold;
+padding-bottom:10px;
+padding-right:5px;
+text-transform:uppercase;
+}
+
+
+
+
+
+.comment_article_main td img{
+padding-left:0px;
+}
+.comment_article_header{
+ text-align:left;
+ padding-top:2px;
+ padding-bottom:2px;
+ background-color:#6396c7;
+}
+
+.comment_outer_box{
+padding-top:3px;
+float:left;
+width:648px;
+}
+.comment_name_box{
+padding-top:10px;
+padding-left:10px;
+margin-bottom:5px;
+float:left;
+margin-right:10px;
+width:150px;
+background-color:#eceaeb;
+vertical-align:top;
+
+}
+
+#post_comment_heading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+color:#FFFFFF;
+text-align:left;
+font-weight:normal;
+text-transform:uppercase;
+padding-left:10px;
+vertical-align:middle;
+}
+
+.comment_article_main{
+font-family:Arial,Helvetica;
+font-size:12px;
+line-height:16px;
+margin-top:3px;
+float:left;
+width:650px;
+text-align:left;
+clear:both;
+}
+
+.common_box{
+background-color:#eceaeb;
+padding:0px;
+}
+.common_box td{
+padding:0px;
+padding-left:8px;
+}
+.common_box h5{
+font-family: Arial, Helvetica, sans-serif;
+font-size:13px;
+font-weight:bold;
+margin:0px;
+padding:0px;
+text-align:left;
+color:#083d70;
+text-transform:uppercase;
+}  
+
+.sharethis
+{
+	padding-left:12px;
+}
+.video-desc{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+}
+
+/*disqus**/
+#dsq-reply h3{
+    color: #01509D;
+    cursor: pointer;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 16px;
+    margin: 0;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+#dsq-account-dropdown a{
+    color: #01509D;
+    cursor: pointer;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 16px;
+    margin: 0;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.dsq-commenter-name{
+color: #01509D;
+}
+
+#dsq-realtime-options a{
+    color: #01509D;
+    cursor: pointer;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 16px;
+    margin: 0;
+    text-align: left;
+    text-decoration: none;
+
+}
+
+#dsq-subscribe li em {
+    color: #01509D;
+    cursor: pointer;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+    margin: 0;
+    text-align: left;
+    text-decoration: none;
+}
+
+#disqus_thread {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#dsq-realtime-status{
+font-weight:normal;
+}
+
+.dsq-comment-message{
+font-weight:normal;
+}
+
+.dsq-content h3{
+    color: #01509D;
+}
+
+.dsq-content h3 strong{
+    color: #01509D;
+}
+
+.dsq-comment-meta li a{
+font-weight:normal;
+}
+
+.dsq-comment-actions li a {
+font-weight:normal;
+}
+#dsq-content h3
+{
+color:#01509D !important;
+}
+.dsq-comment-meta li a{
+font-weight:normal;
+}
+
+.dsq-comment-actions li a {
+font-weight:normal;
+}
+#dsq-content #dsq-footer .dsq-font
+{
+color:#01509D !important;
+}
+#related-links-container {
+	display: block;
+	float: left;
+	margin: 0 15px 0 0;
+	width: 300px;
+}
+/*disqus end */
+
+.combo_main_container_cat{
+ width:650px;
+  background-color:#ECEAEB;
+ clear:both;
+ border:solid 1px #000;
+ margin-top:10px;
+ margin-bottom:10px;
+ clear:both;
+ float:left;
+ }

@@ -1,0 +1,215 @@
+.acive_main_content {
+  padding-top:2px;
+  clear:left;
+  padding-right:35px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:13px;
+  font-weight:normal;
+  padding-bottom:15px;
+  background-position:top;
+  background-repeat:repeat-x;
+  line-height:25px;
+  text-align:left;
+ }
+
+.acive_main_content br {
+	line-height:15px;
+ }
+
+  .active_name{
+ font-family:Arial, Helvetica, sans-serif;
+ font-size:10px;
+ text-align:left;
+ vertical-align:bottom;
+ color:#0a2d53;
+ width:100px;
+ float:left;
+ margin-left:10px;
+ clear:both;
+ margin-top:10px;
+ margin-bottom:0px;
+ text-transform:uppercase;
+ }
+
+.active_name img {
+ border:1px solid #000000;
+ }
+
+.clr{
+clear:both;
+}
+
+#ai_outer_container {
+	margin: 0 auto;
+	padding: 0;
+	text-align: left;
+	width: 965px;
+}
+#ai_logo
+{
+margin-top:20px;
+}
+#ai_headline
+{
+margin-top:20px;
+margin-bottom:20px
+}
+#os_support
+{
+width:945px !important;
+}
+#os_desclaimer, #os_questions, #os_customer_support
+{
+width:300px !important;
+}
+
+#ai_footer_container {
+	margin-top: 0;
+	clear: both;
+	padding: 20px;
+	width: 927px;
+	color: #666666;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 15px;
+}
+
+#ai_container{
+float:left;
+width:945px;
+	padding: 0 10px;
+	margin: 0px;
+background-color: #FFFFFF;
+border-left: 1px solid #ffffff;
+	border-top: 1px solid #ffffff;
+border-right: 1px solid #ffffff;
+}
+
+#ai_container h1{
+color:#e58900;
+font-size:26px;
+font-weight:normal;
+letter-spacing:-0.3px;
+margin:0px 0px 0px 0px;
+padding:0px 0px 0px 0px;
+	font-family: "Franklin Gothic Demi Cond", "Times New Roman", Times,
+		serif;
+}
+
+.bnnr{
+float:left;
+margin:0px 0px 20px 0px;
+}
+
+/*Start Left Panel */
+.ai_strtfreetrial{
+float:left;
+width:300px;
+}
+
+.freeimg{
+margin:0px 0px 20px 0px;
+}
+
+/*Start Middle Panel */
+.ai_midpanel{
+float:left;
+width:460px;
+color:#333333;
+font-size:13px;
+font-weight:normal;
+padding:0px 20px 0px 20px;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.ai_midpanel h2{
+color:#133a61;
+font-size:21px;
+font-weight:bold;
+text-transform:none;
+line-height:normal;
+letter-spacing:-0.1px;
+margin:0px 0px 10px 0px;
+padding:0px 0px 0px 0px;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.ai_instobllt{
+letter-spacing:-0px;
+margin:0px 0px 0px 0px;
+padding:0px 0px 0px 30px;
+}
+
+.ai_midpanel li{
+color:#333333;
+font-size:13px;
+font-weight:bold;
+line-height:15px;
+margin:0px 0px 0px 0px;
+padding:0px 0px 15px 0px;
+vertical-align:text-top;
+list-style-position:outside;
+}
+
+.ai_drinvstrtxt{
+float:left;
+	text-align: left;
+}
+
+.ai_drinvstrtxt h4{
+color:#133a61;
+font-size:18px;
+font-weight:bold;
+margin:20px 0px 10px 0px;
+padding:0px 0px 0px 0px;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.txtblue a{
+color:#0048ff;
+font-weight:bold;
+letter-spacing:-1px;
+text-decoration:none;
+}
+
+.sgntr{
+margin:15px 0px 0px 0px;
+}
+
+.ai_getstrtd{
+float:left;
+margin:10px 0px 0px 0px;
+padding:0px 0px 40px 0px;
+
+}
+
+/*Start Right Todd Panel */
+.ai_toddpanel{
+float:left;
+width:140px;
+}
+
+.toddtxt{
+color:#996516;
+font-size:11px;
+font-weight:normal;
+margin:8px 0px 20px 0px;
+padding:0px 0px 0px 0px;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.bttmsmllcont{
+color:#666666;
+font-size:10px;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.search_alert_ai {
+	width: 300px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	float: left;
+	clear: both;
+	text-align: center;
+	background-color: #6396C7;	
+}

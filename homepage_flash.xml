@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<images>
+<pic>
+        <image>home_load/home_mvtv.swf</image>
+        <caption>text goes here</caption>
+   		<url>http://clk.atdmt.com/TNY/go/mnynving0270000169tny/direct/01/</url>
+		<delay>6000</delay>
+		</pic>
+
+<pic>
+        <image>home_load/home_exchange.swf</image>
+        <caption>text goes here</caption>
+   		<url>/community/register/login.htm</url>
+		<delay>7000</delay>
+		</pic>
+
+<pic>
+        <image>home_load/home_minyanland.swf</image>
+        <caption>text goes here</caption>
+   		<url>http://www.minyanland.com</url>
+		<delay>7000</delay>
+		</pic>
+
+<pic>
+        <image>home_load/home_buzz.swf</image>
+        <caption>text goes here</caption>
+   		<url>/register/new_registration/</url>
+		<delay>9000</delay>
+		</pic>
+
+</images>
+
+

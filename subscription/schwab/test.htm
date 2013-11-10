@@ -1,0 +1,128 @@
+<?
+global $D_R,$HTPFX,$HTHOST;
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="<?=$HTPFX.$HTHOST;?>/css/schwab.css" type="text/css" rel="stylesheet" />
+<title>Special Offer for Minyanville Readers Courtesy of Charles Schwab</title>
+<script src='<?=$HTPFX.$HTHOST;?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
+<script src='<?=$HTPFX.$HTHOST;?>/js/leads.js' type='text/javascript' ></script>
+<script src='<?=$HTPFX.$HTHOST;?>/js/ibox_registration.1.20.js' type='text/javascript' ></script>
+</head>
+<body>
+<div id="header" class="container">
+<a href="/"><img class="minyanville-logo" src="<?=$IMG_SERVER;?>/images/schwab/minyanvilleLogo.gif" name="Minyanville Logo" alt="Minyanville" /></a>
+</div>
+<div class="container">
+<form name="registration" id="registration" action="http://www.schwabat.com/PP/LeadsAcceptor.aspx" method="post">
+<!--<div style="478px;float:left;">
+<div id="radioes">
+<p id="offer-heading"> YES! Please start my FREE 3-Month subscription to the
+product selected  below.</p>
+<div id="premium-product1" class="pp-container" ><input type="radio" name="lead[product]" value="Buzz & Banter" checked />Buzz &amp; Banter</div>
+<p id="pp-description" class="pp-container" >Real-time trading ideas and insights from 30 professional traders across multiple asset classes including equities, ETFs, fixed income and more.</p>
+<div id="premium-product2" class="pp-container" ><input type="radio" name="lead[product]" value="Grail ETF & Equity Investor" /> Grail ETF &amp; Equity Investor</div>
+<p id="pp-description" class="pp-container" >Ron Coby &amp; Denny Lamson use their proprietary indicator to identify early trend changes in ETFs and share their trades with subscribers.</p>
+<div id="premium-product3" class="pp-container" ><input type="radio" name="lead[product]" value="Jeff Cooper Market Report" /> Jeff Cooper's Market Report</div>
+<p id="pp-description" class="pp-container" >Market analysis with day &amp; swing trading setups from expert trader Jeff Cooper.</p>
+<div id="premium-product4" class="pp-container" ><input type="radio" name="lead[product]" value="FlexFolio Trade Alerts" /> FlexFolio Trade Alerts</div>
+<p id="pp-description" class="pp-container" >An equity portfolio traded by Quint Tatro. Email alerts with every trade.</p>
+<div id="premium-product5" class="pp-container" ><input type="radio" name="lead[product]" value="The Stock Playbook" />The Stock Playbook</div>
+<p id="pp-description" class="pp-container" >Daily video detailing Dave Dispennette's trading strategy &amp; portfolio. Dave looks at stocks making new highs, earnings plays, stocks under $10 and more.</p>
+<p id="pp-disclaimer" class="pp-container">The content subscriptions made available above are materials prepared by
+Minyanville.  Minyanville is not affiliated with Charles Schwab &amp; Co., Inc (Member
+<a href="http://www.sipc.org/" target="_blank">SIPC</a>).  Schwab is not responsible for, and does not provide, edit or endorse any of
+the content found in these subscriptions or any other Minyanville content.
+Minyanville is wholly responsible for any of its content and features.</p>
+</div>
+</div>-->
+<div style="float:right;">
+<div id="info-form">
+<img id="pls-mssg"  src="<?=$IMG_SERVER;?>/images/schwab/pleaseMssg.png" name="Please fill in all information
+to receive your FREE Subscription." alt="Please fill in all information
+to receive your FREE Subscription." width="309" height="34" style="border:0px solid red;margin:0px;padding:0px;" />
+<div id="error" style="height:15px;color:red;margin:0px;padding:0px;border:0px solid blue;"></div>
+<div class="login-box-name">First Name*</div><div class="input-field"><input name="first_name" id="lead[fname]" class="form-login" title="First Name" value="" size="30" maxlength="100" /></div>
+<div class="login-box-name">Last Name*</div><div class="input-field"><input name="last_name" id="lead[lname]"  class="form-login" title="Last Name" value="" size="30" maxlength="100" /></div>
+<div class="login-box-name">Email Address*</div><div class="input-field"><input name="email" id="lead[email]" class="form-login" title="Email" value="" size="30" maxlength="100" /></div>
+<div class="login-box-name">Street Address*</div><div class="input-field"><input name="address1" id="lead[addr]"  class="form-login" title="Address" value="" size="30" maxlength="250" /></div>
+<div class="login-box-name">City*</div><div class="input-field"><input name="city" id="lead[city]" class="form-login" title="City" value="" size="30" maxlength="100" /></div>
+<div id="state-label">State*</div>
+<div id="state-input-form">
+<input type="hidden" name="country" value="USA" />
+ <select name="state" id="lead[state]" size="1" name="states" style="font-size:10px;color: #000000; border: 1px outset #0066cc; background-color: #FFFFFF; margin-top: 1px; float:left; height:20px;">
+	<option value="AL">AL</option>
+	<option value="AK">AK</option>
+	<option value="AZ">AZ</option>
+	<option value="AR">AR</option>
+	<option value="CA">CA</option>
+	<option value="CO">CO</option>
+	<option value="CT">CT</option>
+	<option value="DE">DE</option>
+	<option value="DC">DC</option>
+	<option value="FL">FL</option>
+	<option value="GA">GA</option>
+	<option value="HI">HI</option>
+	<option value="ID">ID</option>
+	<option value="IL">IL</option>
+	<option value="IN">IN</option>
+	<option value="IA">IA</option>
+	<option value="KS">KS</option>
+	<option value="KY">KY</option>
+	<option value="LA">LA</option>
+	<option value="ME">ME</option>
+	<option value="MD">MD</option>
+	<option value="MA">MA</option>
+	<option value="MI">MI</option>
+	<option value="MN">MN</option>
+	<option value="MS">MS</option>
+	<option value="MO">MO</option>
+	<option value="MT">MT</option>
+	<option value="NE">NE</option>
+	<option value="NV">NV</option>
+	<option value="NH">NH</option>
+	<option value="NJ">NJ</option>
+	<option value="NM">NM</option>
+	<option value="NY">NY</option>
+	<option value="NC">NC</option>
+	<option value="ND">ND</option>
+	<option value="OH">OH</option>
+	<option value="OK">OK</option>
+	<option value="OR">OR</option>
+	<option value="PA">PA</option>
+	<option value="RI">RI</option>
+	<option value="SC">SC</option>
+	<option value="SD">SD</option>
+	<option value="TN">TN</option>
+	<option value="TX">TX</option>
+	<option value="UT">UT</option>
+	<option value="VT">VT</option>
+	<option value="VA">VA</option>
+	<option value="WA">WA</option>
+	<option value="WV">WV</option>
+	<option value="WI">WI</option>
+	<option value="WY">WY</option>
+</select>
+</div>
+<div id="zip-label">Zip*</div><div id="zip-form"><? input_numsonly("zip","","30","255","title='Zip code'  style=width:100px;height:18px;border: 1px solid #0066cc;");?></div>
+<div style="clear:both;"></div>
+<div class="login-box-name">Daytime Phone*</div><div class="input-field">
+<input name="area_code" id="lead[phone]" class="form-login" title="Phone" value="" size="10" maxlength="3" style="width:40px;" />-
+<input name="phone_prefix" id="lead[phone]" class="form-login" title="Phone" value="" size="10" maxlength="3" style="width:40px;"  />-
+<input name="phone_line" id="lead[phone]" class="form-login" title="Phone" value="" size="10" maxlength="4" style="width:40px;"  />-
+<input name="phone_ext" id="lead[phone]" class="form-login" title="Phone" value="" size="10" maxlength="3"  style="width:40px;"  />-
+<input name="MAC" type="hidden" value="PHS"  />
+<input name="From" type="hidden" value="PP"  />
+</div>
+<div id="login-box-name-req">* Required Field</div>
+<div class="button">
+<input type="submit" class="submit">
+</div>
+</div>
+</div>
+</form>
+</div>
+</body>
+</html>

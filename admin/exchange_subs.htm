@@ -1,0 +1,293 @@
+<?
+$page="admintools";
+include_once("$D_R/lib/_exchange_lib.php");
+include("$ADMIN_PATH/_header.htm");
+require_once('../lib/email_alert/_lib.php');
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+$pageName="exchange_subscribers";
+$p=intval($p);
+build_lang($pageName);
+$search_param=trim(lc($search_param));
+if(!$pagesize)$pagesize=40;
+
+$qry="SELECT SQL_CALC_FOUND_ROWS s.id ID, FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created', s.email 'MemberID', s.fname 'FirstName', s.lname 'LastName',s.is_blockip 'blockip' FROM subscription s ";
+
+if($search_on)
+{
+	$qry.= " where instr(lower($search_by),lower('$search_param'))";
+}
+
+$offset=($p*$pagesize);
+$qry.=" ORDER BY s.date";
+$qry.=" LIMIT $offset,$pagesize ";
+$pagedata=exec_query($qry);
+$numrows=exec_query("SELECT FOUND_ROWS()c",1,"c");
+$numpages=ceil($numrows/$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+
+$searchtypes=array(
+	"s.fname"=>"First Name",
+	"s.lname"=>"Last Name",
+	"s.email"=>"Email"
+
+);
+
+?>
+<style>
+.whilite a:hover{color:#fff;}
+.smbutton{
+	height:14px;
+ 	padding:0px;
+	font-size:9px;
+
+}
+</style>
+<script>
+
+
+function mvRecomended(subid,mvrecomend){
+       if(mvrecomend=='1') {
+	        mv='1';
+	   		var msg="Are you sure want to Make this user MV recommended user?";
+			if(confirm(msg)){
+				location.replace("subs.mvuser.htm?id="+ subid+"&mv="+mvrecomend);
+			}
+	  } else {
+		 var msg="Are you sure want to remove this user as MV recommended user?";
+		 if(confirm(msg)){
+			location.replace("subs.mvuser.htm?id="+subid+"&mv="+mvrecomend);
+		 }
+	 }
+}
+
+
+
+function moderator(subsid,moderator){
+
+       if(moderator=='makemoderator') {
+	        moderator='1';
+	   		var msg="Are you sure want to make this user moderator?";
+			if(confirm(msg)){
+				location.replace("subs.moderator.htm?id="+ subsid+"&m="+moderator);
+			}
+	  } else {
+		 if(moderator=='removemoderator'){
+		 moderator='0';
+		 var msg="Are you sure want to remove this user as moderator?";
+		 if(confirm(msg)){
+			location.replace("subs.moderator.htm?id="+subsid+"&m="+moderator);
+		 }
+	   }
+	}
+}
+
+function editsubs(subsid) {
+	window.open("subs.edit.htm?id="+subsid,"_emailalert");
+}
+
+function emailalert(subsid,emailalert) {
+	alert='1';
+	location.replace("subs.moderator.htm?id="+subsid+"&em="+emailalert+"&a="+alert);
+}
+function removeSubs(subsid){
+	var msg="Are you sure you want to remove this subscription? The action cannot be undone";
+	if(confirm(msg)){
+		location.replace("subs.remove.htm?refer=<?=refer(1)?>&id="+subsid);
+	}
+}
+function suspendSubs(subsid) {
+	window.open("exchange_subsprevilages.htm?id="+subsid,"mywin","menubar=no,width=300,height=200,toolbar=no");
+}
+function blockipSubs(subsid,type){
+
+	if(type==1){
+		var msg="Are you sure want to block this subscription?";
+		if(confirm(msg)){
+			location.replace("exchangesubs.block.htm?refer=<?=refer(1)?>&id="+subsid+"&type="+type);
+		}
+	}
+	else{
+		var msg="Are you sure want to unblock this subscription?";
+		if(confirm(msg)){
+			location.replace("exchangesubs.block.htm?refer=<?=refer(1)?>&id="+subsid+"&type="+type);
+		}
+	}
+}
+
+</script>
+
+<div id="dhtmltooltip"></div>
+<script type="text/javascript" language="JavaScript" src="toolTiphome.js"></script>
+<link href="tooltip.css" type="text/css" rel="stylesheet">
+<div class=adminheader>Manage Subscribers</div><br />
+<? if(!$_GET['msg']){
+	$error=$_GET['error'];
+}else{
+	$error=$_GET['msg'];
+}?>
+<div style="color:#FF0000;"><?=$error;?></div>
+<table border="0" width="100%" align=center>
+<tr><td>
+<table border="0" width="100%" bgcolor=#cccccc align=center>
+<TR>
+<TD colspan=4> <b>Search Filters</b></TD>
+</TR>
+<form method="POST" action="<?=$PHP_SELF?>">
+<?input_hidden("s");input_hidden("pagesize")?>
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="search_on"<?=($search_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Show subscriptions where: </span><br>
+	<select name="search_by">
+	<?selectHash($searchtypes,$search_by)?>
+	</select> contains <?input_text("search_param")?>
+</TD>
+<TD>&nbsp;</TD>
+<TD align=center>
+		<b>Results: <?=$numrows?></b>
+</TD>
+</TR>
+
+<TR>
+<td colspan="2"><b>Summary of Users</b></td>
+<TD align=right colspan="2"><input type="submit" value="go"></TD>
+</TR>
+</form>
+</table>
+	</td></tr>
+<br>
+
+<tr><td>
+<table border="1" width="100%" align=center>
+<TR align=center bgcolor=#bbbbbb>
+<?if(count($pagedata)){
+	$hidecolumn=array('ID','Comment','premium','Type','Status','Trial','blockip','IP');
+
+	foreach(array_keys($pagedata[0]) as $col){
+		if(!in_array($col,$hidecolumn))
+		{
+			$colcolor=($_POST[s]==$col?"#8da9e6":"");
+	?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><?=href($PHP_SELF.qsa(array(s=>$col,d=>($d=="ASC"?"DESC":"ASC"))),$col)?></TD>
+	<?}}?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>IP</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Moderator</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>MV Recomemded User</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Subscription</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Edit</strong></TD>
+	</TR>
+	<form method="post" action="subscribers_mod.htm">
+	<?refer()?>
+	<?foreach($pagedata as $row){
+		$rowcolor=$i%2?"dddddd":"eeeeee";
+
+	?>
+		<TR bgcolor="<?=$rowcolor?>">
+		<?foreach($row as $k=>$v){
+			if(!in_array($k,$hidecolumn))
+			{
+				$colcolor=($_POST[s]==$k?"#8da9e6":"");
+		?>	<TD bgcolor="<?=$colcolor?>"><?=$v?></TD>
+
+		<?}}
+		$qryip="select ip from bocked_ip where subscription_id='".$row[ID]."'";
+		$getip=exec_query($qryip,1);
+    ?>
+         <td><?=$getip['ip']?></td>
+<?
+        $findmoderator=exec_query("select id from ex_moderator where subscription_id='$row[ID]'");
+
+		if($findmoderator[0][id]==""){
+		?>
+		<td><input type="button" onclick="moderator('<?=$row[ID]?>','makemoderator')" value="<?=$lang['Make_Moderator']?>" title="Make this subscription moderator"></td>
+		<? } else { ?>
+		<td><input type="button" onclick="moderator('<?=$row[ID]?>','removemoderator')" value="<?=$lang['Remove_ Moderator']?>" title="Remove subscription moderator"></td>
+		<? }
+
+		$mvrecomend=exec_query("select id from tt_mvrecommended where subscription_id='".$row[ID]."'",1);
+		if($mvrecomend[id]){
+		?>
+			<td><input type="button" onclick="mvRecomended('<?=$row[ID]?>','0')"  value="Remove MV Recommended " title="Remove this MV recommended User"></td>
+		<? } else { ?>
+			<td><input type="button" onclick="mvRecomended('<?=$row[ID]?>','1')"  value="Make MV Recommended " title="Make this MV recommended User"></td>
+		<? } ?>
+		<td nowrap>
+	<!--	<input type="button" onclick="editsubs('<?=$row[ID]?>')" value="edit" title="edit subscription">
+		<input type="button" onclick="removeSubs('<?=$row[ID]?>')" value="x" title="remove this subscription">-->
+		<?
+		$exchange_prevquery="select ebs.subscription_id,ebs.value,ebs.blockservice_id,es.serviceid from
+					ex_blockservices ebs,
+					ex_services es
+					where ebs.blockservice_id=es.id
+					and ebs.subscription_id='$row[ID]' and 	ebs.value='on'";
+		$exchange_prevresult=exec_query($exchange_prevquery);
+		$countresult=count($exchange_prevresult);
+		if($countresult>0){
+		?>
+		<input type="button" onclick="suspendSubs('<?=$row[ID]?>')" value="lift ban" title="update privileges">
+		<?
+		}
+		else
+		{
+		?>
+		<input type="button" onclick="suspendSubs('<?=$row[ID]?>')" value="suspend" title="suspend privileges">
+		<?
+		}
+		?>
+		<?
+		if($getip['ip']){
+		if($row[blockip]==1){
+
+			?>
+			<input type="button" onclick="blockipSubs('<?=$row[ID]?>','0')"  value="unblockIP" title="unblock this subscription's IP">
+			<?
+		 }
+		else{
+			?>
+			<input type="button" onclick="blockipSubs('<?=$row[ID]?>','1')"  value="blockIP" title="block this subscription's IP">
+			<?
+			}
+		}
+		?>
+</td>
+
+<? $alertqry=exec_query("select subscriber_id,email_alert from email_alert_authorsubscribe where subscriber_id='$row[ID]'
+union select subscriber_id,email_alert from email_alert_categorysubscribe where subscriber_id='$row[ID]'",1);
+
+?>
+
+		<td><input type="button" onclick="editsubs('<?=$row[ID]?>')" value="edit" title="edit subscription"></td>
+		</TR>
+
+	<?}?>
+
+	</form>
+<?}else{//!count($pagedata)?>
+<TR>
+	<TD colspan=100>Nothing found.<br>
+	<?=mysql_error()?>
+	</TD>
+</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<hr />
+<?=$pagination?>
+<hr />
+</TD>
+</TR>
+</table>
+</td></tr>
+</table>
+<br><br>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

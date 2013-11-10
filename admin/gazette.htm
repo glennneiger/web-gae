@@ -1,0 +1,111 @@
+<?
+$page="gazette";
+$allperms=array(
+	"articles_approve","articles_delete","articles_all",
+	"create_gazette","create_schoolhouse",
+	"approve_gazette","approve_schoolhouse",
+	"chars_edit",
+	"contrib_self","contrib_all",
+	"gazette_edit"
+);
+$article_perms=array("articles_own","articles_all","articles_chars","create_gazette","create_schoolhouse","approve_gazette","approve_schoolhouse","create_banter","banter_all","banter_own","banter_approve");
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(array_merge($allperms,$article_perms))){
+	admin_error();
+}
+
+?>
+<table border="0" width="100%" align=center>
+<tr><td><div class=adminheader>Editing+Posting</div><br><br /></td></tr>
+<? if($AD->getPerm(array_merge($allperms,$article_perms))){ ?>
+<TR>
+<TD nowrap>
+<div style="padding:10px;width:400px">
+	<!--<img src="assets/mv-journal.gif" border=0 align=left hspace=5>--><b>Articles</b><br><br>
+	<?if($AD->getPerm($article_perms)){?>
+	<li><a href="articles.htm">Create/ Edit Articles</a>
+	<?}?>
+	<?if($AD->getPerm("approve_gazette")||$AD->getPerm("approve_schoolhouse")){?>
+	<li><a href="approve.htm">Approve Articles</a><br>
+	<?}?>
+	<?if($AD->getPerm("chars_edit")){?>
+	<li><a href="characters.htm?page=gazette">Edit Characters</a><br>
+	<?}?>
+
+	<?if($AD->getPerm("contrib_self") || $AD->getPerm("contrib_all")){?>
+	<li><a href="contributors.htm?page=gazette">Manage Contributing Authors</a>
+	<?}?>
+	<?if($AD->getPerm("branded_logo")){?>
+		<!-- <br><li><a href="brandedlogo.htm">Create/Edit Branded Logo</a><br> -->
+	<?}?>
+	<br />
+	<b>Slideshow</b><br><br>
+	<?if($AD->getPerm($article_perms)){?>
+	<li><a href="slideshow.htm">Create/ Edit Slideshow</a>
+	<?}?>
+	<?if($AD->getPerm("approve_gazette")||$AD->getPerm("approve_schoolhouse")){?>
+	<li><a href="approve_slideshow.htm">Approve Slideshow</a><br>
+	<?}?>
+	<?if($AD->getPerm($article_perms)){?>
+	<li><a href="locked_slideshow.htm">Unlock SlideShow</a><br>
+	<? } ?>
+
+	<?
+		if($AD->getPerm("feed_edit_approve")){?>
+			<br><b>MV Premium</b><br><br>
+			<li><a href="feed.htm">Create/ Edit MV Premium</a>
+			<li><a href="approvefeed.htm">Approve MV Premium</a>
+		<? } ?>
+	</td>
+	<td><br><br><br>
+	<!--<img src="/assets/characters/noopinion_01.jpg" border=0 align=left hspace=5 width=195 height=140>--><b>Buzz and Banter</b><br><br>
+	<?if($AD->getPerm("banter_all")||$AD->getPerm("banter_own")||$AD->getPerm("create_banter")){?>
+	<li><a href="banter.htm">Create/ Edit Buzz and Banter</a><br>
+	<?}?>
+	<?if($AD->getPerm("banter_approve")){?>
+	<li><a href="approvebanter.htm">Approve Buzz and Banter</a><br>
+	<?}?>
+<!--Added for MVTV-->
+    <br><br><br>
+    <b>MVTV Video</b><br><br>
+
+	<li><a href="upload_video.htm">MVTV Video Upload</a><br>
+	<li><a href="mvtv_approve.htm">MVTV Approve</a><br>
+
+	</td>
+	</tr>
+	<tr>
+	<TD><br>
+	  <br>
+	<?if($AD->getPerm("gazette_edit")){?>
+	<!--<img src="assets/mv-gazettemain.gif" border=0 align=left hspace=5>--><b>Gazette Main Page</b><br><br>
+	<li><a href="editpage.htm?filename=/assets/data/gazette_announcements.html&page=gazette&title=Editor's Desk">Editor's Desk</a>
+	<li><a href="editpage.htm?filename=/assets/data/about_the_gazette.html&page=gazette&title=365 with the Critters">365 with the Critters</a>
+	<!-- <li><a href="editpage.htm?filename=/assets/data/mvil_promotion.html&page=gazette&title=Minyanville%3A%20Promotion%20Section">Edit Minyanville Promotion</a><br> -->
+	<?}?>
+ </td>
+ <td><b>TheStreet</b><br>
+   <br>
+  <li><a href="thestreet_approve.htm">Articles from TheStreet</a>
+ </td>
+ </tr>
+ <tr><td>
+ <? // if($AD->getPerm('recover_post')){?>
+	 <b>Recover Post</b><br><br>
+	 <li><a href="recover_post.htm">Recover My Post</a>
+ <? // }?>
+  </td>
+  <td>
+ <? /********************* Observer Link ***************************/
+ if($AD->getPerm("observer_approve") || $AD->getPerm("observer_move")){?>
+  <B>Observer</B><br /><br />
+	<li><a href="observer/observer_approve.htm" target="_blank">Articles From Observer</a></li>
+	<?php }?>
+</td>
+ <? } ?>
+  
+  </td>
+  </tr>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

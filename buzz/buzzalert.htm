@@ -1,0 +1,194 @@
+<?
+	handle_ssl();
+    global $D_R,$gaTrackingAuthor,$HTPFX,$HTHOST;
+	global $cm8_ads_MicroBar,$cm8_ads_MediumRectangle,$cm8_ads_1x1_Text,$cm8_ads_Button_160x30,$cm8_ads_Leaderboard,$HTPFXSSL,$HTHOST;
+   	
+	setVisitorPageCount();
+	$pageName = "buzz_alert";
+	$show_canonical = 1;
+	session_start();
+		
+	$bannernameMR="MediumRectangle_300x250_300x600_bottom";
+	$pageJS=array('prototype','config','redesign','Articles','iboxregistration','ajax','jquery','global','scriptaculous');
+	$pageCSS=array("global","layout","nav","articlepage","rightColumn","buzzalerts");
+	include_once($D_R.'/lib/_redesign_design_lib.php');
+	include_once($D_R.'/lib/ads/_indstrybrains_class.php');
+	include_once($D_R.'/lib/_convert_charset.class.php');
+	include_once($D_R."/lib/_content_data_lib.php");
+	include_once($D_R.'/lib/config/_article_config.php');
+	include("$D_R/lib/_article_design_lib.php") ;
+    include_once($D_R."/admin/lib/_admin_data_lib.php");
+    $objContent		= 	new Content();
+    $objTicker= new Ticker();
+    $bbid=$_GET['id'];
+$qry="SELECT distinct buzzbanter.id AS id,buzzbanter.image AS image, buzzbanter.title AS title, " .
+				"buzzbanter.body AS body, buzzbanter.author AS author, contributors.name AS author2, buzzbanter.position AS position, branded_img_id brandedlogo, " .
+				"contributors.logo_asset AS logo_asset, buzzbanter.date AS mdate, " .
+				"UNIX_TIMESTAMP(buzzbanter.date) AS udate, buzzbanter.login AS login " .
+				"FROM buzzbanter,contributors WHERE buzzbanter.contrib_id = contributors.id " .
+				"AND buzzbanter.id= '".$bbid."'";
+              
+$getBuzzResult = exec_query($qry,1);
+$getBuzzResult['description']="The following content is published in real-time on Minyanville's Buzz & Banter. For a free two week trial and access to over 30 market professionals, or to learn more, please click here.";
+$date				=	$getBuzzResult['mdate'];
+	$urlTitle=$objContent->getFirstFiveWords($getBuzzResult['title']);
+	$urlDate=date("m/d/Y",strtotime($date));
+	$urlBuzz='/buzz/buzzalert/'.$urlTitle.'/'.$urlDate.'/id/'.$id;
+    $getBuzzResult['url']=$urlBuzz;
+
+    $tagquery="SELECT xbt.item_id, xbt.tag_id, xt.tag as tagname FROM ex_item_tags xbt, ex_tags xt where xbt.item_id=$bbid and xt.id = xbt.tag_id and xbt.item_type ='2'";
+	$tagres = exec_query($tagquery);
+
+    $buzzTags="";
+    foreach($tagres as $tagkey => $tagvalue)
+	{
+		if($buzzTags=="")
+		{
+   			$buzzTags.= $tagvalue['tagname'] ;
+		}
+		else
+		{
+			$buzzTags.=",".$tagvalue['tagname'] ;
+		}
+
+	}
+
+    $getBuzzResult['keywords']=$buzzTags;
+    $buzzTicker=$objTicker->getTickers($bbid,$item_type="2");
+    if($buzzTicker && $buzzTags!==""){
+    	$getBuzzResult['keywords']=$getBuzzResult['keywords'].','.$buzzTicker;
+    }else{
+    	$getBuzzResult['keywords']=$buzzTicker;
+    }
+    $getBuzzResult['robots']="noodp,noydir";
+	include("../_header.htm");
+
+	$objArticle = new articleViewer();
+		if (isset($getBuzzResult)) {
+			$row = $getBuzzResult;
+			// get branded logo
+			$brandedlogoImage1='';
+			$wBrandedLogo1='';
+			$hBrandedLogo1='';
+			if(trim($row['brandedlogo'])!=''){
+				$sqlBrandedLogo='select url,assets1,assets2 from buzz_branded_images where id='.$row['brandedlogo'];
+				$resultBrandedLogo=exec_query($sqlBrandedLogo,1);
+				if($resultBrandedLogo['assets1']!=''){
+					$brandedlogoImage1=$resultBrandedLogo['assets1'];
+				}
+			}
+			$row['body']=change_ssl_url($row['body']);
+		}
+		$qryAuthor = "SELECT id FROM contributors WHERE name='".$row['author']."'";
+		$resultAuthor = exec_query($qryAuthor,1);
+		$row['author_id'] = $resultAuthor['id'];
+		?>
+	<div class="shadow">
+	<div id="content-container">
+	<div id="buzzalert-left">
+		<div id="buzzalert-content">
+		<!-- <div id="buzzalert-dek" class="konafilter"><h2>It is a free buzz post. <?=getTechStartAddtoCartbtnsTrial('BuzzBanter','Click here to subscribe', 'subscription','subBuzzBanter');?></h2></div> -->
+		<div style="float:left; width:530px;">
+        <h1><div  class="konafilter"><?= mswordReplaceSpecialChars($row['title']); ?></div></h1>
+		<div id="buzzalert-byline" class="konafilter">By
+			<a href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=<? echo $row['author_id'] ?>"><? echo $row['author']; ?></a>
+		<?=date("M d, Y H:i a",strtotime($row['mdate']));?></div>
+		</div>
+        <div style="float:right;"><a href="<?=$HTPFXSSL.$HTHOST;?>/subscription"><img src="<?=$IMG_SERVER?>/images/subscription/mvp_logo.png" height="40"></a></div>
+		<div id="buzzalert-toolbox">
+        	<? if(isset($_GET['from']) && $_GET['from'] == 'yahoo'){ ?>
+            <div style="float:left;">
+            <a href="http://finance.yahoo.com/"><img src="<?=$IMG_SERVER;?>/images/articles/yahoo_backlink.gif" align="top" alt="Return to Yahoo" title="Return to Yahoo"></a>
+            </div>
+            <? } ?>
+			   <a target="_blank" href="<?=$HTPFX.$HTHOST;?>/buzz/printbuzz.php?id=<?=$row['id']?>"><img src="<?=$IMG_SERVER;?>/images/articles/tool-print.gif"></a><span>
+			   <a href="/rss/"><img src="<?=$IMG_SERVER;?>/images/articles/tool-rss.gif"></a></span>
+		</div>
+
+		<div style="clear:both;"></div>
+		<? if(!$_SESSION['AdsFree']) { ?>
+			<div id="text-ad-container"><? CM8_ShowAd('1x1_Text'); ?><br /><br /></div>
+			<div style="clear:both;"></div>
+		<? } ?>
+		<div class="note-content">
+        	<i>The following content is published in real-time on Minyanville's <a href="<?=$HTPFX.$HTHOST?>/buzzbanter">Buzz & Banter</a>. For a free two week trial and access to over 30 market professionals, or to learn more, please <a href="<?=$HTPFX.$HTHOST?>/buzzbanter">click here</a>.</i>
+     </div>
+		<div id="buzzalert-body">
+		<?=$row['body'];?>
+        <div style="width:100%;">
+        <?=displayChartBuzzImages($bbid)?>
+        </div>
+
+		<div style="width:100%;">
+         <div class="note-content">
+        	<i><a href="<?=$HTPFX.$HTHOST?>/buzzbanter">Learn more</a> about Buzz & Banter.</i>
+     </div>
+   
+	</div>
+	<div id="stock-position" class="konafilter"> <? echo $row['position']; ?></div>
+	<div id="twitter-follow">
+	<a target="_blank" href="http://twitter.com/minyanville"><img src="<?=$IMG_SERVER;?>/images/articles/icon-twitter.gif"></a> <div><a target="_blank" href="http://twitter.com/minyanville">Follow Us On Twitter</a></div>
+	</div>
+
+		</div>
+		<!--Bottom Module Start-->
+		<div id="bottom-module-container">
+	<div class="article-left-module" id="sub-prod-mod">
+		<div class="article-right-module-header"><img src="<?=$IMG_SERVER;?>/images/articles/hdr-subscription-products.gif"></div>
+		<div id="subscriptions-module">
+			<ul>
+				<li>
+					<a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=BuzzBanter"><img src="<?=$IMG_SERVER;?>/images/articles/free-trial-yellow.gif"></a>
+					<div class="subscriptions-header">
+						<a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=BuzzBanter">Buzz & Banter</a>
+					</div>
+					<div class="subscriptions-dek">
+						<a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=BuzzBanter">Real-time trading ideas throughout the trading day from professional traders including Todd Harrison, Jeff Macke & more</a>
+					</div>
+				</li>
+				<li>
+					<a href="<?=$HTPFX.$HTHOST;?>/cooper/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=DailyMarketReport"><img src="<?=$IMG_SERVER;?>/images/articles/free-trial-yellow.gif"></a>
+					<div class="subscriptions-header">
+						<a href="<?=$HTPFX.$HTHOST;?>/cooper/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=DailyMarketReport">Jeff Cooper's Daily Market Report</a>
+					</div>
+					<div class="subscriptions-dek">
+						<a href="<?=$HTPFX.$HTHOST;?>/cooper/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=DailyMarketReport">Day and swing trading setups from the creator of the Hit & Run trading strategy. Also receive Jeff's outlook daily.</a>
+					</div>
+				</li>
+				<li>
+					<a href="<?=$HTPFX.$HTHOST;?>/optionsmith/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=OptionSmith"><img src="<?=$IMG_SERVER;?>/images/articles/free-trial-yellow.gif"></a>
+					<div class="subscriptions-header">
+						<a href="<?=$HTPFX.$HTHOST;?>/optionsmith/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=OptionSmith">OptionSmith</a>
+					</div>
+					<div class="subscriptions-dek">
+						<a href="<?=$HTPFX.$HTHOST;?>/optionsmith/?trial=hard&utm_source=ArticlePageLearnMore&utm_medium=Text&utm_content=LearnMore&utm_campaign=OptionSmith">Access veteran options trader Steve Smith's portfolio and receive an email alert detailing every trade.</a>
+					</div>
+				</li>
+			</ul>
+			<div id="see-more-products">
+				<a href="/subscription/">See More Products &gt;</a>
+			</div>
+		</div>
+	</div>
+	<div class="article-left-module">
+		<div class="article-right-module-header"><img src="<?=$IMG_SERVER;?>/images/articles/hdr-top-stories.gif"></div>
+		<div id="top-stories-module">
+			<ul><? $objArticle->getLatestModule() ?></ul>
+			<div id="see-more-products"><a href="<?=$HTPFX.$HTHOST;?>/articles/articlelisting.htm">See More Articles &gt;</a></div>
+		</div>
+	</div>
+	<div style="clear:both;"></div>
+		<!--Bottom Module End-->
+</div>		 
+	</div> <!-- end buzzalert-content -->
+	</div> <!-- end buzzalert-left -->
+	<?
+	$arrRightCols	=	array('show_300x250','show_mostpopular','recommendation','show_markets','show_ads');
+	include("../_rightcolumn.htm"); ?>
+	</div><!--Content contaner end here-->
+	</div> <!-- shadow end -->
+
+	<? include("../_footer.htm");
+
+
+?>

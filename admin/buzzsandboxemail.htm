@@ -1,0 +1,16 @@
+<?php
+global $D_R;
+include_once($D_R."/lib/_includes.php");
+include_once($D_R."/lib/buzzsandbox_sendemail.php");
+$objSendBuzzSbEmail= new sendBuzzSandBoxEmail();
+
+
+if(!empty($_POST)){
+    $objSendBuzzSbEmail->buzzBanterSandBoxDataEncryption($_POST);
+}else{
+   $result='Fail';
+   $error='Invalid data or not data found';
+   $objSendBuzzSbEmail->setResponse($result,$error);
+}
+
+?>

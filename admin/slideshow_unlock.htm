@@ -1,0 +1,6 @@
+<?
+$id = $_GET['id'];
+$qry = "SELECT SL.id FROM slide_locking as SL WHERE slide_id=".$id;
+$res = exec_query($qry,1);
+del_query('slide_locking',id,$res['id']);
+?>

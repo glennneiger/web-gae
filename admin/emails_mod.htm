@@ -1,0 +1,56 @@
+<?
+
+$bounceback="./emails.htm";
+if(!$POSTBACK){
+	location($bounceback);
+	exit;
+}
+
+if(!$sendmail){//something went wrong if this var didn't get set
+	persist($bounceback.qsa(array(error=>"There was a problem generating your mail message")),array_merge($_POST,$mail));
+	exit();
+}
+
+/*-----------generate mailing list----------*/
+if($to=="mylist" && $mylist){
+	$listfile="/tmp/spam_".mrand().".list";
+	$mylist=explode("\n",trim($mylist));
+	foreach($mylist as $i=>$v){
+		if(!($mylist[$i]=trim($v))){
+			unset($mylist[$i]);
+			continue;
+		}
+	}
+	$mylist=implode("\n",$mylist);
+	write_file($listfile,$mylist);
+	unset($mylist);
+}elseif($to!="mylist"){
+	$listfile=$to;
+}
+if(!$listfile){
+	location($bounceback.qsa(array(error=>"You didn't provide a list to sent the mail to.")));
+	exit;
+}
+/*-----------/end generate mailing list----------*/
+
+
+/*------build email message file------------------*/
+$tmpl=$SPAM_EML_TMPL.qsa(array(title=>$mail[subject],body=>$mail[body]));
+$tmpl=inc_web($tmpl);
+$tmpl_local="/tmp/spam_".mrand().".eml";
+$mailstr=mymail2str($SPAM_DEFAULT_TO,$SPAM_DEFAULT_FROM,$mail[subject],$tmpl);
+write_file($tmpl_local,$mailstr);
+unset($mailstr);
+/*------/end build email message file------------------*/
+
+
+/*------send message------------------*/
+bulk_mailer($listfile,$tmpl_local,$SPAM_DEFAULT_FROM);
+/*------end send message------------------*/
+
+
+
+location($bounceback.qsa(array(error=>"The message was sent to the list")));
+exit;
+
+?>

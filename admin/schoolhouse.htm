@@ -1,0 +1,22 @@
+<?
+$page="schoolhouse";
+$allperms=array("sch_edit");
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($allperms)){
+	admin_error("You're not allowed to view this page.");
+}
+?>
+<table align=center>
+<TR>
+<TD><div class=adminheader>School House</div>
+<div style="padding:10px;width:400px">
+	<?if($AD->getPerm("sch_edit")){?>
+	<a href="editpage.htm?filename=/assets/data/links.html&page=schoolhouse&title=School House Links Page"><img src="/space.gif" border=0 align=left hspace=5><b>Links Page</b></a><br><br>
+	Edit the links page in the schoolhouse section
+	<?}?>
+
+</div></TD>
+</TR>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

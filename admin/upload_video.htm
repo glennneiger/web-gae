@@ -1,0 +1,221 @@
+<?
+global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER;
+$page="mvtv";
+$allperms=array("mvtv");
+include("$ADMIN_PATH/_header.htm");
+
+$handler = $HTPFX.$HTHOST."/admin/upload_video_ajax.php";
+
+$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$frm_url = $cloudStorageTool->createUploadUrl($handler, $options);
+
+$uploadvideo=$AD->getPerm("mvtv_upload");
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$uploadvideo){
+	admin_error("You're not allowed to use this page.");
+}
+function displayDropdown($name,$sql,$key,$value,$chk,$type,$size,$class,$width)
+{
+        $arr_mod=explode(",",$chk);
+		$result=exec_query($sql);
+        echo "<select name='$name' id='categoryid' $type $size $class $width>";
+		foreach($result as $row)
+		{
+			if(in_array($row[$key],$arr_mod))
+
+			echo "<option selected value='".$row[$key]."'>".$row[$value]."\n";
+			else
+			echo "<option  value='".$row[$key]."'>".$row[$value]."\n";
+		}
+		echo "</select>";
+}
+?>
+<html>
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<script language="JavaScript">
+include_once("<?=$HTPFX.$HTHOST?>/js/jquery-1.9.1.min.js");
+include_once("<?=$HTPFX.$HTHOST?>/js/fileUpload.js");
+function addVideo(frm)
+{
+	var error_msg = "";
+	var video_id = $('#video_id').val();
+	var page_action = video_id?"edit_video":"add_video";
+	var video_title = $('#video_title').val();
+	var video_desc = $('#video_desc').val();
+	var video_file = ($('#uploadVideo').val()==""?$('#videoUploaded').html():$('#uploadVideo').val());
+	var podcast_video_file = ($('#uploadPodcastVideo').val()=="" ? $('#podcastVideoUploaded').html() : $('#uploadPodcastVideo').val());
+	var video_still = ($('#uploadStill').val()=="" ? $('#stillUploaded').html() : $('#uploadStill').val());
+	var ar_video_cat = $('select#categoryid').val();
+
+	if(ar_video_cat)
+	{
+		var video_cat = ar_video_cat.join(",");
+	}
+	var is_aol = $('#ckhAol').is(':checked') ? '1':'0';
+	var is_ameritrade = $('#ckhAmeritrade').is(':checked') ? '1':'0';
+
+	if (video_title== '')
+	{
+		error_msg+= "Enter a video title\n";
+	}
+	if(!$('#categoryid option').is(':selected'))
+	{
+		error_msg+= "Select a video Category\n";
+	}
+	if (video_desc == '')
+	{
+		error_msg+= "Enter a video Description\n";
+	}
+	if(video_file == "")
+	{
+		error_msg+= "Upload a Video File\n";
+	}
+	if(video_still == "")
+	{
+		error_msg+= "Upload a Still Image";
+	}
+	if(error_msg == "")
+	{
+		frm.submit();
+	}
+	else
+	{
+		alert(error_msg);
+	}
+
+}
+</script>
+<?
+$title_query = "select id,title from mvtv order by creation_time desc LIMIT 0,500";
+if(isset($_GET['id']))
+{
+	$video_id =$_GET['id'];
+	$video_qry="SELECT * from mvtv where id='$video_id'";
+	$page_data=exec_query($video_qry,1);
+}
+?>
+<br><br><br>
+<?if($_GET['msg']){?><div class=error><?=strip($_GET['msg'])?></div><?}?>
+<a href="upload_video.htm">Upload Videos</a><br>
+<a href="mvtv_approve.htm">Approve Videos</a><br>
+<center>
+<table align=left width="100%" border="0">
+<form name="frmselect" method="get" action="<?=$PHP_SELF?>">
+<tr>
+<td valign="top" align="right" nowrap="nowrap">Select title to Update Video file:
+<td><SELECT name="id" onChange="document.frmselect.submit();">
+<option value="">--select title--</option>
+<?
+foreach(exec_query($title_query) as $row){
+		$sel=($_GET['id']==$row[id]?" selected":"");
+		$disp=$row[title];
+		$style=" style='background:#".($row[id]==$row[id]?"ffcccc":"")."'";
+	?>
+		<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+	<?}?>
+</SELECT></td>
+</tr>
+</table>
+</form>
+<form action="<?=$frm_url?>" method="post" enctype="multipart/form-data"  name="frmUploadVideo" id="frmUploadVideo">
+<table align=left width="100%" border="0">
+<TR>
+<TR>
+<TD align=right><b>Title</b>:</TD>
+<td align="left" valign="top"><input type="text" id="video_title" name="video_title" value="<?=$page_data['title'] ?>" style="width:100%" >
+<? if($video_id!=""){  ?>
+<input type="hidden" id="video_id" name="video_id" value="<? echo $video_id;?>" >
+<input type="hidden" id="page_action" name="page_action" value="edit_video" >
+<?  } else { ?>
+<input type="hidden" id="page_action" name="page_action" value="add_video" >
+<?  }  ?>
+</td>
+</TR>
+
+<TR>
+<TD align=right><b>Category</b>:</TD>
+<td align="left" valign="top">
+<?
+displayDropdown("category[]","select * from section where type='subsection' and subsection_type='video' and is_active=1","section_id","name",$page_data['cat_id'],'multiple',$size,$class,$width);
+?>
+</td>
+</TR>
+<TR>
+<TD align=right><b>Video Description</b>:</TD><td align="left" valign="top">
+<textarea name="video_desc" id="video_desc" cols=50 rows=3 style="width:100%"><?=$page_data['description']?></textarea></td>
+</TR>
+<?
+if(isset($page_data))
+{
+	global $VIDEO_SERVER_PATH,$Video_file_path,$Still_file_path;
+	$arVideoDetail = pathinfo($page_data['videofile']);
+	$video_name = $arVideoDetail['basename'];
+	$video_preview = '<a target="_blank" href="'.$VIDEO_SERVER.$Video_file_path.$video_name.'">Preview</a>' ;
+	$arPodcastVideoDetail = pathinfo($page_data['podcasturl']);
+	$podcast_video_name = $arPodcastVideoDetail['basename'];
+	$arStillDetail = pathinfo($page_data['stillfile']);
+	$still_name = $arStillDetail['basename'];
+	$still_preview = '<a target="_blank" href="'.$VIDEO_SERVER.$Still_file_path.$still_name.'">Preview</a>' ;
+}
+?>
+<tr>
+<TD  align="right" valign="top" ><b>Upload Video:</b></TD>
+<td>
+<div style="float:left;">
+<input size="53" type="file" id="uploadVideo" name="uploadVideo" />
+<? if($video_name!=""){  ?>
+<input type="hidden" id="uploadVideo" name="uploadVideo" value="<? echo $video_name; ?>"/>
+<?  }  ?>
+</div>
+<div style="float:left;" id="videoUploaded"><? echo $video_name; ?></div>
+<!-- <div style="float:left;">&nbsp;&nbsp;&nbsp;<? echo $video_preview; ?></div> -->
+<div style="float:left;" id="videoError" class="error"></div>
+</td>
+</tr>
+
+<tr>
+<TD  align="right" valign="top" ><b>Upload Podcast Video:</b></TD>
+<td>
+<div style="float:left;">
+<input size="53" type="file" id="uploadPodcastVideo" name="uploadPodcastVideo" />
+<? if($podcast_video_name!=""){  ?>
+<input type="hidden" id="uploadPodVideo" name="uploadPodVideo" value="<? echo $podcast_video_name; ?>"/>
+<?  }  ?>
+</div>
+<div style="float:left;" id="podcastVideoUploaded"><? echo $podcast_video_name; ?></div>
+<div style="float:left;" id="podcastVideoError" class="error"></div>
+</td>
+</tr>
+
+<tr>
+<TD  align="right" valign="top" ><b>Upload Still:</b></TD>
+<td>
+<div style="float:left;">
+<input size="53" type="file" id="uploadStill" name="uploadStill" />
+<? if($still_name!=""){  ?>
+<input type="hidden" id="uploadStillVideo" name="uploadStillVideo" value="<? echo $still_name; ?>"/>
+<?  }  ?>
+</div>
+<div style="float:left;" id="stillUploaded"><? echo $still_name; ?></div>
+<!-- <div style="float:left;">&nbsp;&nbsp;&nbsp;<? echo $still_preview; ?></div> -->
+<div style="float:left;" id="stillError" class="error"></div>
+</td>
+</tr>
+<TR>
+<TD align="right"><b>AOL:<b><input type="checkbox" id="ckhAol" name="chkAol" value="1" <?=(isset($page_data['aol']) && $page_data['aol']==0 ?"":"checked")?>></TD>
+	<TD><b>Ameritrade:<b><input type="checkbox" id="ckhAmeritrade" name="ckhAmeritrade" value="1" <?=($page_data['ameritrade']?" checked":"")?>></TD>
+</TR>
+<tr>
+<td align="right"><input type="button" name="cancel" value="cancel" onClick="void(location.replace(location.href))" align="right"></td>
+<td>
+<div style="float:left;padding-right:5px;"><input type="button" name="upload" value="Save" align="center" onClick="addVideo(this.form)"></div>
+<div id ="loading" class="error"></div>
+</td></tr>
+
+</table>
+</form>
+</center>
+<br>
+<?include("$ADMIN_PATH/_footer.htm")?>
+</html>

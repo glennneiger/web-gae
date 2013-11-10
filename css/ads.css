@@ -1,0 +1,250 @@
+* {
+					margin: 0;
+					padding: 0;
+				}
+
+				body #onlineMediaKit {
+					font-family: Arial, Helvetica, sans-serif;
+					color: #4c4c4c;
+					font-size: 1.2em;
+				}
+				h3{
+					text-transform:none;
+				}
+
+				.wrap {
+					margin: 0 auto;
+					width: 970px;
+				}
+
+				.mainShelf {
+					float: left;
+				}
+
+				.clearfix {
+
+				}
+
+				.GridTypeA a {
+					color: #008bcc;
+					text-decoration: none;
+				}
+
+				.GridTypeA a:hover {
+					color: #008bcc;
+					text-decoration: underline;
+				}
+
+				.GridTypeA h2 {
+					color: #005696;
+					font-size: 24px;
+					font-weight: normal;
+					letter-spacing: -1px;
+					margin-bottom: 14px;
+				}
+
+				.GridTypeA h2 a {
+					color: #005696;
+					font-size: 24px;
+					font-weight: normal;
+					letter-spacing: -1px;
+					margin-bottom: 14px;
+				}
+
+				.GridTypeA h2 a:hover {
+					text-decoration: none;
+				}
+
+				.GridTypeA h3 {
+					color: #4d4d4d;
+					font-size: 14px;
+					font-weight: bold;
+					letter-spacing: -1px;
+					margin-bottom: 14px;
+				}
+
+				.GridTypeA p {
+					color: #4d4d4d;
+					font-family: Arial, Helvetica, sans-serif;
+					letter-spacing: -1px;
+					line-height: 20px;
+					margin-bottom: 20px;
+				}
+
+				.GridTypeA ul {
+					color: #4d4d4d;
+					list-style-type: square;
+					margin-bottom: 20px;
+					padding-left: 30px;
+				}
+
+				.GridTypeA li {
+					color: #4d4d4d;
+					list-style-type: square;
+					padding-bottom: 5px;
+				}
+
+				.GridTypeA {
+					font-family: Arial, Helvetica, sans-serif;
+					list-style-type: none;
+					float: left;
+				}
+
+				.GridTypeA .GTA-columnA {
+					float: left;
+					list-style-type: none;
+					width: 228px;
+					margin-right: 20px;
+				}
+
+				.GridTypeA .GTA-columnB {
+					float: left;
+					list-style-type: none;
+					width: 720px;
+				}
+
+				.sidebarNav{
+					background: url(../ads/images/sidebarsBkg_228x287.png) left top no-repeat;
+					color: #005696;
+					font-size: 14px;
+					min-height: 287px;
+					list-style-type: none;
+					padding : 20px  !important;
+					width 228px:
+				}
+
+				.sidebarNav a	{
+					color: #005696;
+					font-size: 14px;
+					text-decoration: none !important;
+				}
+
+				.sidebarNav li{
+					color: #005696;
+					font-size: 14px;
+					list-style-type: none;
+					padding-left: 0 !important;
+				}
+
+
+
+				.creativeSubNav {
+					color: #00aeef;
+					padding-left: 10px !important;
+				}
+
+				.creativeSubNav li {
+					color: #00aeef;
+					list-style-type: square;
+				}
+
+				.indentedDiv {
+					border-top: 1px solid #f5fcff;
+					border-bottom: 1px solid #e5f2f9;
+					height: 0;
+					width: 720px;
+					float: left;
+					margin:-2px 0 20px;
+				}
+
+				.creativesShelf {
+					width: 720px;
+					float: left;
+				}
+
+				.creative {
+					background: url(../ads/images/adGradient_720x720.png) left top no-repeat;
+					border: 1px solid #d6d6d6;
+					border-collapse: collapse;
+					float: left;
+					margin-bottom: 8px;
+					background-color: #e5e5e5;
+				}
+
+				.leaderboard {
+					height: 65px;
+					width: 541px;
+				}
+
+				.mid_image{
+					margin-left:40px;
+				}
+				.layout_image{
+					 margin: 15px 0 30px;
+				}
+
+				.two27by90 {
+					height: 65px;
+					width: 167px;
+					margin-left: 8px;
+				}
+
+				.button120x90 {
+					height: 90px;
+					width: 120px;
+					margin-left: 8px;
+				}
+
+				.expandable {
+					height: 308px;
+					width: 718px;
+				}
+
+				.halfPage {
+					height: 444px;
+					width: 221px;
+				}
+
+				.mediumRectangle {
+					height: 185px;
+					width: 222px;
+					margin-left: 8px;
+				}
+
+				.theeHundredx50 {
+					height: 35px;
+					width: 222px;
+					margin-left: 8px;
+				}
+
+				.one88x31 {
+					height: 31px;
+					width: 88px;
+					margin-left: 8px;
+				}
+
+				.button_one {
+					width: 150px;
+					float: left;
+				}
+				.dashed_border
+				{
+					border-top: 1px dashed #C9C9C9;
+				    border-width: 1px;
+				    margin: 20px 0;
+				}
+
+				.interstitial {
+					height: 480px;
+					width: 640px;
+					margin-left: 40px;
+				}
+
+				.one70x40 {
+					height: 38px;
+					width: 168px;
+					margin-left: 8px;
+				}
+
+				.one60x30 {
+					height: 28px;
+					width: 158px;
+					margin-left: 8px;
+				}
+				.featured_image{
+				 margin: -9px 0 0;
+				}
+
+				#footer{
+				  margin: -8px 0 0;
+				}

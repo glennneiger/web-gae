@@ -1,0 +1,341 @@
+<?
+ini_set("max_execution_time",3600);
+if($_REQUEST['post_id']!='')
+{	$post_id				=	$_REQUEST['post_id'];
+}
+$page	=	trim($_REQUEST['page']);
+if(!$page)$page	=	"gazette";
+$handler 		= 	"./post_mod.htm";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/_state.php");
+include_once("$D_R/lib/config/_techstrat_config.php");
+include_once("$D_R/lib/techstrat/_techstratData.php");
+include_once("$D_R/lib/_content_data_lib.php");
+global $S4,$S5,$D_R,$ADMIN_PATH,$CONTRIBUTOR_ID,$maxPostDispLimit;
+$error=$_GET['error'];
+
+$objTechStartData= new techstartData("techstrat_posts");
+$objContent = new Content();
+/*============set up permissions=================*/
+
+$cancreate=$AD->getPerm("techstrat_post");				//-------Check User accesss for page---------------
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+$pagedata[login]=$AD->userInfo[name];
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$post_id){
+	$pagedata[publish_date]="";
+	$pagedata[position]=$DEFAULT_NO_POS;
+}
+else{
+	$pagedata=$objTechStartData->getTechStartPost($post_id);
+	//$pagedata[topic]=$objTechStartData->getTechStartTopics($post_id);
+	$tagsList		=	$objTechStartData->getTechStartTopics($post_id);
+	if(is_array($tagsList))
+	{
+		foreach($tagsList as $val)
+		{
+			$tags	.= 	$val['tagname'].",";
+		}
+		$pagedata[topic]	=	substr($tags,0,-1);
+	}
+	$tickersList	=	$objTechStartData->getTechStartTicker($post_id,$objTechStartData->contentType);
+	if(is_array($tickersList))
+	{
+		foreach($tickersList as $key=>$value)
+		{
+			$tickers	.= 	$value['stocksymbol'].",";
+		}
+		$pagedata[ticker]	=	substr($tickers,0,-1);
+	}
+
+  $pagedata[is_sent]=($pagedata[is_sent]?1:0);
+  $syndicate = $objContent->setSyndicate($post_id,$objTechStartData->contentType);
+	if($syndicate)
+	{
+		$pagedata[syndicate] = '1';
+	}
+}
+
+$articlelist = "SELECT DATE_FORMAT(TA.publish_date,'%m/%d/%Y %r')date,TA.id,TA.title,CC.name,TA.contrib_id,TA.body FROM techstrat_posts TA,contributors CC WHERE TA.contrib_id=CC.id and TA.contrib_id='".$objTechStartData->contribId."'";
+$articlelist.=" ORDER BY TA.publish_date DESC limit 0,$maxPostDispLimit";
+?>
+<!--<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/prototype.1.3.js" ></script>-->
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.7.js" ></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
+<script type="text/javascript" language="javascript">
+var count = 0;
+include_once("<?=$HTPFX.$HTHOST?>/js/jquery.1.1.js");
+include_once("<?=$HTPFX.$HTHOST?>/js/jquery.techstrat.autocomplete.js");
+function Save(inputval){
+	var err="";
+	if(getValByName("post[title]").length==0){
+		err+="Please enter the post title.\n";
+
+
+	}
+
+	var selTypeValue = document.getElementById("post[category_id][]").selectedIndex;
+   	if(selTypeValue < 0){
+			err+="Please select category for the post.\n";
+	}
+
+   var selObj = document.getElementById("author-drop-down");
+   val = selObj.options[selObj.selectedIndex].value;
+   if(val.length==0){
+			err+="Please select Author for the post.\n";
+	}
+
+	 var oEditor = FCKeditorAPI.GetInstance('post[body]');
+	 var fckText = oEditor.GetHTML(true);
+	 if(fckText=='<br>'){
+		err+="Please enter text in entry for the post.\n";
+	 }
+
+    $('#inputvalue').val(inputval);
+	if(err.length){
+		alert(err);
+		return false;
+	}
+	document.postForm.submit();
+}
+
+
+function deteFeed(inputval){
+	$('#inputvalue').val(inputval);
+    document.postForm.submit();
+}
+
+function validate_Tag(){
+	var strvalue = findObj("pagetag[topic]").value;
+	if (strvalue){
+		var tagArray = new Array();
+		tagArray=strvalue.split(",");
+		var strlength = tagArray.length;
+		for (var i = 0; i < strlength; i++) {
+			var elementlen = tagArray[i].length;
+			if (elementlen > 200) {
+				alert ("Tag cannot be greater than 200 characters.");
+				return false;
+			}
+		}
+	}
+}//End of Function
+
+function getPostVal(val)
+{
+post_id=val;
+window.location= "posts.htm?post_id="+post_id;
+}
+</script>
+<div>
+<div class=adminheader>
+	TechStrat by Sean Udall
+</div>
+<table border="0">
+<? if($id){ ?>
+<tr>
+	<td><a href="posts.htm">Create Post</a></td>
+</tr>
+<? } ?>
+<tr>
+	<td><?if($AD->getPerm(array("techstrat_approve"))){?>
+	<a href="/admin/techstrat/approve.htm">Approve Posts</a>
+	<?}?>
+    </td>
+</tr>
+<?php
+if($AD->getPerm("techstrat_performance")){?>
+		<tr><td><a href="performance.htm">Upload Performance</a></td></tr>
+<? } ?>
+<tr><td>&nbsp;</td></tr>
+<form action="<?=$PHP_SELF?>" name="draftpost">
+<tr>
+<td><b>Draft Post</b></td>
+<td>
+<?
+ $draftpost=$objTechStartData->getDraftSeanPost();
+ $articleList		=	exec_query($articlelist);
+?>
+	<select name="post_id" onchange="javascript:getPostVal(this.value);" style="width:100%;">
+	<option value="">--Select Draft Post--</option>
+	<?php
+		if(is_array($draftpost)) {
+			foreach($draftpost as $row){
+			$sel=($post_id==$row[id]?" selected":"");
+			$disp=$row[name]." - ".$row[title]." (${row[date]})";
+			$style=" style='background:#".($row[contrib_id]==$AD->userInfo[contrib_id]?"cccccc":"")."'";
+		?>
+			<option value="<?=$row[id]?>"<?=$sel.$style?>><?=trim($disp);?></option>
+		<?} }?>
+	</select>
+</td>
+</tr>
+<tr>
+		<td><b>Select a post to edit:</b></td>
+		<td>
+			<select name="article_id" onchange="javascript:getPostVal(this.value);">
+			<?if($cancreate){?><option value="">--New Post--</option><?}?>
+				<?
+					if(is_array($articleList)) {
+					foreach($articleList as $row){
+					$sel=($post_id==$row[id]?" selected":"");
+					$disp=$row[name]." - ".$row[title]." (${row[date]})";
+					$style=" style='background:#".($row[contrib_id]==$AD->userInfo[contrib_id]?"cccccc":"")."'";
+				?>
+					<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+				<? } } ?>
+	</select>
+              </td>
+</tr>
+</form>
+</table>
+</div>
+<form method="post" action="<?=$handler?>" name="postForm" enctype="multipart/form-data">
+<table width=720 align=center border="0">
+<?if($error){?>
+<TR><TD colspan=100 class=error><?=strip($error)?></TD></TR>
+<?}?>
+<?input_hidden("post_id")?>
+<?input_hidden("page")?>
+<?input_hidden("post[creation_date]",$pagedata[creation_date])?>
+<?input_hidden("mo")?>
+<?input_hidden("day")?>
+<?input_hidden("year")?>
+<?input_hidden("inputvalue")?>
+<?input_hidden("post[is_sent]",$pagedata[is_sent])?>
+<?input_hidden($pagedata[syndicate])?>
+<tr>
+<TD><b>Title</b></TD>
+</tr>
+<TR valign=top>
+<TD colspan="2"><input type="text" title="" id="post[title]" style="width: 100%;" value="<?=htmlentities(trim($pagedata['title']));?>" name="post[title]" maxlength="255" size="240" class="textinput"></TD></TD>
+</TR>
+<tr><td>
+<b>Post Category:</b> &nbsp;</td>
+</tr>
+<tr>
+<td>
+<?
+$postType=$objTechStartData->getPostType();
+if($pagedata[category_id]){
+	$pagedata[category_id]=explode(',',$pagedata[category_id]);
+}
+?>
+<select name="post[category_id][]" id="post[category_id][]" multiple align=absmiddle size="3" style="width:200px;">
+	<?selectHashArr($postType,"id","category_name",$pagedata[category_id])?>
+	</select> [ctrl]+[click] to select multiple
+</select>
+
+</td></tr>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
+
+<TR valign=top>
+<TD><b>Entry</b>:</TD>
+</TR>
+<TR valign=top>
+<TD colspan="2"><?rich_editor("post[body]",strip($pagedata[body]),"720",370,array(img_dir=>"/assets/characters",hideimage=>true))?></TD>
+</TR>
+</table>
+<table width=720 align=center border="0">
+<TR>
+<TD colspan="2"><b>Tags</b> (Add comma separated tag)</TD>
+<TD><b>Tickers</b> (Add comma separated ticker)</TD>
+</TR>
+<TR>
+
+<TD colspan="2"><input type="text" title="" id="posttopic" style="width: 60%;" value="<?=$pagedata[topic];?>" name="posttopic" maxlength="255" size="240" class="textinput">
+</TD>
+<TD width="33%">
+<input type="text" title="" id="postticker" style="width: 100%;" value="<?=$pagedata[ticker];?>" name="postticker" maxlength="255" size="240" class="textinput"></TD>
+</TR>
+<tr>
+<td colspan="2"><b>Time Stamp:</b></td>
+<td><b>Author:</b></td>
+</tr>
+<tr>
+<?
+
+if($pagedata['publish_date']){
+
+	$dtTimeStamp = $pagedata['publish_date'];
+
+	if($dtTimeStamp == '0000-00-00 00:00:00')
+	{
+		$dtTimeStamp = $pagedata['creation_date'];
+	}
+	$mo=date('m',strtotime($dtTimeStamp));
+	$day=date('j',strtotime($dtTimeStamp));
+	$year=date('Y',strtotime($dtTimeStamp));
+	$hour=date('G',strtotime($dtTimeStamp));
+	$minute=date('i',strtotime($dtTimeStamp));
+	//$meridiem=date('A',strtotime($dtTimeStamp));
+}
+
+if(!$mo) { $mo=date("m"); }
+if(!$day) { $day=date("j"); }
+if(!$year) { $year=date("Y"); }
+if(!$hour) { $hour=date("G"); }
+if(!$minute) { $minute=date("i"); }
+//if(!$meridiem) { $meridiem=date("A"); }
+?>
+<td colspan="2"><?month_options("mo",$mo)?>
+	<?day_options("day",$day)?>
+	<?year_options("year",$year,0,date("Y"),2002)?>
+	<?hour_options("hour",$hour,0,date("g"),2002)?>
+	<?minute_options("minute",$minute,0,date("i"),2002)?>
+	<?//displayMeridiem("meridiem ",$meridiem ,0,date("A"),2002)?>
+
+</td>
+	<td>
+	<?
+	$qry_author="select * from contributors where id='".$CONTRIBUTOR_ID."'";
+	$authors=exec_query($qry_author);
+	?>
+		<select id="author-drop-down" name="post[contrib_id]">
+		<option value="">--Select Contributor--</option>
+			<?
+			foreach($authors as $row){
+				$sel=(trim($row[id])==trim($CONTRIBUTOR_ID)?" selected":"");
+				$disp=$row[name];
+				$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+			?>
+				<option value="<?=$row[id]?>"<?=$sel?>><?=$disp?></option>
+			<?}?>
+		</select>
+	</td>
+</tr>
+<tr>
+<td><b>Position(Optional):</b></td>
+</tr>
+<tr>
+<td colspan="3"><?input_text("post[position]",$pagedata[position],255,255,"style=width:80%")?></td>
+</tr>
+
+<tr>
+<td><?input_check("syndicate",$pagedata[syndicate])?>Syndicate to Minyanville.com</td>
+</tr>
+
+</table>
+<table width=720 align=center border="0">
+<TR>
+<TD></TD>
+<TD align=center>
+	<img src="<?=$IMG_SERVER?>/images/DailyFeed/publish.jpg" style="cursor:pointer; border:none;" onclick="Javascript:Save('approve');" />
+	<img src="<?=$IMG_SERVER?>/images/DailyFeed/save.jpg" style="cursor:pointer; border:none;" onclick="Javascript:Save('draft');" />
+<? if($post_id) { ?>
+	<img src="<?=$IMG_SERVER?>/images/DailyFeed/delete.jpg" style="cursor:pointer; border:none;" onclick="Javascript:deteFeed('delete');" />
+
+<? } ?>
+
+	</TD>
+</TR>
+</table>
+</form>
+<?include("$ADMIN_PATH/_footer.htm")?>

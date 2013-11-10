@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+global $STORAGE_SERVER;
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Start the new year with a free week of Buzz &amp; Banter</title>
+        <meta name="description" content="Buzz and Banter is a unique real-time application that automatically updates with actionable stock market ideas trading advice and investment analysis" >
+		<meta name="keywords" content="trading advice, market insight, stock market commentary, day trading ideas, investment advice, stock market ideas, actionable stock ideas, stock picks, best stock picks, stock market investing, stock advice, stock trading ideas">
+		<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/buzznewyear2012.css" />
+        <script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+        <script src='<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
+        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/mvtv/flowplayer/flowplayer-3.2.0.min.js"></script>
+        <script src="<?=$HTPFX.$HTHOST?>/js/buzz_freetrial.js" type="text/javascript"></script>
+	</head>	
+	<body>
+		<div class="container">
+			<div class="header-box clearfix">
+				<p class="buzz-tagline">Start the new year with a free week of Buzz &amp; Banter</p>
+				<a class="mv-logo" href="http://www.minyanville.com" target="_blank">Minyanville</a>
+			</div>
+			<div class="content-box clearfix">
+			
+				<div class="lt-column-box">
+					<h1>Access our Buzz &amp; Banter for 1 week - completely <strong class="orange-txt">FREE.</strong></h1>
+					<p>We are opening up access to our premium Buzz &amp; Banter for one week - completely <strong class="orange-txt">FREE.</strong></p>
+					<p>There is potential for a double-dip recession, Europe still has issues and everyone is watching how the upcoming political process is going to affect the economy.</p> 
+					<p>What does it mean for the stock market and your investments?  Let our roster of more than 30 respected traders and money managers help guide you through the markets in real-time every day on the Buzz &amp; Banter.</p>
+					<p>We're giving you 1 week of access for <strong class="orange-txt">FREE.</strong></p>
+				</div>
+				
+				<div class="rt-column-box">
+					<div style="width:320px;height:203px; margin-bottom:20px;" id="player"></div>
+
+					
+					<div class="registration-form clearfix">					
+						<ul class="labels">
+							<li><label for="FirstName">First Name</label></li>
+							<li><label for="LastName">Last Name</label></li>
+							<li><label for="Email">Email</label></li>
+							<li><label for="Password">Password</label></li>
+							<li><label for="Telephone">Telephone</label></li>
+						</ul>
+						<ul class="openFields">
+							<li><input id="firstname" value="Please Enter First Name" onfocus="if(this.value=='Please Enter First Name')this.value='';" onblur="if(this.value=='')this.value='Please Enter First Name';" type="text" name="FirstName" /> </li>
+							<li><input id="lastname" value="Please Enter last Name" onfocus="if(this.value=='Please Enter last Name')this.value='';" onblur="if(this.value=='')this.value='Please Enter last Name';" type="text" name="LastName" /> </li>
+							<li><input id="email" value="Please Enter Your Email" onfocus="if(this.value=='Please Enter Your Email')this.value='';" onblur="if(this.value=='')this.value='Please Enter Your Email';" type="text" name="Email" /> </li>
+							<li><input id="pwd" value="Please Select A Password" onfocus="if(this.value=='Please Select A Password'){this.type='password';this.value='';}" onblur="if(this.value==''){this.type='text';this.value='Please Select A Password';}" type="text" name="Password" /> </li>
+							<li><input id="phone" value="Please Enter Your Telephone" onfocus="if(this.value=='Please Enter Your Telephone')this.value='';" onblur="if(this.value=='')this.value='Please Enter Your Telephone';" type="text" name="Telephone" /> </li>
+						</ul>						
+						<div>
+                        <span id="loading" class="error"></span>
+                        <input type="hidden" id="promocode" value="BBWK012012" />
+                        <input type="submit" name="submit" value="" class="submit-button" onclick="javascript:getFreeTrial();" />
+                        </div>
+                        						
+					</div>
+				</div>				
+                <div id="reg_error" class="error"></div>
+			</div>            
+			<div class="footer-box clearfix">
+				<p class="footer-contact"><strong class="yellow-txt">Questions?</strong><br />
+					Contact us at 212-991-9357 or <a href="mailto:support@minyanville.com?subject=Free Week of Buzz And Banter Inquiry">support@minyanville.com</a></p>
+				<p class="page-copyright"><font class="yellow-txt">&copy;2011 Minyanville Media, Inc. All Rights Reserved</font></p>
+			</div>			
+		</div>
+	</body>
+<script language="JavaScript">
+var storage_server = '<?=$STORAGE_SERVER?>';
+flowplayer(
+		"player", 
+		"http://releases.flowplayer.org/swf/flowplayer-3.2.2.swf", 		
+		storage_server+"/mvtv/videos/MVSizzleReel.flv"
+		/*,{
+			clip: {
+			autoPlay: false
+			}
+		}*/
+	);
+</script>
+</html>	

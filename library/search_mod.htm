@@ -1,0 +1,26 @@
+<?php
+	session_start();
+	include_once("$D_R/lib/_content_design_lib.php");
+	$subscription_id=$_SESSION['SID'];
+	$search=$_POST['search'];
+    $showtabs=$_POST['showtabs'];
+	$title=$_POST['title'];
+	if($title!==""){
+		$q="";
+	}else{
+		$q=$_POST['q'];
+		$title="";
+	}
+	$title=stripslashes($title);
+	$q=stripslashes($q);
+    $day=$_POST['day'];
+    $mo=$_POST['mo'];
+    $year=$_POST['year'];
+    $contrib_id=$_POST['contrib_id'];
+    $object_type=$_POST['object_type'];
+	$searchmsg=$_POST['searchmsg'];
+	$select_tab=$_POST['select_tab'];
+	$searchArchive=$_POST['searchArchive'];
+	//showSearchDesign($q,$contrib_id,$mo,$day,$year,$search,$showtabs,$object_type,$offset,$subscription_id,$searchmsg,$title);
+	showContentDesign($q,$contrib_id,$mo,$day,$year,$search,$showtabs,$object_type,$offset,$p,$subscription_id,$searchmsg,$title,$searchArchive);
+?>

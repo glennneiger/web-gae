@@ -1,0 +1,420 @@
+<?
+
+if(stristr($HTTP_HOST,"buzzandbanter.com")){
+	location("http://$HTHOST/register/");
+	exit();
+}
+
+session_set_cookie_params(50800,"/");
+session_start();
+mcookie("PHPSESSID",session_id());
+$cart=new CartDisplay();
+
+if(!$is_store){
+	mv_cache();
+}
+	handle_ssl();
+
+if($is_dev){
+	//auth("ntonic","adminuser");
+}
+
+
+if(!$USER->email){
+	include_once("$D_R/lib/_auth.php");
+	$USER=new user($_SESSION[EMAIL],$_SESSION[PASSWORD]);
+}
+$tm=$bm=$lm=$rm=$mh=$mw=0;
+if($mvpopup)$tm=$bm=$lm=$rm=$mh=$mw=10;//margins
+if(!$LOGO)$LOGO="$IMG_SERVER/assets/logo_spring.gif";
+if(is_file("$D_R$LOGO")){
+	list($lw,$lh)=getimagesize("$D_R$LOGO");
+}
+
+if(!$HEADERBGCLASS)$HEADERBGCLASS="pageheader";
+if(!$CENTERBGCLASS)$CENTERBGCLASS="pageheader";
+if(!$HRULE_SRC)$HRULE_SRC="$IMG_SERVER/assets/goldrule.gif";
+if($ABS_PATHS)$pfx="http://$HTTP_HOST";
+
+
+/*=======font size crap=========*/
+$CSS_LENGTH=4;
+if(!$CSS_DEFAULT)//if() is here so otherpages can override.
+	$CSS_DEFAULT="fontSize0";
+if(!$fstyle || !stristr($fstyle,"fontSize")){
+	$fstyle=$CSS_DEFAULT;
+/*	if($SECTION=="schoolhouse")
+		$fstyle="fontSize4";*/
+}
+
+
+$THLINK=$USER->isAuthed?$USER->manageUrl:"/register/";
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title><?=($title?$title:"Minyanville")?> <?if($is_dev){?>DEV SERVER<?}?></title>
+
+<?=$HEAD?>
+<script src="<?=$pfx?>/_scrollie.js" language="JavaScript"></script>
+<script src="<?=$pfx?>/_script.js" language="JavaScript"></script>
+<script>
+detectFlash();
+function bOn(obj){
+	if(!obj)return;
+	if(!obj.style)return;
+	obj.style.borderColor="#999999";
+	obj.style.background="#8da9e6"
+	obj.style.color="#ffffff";
+}
+function bOff(obj){
+	if(!obj)return;
+	if(!obj.style)return;
+	obj.style.borderColor="#333333";
+	obj.style.background="#ffffff";
+	obj.style.color="#333333";	
+}
+
+
+function popupViewer(index) {
+	if (index==1) {
+		window.open("<?$D_R?>/flash/ourtown/index.html","Book","width=800,height=600,resizable=yes,toolbar=no,scrollbars=no");
+	} else if(index==2) {
+		window.open("<?$D_R?>/flash/ourtown/scenicPopup.html","Viewer","width=640,height=400,resizable=yes,toolbar=no,scrollbars=no");
+	} 
+}
+
+</SCRIPT>
+
+
+<link rel="stylesheet" href="/_style.htm?fsize=0&mvpopup=&pfx=&title="fontSize0">
+
+<?foreach(range(0,$CSS_LENGTH) as $i){ 
+	$cssname="fontSize$i";
+	$csstype=($fstyle==$cssname?"":"alternate ");
+?>
+<!--<link rel="<?=$csstype?>stylesheet" href="<?=$pfx?>/_style.htm?fsize=<?=$i?>&mvpopup=<?=$mvpopup?>&pfx=<?=$pfx?>" title="<?=$cssname?>">-->
+<?}?>
+
+
+
+<!--  class to hide certain content from NN4 -->
+<style type="text/css">
+.hide {
+	display: none;
+}
+
+TD.bond{
+	width:10px; 
+	text-align:right; 
+	vertical-align:middle;
+	}
+	
+TD.menu-blue{
+	width:133; 
+	height:23; 
+	padding:4px 0px 4px 8px; 
+	text-align:left; 
+	vertical-align:middle; 
+	background: url(<?= $IMG_SERVER; ?>/images/blue_bg.gif) left center no-repeat;
+	}
+	
+TD.menu-brown{
+	width:133; 
+	height:23; 
+	padding:4px 0px 4px 8px; 
+	text-align:left; 
+	vertical-align:middle; 
+	background: url(<?= $IMG_SERVER; ?>/images/brown_bg.gif) left center no-repeat;
+	}
+	
+.menu-link{	
+	font:12px Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	color: #fff;
+	text-decoration: none;
+	display: block;
+	
+}
+
+
+a.menu-link:visited{
+	color:#fff;
+	}
+a.menu-link:hover{
+	color:#fff;
+	}
+	
+TD.menu-spacer{
+	height:8px;
+	}
+	
+TD.menu-spacer-small{
+	height:2px;
+	}
+	
+	
+</style>
+
+<link rel="stylesheet" href="<?=$pfx?>/css/main.css" type="text/css" />
+<style type="text/css">
+<? if($IE){ ?>
+#portlet-profiles, #portlet-univ, #portlet-archive, #portlet-partners{ 
+	width:222px;
+}
+<? } ?>
+
+</style>
+
+</head>
+<body style="padding-right:0px; margin-right:0px;" onload="initScroll(9,470)" onunload="stopScroll()">
+
+
+
+<div id="main-container"><!-- main container that ends in _footer.html -->
+
+<!-- BEGIN LOGO/BANNER area -->
+	<table id="header" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+	<td width="30">&nbsp;</td>
+	<td width="188"><a href="<?=$pfx?>/"><img src="<?= $IMG_SERVER; ?>/images/logo.gif" width="188" height="65" border="0" alt="" /></a></td>
+	<td rowspan="2" class="banner">
+	<?
+		  	if (isset($zoneIDSky)) { 
+		  		if (@include(getenv('DOCUMENT_ROOT').'/admin/phpads/phpadsnew.inc.php')) {
+					if (!isset($phpAds_context)) $phpAds_context = array();
+					$phpAds_raw = view_raw ('zone:'.$zoneIDSky , 0, '', '', '0', $phpAds_context);
+					echo $phpAds_raw['html'];
+				}
+			} else { ?>
+		  
+		  	<a href="http://www.thomson.com/financial" target="blank"><img src="<?= $pfx; ?>/images/Thomson_728x90_white.gif" border="0" alt="" /></a></li>
+		  
+		  <? } ?>
+	<!--<a href="http://www.thomson.com/financial" target="blank"><img src="<?= $pfx; ?>/images/Thomson_728x90_white.gif" border="0" alt="" /></a> -->
+	</td>
+	</tr>
+	<tr>
+	<td><img src="<?= $IMG_SERVER; ?>/images/left_menu_top.gif" width="12" height="31"  border="0" alt="" /></td>
+	<td><img src="<?= $IMG_SERVER; ?>/images/slogan.gif" width="188" height="30" border="0" alt="" /></td>
+	</tr>
+	</table>
+	
+	
+<!-- END LOGO/BANNER area -->
+		
+		
+<!-- BEGIN LEFT COLUMN ---------------------------- -->
+
+	<table id="content-container" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+	<!-- begin left area/menu -->
+	<td id="content-l">
+	    <img src="<?= $IMG_SERVER; ?>/images/left_menu_top1.gif" width="12" height="23" border="0" alt="" /><br />
+				  	<table width="141" cellpadding="0" cellspacing="0" border="0">
+		  	<tr>
+				<td class="bond"><img src="<?= $IMG_SERVER; ?>/images/bond.gif" /></td>
+				<td class="menu-blue"><a href="<?=$pfx?>/register/" class="menu-link">JOIN US</a></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="menu-spacer-small"></td>
+			</tr>
+			<tr>
+				<td class="bond"><img src="<?= $IMG_SERVER; ?>/images/bond.gif" /></td>
+				<!-- <td class="menu-blue"><a href="#" class="menu-link" onClick=window.open("<?=$pfx?>/gazette/buzzbanter/home.htm","Banter","width=300,height=500,resizable=yes,toolbar=no,scrollbars=no")>BUZZ &amp; BANTER</a></td> -->
+				
+				<td class="menu-blue"><a href="#" class="menu-link" onClick=window.open("<?=$pfx;?>/gazette/buzzbanter/home.htm","Banter","width=300,height=500,resizable=yes,toolbar=no,scrollbars=no")>BUZZ &amp; BANTER</a></td>
+			
+			
+			</tr>
+			<tr>
+				<td colspan="2" class="menu-spacer"></td>
+			</tr>
+			
+		  	<tr>
+				<td class="bond"><img src="<?= $IMG_SERVER; ?>/images/bond.gif" /></td>
+				<td class="menu-blue"><a href="<?=$pfx?>/news_views/" class="menu-link">NEWS &amp; VIEWS</a></td>
+			</tr>
+		  </table>
+		<ul id="left-nav">
+		  <li class="submenu-blue">
+		    <ul class="ul-submenu">
+			  <li class="submenu"><p><a href="<?$pfx?>/personalfinance/">Personal Finance</a><img class="separator" src="<?= $IMG_SERVER; ?>/images/white_line.gif" width="116" height="1" alt="" /></p></li>
+			  <li class="submenu"><p><a href="<?$pfx?>/technicals/">Technicals</a><img class="separator" src="<?= $IMG_SERVER; ?>/images/white_line.gif" width="116" height="1" alt="" /></p></li>
+			  <li class="submenu"><p><a href="<?$pfx?>/economy/">Economy</a><img class="separator" src="<?= $IMG_SERVER; ?>/images/white_line.gif" width="116" height="1" alt="" /></p></li>
+			  <li class="submenu"><p><a href="<?$pfx?>/derivatives/">Derivatives</a><img class="separator" src="<?= $IMG_SERVER; ?>/images/white_line.gif" width="116" height="1" alt="" /></p></li>
+			  <li class="submenu"><p><a href="<?$pfx?>/fundamentals/">Fundamentals</a><img class="separator" src="<?= $IMG_SERVER; ?>/images/white_line.gif" width="116" height="1" alt="" /></p></li>
+			  <li class="submenu"><p><a href="<?$pfx?>/tradingradar/">Trading Radar</a><img class="separator" src="<?= $IMG_SERVER; ?>/images/white_line.gif" width="116" height="1" alt="" /></p></li>
+			  <li class="submenu"><p><a href="<?$pfx?>/pointfigure/">Point &amp; Go Figure</a><img class="separator" src="<?= $IMG_SERVER; ?>/images/white_line.gif" width="116" height="1" alt="" /></p></li>
+			  <li class="submenu"><p><a href="<?$pfx?>/retailroundup/">Retail Roundup</a></p></li>
+			</ul>
+		 </li>
+		  </ul>
+		 
+	
+		  	<table width="141" cellpadding="0" cellspacing="0" border="0">
+		  	<tr>
+				<td class="bond"><img src="<?= $IMG_SERVER; ?>/images/bond.gif" /></td>
+				<td class="menu-blue"><a href="<?=$pfx?>/gazette/bios.htm" class="menu-link">PROFESSORS</a></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="menu-spacer"></td>
+			</tr>
+			
+			<tr>
+				<td class="bond"><img src="<?= $IMG_SERVER; ?>/images/bond.gif" /></td>
+				<td class="menu-brown"><a href="<?=$pfx?>/university/" class="menu-link">UNIVERSITY OF MV</a></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="menu-spacer"></td>
+			</tr>
+			
+		  	<tr>
+				<td class="bond"><img src="<?= $IMG_SERVER; ?>/images/bond.gif" /></td>
+				<td class="menu-brown"><a href="<?=$pfx?>/library/search.htm" class="menu-link">ARCHIVE</a></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="menu-spacer"></td>
+			</tr>
+			
+			<tr>
+				<td class="bond"><img src="<?= $IMG_SERVER; ?>/images/bond.gif" /></td>
+				<td class="menu-brown"><a href="<?=$pfx?>/library/dictionary.htm" class="menu-link">DICTIONARY</a></td>
+			</tr>
+		  </table>
+		
+		
+		
+		
+		
+        <ul id="left-nav">
+
+		  
+		  <li class="mail"><p><a href="<?=$pfx?>/mailbag/">Minyan <br />Mailbag</a></p></li>
+		  </ul>
+	  
+		  <div id="town-area">
+		  <ul id="left-nav">
+		  <li class="main-slate"><a href="#" class="menu-link" onClick=window.open("<?$D_R?>/flash/ourtown/index.html","ourTown","width=800,height=600,resizable=yes,toolbar=no,scrollbars=no")><p style="text-decoration:none;">OUR <br />TOWN</p></a></li>
+		  <li class="slate"><p><a href="<?=$pfx?>/company/events.php">EVENTS</a></p></li>
+		  <li class="chain">&nbsp;</li>
+		  <li class="slate"><p><a href="<?$pfx?>/company/press.htm">PRESS</a></p></li>
+		  <li class="chain">&nbsp;</li>
+		  <li class="slate"><p><a href="<?=$pfx?>/shops/">SHOPPING</a></p></li>
+		  <li class="cart"><?=$cart->msgCart?></li>
+		  
+		  <li class="adv">
+		  <?
+		  	if (isset($zoneIDSign)) { ?>
+		  		<div class="dma">
+		  		<?php
+					if (@include(getenv('DOCUMENT_ROOT').'/admin/phpads/phpadsnew.inc.php')) {
+						if (!isset($phpAds_context)) $phpAds_context = array();
+						$phpAds_raw = view_raw ('zone:'.$zoneIDSign , 0, '', '', '0', $phpAds_context);
+						echo $phpAds_raw['html'];
+					}
+				?>
+		  		</div>
+		  	<? } else { ?>
+		  
+		  	<img class="dma" src="<?= $IMG_SERVER; ?>/images/mv_town_tall_sign.gif" alt="" /></li>
+		  
+		  <? } ?>
+		  
+		  </ul>
+		  </div>
+		    
+	</td>
+	<!-- end left area/menu -->
+	
+	
+	
+<!-- END LEFT COLUMN  -->
+
+
+<!-- center area/main content -->
+	<td id="content-c">
+	
+		<!-- begin LOGIN AND SEARCH AREA -->
+		<div id="util">
+		  
+		  <script>
+			var minimized = false;
+			function collapse(id) {
+				var item = document.getElementById(id);  //select the element on the web page
+				if (item.style.display!="none") {
+					item.style.display="none";
+					document.getElementById("controllerLink").innerHTML = "Show Movie";
+				} else {
+					item.style.display="block";
+					document.getElementById("controllerLink").innerHTML = "Hide Movie";
+				}
+			}
+			</script>
+			
+			<table cellspacing="0" cellpadding="5" summary="login" border="0" id="util-forms">
+			<tr><td class="login" width="100%">
+		  
+		  	<form method="post" action="<?$D_R?>/auth-2.htm" name="signinform">
+					<table cellspacing="0" cellpadding="0" border="0" summary="login" border="0"><tr>
+					<? if (!$USER->isAuthed) { // display log in form
+				  ?>
+					<td class="lt"><input type="text" size="15" maxlength="255" style="text-align:left;" name="email" value="" id="email" title'' /></td>
+					<td class="lt"><input type="password" size="15" name="password" maxlength="255" style="text-align:left;" value="" id="password" /></td>
+					<td class="lt" ><input type="image" src="<?= $IMG_SERVER; ?>/images/btn_login.gif" alt="" /></td>
+					<? } else {  // display current user information
+				?>
+					<td>
+					<div>
+					Welcome, <?= $USER->name; ?>. <a href="<?$D_R?>/auth-2.htm?LOGOUT=1">Logout</a> &nbsp; &nbsp; <a href="<?=$USER->manageUrl?>">Manage Account</a>
+					
+					</div>	
+					</td>
+				
+				<? } ?>
+					</tr></table>
+		  </form>
+		  </td><td class="search">
+		  
+		  <form method="post" name="searchFrm" action="<?=$pfx?>/library/search.htm?search=Article&advanced=1&mo=&day=&year=&contrib_id=&category_id=">
+		    <table cellspacing="2" cellpadding="0" border="0" summary="login"><tr>
+			<td class="lm"><p>SEARCH</p></td>
+
+			<td class="lt"><input type="text" size="15" style="text-align:left" name="q" /></td>
+			<td class="lt"><input type="image" src="<?= $IMG_SERVER; ?>/images/btn_go.gif" width="42" height="19" alt="" />
+			
+			</td>
+			</tr></table>
+		  </form>
+		  </td></tr>
+		  <tr>
+		  <? if (!$USER->isAuthed) { //display register and forgot password 
+		  ?>
+		   
+		  
+		  <TD>
+		  	<input type="checkbox" style="border:none;" name="setcookie"<?=($_COOKIE[autologin]?" checked":"")?> id="autologinbox"><?=spacer(5)?>
+		  	<label style="font-size:xx-small" for=autologinbox>Remember my Member ID and password on this computer.</label>
+		  
+		  	<a href="<?$D_R?>/register">REGISTER</a>&nbsp;&nbsp;&nbsp;<a href="<?$D_R?>/register/forgotpass.htm">FORGOT PASSWORD?</a>
+		  </td>
+	
+		  
+		  <? } else {  //display nothing 
+		  ?>
+		  <td>
+		  </td>
+		  
+		 <? } ?>
+		  <td valign="bottom"><br>
+		 <? if ($pageName==1) { ?>
+		 	<div id="flashControl"><a id="controllerLink" href="javascript:collapse('flash')">Hide Movie</a></div>
+		 <? } ?>
+		 </td>
+		 </tr>
+
+		  </table>
+			
+		</div>
+		
+	<!-- END LOGIN AND SEARCH area -->

@@ -1,0 +1,358 @@
+<?
+ini_set('max_execution_time', 5000);
+include_once($D_R.'/lib/_exchange_lib.php');
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/_gallery.php");
+include_once("$D_R/lib/_minyanville.php");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$D_R/admin/lib/_admin_data_lib.php");
+include_once("$D_R/admin/lib/_contributor_class.php");
+include_once("$D_R/admin/lib/_yahoo_lib.php");
+include_once("$D_R/lib/config/_yahoobuzz_config.php");
+include_once($D_R.'/lib/_action.php');
+$objAction= new Action();
+$objYahoo = new YahooSyndication();
+$objTicker= new Ticker();
+
+$id=$_POST['id'];
+$page=$_POST['page'];
+$banter=$_POST['banter'];
+$chart1=$_POST['chart1'];
+$chart2=$_POST['chart2'];
+$chart3=$_POST['chart3'];
+$chart4=$_POST['chart4'];
+$chart5=$_POST['chart5'];
+$chart6=$_POST['chart6'];
+$chart7=$_POST['chart7'];
+$chart9=$_POST['chart9'];
+$pagetag=$_POST['pagetag'];
+$buzzticker=$_POST['buzzticker'];
+$branded_asset1=$_POST['branded_asset1'];
+$approve=$_POST['approve'];
+
+$banter[title]=addslashes(mswordReplaceSpecialChars(stripslashes($banter[title])));
+$banter[position]=addslashes(mswordReplaceSpecialChars(stripslashes($banter[position])));
+
+$bounceback="./banter.htm";
+if(stristr($banter[image],"space.gif"))$banter[image]="";
+if(!count($_POST)){
+	location($bounceback.qsa(array(error=>"No changes were made",id=>$id,page=>$page)));
+	exit;
+}
+$objBuzz = new Buzz();
+$contribId=$_POST[banter][contrib_id];
+$contribName=exec_query("select id, name from contributors where id='$contribId'",1);
+$banter[author]=$contribName[name];
+/** show_in_app & show_on_web are not used any more and these will defaults to 1 always.*/
+$banter['show_in_app']=1;
+$banter['show_on_web']=1;
+/* End Default declarations*/
+$objThread = new Thread();
+if($_POST['approve'])
+{
+	$banter[approved]=1;
+}
+else
+{
+	$banter[approved]=0;
+}
+
+$buzzArr = array();
+$buzzTicker=$_POST['buzzticker'];
+$verifyticker=$objTicker->getTickerStock($buzzTicker);
+$banter['updated']=mysqlNow();
+if($id){
+		if($delete){
+			del_query("buzzbanter",id,$id);
+			// delete record from buzzbnater_today table
+			del_query("buzzbanter_today",id,$id);
+			del_query("item_charts",item_id,$id);
+			$buzzArr['0']['item_id'] = $id;
+			$buzzArr['0']['action'] = 'buzzDataDelete';
+            // $objAction->trigger('buzzDataDelete',$id);
+			$err="The post was removed";
+			unset($id);
+		}else{
+
+		$tagnames = $pagetag[tag];
+		$tagnames = $objThread->normalize_tag($tagnames);
+		$tagnames = $objThread->tag_space($tagnames);
+
+		update_query("buzzbanter",$banter,array(id=>$id));
+		$buzzArr['0']['item_id'] = $id;
+		$buzzArr['0']['action'] = 'buzzDataUpdate';
+               // $objAction->trigger('buzzDataUpdate',$id);
+		//update buzzbanter_today table
+		updateBuzzTodayTable($id);
+        $pageitem=exec_query("SELECT id FROM ex_item_type WHERE item_table='buzzbanter'",1);
+        /*Insert ticker in table*/
+        if($buzzTicker){
+            $objTicker->setTickers($buzzTicker,$id,$pageitem['id']);
+        }else{
+            $objTicker->deleteTickers($id);
+        }
+
+		$tag = array();
+    	$tags = array();
+
+
+		for($i=1;$i<=10;$i++){
+			if(strlen($_POST['chart'.$i])>1){
+				$objBuzz->addChart($id,$_POST['chart'.$i]);
+			}
+		}
+
+		if($tagnames!=""){
+			$count=count($tagnames);
+
+			$searchtagqry = "select ex.tag as tag from ex_tags ex, ex_item_tags ext where ex.id = ext.tag_id and ext.item_id = '$id'";
+
+			$searchtagres=exec_query($searchtagqry);
+
+			foreach($searchtagres as $searchkey => $searchvalue)
+			{
+				for($i=0;$i<$count;$i++){
+					if (in_array($searchvalue[tag], $tagnames)){
+					}
+					else
+					{
+						$newqry = "select id from ex_tags where tag='$searchvalue[tag]'";
+						$getids=exec_query($newqry);
+						foreach($getids as $getidkey => $getidval)
+						{
+							del_query("ex_item_tags", "tag_id", $getidval[id]);
+						}
+					}
+				}
+			}
+				foreach($tagnames as $tagkey => $tagvalue)
+				{
+					$extag=$objThread->tag_exists($tagvalue,$tags,$tag);
+					if ($extag==1)
+					{
+						$tagqry = "select id as tagid from ex_tags where tag='$tagvalue'";
+						foreach(exec_query($tagqry) as $tagqryrow)
+						{
+							$tagsid=$tagqryrow['tagid'];
+						}
+						$itemtagqry = "select id as tagid from ex_item_tags where tag_id='$tagsid' and item_id = '$id'";
+						$itemtagres=exec_query($itemtagqry);
+						$count=count($itemtagres);
+						if($count=='0'){
+							$tag[item_id] = $id;
+							$tag[item_type] = $pageitem[id];
+							$tag[tag_id] = $tagsid;
+							$exartid=insert_query("ex_item_tags", $tag);
+						}
+					}
+					else
+					{
+						$exstock=$objThread->is_stock($tagvalue);
+						if ($exstock==1)
+						{
+							$tags[type_id] = '1';
+						}
+						else
+						{
+							$tags[type_id] = '0';
+						}
+						$extagid=insert_query("ex_tags",$tags);
+						$tagqry = "select id as tagid from ex_tags where tag='$tagvalue'";
+						foreach(exec_query($tagqry) as $tagqryrow)
+						{
+							$tagsid=$tagqryrow['tagid'];
+						}
+						$itemtagqry = "select id as tagid from ex_item_tags where tag_id='$tagsid' and item_id = '$id'";
+						$itemtagres=exec_query($itemtagqry);
+						$count=count($itemtagres);
+						if($count=='0'){
+							$tag[item_id] = $id;
+							$tag[item_type] = $pageitem[id];
+							$tag[tag_id] = $tagsid;
+							$exartid=insert_query("ex_item_tags", $tag);
+						}
+					}
+				}
+		}
+		else
+		{
+			$itemtagqry = "select id from ex_item_tags where item_id = '$id'";
+			$getids=exec_query($itemtagqry);
+				foreach($getids as $getidkey => $getidval)
+				{
+					del_query("ex_item_tags", "id", $getidval[id]);
+				}
+		}
+
+		$err="The post was updated";
+		}
+}else{
+	$banter["date"]=mysqlNow();
+	$id=insert_query("buzzbanter",$banter);
+	$arBanterToday = $banter;
+	$arBanterToday[id] = $id ;
+	// insert record in buzzbnater_today table.
+	insert_query("buzzbanter_today",$arBanterToday);
+
+        $pageitem=exec_query("SELECT id FROM ex_item_type WHERE item_table='buzzbanter'",1);
+        /*Insert ticker in table*/
+        if($buzzTicker){
+                $objTicker->setTickers($buzzTicker,$id,$pageitem['id']);
+        }
+	   $tag = array();
+       $tags = array();
+
+       $tagqry = "select tag,id as tagid,type_id from ex_tags where tag='$pagetag[tag]'";
+	   $tagnames = $pagetag[tag];
+
+	   $tagnames = $objThread->normalize_tag($tagnames);
+	   $tagnames = $objThread->tag_space($tagnames);
+
+	   foreach($tagnames as $tagkey => $tagvalue)
+	   {
+	   		$extag=$objThread->tag_exists($tagvalue,$tags,$tag);
+
+	   		if ($extag==1)
+	   		{
+	    		$tag[item_id] = $id;
+				$tag[item_type] = $pageitem[id];
+
+
+				$strQry = "select tag_id from ex_item_tags where tag_id = $tag[tag_id] and item_id = $id";
+				$strResult = exec_query($strQry);
+
+
+				if(count($strResult)==0){
+	    			$exartid=insert_query("ex_item_tags",$tag);
+				}
+
+	   		}
+	   		else
+	   		{
+				$exstock=$objThread->is_stock($tagvalue);
+
+				if ($exstock==1)
+	   			{
+					$tags[type_id] = '1';
+				}
+				else
+				{
+					$tags[type_id] = '0';
+				}
+					$extagid=insert_query("ex_tags",$tags);
+					$tagsstr = "select id as tagid,tag,type_id from ex_tags where tag = '$tagvalue'";
+					$tagsres = exec_query($tagsstr);
+					foreach(exec_query($tagsstr) as $tagrow)
+					{
+						$tagid=$tagrow['tagid'];
+						$tag[tag_id] = $tagid;
+					}
+					$tag[item_id] = $id;
+					$tag[item_type] = $pageitem[id];
+
+					$strQry = "select tag_id from ex_item_tags where tag_id = $tag[tag_id] and item_id = $id";
+					$strResult = exec_query($strQry);
+
+
+					if(count($strResult)==0){
+	    				$exartid=insert_query("ex_item_tags",$tag);
+					}
+	   			}
+			}
+			$err="Your content was submitted";
+			$obContent = new Content('buzzbanter',$id);
+            $obContent->setBuzzMeta($id);
+			if ($banter["approved"]==1 && $banter["is_live"]==1)
+			{
+				writeLatestBanterPostJSON();
+
+			}
+		for($i=1;$i<=10;$i++){
+			if(strlen($_POST['chart'.$i])>1){
+				$objBuzz->addChart($id,$_POST['chart'.$i]);
+			}
+		}
+        if(!empty($id) && $_POST['approve']=="Direct Post")
+        {
+            /*syndicate to content API*/
+        	$buzzArr['0']['item_id'] = $id;
+        	$buzzArr['0']['action'] = 'buzzDataPublish';
+           // $objAction->trigger('buzzDataPublish',$id);
+        }
+
+}
+
+
+
+if($id)
+{
+	$is_googlenews=$_POST['is_googlenews'];
+	if($is_googlenews=="on"){
+		$contentSyndication['is_syndicated']='1';
+		$contentSyndication['item_id']=$id;
+		$contentSyndication['item_type']='2';
+		$contentSyndication['syndication_channel']='googlenews';
+		$contentSyndication['syndicated_on']=$banter['date'];
+		$contentSyndication['is_hosted_by_minyanville']='1';
+		insert_or_update("content_syndication",$contentSyndication,array("item_id"=>$id,"item_type"=>2));
+	}
+	else{
+		$contentSyndication['is_syndicated']='0';
+		$contentSyndication['item_id']=$id;
+		$contentSyndication['item_type']='2';
+		$contentSyndication['syndication_channel']='googlenews';
+		$contentSyndication['syndicated_on']=$banter['date'];
+		$contentSyndication['is_hosted_by_minyanville']='1';
+		insert_or_update("content_syndication",$contentSyndication,array("item_id"=>$id,"item_type"=>2,"syndication_channel"=>'googlenews'));
+	}
+
+/*Start yahoo syndication*/
+$isYahooSynd=$_POST['is_yahoonews'];
+if($isYahooSynd=="on"){
+		$contentSyndication['is_syndicated']='0';
+		$contentSyndication['item_id']=$id;
+		$contentSyndication['item_type']='2';
+		$contentSyndication['syndication_channel']='yahoo';
+		$contentSyndication['syndicated_on']=$banter['date'];
+		$contentSyndication['is_hosted_by_minyanville']='1';
+		$idContentSyndication=insert_or_update("content_syndication",$contentSyndication,array("item_id"=>$id,"item_type"=>2,"syndication_channel"=>'yahoo'));
+
+        if($banter['is_live']=="1" && $_POST['approve']=="Direct Post")
+        {
+            $feedData=array();
+            $feedData['title']=$banter['title'];
+            $feedData['publish_date']=$banter['date'];
+            $feedData['body']=$banter['body'];
+            $feedData['contrib_id']=$banter['contrib_id'];
+            $feedData['url']="/buzz/bookmark.php?id=".$id;
+            $itemType=$contentSyndication['item_type'];
+           	$objYahoo->generateBuzzYahooXml($id,$feedData,$itemType,$syndchannel="yahoo",$verifyticker);
+            $isYahoo=1;
+        }
+
+
+        if($verifyticker && $_POST['approve']!="Direct Post"){
+	        $typeEmail="BuzzBanter";
+            $titleEmail=$banter['title'];
+            $objBuzz->sendYahooInvalidTickerEmail($titleEmail,$typeEmail,$verifyticker,$isYahoo);
+		}
+
+	}
+
+/*End yahoo syndication*/
+
+}
+if(!empty($buzzArr))
+{
+	foreach($buzzArr as $key=>$val)
+	{
+		 $objAction->trigger($val['action'],$val['item_id']);
+	}
+}
+if($verifyticker){
+    $err="Invalid ticker";
+}
+
+location($bounceback.qsa(array(id=>$id,error=>$err)));//redirect to the post they just made
+
+?>

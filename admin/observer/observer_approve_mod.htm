@@ -1,0 +1,150 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once($D_R.'/lib/_exchange_lib.php');
+include_once("$D_R/admin/lib/_article_data_lib.php");
+include_once($D_R.'/lib/config/_article_config.php');
+include_once("$D_R/admin/lib/_contributor_class.php");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once($D_R.'/lib/_convert_charset.class.php');
+$NewEncoding = new ConvertCharset('iso-8859-1', 'utf-8', 1);	//set to 1 for numeric entities instead of regular chars
+global $S4,$S5;
+
+$appr_gazette=$AD->getPerm("observer_approve");
+
+if(!$appr_gazette){
+	admin_error();
+}
+
+$delarticle=array();
+$approve=array();
+$viewapproved=$_POST[viewapproved];
+$delarticle=$_POST[delarticle];
+$approve=$_POST[approve];
+
+$bounceback="observer_approve.htm".qsa(array(error=>"-"));
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="DELETE FROM observer_articles WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+}
+
+
+if(is_array($approve))
+{
+	foreach($approve as $key=>$val)
+	{
+	  	 $sqlObserverData 	= "select * from observer_articles where id=".$key;
+		 $resObserverData			=  exec_query($sqlObserverData,1);	
+		 if($resObserverData && count($resObserverData)>0)
+		 {
+			 	$title				=  addslashes($resObserverData['title']);
+		 		$sqlGetArticle		=  "SELECT id from articles where title='".trim($title)."'";
+				$resArticle			=  exec_query($sqlGetArticle,1);
+				if(!($resArticle))
+				{
+					update_query('observer_articles',array(approved=>'1'),array(id=>$key));
+					
+					$objCont			= new contributor();				
+					$article['title']   = addslashes($resObserverData['title']);
+					$contrName			= addslashes($resObserverData['contrib_name']);
+					$getContrbInfo		= $objCont->getContributor($id=NULL,$contrName);
+					if($getContrbInfo && count($getContrbInfo)>0)
+					{
+						$contrib_name	=	$getContrbInfo['name'];
+						$contrib_id		=	$getContrbInfo['id'];
+					}
+					else
+					{
+						$cont = array();
+						$cont[name]	=	$contrName;
+						$cont[has_bio]	=	0;
+						$cont[suspended]	=	0;
+						$contrib_id=insert_query("contributors",$cont);
+						if($contrib_id)
+						{
+							$sqlGroup	=	"select id from contributor_groups where group_name='The New York Observer'";
+							$resGroup	=	exec_query($sqlGroup,1);
+							if($resGroup && count($resGroup)>0)
+							{
+								$group_id	=	$resGroup['id'];
+							}
+							else
+							{
+								$group					=	array();
+								$group[group_name]		=	'The New York Observer';
+								$group[type]			=	'content_category';
+								$group[is_active]		=	'1';
+								$group_id				=	insert_query("contributor_groups",$group);
+							}
+
+							insert_query("contributor_groups_mapping",array("contributor_id"=>$contrib_id,"group_id"=>$group_id));
+						}
+					}
+					
+					$article['contrib_id']		=	$contrib_id;
+					$article['seo_title']		=	addslashes($resObserverData['title']);
+					$article['approved']		=	'0';
+					$article['sent']			=	'0';
+					$article['is_live']			=	'0';
+					$article['date']			=	date('Y-m-d H:i:s',strtotime($resObserverData['date']));
+					$article['character_text']	=	addslashes($resObserverData['character_text']);
+					$body						=   trim($resObserverData['body']);
+					$article['body']			=	addslashes($body);
+					
+					$sqlSection 	=	"select section_id from section where article_pagename='article_thenewyorkobserver'";
+					$resSection		=	exec_query($sqlSection,1);
+					if($resSection && count($resSection)>0)
+					{
+						$article['subsection_ids']	=	$resSection['section_id'];
+					}
+					
+					//$article['subsection_ids']	=	'49';
+					$article['contributor']		=	$contrName;
+					$article['layout_type']		=	'observer';
+					if(empty($id))
+					{
+							$id=insert_query("articles",$article);
+							if($id)
+							{
+								$articleRevision['article_id']=$id;
+								$articleRevision['page_no']=1;
+								$articleRevision['revision_number']=1;
+								$articleRevision['body']=$article['body'];
+								$articleRevision['updated_by']='minyanville staff';
+								$articleRevision['updated_date']=mysqlNow();
+								//print_r($articleRevision);
+								if($articleRevision['body']!=""){
+									$revision_id=insert_query("article_revision",$articleRevision);
+								}
+							$objThread = new Thread();
+							$threadId=$objThread->post_thread($id);
+							if(empty($threadId)){
+								echo "There was an error while creating the discussion thread from this artcle. <br />Here are the details of the error:<br />".mysql_error();
+								return;
+							}
+								$obContent = new Content(1,$id);
+								$obContent->setArticleMeta();
+						}
+					}
+				}
+				else
+				{
+					location($bounceback.urlencode("Article Already Exist"));
+				}
+		}
+	} // End foreach	
+		
+	location($bounceback.urlencode("The articles were moved"));
+}
+
+if (count($delarticle))
+{
+location($bounceback.urlencode("The articles were deleted"));
+exit;
+}
+
+?>

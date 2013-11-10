@@ -1,0 +1,20 @@
+<?
+
+if ($_GET['search'] == "stock") {
+
+		if(!isset($qs))$qs="";//set $qs so search results show
+		$qs=lc($qs);
+        $pattern = array('(', ')');
+        $replacement = array('', '');
+        $qsstock=str_replace($pattern,$replacement, $qs);
+        $qsresult=is_stock($qsstock);
+        if($qsresult){
+          location("http://finance.minyanville.com/minyanville?Page=QUOTE&Ticker=".$qsstock);
+          exit;
+        }
+        else{
+          location("http://finance.minyanville.com/minyanville?Page=QUOTE&Ticker=");
+          exit;
+        }
+}
+?>

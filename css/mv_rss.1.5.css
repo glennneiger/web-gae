@@ -1,0 +1,79 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*///// DESCRIPTION & TERMS START /////*/
+#pgTitle 					{ color: #113b61; font-size: 24px; font-family: Arial; margin:0 0 16px 0; padding: 0;}
+.intro-columns				{ list-style-type: none; margin: 0; padding: 0; font-family: Arial; font-size: 12px; color: #404040;  }
+.intro-columns li				{ text-align: left;}
+.intro-columns #clmn-one		{ width: 460px; float: left;  } 
+.intro-columns #clmn-two		{ width: 460px; float: left; margin-left: 20px; } 
+.rssTerms 						{ list-style-type: none; margin: 0; padding: 0; font-family: Arial; font-size: 12px; color: #404040;}
+.rssTerms  li					{ text-align: left;}
+.rssTerms #terms-block			{ width: 940px; float: left; }
+/*///// DESCRIPTION & TERMS END /////*/
+
+/*///// BOX STYLE START /////*/
+.rss-box 						{ width: 460px; background: rgb(242,242,242); border: 1px solid rgb(183,196,207); position: relative; margin: 0; padding: 0px; color:#4c4c4c; }
+.large-box 						{ height: 420px; }
+.medium-box						{ height: 400px; }
+.small-box						{ height: 62px; }
+.rss-box .divider1				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 94px; }
+.rss-box .divider2				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 125px; }
+.rss-box .divider3				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 156px; }
+.rss-box .divider4				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 187px; }
+.rss-box .divider5				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 218px; }
+.rss-box .divider6				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 249px; }
+.rss-box .divider7				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 280px; }
+.rss-box .divider8				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 311px; }
+.rss-box .divider9				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 342px; }
+.rss-box .divider10				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 373px; }
+.rss-box .divider11				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 404px; }
+.rss-box .divider12				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 435px; }
+.rss-box .divider13				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 466px; }
+
+
+
+.rss-box .namePanel				{ width: 440px; background: url(http://storage.googleapis.com/mvassets/images/rss/rrs_bnr_top_bkg.png) repeat-x top left; padding: 6px 10px 0 10px; color:#4c4c4c;}
+.rss-box .namePanel .bnr-labels 	{ height:57px; margin: 0; padding: 0; list-style-type: none; font-family: Arial, helvetica, sans-serif; color: rgb(8,108,26); font-size: 11px; font-weight: bold; }
+.rss-box .namePanel .bnr-labels li {}
+.rss-box .namePanel .bnr-labels  .label-one { width: 55px; margin-right: 81px; float: left; font-weight:bold;}
+.rss-box .namePanel .bnr-labels  .label-two { width: 245px; margin-right: 55px;  float: left; font-weight:bold; }
+.rss-box .namePanel .bnr-labels  .label-three { width: 150px; font-size: 16px; color: #ffffff; margin-top: 10px;  float: left; font-weight:bold; }
+.rss-box .namePanel .bnr-labels  .url-field  { width: 200px;float: left;margin-left: 4px; }
+.rss-box .namePanel .bnr-labels  .url-field  form{ width: 245px; display: inline; margin: 10px 0 0 0; float: left;}
+.url-box 						{ width: 185px; margin: 0; padding: 1px 2px 3px 2px; border:1px solid #cccccc; color: #999999;}
+.main-urlBox 					{ color: rgb(76,76,76);}
+.rss-box .namePanel .bnr-labels  .main-rss-icon { width: 70px; height: 30px; float: left; margin: 5px 0 0 5px; }
+.rss-box .rows				{ margin:0; padding: 0; height:180px;}
+.rss-box .rows .feed-titles	{ width: 150px; margin:8px 4px 0 0; padding: 0; list-style-type: none; font-size: 13px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; line-height: 13px; float: left; }
+.rss-box .rows .feed-titles li { padding: 0 0 18px 0; }
+.rss-box .rows .feed-url		{ margin: 0; padding: 0; list-style-type: none; float: left;}
+.rss-box .rows .feed-url form 	{ margin: 4px 0 9px 0; padding: 0; height: 22px; }
+.rss-box .rows .feed-icon	{ margin: 5px 0 0 5px; padding: 0; list-style-type: none; float: left;width: 90px; }
+.rss-box .rows .feed-icon li	{ width: 100px; height: 20px; margin-bottom: 11px; padding: 0;}
+.rss-box .rCnr-tl			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-tl-g1.png); top: -1px; left: -1px; position: absolute;}
+.rss-box .rCnr-tr			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-tr-g1.png); top: -1px; right: -1px; position: absolute;}
+.rss-box .rCnr-bl			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-bl.png); bottom: -1px; left: -1px; position: absolute;}
+.rss-box .rCnr-br			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-br.png); bottom: -1px; right: -1px; position: absolute;}
+.rss-box .rCnr-bl-g			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-bl-g1.png); bottom: -1px; left: -1px; position: absolute;}
+.rss-box .rCnr-br-g			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-br-g1.png); bottom: -1px; right: -1px; position: absolute;}
+/*///// BOX STYLE END /////*/
+
+/*///// BOX PLACEMENT START /////*/
+#description-placement 		{ margin: 20px 20px; padding: 0; float: left; }
+#allArt-box					{ width: 460px; margin: 0 20px 20px 20px; float: left; }
+#df-box						{ width: 460px; margin: 0 20px 20px 0; float: left; }
+#box-one					{ width: 460px; margin: 0 20px 0 20px; float: left; }
+#box-two					{ width: 460px; margin: 0 20px 0 0; float: left; }
+#box-three					{ width: 460px; margin: 20px 20px 0 20px; float: left; }
+#box-four					{ width: 460px; margin: 20px 20px 0 0; float: left; }
+#box-five					{ width: 460px; margin: 20px 20px 0 20px; float: left; }
+#terms-placement			{ margin: 20px 20px; padding: 0; float: left; }
+/*///// BOX PLACEMENT END /////*/
+
+#rss-icon a img{
+	margin-right:5px;	
+}
+.main-rss-icon a img{
+	margin-right: 5px;
+}

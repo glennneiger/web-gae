@@ -1,0 +1,78 @@
+<?
+$page = "gazette";
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+include("$ADMIN_PATH/_header.htm");
+$edit_approve_feed=$AD->getPerm("feed_edit_approve");
+if(!$edit_approve_feed){
+	admin_error();
+}
+if(count($_POST) >0  && count($_POST['chkDelete'] > 0))
+{
+	foreach($_POST['chkDelete'] as $comment_id)
+    {
+    	del_query("ex_post", "id", $comment_id);
+        del_query("ex_post_content", "post_id", $comment_id);
+    }
+    $error = "Comments has been deleted sucessfully";
+}
+$pagesize=10;
+$qry = "SELECT EP.id,EP.teasure,EP.title FROM ex_thread ET,ex_post EP WHERE ET.id=EP.thread_id AND
+ET.content_table='daily_feed' AND ET.title <>'' AND EP.suspended='0' ORDER BY EP.post_time DESC";
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+$pagedata = exec_query($qry);
+?>
+<br>
+<?if($AD->getPerm("feed_edit_approve")){?>
+	<a href="feed.htm">Create/ Edit Daily Feed</a><br>
+    <a href="approvefeed.htm">Approve Daily Feed</a><br>
+<?}?>
+<br>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+
+<table width=800 align=center style="border:1px black solid">
+<form method="post" action="<?=$handler?>">
+<TR bgcolor=#cccccc align=center>
+<TD width=50>Delete</TD>
+<TD<?colclass("title")?>>Comments</TD>
+</TR>
+<? if(count($pagedata))	{
+        foreach($pagedata as $i=>$row){
+        	$color=$i%2?"dddddd":"eeeeee";            
+?>
+	<TR bgcolor=<?=$color?>>
+	<TD><input type="checkbox" id="chkDelete" name="chkDelete[]" value="<?=$row['id']?>" title="Check to remove have this article removed"></TD>	
+	<TD><?=$row['teasure']?></TD>
+	</TR>
+<?} }?>
+	<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<TR>
+<TD colspan=100 align=center>
+<input type="submit" value="Delete Comments">
+</TD>
+</TR>
+</form>
+</table>
+<?include("$ADMIN_PATH/_footer.htm")?>

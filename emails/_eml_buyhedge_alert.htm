@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?
+global $is_ssl,$IMG_SERVER,$HTHOST,$HTNOSSLDOMAIN,$HTPFXSSL,$D_R;
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("../lib/layout_functions.php");
+include_once("../lib/_news.php");
+include_once("$D_R/lib/buyhedge/buyhedgedata.php");
+include_once("../lib/_content_data_lib.php");
+
+$objContent= new Content();
+$id=$_GET['id'];
+$objbuyhedgeData= new buyhedgeData("buyhedge_posts");
+$getAlert=$objbuyhedgeData->getPostDataAlert($id);
+$body=$objContent->getCountWords($getAlert['body'],$count="120");
+$getReadMoreAlert=$objbuyhedgeData->getReadMoreAlert($id);
+?>
+<title>Minaynville - <?=$getAlert['title']?></title>
+</head>
+
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<div style="margin:0px auto; padding:0px; width:720px;">
+
+    <div style="float:left; width:718px; text-align:center; margin:0px; padding:0px;">
+	<div style="width:718px; border:1px solid black;">
+	<a href="<?=$HTNOSSLDOMAIN;?>/buyhedge/">
+	<img border="none" width="718" height="82" alt="" src="<?=$IMG_SERVER;?>/images/buyhedge/email_heading_img.jpg" style="background-position:bottom; vertical-align:bottom;" alt="Buy and Hedge"/></a></div>
+
+    	<ul style="width:673px; float:left; list-style:none; color:#fffff; text-align:left; margin:0px; padding:5px 20px 5px 25px; font-size:12px; font-family:Arial, Helvetica, sans-serif;">
+        	<li style="float:left; margin:0px 40px 0px 0px;"><a href="<?=$HTNOSSLDOMAIN;?>" style="color:#113B61;">Minyanville.com</a></li>
+            <li style="float:left; margin:0px 40px 0px 0px;"><a href="<?=$HTNOSSLDOMAIN;?>/buyhedge/" style="color:#113B61;">Buy and Hedge</a></li>
+            <li style="float:left; margin:0px 40px 0px 0px;"><a href="<?=$HTNOSSLDOMAIN;?>/subscription/" style="color:#113B61;">Subscription Products - Free Trial</a></li>
+            <li ><a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/controlPanel.htm" style="color:#113B61;">Free Email Newsletters</a></li>
+        </ul>
+    </div><!--Banner and Top Navigation end -->
+    <div style="clear:both;"></div>
+    <div style="font-family:Helvetica, Arial, sans-serif; font-size:12px; padding:0px 0px 0px 0px; margin:20px 10px 0px 10px;">
+	   	<h1 style="color:#304a58; font-size:24px; font-weight:bold; margin:0px 0px 5px 0px; padding:0px;"><a style="color:#304a58; font-size:24px; font-weight:bold; margin:0px 0px 5px 0px; padding:0px; text-decoration:none;" href="<?=$HTNOSSLDOMAIN.$getAlert['url'];?>"><?=$getAlert['title'];?></a></h1>
+        <p style="color:#232323; font-size:13; margin:0px; padding:0px;"><?=$body;?><br /><br />
+<a href="<?=$HTNOSSLDOMAIN.$getAlert['url'];?>" style="text-decoration:none;color:#ffffff;">
+<div style="background-color:#a22e0b; color:#ffffff; font-size:13px; border:none; padding:5px 10px 5px 10px; text-transform:uppercase; font-family:Helvetica Bold, Arial, sans-serif; font-weight:bold; cursor:pointer;width:80px;">Read More</div>
+</a>
+</p></div><!--content end -->
+    <div style="clear:both;"></div>
+    <div style="background-color:#dadada; font-family:Helvetica, Arial, sans-serif; font-size:12px; padding:10px 10px 10px 10px; margin:20px 0px 10px 0px;">
+	   	<h1 style="color:#10181c; font-size:18px; margin:0px 0px 10px 0px; padding:0px; font-family:Helvetica Bold, Arial, sans-serif;">Recent alerts from Buy and Hedge</h1>
+        <? foreach($getReadMoreAlert as $value) {?>
+        <h2 style="color:#3c546c; font-size:13px; margin:0px 0px 10px 0px; padding:0px;"><a href="<?=$HTNOSSLDOMAIN.$value['url'];?>" style="color:#3c546c; margin:0px 0px 15px 20px;"><?=$value['title'];?></a></h2>
+        <? } ?>
+
+    </div><!--Recent Alerts end -->
+
+    <div style="text-align:center; color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:11px; width:700px; height:25px; padding:12px 0px 0px 0px;">&copy; 2011 Minyanville Media Inc, 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+    <a href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm" style="color:#3c546c;">Subscribe</a>&nbsp;|&nbsp;
+    <a href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm" style="color:#3c546c;">Unsubscribe</a>&nbsp;|&nbsp;
+    <a href="<?=$HTNOSSLDOMAIN ?>/rss/" style="color:#3c546c;">RSS</a>&nbsp;|&nbsp;
+    <a href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm" style="color:#3c546c;">Disclaimers</a>&nbsp;|&nbsp;
+    <a href="<?=$HTNOSSLDOMAIN?>/company/contact.htm" style="color:#3c546c;">Contact Us</a>&nbsp;|&nbsp;
+    <a href="<?=$HTNOSSLDOMAIN?>/ads/docs/mvMediaKit2013.pdf" style="color:#3c546c;">Advertise With Us</a></div><!--Footer end -->
+
+</div><!--Main wrap end -->
+
+
+</body>
+</html>

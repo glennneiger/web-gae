@@ -1,0 +1,135 @@
+<?
+/* Operative Configuration *****/
+/* $zone_name="articlelisting";
+$tile728x90=1;
+$tile160x30=2;
+$tile300x250=3; */
+/* End Operative Configuration *****/
+$pageName = "articlelisting";
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav","minyanville");
+include("../_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+global $cm8_ads_1x1_Text,$cm8_ads_Button_160x30;
+//variable for filtering
+if ($_GET['limit'] != "") {
+	$start = $_GET['limit'];
+	$end = $start +100;
+} else {
+	$start = 0;
+	$end = 100;
+}
+
+//query for 100 articles
+$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, date, blurb, keyword,body, position, character_text from articles, contributors where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' ORDER BY date DESC LIMIT " . $start . "," . $end;
+$results = exec_query($sql);
+?>
+
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div id="article-left">
+<div class="rss_common_main">
+<div  class="footer_common_title" style="width:645px;">
+<table width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td>List of Minyanville Articles</td>
+				<td>			
+				<div  class="section_ads_main">
+				<? // = show_ads_operative($zone_name,$tile160x30,"160x30","",""); ?>
+				<?
+					$bannername=$cm8_ads_Button_160x30;
+					CM8_ShowAd($bannername);
+				?>
+				</div>
+				</td>
+			  </tr>
+			</table>
+<br /></div>
+	  <div style="float:left;"><table cellpadding="0" cellspacing="0" width="100%" border="0" align="left">
+      <tr>
+        <td><b>Subscribe to minyanville article RSS: <a href="<?=$HTPFX.$HTHOST;?>/rss/minyanvillearticle.rss"><b><?=$HTPFX.$HTHOST;?>/rss/</b></a><br  /><br /></td>
+      </tr>
+      </table><br /></div>
+
+	<div style="float:left;"><table cellpadding="0" cellspacing="0" width="90%" border="0" align="left">
+	<tr>
+	<td>
+		<div>
+			<ul id="articleList">
+			<?
+            $i=0;
+			foreach ($results as $row )
+			{
+				if (($row['contributor'] != '') && ($row['contributor'] != $row['author']))
+				{
+					$row['author'] = $row['contributor'];
+				}
+
+				if ($currDate != date('M d',strtotime($row['date'])))
+				{
+					$currDate = date('M d',strtotime($row['date']));
+					if($i != 0)
+					{
+					?>
+					</ul>
+					<ul id="articleList">
+					<? } ?>
+                    <span class="post_date"><?= $currDate; if($domain!="ameritrade") {
+					  $bannername=$cm8_ads_1x1_Text;
+					  CM8_ShowAd($bannername);	
+								?>
+
+<!--                       (Sponsored By: <SCRIPT LANGUAGE="JavaScript">
+document.write('<SCR'+'IPT LANGUAGE="JavaScript1.1" SRC="http://ad.doubleclick.net/adj/site222.tmus/<?=$zone_name;?>;tile=4;sz=1x1;ord=' + ord + '?"></SCR'+'IPT>');
+</SCRIPT>)
+--><? } ?></span>
+
+			<?	} ?>
+
+
+                    <li><a href= <?= $pfx.makeArticleslink($row['id'],$row['keyword'],$row['blurb'])?>><?= $row['title']; ?></a> by <?= $row['author']; ?> <span class="time">at <?= date('g:i a',strtotime($row['date'])); ?></span></li>
+
+				<?
+        		$i++;
+         } ?>
+
+			</ul>
+
+				</div>
+
+				</td>
+			</tr>
+
+			<tr>
+
+			</td></tr>
+
+			<tr><td>
+
+
+			<br>
+			 More:
+			<? if ($start > 0) { ?>
+			<a href="<?= $PHP_SELF;?>?limit=<?=$start - 100;?>">Recent Articles</a> |
+			<? } ?>
+			<a href="<?= $PHP_SELF;?>?limit=<?=$end;?>">Past Articles</a>
+			<br>
+			<br>
+            <div id="rssinfo" <? if ($_GET['limit'] != "") { echo "style='display:none;'"; } ?>><br>
+			</div>
+
+            </td></tr>
+	   </table></div>
+
+
+</div>
+</div>
+<!--left contaner end here-->
+<?
+$arrRightCols	=	array('show_video','show_adblade','show_mostpopular','email_alert','show_rss_emailalert','show_localguides');
+include("../_rightcolumn.htm");
+?>
+</div>
+</div>
+<? include("../_footer.htm"); ?>

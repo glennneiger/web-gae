@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+global $D_R;
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/_news.php");
+global $viaProducts,$HTHOST,$HTPFX,$D_R,$IMG_SERVER;
+$pageName = "jack_home";
+jack_lang($pageName);
+$advideoPath= $HTPFX.$HTHOST.'/laveryinsight/Video/Lavery Promo Final.flv';
+$stillfilepath = $IMG_SERVER.'/images/jack/lavery.jpg';
+$getresult = getContribuotrDetails('Jack Lavery');
+$contribid =$getresult['id'];
+$productName="subLaveryInsight";
+$trialtype="SoftTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+$_SESSION['setSessionReferal'] =  $_SERVER['HTTP_REFERER'];
+//set google referal if user is coming from Google with param from = google
+ setSessionReferal($_REQUEST['from'], $_SERVER['HTTP_REFERER']);
+if($_GET['from']){
+	$from=$_GET['from'];
+}else{
+	$from=substr($_SERVER['HTTP_REFERER'],7);
+}
+$pcode = (isset($_REQUEST['pcode']))? trim($_REQUEST['pcode']):'Enter Promo Code (Optional)';
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+$pageName = "jacklavery_softtrial";
+$objPage= new Page($pageName);
+$pageMetaData=$objPage->getMetaData();
+ if(strtolower($from) == 'google' ){
+	$refererSourceId ='google';
+}elseif(strtolower($from) == 'yahoo' ){
+	$refererSourceId ='yahoo';
+}elseif(strtolower($from) == 'bing' ){
+	$refererSourceId ='bing';
+}else{
+	$refererSourceId='';
+}
+?>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$pageMetaData['title']?>-Minyanville</title>
+<meta name="description" content="<?=$pageMetaData['description']?>" >
+<meta name="keywords" content="<?=$pageMetaData['keywords']?>">
+<!-- google anaytics  code -->
+
+
+
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.css" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/min/ibox.1.1-min.js" type="text/javascript"></script>
+<link href="<?=$HTPFX.$HTHOST?>/css/jacklaverySoft.css" rel="stylesheet" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/soft_trials.1.4.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/redesign.1.26.js" type="text/javascript"></script>
+</head>
+
+<body>
+<center>
+<!--Lavery main start from here-->
+<div class="LaverySoftMAin">
+<table cellpadding="0" cellspacing="0" border="0">
+<tr><td>
+<!--Main body start from here-->
+<div class="FlexSoftMAininner">
+<div class="LaveryHeader">
+<img src="<?=$IMG_SERVER?>/images/jacklaveryTrial/LaveryHeader.jpg"  border="0" alt="Flex Folio by quint tatro" />
+</div>
+<!--Left Content start from here-->
+<div class="left_cont_Flex">
+
+<div class="lavery_soft_titleMain">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="lavery_soft_title">
+Understanding the economy is critical for <br/>
+    investors and traders alike. But how do <br/>
+    you cut through the clutter of indicators, <br/>
+    statistics and opinions on what's important
+    and what it means for the financial markets?
+<h2>That's why Minyanville launched <strong>The Lavery Insight. </strong>Written by Jack Lavery, former Global Chief Economist for Merrill Lynch, The Lavery Insight condences everything you need to know about the economy and its effect on the financial markets each week in a quick, readable two page format. </h2>
+</div></td>
+    <td valign="top"><span class="LaveryImage">
+<img src="<?=$IMG_SERVER?>/images/jacklaveryTrial/laveryImage.jpg" alt="Jack Lavery" border="0" />
+<span>Jack Lavery</span>
+</span>
+</td>
+  </tr>
+</table>
+
+
+
+
+</div>
+
+
+<div class="LaveryFreeTrialBoxMain">
+<div class="LaveryFreeTrialBox">
+
+<div class="LaveryFreeTrialBoxLeft">
+<h1>14 day free trial</h1>
+<div class="product_text"><!--Lorem Ipsum is simply dummy text of the printing and typesetting industry.--></div>
+</div>
+
+<div class="LaveryFreeTrialBoxRight">
+<form action="" method="get">
+
+<input id="fname" name="fname" type="text" value="Enter First Name" onfocus="javascript:if(this.value=='Enter First Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('fname',this.value,'Enter First Name');" tabindex="1" />
+<input id="lname" name="lname" type="text" value="Enter Last Name" onfocus="javascript:if(this.value=='Enter Last Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('lname',this.value,'Enter Last Name');"tabindex="2" />
+<input id="uid" name="uid" type="text" value="Enter Email" onfocus="javascript:if(this.value=='Enter Email') this.value=''; return false;" onblur="javascript:chkSpaceNull('uid',this.value,'Enter Email');" tabindex="3" />
+<input name="pwd_t" id="pwd_t" style="display:;" type="text" onfocus="convertTextToPass('pwd_t','pwd','password');"  value="Password" class="search_input_box_pass" tabindex="4" />
+
+<input name="pwd" id="pwd" style="display:none;" type="password" onblur="javascript:checkPassNull('pwd_t','pwd');" value="" class="search_input_box_pass" tabindex="4" />
+
+<input id="repwd_t" name="repwd_t" style="display:;" type="text" onfocus="convertTextToPass('repwd_t','repwd','password');" value="Re-Enter-Password" class="search_input_box_pass" tabindex="5" />
+<input id="repwd" name="repwd" style="display:none;" type="password" onblur="javascript:checkPassNull('repwd_t','repwd');"  value="" class="search_input_box_pass" tabindex="5" />
+<input id="promocode" name="promocode" type="text" value="<?=$pcode ?>" onfocus="javascript:if(this.value=='Enter Promo Code (Optional)') this.value=''; return false;" onblur="javascript:chkSpaceNull('promocode',this.value,'Enter Promo Code (Optional)');" tabindex="6" />
+<div class="jacklaveryerrmsg" id="errmsg">&nbsp;</div><div style="float:right;"><img src="<?=$IMG_SERVER?>/images/jacklaveryTrial/submitTrial.jpg" onclick="Javascript:validateSoftTrial('jacklavery','14','<?=$trackname;?>','<?=$refererSourceId?>');" alt="Submit" align="right"  style="cursor:pointer; padding-right:21px;" tabindex="7" /></div>
+</form>
+</div>
+</div>
+</div>
+
+
+
+<!--Article area start from here-->
+<div class="LaveryArticleMain">
+<h1>You'll get fast, pragmatic, analytical insight into major domestic and international economic, financial market, political, and public policy issues that impact the U.S. economy and financial markets.<br/>
+<br/>
+Jack approaches economic analysis from the viewpoint that the consensus is generally wrong. What makes <strong>The Lavery Insight</strong> different is Jack's analytical ability to tell his readers by how much and in which direction the consensus is wrong.<br/></h1>
+
+<div class="Lavery_window_trial_Main">
+<div class="Lavery_window_trial_boxRight">
+<ul>Subscribe to The Lavery Insight and each week you'll get Jack's:
+  <li><span > Early calls </span>on the state of the economy and financial markets </li>
+  <li><span > Predictions of major economic indicators to</span> be announced in the upcoming week such as employment numbers, inflation, interest rates, and more</li>
+  <li><span>Interpretation of major Indicators</span> after they are announced</li>
+  <li><span>Insight into lesser-known indicators</span> that could have a big impact on financial markets</li>
+  <li><span>Clear roadmap of the economy</span> and financial markets   </li>
+  </ul>
+</div>
+</div>
+
+<strong>As a bonus,</strong> you'll also get periodic intra-week updates from Jack with timely insight on reported figures, important events and anything that could shift the economic landscape.<br/>
+<br/>
+While Global Chief Economist at Merrill Lynch, Jack was named to Institutional Investor Magazine's "All America Research Team" each year. He built and directed Merrill's Global Securities Research and Economics complex, where he counseled money managers, institutional investors and high net worth individuals. He also ran Merrills Global Equities business for three years. He was especially valued by Merrill's army of financial consultants because of his ability to summarize key economic issues in fast and understandable format.<br/>
+<br/>
+Try <strong>The Lavery Insight </strong>free 14 days, and then continue for only $259 per year or $29 per month. Subscribe to any Minyanville product on an annual basis and get 20% off that product and Lavery Economic Report . Subscribe to any three Minyanville subscription products at the annual rate and get 25% off all products. <br/>
+<br/>
+
+
+
+<!--Product start from here-->
+
+<div class="jack_producttrial_container">
+<table width="90%" cellspacing="0" cellpadding="0" border="0" align="left">
+  <tbody><tr>
+    <td valign="middle"><img hspace="0" alt="The Lavery Insight" src="<?=$IMG_SERVER?>/images/jacklaveryTrial/add_to_cart_lavery_logo.jpg"/>
+    <h1>14 DAY FREE TRIAL!</h1></td>
+    <td><table width="100%" cellspacing="4" cellpadding="0" border="0" class="jack_add_to_cart_box_trial">
+      <tbody><tr>
+        <td width="50%" class="jack_recurringTrial">monthly</td>
+        <td width="0%" valign="top" align="center" rowspan="4"><img height="50" width="1" vspace="10" src="<?=$IMG_SERVER?>/images/jacklaveryTrial/cart_divider.jpg"/></td>
+        <td width="50%" class="jack_recurringTrial" colspan="2">annual</td>
+      </tr>
+	  <tr><td valign="top" align="center">$<?=$viaProducts['JackMonthly']['price']?></td><td valign="top" align="center">$<?=$viaProducts['JackAnnual']['price']?></td></tr>
+	  <tr><td align="center"><a ;="" onclick=" checkcart ('34','17','SUBSCRIPTION');" style="cursor: pointer;"><img border="0" alt="add to cart" src="<?=$IMG_SERVER?>/images/jacklaveryTrial/BuyNow.jpg"/></a></td>
+	  <td align="center"><a ;="" onclick=" checkcart ('35','17','SUBSCRIPTION');" style="cursor: pointer;"><img border="0" alt="add to cart" src="<?=$IMG_SERVER?>/images/jacklaveryTrial/BuyNow.jpg"/></a></td>
+	  </tr>
+	      </tbody></table></td>
+  </tr>
+</tbody></table>
+
+
+
+
+</div>
+<!--Article area Ends here-->
+
+
+
+<div class="AddtocartLaverymain">
+<h1>Get <span>The Lavery Insight</span> Now!</h1>
+<span><a  href="#" style="cursor:pointer;"><img src="<?=$IMG_SERVER?>/images/jacklaveryTrial/signUptrial.jpg"  onclick ="javascript:signup();" alt="Sign up for 14 day trial" border="0"  vspace="10"/></a></span>
+</div>
+
+<div class="Contactmain">
+<p>Questions? Contact us at 212-991-9357 or</p> <span><a href="mailto:support@minyanville.com">support@minyanville.com</a></span>
+</div>
+
+<div class="laverycommon_content_dis">
+Jack Lavery is the author of The Lavery Insight. The Lavery Insight contains Mr. Lavery's own opinions, and none of the information contained therein constitutes a recommendation by Mr. Lavery or Minyanville that any particular security, portfolio of securities, transaction or investment strategy is suitable for any specific person. Mr. Lavery will not advise you personally concerning the nature, potential, value or suitability of any particular security, portfolio of securities, transaction, investment strategy or other matter. All information contained within the Lavery Insight product is impersonal and not tailored to the investment needs of any specific person. Do not email Mr. Lavery seeking personalized investment advice, which he cannot provide. Mr. Lavery's past results are not necessarily indicative of future performance. The performance represented here is for informational purposes only, and should not be construed as an offer or solicitation of an offer to sell or buy any security. Please keep in mind that this Portfolio does not necessarily account for the different risk tolerances, investment objectives, and other criteria used by individual investors when making an investment decision. You are encouraged to conduct your own research and due diligence, and to seek the advice of a qualified securities professional before you make any investment.
+</div>
+
+
+</div>
+</div>
+<!--Left Content Ends here-->
+
+<!--Right Content start from here-->
+
+<div class="right_cont_Lavery">
+<div class="right_Video_Lavery">
+<? showTremorPlayerWithouads($advideoPath, $stillfilepath,'true',Null);?>
+			<div id="container"></div>
+</div>
+
+<div class="Lavery_common_container">
+
+<?=displayRecentHeadlinesJack($jacklang['jack_insight'],$contribid,$loginjack);?>
+
+</div>
+
+
+</div>
+<!--Right Content Ends here-->
+
+</div>
+<!--Main body Ends here-->
+
+</td>
+</tr>
+</table>
+</div>
+
+
+<!--Lavery main Ends here-->
+<div class="TrialFooter"><img src="<?=$IMG_SERVER?>/images/jacklaveryTrial/trialFooter.jpg" /></div>
+<?php
+$profileid=1;
+//googleanalytics($profileid,$trackname);
+googleanalytics();
+?>
+</center>
+</body>
+</html>

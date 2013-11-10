@@ -1,0 +1,123 @@
+<?php
+ini_set("max_execution_time",300);
+$pageName = "subscription_product_order";
+$pageId='manage_setting';
+$pageJS=array("config","ibox","iboxregistration","creditcard","nav","registerProduct");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","registration");
+include_once($D_R.'/_header.htm');
+include_once($D_R.'/subscription/cart.php');
+include_once($D_R.'/lib/registration/_register_product_design_lib.php');
+include_once($D_R.'/lib/registration/_register_product_data_lib.php');
+global $lang,$IMG_SERVER,$HTPFXSSL,$HTHOST,$viaMoneyBackClassId,$moneyBackSealText;
+build_lang($pageId);
+if(!isset($_SESSION['viaid']))
+{
+location("$HTPFXSSL$HTHOST/subscription/register/");
+}
+/*add product from registration page url for new campaing*/
+$sdefid=$_GET['subdefid'];
+
+if($sdefid){
+	if(in_array($sdefid,$productdef)){
+		if(empty($_SESSION['viacart']['SUBSCRIPTION'])){
+			addToCartRegister($sdefid);
+			if($_GET['pcode']){
+				$getpcval="";
+				$getpcval=addToCartRegisterPromocode($_GET['pcode']);
+			}
+		}
+	}
+}
+
+$objVia=new Via();
+$_SESSION['viaServiceError'] = false;
+
+if($objVia->viaException!=''){
+	$_SESSION['viaServiceError'] = True;
+	global $viaMaintainenceMsg ;
+	echo '<script>alert(\''.$viaMaintainenceMsg.'\')</script>';
+	location("$HTPFXSSL$HTHOST/subscription/");
+}
+
+$userloggedin=0;
+
+// map get product id
+if($_GET['pid'] && !$_SESSION['viacart'] && !$_SESSION['viaid']){
+$objcart = new ViaCart('cart');
+$sdefid =$_GET['pid'];
+$pdata = getProdSubPriceVal($sdefid);
+$objcart->add_item($sdefid, $pdata['0']);
+}
+
+$_SESSION['checkoutViacart'] = '';
+
+if($_SESSION['viaid']!=''){
+	$_SESSION['checkoutViacart'] = 'checkoutViacart';    //for checkout button
+}
+
+//if cart is empty
+if(!$_SESSION['viaid'] && !$_SESSION['viacart']){
+	location("$HTPFXSSL$HTHOST/subscription/");
+}
+$objRegDesign= new regitrationProductDesign();
+$navSelected1="bllng_nvg";
+$navSelected2="bllng_nvg";
+$navSelected3="cart_nvgselected";
+
+if(is_numeric($_SESSION['viaid']) && isset($_SESSION['viaid'])){
+	$userloggedin=1;
+}
+
+foreach($_SESSION['viacart']['SUBSCRIPTION'] as $arSubProduct)
+        {
+        	$oc_id=$arSubProduct['oc_id'];
+			 if(in_array($oc_id,$viaMoneyBackClassId))
+		     {
+            		$money_back_product = "1";
+	            	$orderStatus = $objVia->get_cancelled_order_status($_SESSION['viaid'],$oc_id);
+					if($orderStatus=="1")
+					{
+					$money_back_product = "0";
+					}
+            }
+        }
+?>
+
+<div class="shadow">
+    <div id="content-container">
+                <!-- Body content will display here -->
+        <div id="billing_panel">
+			<? echo $objRegDesign->regitrationHeader($navSelected1,$navSelected2,$navSelected3);?>
+			<div class="grey_text" style="margin-left:40px;">Please review your order below and click Submit to process or make changes as needed.</div>
+
+			<? echo $objRegDesign->registrationSubmitOrder(); ?>
+        </div><!--Left Billing panel end -->
+        <div id="yourcart_panel" class="konafilter">
+			<? echo renderyourcart($_SESSION['viacart'],'',$getpcval); ?>
+             <? if($money_back_product =="1"){  ?>
+        <div id="money_back_seal">
+		<div class="seal_text">
+		<?=$moneyBackSealText;?>
+		</div>
+		</div>
+        <? }?>
+            <? echo $objRegDesign->registerationNeedHelp(); ?>
+        </div><!--Rightside End -->
+    </div>
+</div>
+<?php
+$productName="subRegister";
+$trialtype="HardTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+	if($_GET['from']){
+		$from=$_GET['from'];
+	}else{
+		$from=substr($_SERVER['HTTP_REFERER'],7);
+	}
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+?>
+<? include($D_R."/_footer.htm"); ?>
+

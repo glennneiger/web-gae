@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?
+global $is_ssl,$IMG_SERVER,$HTHOST,$HTPFXSSL;
+include_once("../lib/layout_functions.php");
+include_once("../lib/ss/_news.php");
+$alertID=$_GET['aid'];
+
+$qry="SELECT a.id, a.id alert_id, UNIX_TIMESTAMP(a.date)udate, a.date, a.title,body FROM
+				ss_alerts a WHERE a.id in ($alertID) and a.type = 'alert'
+				AND a.sent='1' AND a.is_live='1' ORDER BY a.date DESC";
+
+$mailbody=exec_query($qry,1);
+$getresult=getOptionsSmithname();
+$contribid =$getresult['id'];
+?>
+<title>Minaynville - <?=$mailbody['title']?></title>
+<style type="text/css">
+body{
+margin:0px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#323232;
+}
+.copy_footer{
+font-size:11px;
+text-align:center;
+float:left;
+width:93%;
+padding:15px;
+line-height:20px;
+}
+.copy_footer a{
+color:#3c546c;
+}
+.recent_box_option{
+background-color:#dadada;
+float:left;
+padding:20px 20px 20px 30px;
+width:93%;
+line-height:25px;
+}
+.recent_box_option a{
+color:#083d70;
+font-weight: normal;
+}
+
+.recent_head_opt{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:18px;
+color:#3c546c;
+font-weight:bold;
+}
+.option_alert_body{
+float:left;
+padding-top:15px;
+line-height:20px;
+padding-left:8px;
+padding-bottom:10px;
+
+}
+.option_name{
+font-family: Arial, Helvetica, sans-serif;
+font-size:13px;
+font-weight:bold;
+margin:0px;
+text-align:left;
+color:#5792ca;
+text-decoration:none;
+padding-right:5px;
+}
+.option_name a{
+font-family: Arial, Helvetica, sans-serif;
+font-weight:bold;
+margin:0px;
+font-size:13px;
+padding:0px;
+text-decoration:none;
+color:#5792ca;
+
+}
+.option_date {
+color:#020202;
+font-family:Arial,Helvetica,sans-serif;
+font-size:11px;
+}
+.option_nav{
+background-color:#3c546c;
+color:#FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+padding:5px;
+}
+.option_nav a{
+color:#FFFFFF;
+}
+</style>
+</head>
+
+<body >
+
+<table width="60%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td><a href="<?=$HTPFX.$HTHOST;?>"><img src="<?=$IMG_SERVER;?>/images/redesign/minyan_logo_option_email.jpg" border="0" alt="Minyanville" /></a></td>
+    <td><a href="<?=$HTPFX.$HTHOST;?>/optionsmith"><img src="<?=$IMG_SERVER;?>/images/redesign/option_email_alert_header.jpg" border="0" alt="Option Smith" /></a></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="option_nav" style="background-color:#3c546c;color:#FFFFFF;font-family:Arial, Helvetica, sans-serif;font-size:12px;padding:5px;" >
+    <span style="padding-left:30px; padding-right:100px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>">Minyanville.com</a></span>
+
+    <span style="padding-right:20px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>/optionsmith">OptionSmith Home</a></span>
+
+    <span style="padding-right:20px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>/subscription/">Subscription Products - Free Trial</a></span>
+
+    <a style="color:#FFFFFF;" href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/controlPanel.htm">Free Email Newsletters</a>    </td>
+  </tr>
+    <tr>
+    <td colspan="2" style="color:#072E55;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:28px;line-height:34px;text-align:left;text-transform:none;vertical-align:top; padding-top:20px; padding-left:5px;"><a style="text-decoration:none;color:#072E55;" href="<?=$HTPFX.$HTHOST."/optionsmith/?id=".$mailbody['id'];?>"><?=preg_replace($specialchar,$replacechar,$mailbody['title']);?></a></td>
+  </tr>
+    <tr>
+    <td colspan="2">
+    <div class="option_alert_body" style="float:left;padding-top:15px;line-height:20px;padding-left:8px;padding-bottom:10px;">
+    <div style="width:auto; float:left; margin-right:15px;">
+     <img src="<?=$IMG_SERVER;?>/images/redesign/smith_image.jpg" border="0"  align="texttop" /></div>
+     <span class="option_name" style="font-family: Arial, Helvetica, sans-serif;font-size:13px;font-weight:bold;margin:0px;text-align:left;color:#5792ca;text-decoration:none;padding-right:5px;">
+     <a style="font-family: Arial, Helvetica, sans-serif;font-weight:bold;margin:0px;font-size:13px;padding:0px;text-decoration:none;color:#5792ca;" href="<?=$HTPFX.$HTHOST?>/gazette/bios.htm?bio=<?=$contribid?>">Steve Smith</a></span><span class="option_date" style="color:#020202;font-family:Arial,Helvetica,sans-serif;font-size:11px;"><?= date("F j, Y, g:i a", strtotime($mailbody['date'])) ?>
+    </span><br>
+<?
+    $pcount=0;
+			$position;
+			$alertbody=substr(strip_tags($mailbody['body']), 0,300);
+			$bodyAdd=$alertbody;
+			// $body=$alertbody;
+
+			if(strpos($bodyAdd,"<br>")!='')
+			{
+				$position[]=strpos($bodyAdd,"<br>");
+			}
+
+			if(strpos($bodyAdd,'<br />')!='')
+			{
+				$position[]=strpos($bodyAdd,'<br />');
+			}
+
+			if(strpos($bodyAdd,"</p>")!='')
+			{
+				$position[]=strpos($bodyAdd,"</p>");
+				$pcount++;
+			}
+
+			$position[]=strlen($bodyAdd);
+
+			sort($position);
+
+			$bodyAdd=substr($bodyAdd, 0, $position[0]);
+			//echo $body.$bodyAdd."...";
+			echo $bodyAdd."...";
+?>
+<br />
+    </div>    </td>
+  </tr>
+  <tr>
+  <td colspan="2" align="left">
+  <a href="<?=$HTPFX.$HTHOST."/optionsmith/post/id/".$mailbody['id'];?>">
+   <img src="<?=$IMG_SERVER;?>/images/redesign/recent_alert.jpg" vspace="20"  hspace="10" border="0"/ >  </a>  </td>
+  </tr>
+<?
+$articleqry="SELECT id,title from ss_alerts WHERE is_live='1' and approved ='1' and sent='1' and id<>'$alertID' order by date desc limit 0,3";
+$latestarticle=exec_query($articleqry);
+?>
+    <tr><td colspan="2">
+    <div class="recent_box_option" style="background-color:#dadada;float:left;padding:20px 20px 20px 30px;width:93%;line-height:25px;">
+     <span class="recent_head_opt" style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:18px;color:#3c546c;font-weight:bold;">Recent Alerts from OptionSmith</span><br />
+    <?
+		foreach($latestarticle as $row){
+	?>
+    	<a style="color:#083d70;font-weight: normal;" href="<?=$HTPFX.$HTHOST."/optionsmith/post/id/".$row['id'];?>"><?=$row['title'];?></a><br />
+   <? } ?>
+    </div>
+
+    </td>
+  </tr>
+      <tr>
+    <td colspan="2">
+    <div class="copy_footer" style="font-size:11px;text-align:center;float:left;width:93%;padding:15px;line-height:20px;">
+
+    &copy;<?=date("Y");?> Minyanville Media Inc, 708 Third Avenue, 6th Floor, New York, New York 10017<br />
+
+	<a href="<?=$HTNOSSLDOMAIN ?>" style="color:#3c546c;">Minyanville.com</a>&nbsp;|&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm"> Contact Us</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf">Advertise With Us</a>    </div>    </td>
+  </tr>
+      <tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+*/
+?>
+</div>
+</body>
+</html>

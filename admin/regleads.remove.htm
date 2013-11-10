@@ -1,0 +1,19 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$D_R/admin/_authenticate.htm");
+$id=$_GET['id'];
+
+if(!$refer=base64_decode($refer))
+	$refer="view_registration.htm";
+
+if(!$id){
+	location($refer.qsa(array(error=>"Couldn't remove. Didn't provide a lead id")));
+	exit();
+}
+
+del_query("new_registeration","id",$id);
+
+location(urlqsa($refer,array(error=>"The lead was removed")));
+
+
+?>

@@ -1,0 +1,487 @@
+<?
+global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER;
+include_once("$D_R/lib/_news.php");
+/*--page  authentication----------------------------*/
+$page="gazette";
+if($_POST[spost]){
+	$_POST=unserialize_post($_POST[spost]);
+	unset($_POST[spost]);
+}
+// no of slides initialised to display one fckeditor the first time.
+
+$id =$_GET['id'];
+$contributor_id = $_GET['contributor_id']; 
+$pagetag = $_POST['pagetag'];
+$slide_content = $_POST['slide_content'];
+
+include("$ADMIN_PATH/_header.htm");
+/*============set up permissions=================*/
+$editanyuser=$AD->getPerm("articles_all");//can't create anything
+$onlyself=$AD->getPerm("articles_own");
+$candelete=$AD->getPerm("articles_delete");
+$canapprove=($AD->getPerm("approve_gazette")||$AD->getPerm("approve_schoolhouse"));
+$edit_sch=$AD->getPerm("create_schoolhouse");
+$edit_gaz=$AD->getPerm("create_gazette");
+$edit_radar=$AD->getPerm("create_radar");
+
+/*=========================*/
+$cancreate=($edit_gaz||$edit_sch||$edit_radar);//they can create articles
+$edit_date=$AD->getPerm("articles_date");
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$cancreate && !$editanyuser && !$onlyself){
+	admin_error("You're not allowed to use this page.");
+}
+
+/*==============redirect users who aren't allowed to create slides=====*/
+if(!$cancreate && !$id){
+	$qry="SELECT id FROM slideshow
+		  ORDER BY date DESC";
+	$id=exec_query($qry,1,"id");
+	location("$PHP_SELF?id=$id");
+	exit();
+}
+/*==========related article contributors list=============*/
+$contrib_query="select distinct contributors.id,contributors.name from contributors,slideshow where contributors.id=slideshow.contrib_id order by contributors.name";
+
+/*==========List of contributors===========*/
+$author_query="select id,name from contributors order by name";
+/*==========list of articles==================*/
+//if($editanyuser || $onlyself) {
+if (!isset($contributor_id) and strlen($contributor_id)==0)
+{
+    $contributor_id=$AD->userInfo[contrib_id];
+}
+$slidelist = "SELECT DATE_FORMAT(s.date,'%m/%d/%Y %r')date,
+	s.id,s.title,c.name,s.contrib_id,s.note,s.contributor,s.total_slides
+	FROM slideshow s,contributors c
+	WHERE s.contrib_id=c.id and c.id=$contributor_id";
+if($onlyself)//only edit their own articles
+$slidelist.=" ORDER BY a.date DESC";
+
+if (!$_GET[errorMsg]){
+$pagedata = get_full_slideshow($id,0);
+$page_dataslides=get_full_slideshowcontent($id,0);
+}
+
+$handler = $HTPFX.$HTHOST."/admin/slideshow_mod.htm";
+$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$frm_url = $cloudStorageTool->createUploadUrl($handler , $options);
+
+  /*===== The first time page is viewed====*/
+ if(!$pagedata && !$_POST[slide])
+  {
+
+   	$tot_slides=1;
+	$pagedata[contributor]=$AD->userInfo[name];
+	$pagedata[contrib_id]=$AD->userInfo[contrib_id];
+	$pagedata[date]=mysqlNow();
+	$pagedata[udate]=time();
+	$pagedata[datefmt]=date($DATE_STR);
+
+	}
+   /**========Selected data should not be removed while changing the no of slides=====*/
+ elseif($pagedata && !$_POST[slide])
+ {
+
+ 	$qry = "SELECT SL.id,author_id,AU.name FROM slide_locking as SL ,admin_users as AU WHERE author_id = AU.id AND slide_id=".$id;
+    $res = exec_query($qry,1);
+    if($res['id'])
+    {
+        if($res['author_id'] != $_SESSION['AID'])
+        {
+            echo "<font color=red>".$res['name']." is already editing this slideshow</font>";
+            exit();
+        }
+    }
+    else
+    {
+    	insert_query('slide_locking',array('slide_id' => $id, 'author_id' => $_SESSION['AID'],'last_visit'=>mysqlNow()));
+    }
+
+    $tot_slides=$pagedata[total_slides];
+   /****code start for tags****/
+   	$pageitem=exec_query("SELECT id FROM ex_item_type WHERE item_table='slideshow'",1);
+
+	$tagquery="SELECT xbt.item_id, xbt.tag_id, xt.tag as tagname FROM ex_item_tags xbt, ex_tags xt where xbt.item_id=$id and xt.id = xbt.tag_id and xbt.item_type = $pageitem[id]";
+	$pagetag[tag]="";
+
+	$tagres = exec_query($tagquery);
+
+	foreach($tagres as $tagkey => $tagvalue)
+	{
+		if($pagetag[tag]=="")
+		{
+   			$pagetag[tag].= $tagvalue['tagname'] ;
+		}
+		else
+		{
+			$pagetag[tag].=",".$tagvalue['tagname'] ;
+		}
+	}
+
+   /****code end for tags****/
+
+
+ } elseif ($_GET[errorMsg]){
+
+    $tot_slides=$_POST[slide][total_slides];
+	$pagedata[title]=$_POST[slide][title];
+	$pagedata[contributor]=$_POST[slide][contributor];
+	$pagedata[total_slides]=$_POST[slide][total_slides];
+	$pagedata[note]=$_POST[slide][note];
+	$pagedata[date]=$_POST[slide][date];
+	for($slidecon=1;$slidecon<=$tot_slides;$slidecon++)
+	  {
+	   $page_dataslides[$slidecon-1][body]=$_POST[slide_content][body][$slidecon];
+	   $page_dataslides[$slidecon-1][slide_title]=$_POST[slide_content][slide_title][$slidecon];
+	  }
+
+} else {
+	$slide = $_POST['slide'];
+   	$tot_slides=$slide[total_slides];
+	$pagedata[title]=$slide[title];
+	$pagedata[contributor]=$slide[contributor];
+	$pagedata[total_slides]=$slide[total_slides];
+	$pagedata[note]=$slide[note];
+	$pagedata[date]=$slide[date];
+	for($slidecon=1;$slidecon<=$tot_slides;$slidecon++)
+	  {
+	   $page_dataslides[$slidecon-1][body]=$slide_content[body][$slidecon];
+	   $page_dataslides[$slidecon-1][slide_title]=$slide_content[slide_title][$slidecon];
+	  }
+
+}
+
+
+//-----------------make the date editable
+$breakDateStr="n|j|Y|G|i";
+list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,$pagedata[udate]));
+
+if($y=="2000" || $y=="1969"){//invalid date
+	$datefield=array();
+}else{
+	$datefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+}
+?>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin_slideshow.1.1.js"></script>
+<script>
+
+function actionname(frm){
+	var actionName= ('<?=$REQUEST_URI;?>');
+	frm.action=actionName;
+	frm.submit();
+}
+function convertHtmlToText(inputText) {
+    var returnText = "" + inputText;
+
+    //-- remove BR tags and replace them with line break
+    returnText=returnText.replace(/<br>/gi, "\n");
+    returnText=returnText.replace(/<br\s\/>/gi, "\n");
+    returnText=returnText.replace(/<br\/>/gi, "\n");
+
+    //-- remove P and A tags but preserve what's inside of them
+    returnText=returnText.replace(/<p.*>/gi, "\n");
+    returnText=returnText.replace(/<a.*href="(.*?)".*>(.*?)<\/a>/gi, " $2 ($1)");
+
+    //-- remove all inside SCRIPT and STYLE tags
+    returnText=returnText.replace(/<script.*>[\w\W]{1,}(.*?)[\w\W]{1,}<\/script>/gi, "");
+    returnText=returnText.replace(/<style.*>[\w\W]{1,}(.*?)[\w\W]{1,}<\/style>/gi, "");
+    //-- remove all else
+    returnText=returnText.replace(/<(?:.|\s)*?>/g, "");
+
+    //-- get rid of more than 2 multiple line breaks:
+    returnText=returnText.replace(/(?:(?:\r\n|\r|\n)\s*){2,}/gim, "\n\n");
+
+    //-- get rid of more than 2 spaces:
+    returnText = returnText.replace(/ +(?= )/g,'');
+
+    //-- get rid of html-encoded characters:
+    returnText=returnText.replace(/&nbsp;/gi," ");
+    returnText=returnText.replace(/&amp;/gi,"&");
+    returnText=returnText.replace(/&quot;/gi,'"');
+    returnText=returnText.replace(/&lt;/gi,'<');
+    returnText=returnText.replace(/&gt;/gi,'>');
+
+    //-- return
+    return returnText;
+}
+
+function deleteIt(){
+	if(confirm("Are you sure you want to delete this slideshow?")){
+		var frm=document["slideForm"];
+		frm["deleteslideshow"].value=1;
+		var actionName= '<?=$handler;?>';
+	     frm.action=actionName;
+		<!--alert (frm["deleteslideshow"].value);-->
+		frm.submit();
+	}
+}
+function Save(frm){
+	var err="";
+
+	if(!trim(getValByName("slide[title]"))){
+		err="Please give this slideshow a title\n";
+		alert(err);
+		return;
+	}
+	if(document.getElementById("slide[contrib_id]").value == "")
+	{
+		err="Please select an author\n";
+		alert(err);
+		return;
+	}
+	frm.submit();
+}
+function setFormSubmitMarker(frm,value)
+{
+   if(value=="contributor")
+  	 {
+  	   frm.id.value="";
+	 }
+}
+
+function setAutorName(frm,frmobj)
+{
+
+    if (frmobj.selectedIndex>0)
+    {
+        frm["slide[contributor]"].value=frmobj[frmobj.selectedIndex].text;
+    }
+    else
+    {
+        frm["slide[contributor]"].value="";
+    }
+}
+</script>
+
+<script>
+//$(window).bind('beforeunload', unlock_content(<?=$id?>));
+window.onbeforeunload = function() {
+	unlock_slideshow('<?=$id?>','TRUE');
+}
+</script>
+<style type="text/css">
+	#content_iframe
+	{
+		width: 315px;
+		height: 351px;
+	}
+</style>
+<br><br>
+<?if($AD->getPerm("banter_all")||$AD->getPerm("banter_own")||$AD->getPerm("create_banter")){?>
+	<a href="banter.htm">Create/ Edit Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("banter_approve")){?>
+	<a href="approvebanter.htm">Approve Buzz and Banter</a><br>
+<?}?>
+<?if($canapprove){?>
+<a href="approve.htm">Approve Articles</a><br>
+<a href="approve_slideshow.htm">Approve slideshow</a><br>
+<?}?>
+
+<br><br>
+
+<form method=get action="<?=$PHP_SELF?>">
+	<table align=center width=600 border=0>
+	<TR>
+	<TD>Select a contributor to view Slideshow:
+	<select name="contributor_id" onchange="setFormSubmitMarker(this.form,'contributor');this.form.submit();">
+
+	<option value="">--select contributor--</option>
+	<?
+	foreach(exec_query($contrib_query) as $row){
+			$sel=($contributor_id==$row[id]?" selected":"");
+			$disp=$row[name];
+			$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+		?>
+			<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+		<?}?>
+	</select>
+	</TD>
+
+	<TR>
+	<TR>
+	<TD>Select a slideshow to Edit:
+		<select name="id" onchange="this.form.submit();">
+		<?if($cancreate){?><option value="">--New slide--</option><?}?>
+		<?
+		if (strlen($contributor_id)<>0)
+		{
+			foreach(exec_query($slidelist) as $row){
+			$sel=($id==$row[id]?" selected":"");
+			$disp=$row[name]." - ".$row[title]." (${row[date]})";
+			$style=" style='background:#".($row[contrib_id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+		?>
+			<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+		<?}}?>
+		</select>
+	</TD>
+	</TR>
+	</table>
+</form>
+
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<?if($errorMsg){?><div class=error><?=strip($errorMsg)?></div><?}?>
+<form method="post" name="slideForm" action="<?=$frm_url?>" enctype="multipart/form-data">
+
+<? if($id!="") {  ?>
+<input type="hidden" name="id" id="id" value="<?=$id?>" >
+<?  }  ?>
+<input type="hidden" name="deleteslideshow" id="deleteslideshow" value="0" >
+
+<table align=center style="width:100%;" border=0>
+<TR>
+<TD width=1% align=right><label for="slide[title]"><b>Title</b>:</label></TD>
+<TD width=99%><?input_text("slide[title]",$pagedata[title],0,125," style='width:100%'")?><div id="char_error_msg">{Maximum character limit allowed is 125 characters}</div></TD>
+</TR>
+
+<TR>
+<TD align=right><label for="slide[contrib_id]"><b>Author</b>:</label></TD>
+<TD width=99%>
+
+<select name="slide[contrib_id]" id="slide[contrib_id]" onchange="setAutorName(this.form,this);" >
+<option value="">--select author--</option>
+<?
+foreach(exec_query($author_query) as $row){
+		$sel=(trim($pagedata[contributor])==trim($row[name])?" selected":"");
+		$disp=$row[name];
+		$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+	?>
+		<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+	<?}?>
+</select>
+<? if($pagedata[contributor]!=""){  ?>
+<input type="hidden" name="slide[contributor]" id="slide[contributor]" value="<?=$pagedata[contributor]?>" >
+<?  }  ?>
+</TD>
+</TR>
+
+<TR>
+<TD align=right><b>Date</b>:</TD>
+<TD>
+	<?if($edit_date){?>
+		<table cellpadding=0 cellspacing=0 border=0>
+		<TR>
+		<TD><?month_options("datefield[mo]",$datefield[mo])?></TD>
+		<TD><?day_options("datefield[day]",$datefield[day])?></TD>
+		<TD><?year_options("datefield[year]",$datefield[year],"",2002,date("Y")+3)?></TD>
+		<TD><?hour_options("datefield[hour]",$datefield[hour])?></TD>
+		<TD><?minute_options("datefield[min]",$datefield["min"])?></TD>
+		</TR>
+		</table>
+	<?}else{?>
+		<?=$pagedata[date]?>
+	<?}?>
+	<? if($pagedata['date']!=""){   ?>
+	<input type="hidden" name="slide[date]" id="slide[date]" value="<?=$pagedata['date']?>" >
+	<?  }  ?>
+</TD>
+</TR>
+
+<TR valign=top>
+<TD width=1% align=right><label for="slide[total_slides]" ><b> No of Slides</b>:</label></TD>
+<TD width=99%><select name="slide[total_slides]" id = "slide[total_slides]" onchange="actionname(this.form)" >
+<?
+for($totalslides=1;$totalslides<=30;$totalslides++){
+
+$sel=($totalslides==$tot_slides?"selected":"");
+			 ?>
+<option value="<?=$totalslides?>"<?=$sel?>><?echo $totalslides;?> </option>
+<? }?>
+
+ </select>
+</TR>
+<tr>
+<TD><label for="slide[note]"><b>Note:</b></label></TD>
+<TD><?input_text("slide[note]",$pagedata[note],0,255," style='width:100%'")?></TD>
+</tr>
+<TR>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/suggestion.js"></script>
+<TD width=1% align=right><label for="pagetag[tag]"><b>Tag</b>:</label></TD>
+<TD width=99%><?php input_text("pagetag[tag]",$pagetag[tag], 0, 500," style='width:45%' autocomplete='off' ")?></TD></TR>
+<script>
+var obj = actb(document.getElementById('pagetag[tag]'),customarray);
+</script>
+</TR>
+<?
+if($pagedata['slide_thumbnail']!=""){
+?>
+<TR>
+<TD width=1% align=right><label for="slide_thumbnail"><b> Thumbnail Image</b>:</label></TD>
+<TD width=99%><input type="text" value="<?=$pagedata['slide_thumbnail'];?>" style="width:100%"></TD>
+</TR>
+<?
+}
+?>
+<TR><TD width=1% align=right><label for="slide_thumbnail"><b> Thumbnail</b>:</label></TD>
+<TD width=99%><input type="file" name="slide_thumbnail" /></TD>
+</TR>
+<?
+for($i=1;$i<=$tot_slides;$i++)
+{?>
+    <TR valign=top>
+    <TD width=1% align=right><label for="slide_content[slide_title][$i]"><b> Slide<?echo $i;?> Title</b>:</label></TD>
+    <TD width=99%><?input_text("slide_content[slide_title][$i]",$page_dataslides[$i-1][slide_title],0,64," style='width:100%'")?><div id="char_error_msg">{Maximum character limit allowed is 64 characters}</div></TD>
+    </TR>
+    <?php
+    if($page_dataslides[$i-1]['slide_image']!=""){
+    ?>
+    <TR valign=top>
+    <TD width=1% align=right><label for="slide_content[slide_image][$i]"><b> Slide<?echo $i;?> Image</b>:</label></TD>
+    <TD width=99%><? input_text("slide_content[slide_imagepath][$i]",$page_dataslides[$i-1]['slide_image'],0,255," style='width:100%'");?></TD>
+    </TR>
+    <?php
+    }
+    ?>
+    <TR valign=top>
+    <?php
+    if($page_dataslides[$i-1]['slide_image']!=""){?>
+    <TD width=1% align=right><label for="slide_content[slide_image][$i]"><b> Change Slide<?echo $i;?> Image</b>:</label> </TD>
+    <?php
+    }
+    else{?>
+    <TD width=1% align=right><label for="slide_content[slide_image][$i]"><b> Slide<?echo $i;?> Image</b>:</label></TD>
+    <?php
+    }
+    ?>
+    <TD width=99%><input type="file" name="slide_content[slide_image][<?=$i?>]"><span style="font-weight:bold;font-size:12px;margin: 0 10px;">{Image size should be of 317x321px else image will be distorted}</span></TD>
+    </TR>
+
+    <TR valign=top>
+    <TD align=right><b>Entry <?echo $i;?></b>:</TD>
+    <TD align=left>
+
+    <textarea id="slide_content<?=$i?>" name="slide_content[body][<?=$i?>]"><?php echo strip($page_dataslides[$i-1][body]); ?></textarea>
+	   <script>
+       showMultiEditor('slide_content<?=$i?>',338,321,'<?=$i?>');
+       </script>
+    </TD>
+    </TR>
+<?}?>
+
+
+<TR>
+<TD colspan=2 align=center>
+	<hr width=100% size=1 color="#000000"><br>
+
+	<input type="button" value="Save" onClick="Save(this.form)" >
+	&nbsp;&nbsp;
+	<input type="button" value="Cancel" onclick="cancel('<?=$_GET['id']?>')">&nbsp;&nbsp;
+	<?if($candelete && $id){?><input type="button" value="Delete This Slideshow" onclick="deleteIt()"><?}?>
+    <?if($id){?>&nbsp;&nbsp;<input type="button" value="Preview This Slideshow" onClick="javascript:window.open('<?=$HTNOSSLDOMAIN?>/slideshow/?preview=1&a=<?=$id?>','','location=1,status=no,toolbar=0,menubar=no,resizable=0,width=782,height=710,scrollbars=yes,top=0,left=0');" ><?}?>
+
+</TD>
+</TR>
+</table>
+</form>
+<br>
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

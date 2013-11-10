@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+ 
+<?
+ 
+ 
+include_once("$D_R/lib/_exchange_lib.php");
+
+ 
+ 
+ build_lang('subscription_product');		global $lang;
+	 echo '<a href="javascript:iboxclose();"><img src="'.$IMG_SERVER.'/images/redesign/login_close.jpg" border="0" align="right" /></a><div  style="width:250px; " >
+	 	 <div class="sub_common_title" style="width:250px; padding-left:18px;">FlexFolio&nbsp;Subscription&nbsp;</div>
+	 <table width="150" cellspacing="2" cellpadding="2" border="0" class="quint_add_to_cart_box" style="margin-left:20px;">
+      <tbody><tr>
+        <td width="123" class="subs_recurring">'.$lang['Monthly'].'</td>
+        <td width="1" rowspan="3"><img width="1" height="70" src="http://localhost/images/redesign/cart_divider.jpg"/></td>
+        <td width="444" class="subs_recurring">'.$lang['Annual'].'</td>
+      </tr>
+      <tr>'.getProdSubPrice('FlexFolio').'</tr>
+      <tr>'.getaAddtoCartbtns('FlexFolio', 'add_to_cart.gif').'</tr>
+    </tbody></table></div>';	
+?>
+ 
+ 
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?
+global $HTPFX,$HTHOST;
+switch($_GET['error']){
+	case "Invalid Login":
+		$msg="We are sorry, your current login session is sexpired, please Login on <a href='".$HTPFX.$HTHOST."' target='_blank'>www.minyanville.com</a> to launch the buzz";
+		break;
+	case "NoBuzz":
+	default:
+		$msg="You do not currently have a subscription to Buzz & Banter.  To get a 14 day trial or learn more <a href='http://mvp.minyanville.com/buzz-banter-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=buzz' target=_blank>click here</a>.<br>";
+		break;
+}
+?>
+<script>
+window.external.SetTitle("Buzz and Banter / Error");
+</script>
+<b><?=$msg?></b>

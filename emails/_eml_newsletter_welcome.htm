@@ -1,0 +1,145 @@
+<?
+global $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+$datestr="%m/%d/%Y";
+$user_type = $_GET['user_type'];
+$user_email = $_GET['user_id'];
+$result_subs=exec_query("select fname, lname from subscription where email='$user_email'",1);
+$fname = ucfirst(strtolower($result_subs['fname']));
+$lname = ucfirst(strtolower($result_subs['lname']));
+$objUserData= new userData();
+$pass=$objUserData->decryptUserPassword($_GET['pwd']);
+if($user_type == 'newuser') {
+	$username = $user_email;
+}
+else
+{
+	$username = $fname." ".$lname;
+}
+
+
+
+?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Minyanville Daily Digest Welcome Email</title>
+<style type="text/css">
+body{margin:0px;}
+</style></head>
+
+<body>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td><table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+       <td>
+        <table width="730" border="0" cellspacing="0" cellpadding="0" >
+	    <tr>
+        <td style="vertical-align:middle;text-align:center;"></td>
+      </tr>
+
+		 <tr>
+       <td background="<?=$IMG_SERVER;?>/images/email_alert/backrd_img.jpg" >
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+          <tr>
+            <td width="25%" ><img src="<?=$IMG_SERVER;?>/images/email_alert/mv_logo.jpg" width="165" height="83" /></td>
+
+
+            <td width="75%" align="right" style="vertical-align:bottom; padding-bottom:5px;padding-right:5px;">
+			<table border="0" cellspacing="2" cellpadding="2" >
+            <tr>
+            <td colspan="5" align="right"><a href="<?=$HTNOSSLDOMAIN?>/library/search.htm" style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;"><span style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;">Search Minyanville</span></a></td>
+            </tr>
+              <tr >
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/community/home.htm" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">My Exchange</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/news_views" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">News &amp; Views</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/customproducts" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Subscription Products</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/register/new/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Two Week Free Trial</span></a>&nbsp;</td>
+                <td align="right"><a href="<?=$HTNOSSLDOMAIN?>" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Sign up for Email Newsletter</span></a></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+
+
+           </table></td>
+      </tr>
+      <tr>
+        <td style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+          <tr>
+            <td>
+
+			<!-- START NEWS ITEM -->
+			<div style="border-bottom: 1px solid #DDDAD4;padding:18px 6px 18px 0px;">
+			<table cellpadding="0" cellspacing="0">
+			<tr>
+			<td valign="top" style="font:13px Arial, sans-serif;color:#333">
+			<span style="font-family:Arial, Helvetica, sans-serif;background-repeat:no-repeat;font-size:20px;color:#2b5614;font-weight:bold;">Welcome.</span>
+            </td></tr>
+            <tr><td>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">You are now subscribed to Minyanville's Newsletters.</span>
+            </td></tr>
+            <tr><td>
+            <? if($user_type == 'newuser') { ?>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">To update your email preferences and make comments at the Minyanville site, please <a style="font-style=font-family:Arial, Helvetica, sans-serif;font-weight:bold;font-size:13px;text-decoration:none;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/login.htm">login</a> using: </a></span>
+			</td></tr>
+            <tr><td>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">Email : <?=$_GET['user_id']?>
+            <br>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;clear:both;padding-top:5px;">Password : <?=$pass?>
+            </td></tr>
+            <? } ?>
+
+			<tr><td>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">Minyanville also offers a series of subscription products that give you an edge with in-depth information, analysis, commentary and trading ideas.
+            <a style="font-style=font-family:Arial, Helvetica, sans-serif;font-weight:bold;font-size:13px;text-decoration:none;" href="<?=$HTNOSSLDOMAIN?>/subscription/">Click here</a> to learn more and get a 14-day free trial.
+            </td></tr>
+            <tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">Minyanville will not disclose your email address or personal information to anyone. To review our privacy policy, <a style="font-style=font-family:Arial, Helvetica, sans-serif;font-weight:bold;font-size:13px;text-decoration:none;" href="<?=$HTNOSSLDOMAIN?>/company/privacy.htm" target="_blank">click here.</a>
+            </td></tr>
+	    <tr><td>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">
+	    Please contact us with any questions or comments at <a style="font-style=font-family:Arial, Helvetica, sans-serif;font-weight:bold;font-size:13px;text-decoration:none;" href="mailto:support@minyanville.com">support@minyanville.com</a> or call 212-991-9357.
+	    </span>
+            </td></tr>
+	   <!-- <tr><td>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;"><b>
+            <br>Kevin Depew<br>
+            Editor-in-Chief<br>
+            Minyanville Media, Inc.</b>
+            </td>
+			</tr> -->
+
+			</table>
+			</div>
+			<!-- END NEWS ITEM -->			</td>
+          </tr>
+
+
+        </table></td>
+      </tr>
+
+      <tr>
+        <td style="height:5px;"></td>
+      </tr>
+		<?
+			$articleqry="SELECT id,title from articles WHERE is_live='1' and approved ='1' and sent='1' and id<>'$id' order by date desc limit 0,3";
+			 $latestarticle=exec_query($articleqry);
+		?>
+	   <tr>
+					<td colspan="4" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date('Y')?> Minyanville Media, Inc, 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					  					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/" target="_new">About Us</a></p>
+
+					  </div></center></td>
+		</tr>
+
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

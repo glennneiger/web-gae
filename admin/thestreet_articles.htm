@@ -1,0 +1,189 @@
+<?
+global $D_R;
+include_once($D_R."/admin/lib/_contributor_class.php");
+$page="thestreet_articles";
+if(!$page)$page="admintools";
+$handler="thestreet_articles_mod.htm";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+//include("$D_R/admin/FCKeditor/fckeditor.php") ;
+$id=$_GET['id'];
+$articletype=$_GET['atype'];
+$articleId	=	trim($_GET['article']);
+//page authentication
+$edit_approve_feed=$AD->getPerm("feed_edit_approve");
+// end-page authentication
+$pagedata=array();
+$sqlArticles	=	"select * from thestreet_articles where article_type='".$articletype."' and approved='0' order by id desc limit 0,100";
+$resultArticles	= 	exec_query($sqlArticles);
+if($articleId!='' &&  $articletype!='')
+{
+$ts_article_qry	=	"SELECT * FROM thestreet_articles ts where id=".$articleId." and  article_type='".$articletype."'";
+$articleData	=	exec_query($ts_article_qry,1);
+$pagedata	=	$articleData;
+}
+?>
+<script language="javascript">
+function checkArticleType()
+{
+	if(document.getElementById('atype').value	== '')
+	{
+		alert("Please select Article Type");
+		document.getElementById('atype').focus();
+		return false;
+	}
+
+	if(document.getElementById('article').value	== '')
+	{
+		alert("Please select TheStreet Article");
+		document.getElementById('article').focus();
+		return false;
+	}
+	return true;
+}
+</script>
+<br>
+<div class="adminheader">Manage TheStreet Articles</div>
+<br><br>
+<?if($error){?><div class="error"><?=strip($error);?></div><?}?>
+<table width="600px" align=center>
+<form method=get action="<?=$PHP_SELF?>">
+<?input_hidden("page")?>
+<TR>
+<td>Select Article Type</td>
+<TD>
+<?php
+	$checkedRMS ='';
+	$checkedTS ='';
+	if($articletype == 'realmoneysilver')
+	{
+		$checkedRMS	=	'selected';
+	}
+	else
+	{
+		$checkedRMS	='';
+	}
+	if($articletype == 'thestreet')
+	{
+		$checkedTS	=	'selected';
+	}
+	else
+	{
+		$checkedTS	=	'';
+	}
+	?>
+	<select name="atype" id='atype' onchange="this.form.submit(this.value);">
+	<option value="">--Article Type--</option>
+	<option value='realmoneysilver' <?=$checkedRMS;?>>Real Money Silver</option>
+	<option value='thestreet' <?=$checkedTS;?>>TheStreet</option>
+	</select>
+</TD>
+</TR>
+<TR>
+<td>Select Article</td>
+<TD >
+	<select name="article" id="article" onchange="this.form.submit(this.value);">
+	<option value="">--Select Article--</option>
+	<?php
+	foreach($resultArticles as $article)
+	{
+		if($article['id'] == $articleId)
+		{
+			$selArticle = 'selected';
+		}
+		else
+		{
+			$selArticle = '';
+		}
+		echo "<option value='".$article['id']."' $selArticle>".$article['title']."</option>>";
+	}
+	?>
+	</select>
+</TD>
+</TR>
+
+</form>
+</table>
+<table width=600px border=0 align=center>
+<form method="post" action="<?=$handler?>" name="theform" enctype="multipart/form-data">
+<?input_hidden("article",$_GET[article])?>
+<?input_hidden("atype",$_GET[atype])?>
+<?input_hidden("user_id")?>
+<?input_hidden("page")?>
+<?
+?>
+<TR>
+<TD colspan="2"><label for="TS_articles[title]"><b>Article Headline</b></label></TD>
+</TR>
+<TR>
+<TD colspan="2">
+<?input_text("TS_articles[title]",html_entity_decode($pagedata[title]),0,255," style='width:100%'")?></TD>
+</TR>
+
+<TR>
+<TD colspan="2" ><label for="TS_articles[seo_title]"><b>SEO Title</b></label></TD>
+</TR>
+<TR>
+<TD colspan="2"><?input_text("TS_articles[seo_title]",html_entity_decode($pagedata[seo_title]),0,255," style='width:100%'")?></TD>
+</TR>
+
+<TR>
+<TD colspan="2"><label for="TS_articles[character_text]"><b>Description</b></label></TD>
+</TR>
+
+<TR>
+<TD colspan="2"><?input_text("TS_articles[character_text]",html_entity_decode($pagedata[character_text]),0,255," style='width:100%'")?></TD>
+</TR>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="http://<?=$HTTP_HOST?>/js/suggestion.js"></script>
+<TR>
+<TD colspan="2"><label for="TS_articles[tickers]"><b>Tickers</b></label></TD>
+</TR>
+
+<TR>
+<TD colspan="2"><?input_text("TS_articles[tickers]",html_entity_decode($pagedata[tickers]),0,500,"style='width:100%' autocomplete='on'")?></TD>
+</TR>
+<script>
+var obj = actb(document.getElementById('TS_articles[tickers]'),customarray);
+</script>
+
+<TR>
+<TD colspan="2"><label for="TS_articles[keyword]"><b>Keywords</b></label></TD>
+</TR>
+<TR>
+<TD colspan="2"><?input_text("TS_articles[keyword]",html_entity_decode($pagedata[keyword]),0,255," style='width:100%'")?></TD>
+</TR>
+
+<TR>
+<TD colspan='2'><label for="TS_articles[contrib_name]"><b>Autor</b></label></TD>
+</TR>
+<TR>
+<TD colspan='2'><?input_text("TS_articles[contrib_name]",html_entity_decode($pagedata[contrib_name]),0,255," style='width:100%'")?></TD>
+</TR>
+
+<tr>
+<TD colspan='2'><b>Entry</b></TD>
+</tr>
+<TR>
+<TD colspan='2'>
+<?
+		$oFCKeditor = new FCKeditor('TS_articles[body]') ;
+		$oFCKeditor->BasePath = '/admin/FCKeditor/';
+		$oFCKeditor->Width = "750px";
+		$oFCKeditor->Height = "500px";
+	    $oFCKeditor->Config["CustomConfigurationsPath"] = "/admin/FCKeditor/fckconfig.1.1.js";
+		$oFCKeditor->Value1 = html_entity_decode($pagedata['body']);
+		$oFCKeditor->Create();
+?>
+</TD>
+</tr>
+
+<TR><TD colspan=2><hr></TD></TR>
+<TR><TD colspan=2 align=center>
+<input type="submit" value="Save" class=inbtn onClick="Javascript:return checkArticleType();">&nbsp;&nbsp;
+<input type="button" value="cancel" onclick="location.replace(location.href)"></TD></TR>
+</form>
+</table>
+<? googleanalytics(); ?>

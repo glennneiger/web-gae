@@ -1,0 +1,482 @@
+<?
+$hide_ui=1;
+include("$ADMIN_PATH/_header.htm");
+
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+if(isset($_POST[spost])){		
+	$strPost=(unserialize_post($_POST[spost]));
+}		
+	
+?>
+<style>
+body{margin:3px;padding:0px;border:0px}
+</style>
+<script src="/admin/reg.js" language=JavaScript></script>
+<script language="JavaScript">
+function checkOptions(str){
+
+	var stCombo=document.getElementById(str);
+	var stBuzz=document.getElementById("subs[type]");	
+	var stJeff=document.getElementById("sub_ps[ptype][2]");	
+	var stComboId=stCombo.selectedIndex;
+	var stBuzzId=stBuzz.selectedIndex;
+	var stJeffId=stJeff.selectedIndex;
+	
+	if(stBuzz.options[stBuzzId].text==stJeff.options[stJeffId].text ){
+		
+		if(stBuzz.options[stBuzzId].text=='newyear' && stJeff.options[stJeffId].text=='newyear'){
+			alert('The Combo Package includes both JeffCooper and Buzz & Banter');
+			stCombo.selectedIndex=3;
+			stCombo.blur();		
+		}
+		else if(stBuzz.options[stBuzzId].text=='gift' && stJeff.options[stJeffId].text=='gift'){
+			alert('The Combo Package includes both JeffCooper and Buzz & Banter.');
+			stCombo.selectedIndex=2;
+			stCombo.blur();				
+		}
+		else if(stBuzz.options[stBuzzId].text=='trial' && stJeff.options[stJeffId].text=='trial'){
+			alert('The Combo Package includes both JeffCooper and Buzz & Banter.');
+			stCombo.selectedIndex=1;
+			stCombo.blur();				
+		}
+		
+		if(stBuzz.options[stBuzzId].text!="prem" && stBuzz.options[stBuzzId].text!="edu"){
+			stBuzz.selectedIndex=0;
+			stBuzz.blur();		
+			stJeff.selectedIndex=0;
+			stJeff.blur();		
+		}
+	}
+	
+	if(stComboId!=0){
+		if(stJeffId!=0 || stBuzzId!=0){
+			alert('The Combo Package includes both JeffCooper and Buzz & Banter.');
+		}
+		
+		stBuzz.selectedIndex=0;
+		stBuzz.blur();		
+		stJeff.selectedIndex=0;
+		stJeff.blur();		
+	}
+	
+    <!--validation for buzz & quint combo-->
+	var stCombo=document.getElementById('sub_ps[ctype][1]');
+	var stComboquint=document.getElementById('sub_ps[ctype][2]');
+	var stQuint=document.getElementById("sub_ps[ptype][3]");
+	var stComboId=stCombo.selectedIndex;
+	var stComboquintId=stComboquint.selectedIndex;
+	var stQuintId=stQuint.selectedIndex;
+	
+	if(stBuzz.options[stBuzzId].text==stQuint.options[stQuintId].text ){
+		
+		if(stBuzz.options[stBuzzId].text=='newyear' && stQuint.options[stQuintId].text=='newyear'){
+			alert('The Combo Package includes both Quint and Buzz & Banter');
+			stComboquint.selectedIndex=3;
+			stComboquint.blur();
+			stBuzz.selectedIndex=0;
+			stQuint.selectedIndex=0;
+		}
+		else if(stBuzz.options[stBuzzId].text=='gift' && stQuint.options[stQuintId].text=='gift'){
+			alert('The Combo Package includes both Quint and Buzz & Banter.');
+			stComboquint.selectedIndex=2;
+			stComboquint.blur();
+			stBuzz.selectedIndex=0;
+			stQuint.selectedIndex=0;				
+	}
+		else if(stBuzz.options[stBuzzId].text=='trial' && stQuint.options[stQuintId].text=='trial'){
+			alert('The Combo Package includes both Quint and Buzz & Banter.');
+			stComboquint.selectedIndex=1;
+			stComboquint.blur();
+			stBuzz.selectedIndex=0;
+			stQuint.selectedIndex=0;			
+	} 
+	
+	}
+
+	if(stComboquintId!=0){
+		if(stQuintId!=0 || stBuzzId!=0){
+			alert('The Combo Package includes both Quint and Buzz & Banter.');
+		}
+		stBuzz.selectedIndex=0;
+		stBuzz.blur();		
+		stQuint.selectedIndex=0;
+		stQuint.blur();		
+	}
+	
+	
+}
+function saveSubs(){
+	findObj("regform").submit();
+}
+
+function validateReg(){
+	var stCombo=document.getElementById('sub_ps[ctype][1]');
+	var stComboquint=document.getElementById('sub_ps[ctype][2]');
+	var stBuzz=document.getElementById("subs[type]");	
+	var stJeff=document.getElementById("sub_ps[ptype][2]");	
+	var stQuint=document.getElementById("sub_ps[ptype][3]");	
+	var stComboId=stCombo.selectedIndex;
+	var stComboquintId=stComboquint.selectedIndex;
+	var stJeffId=stJeff.selectedIndex;
+	var stBuzzId=stBuzz.selectedIndex;
+	var stQuintId=stQuint.selectedIndex;
+	var frm=findObj("regform");
+	var err="";
+	err+=validateUserPass();
+	err+=validateName();
+	if(stBuzzId==0 && stJeffId==0 && stComboId==0 && stComboquintId==0 && stQuintId==0){
+		
+		err+='  -Please tell us your acct. type\n';
+	}
+	
+	if(stBuzz.options[stBuzzId].text=="prem" || stBuzz.options[stBuzzId].text=="newyear" || stJeff.options[stJeffId].text=="prem" || stJeff.options[stJeffId].text=="newyear" || stCombo.options[stComboId].text=="prem" || stCombo.options[stComboId].text=="newyear" || stQuint.options[stQuintId].text=="prem" || stQuint.options[stQuintId].text=="newyear" || stComboquint.options[stComboquintId].text=="newyear"){
+	err+=validateBilling();
+	err+=validateCCInfo();
+	}
+	
+	if(!err.length){
+		frm.submit();
+		return;
+	}
+	else
+		alert("The information provided has the following errors:\n"+err);
+	return false;
+	
+}
+</script>
+<?if($error){?><div class="error"><?=$error?></div><?}?>
+<form method="post" action="subs.add.mod.htm" name="regform">
+
+<fieldset><legend>Billing Info </legend>
+
+<table >
+
+<TR>
+<TD align=right nowrap><b>Email:</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[email_error]) && $_GET[email_error]==1) 
+		$strError="Enter Email Id";
+		
+	if(isset($_GET[email_taken_error]) && $_GET[email_taken_error]==1) 
+		$strError="Invalid Email Id";	
+?>
+<TD><?input_text("subs[email]",$strPost[subs][email]); ?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Password</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[password_error]) && $_GET[password_error]==1) 
+		$strError="Enter Password";		
+?>
+<TD><?input_text("subs[password]",$strPost[subs][password])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Preferred User</b>:</TD>
+<TD><select name="subs[preferred_user]">
+	<?selectHash(array(1=>"yes",0=>"no"),$strPost[subs][preferred_user])?>
+</select>(<i class="small">account is free and never expires</i>)</TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Disabled Date</b>:</TD>
+<TD align=right nowrap>
+	<table cellpadding=0 cellspacing=0 border=0>
+<?
+if(isset($_GET['invalid_disabled_date'])==1 && $_GET['invalid_disabled_date']==1){
+	$strError="Invalid Disabled Date";
+}
+?>
+	<TR>
+	<TD><?month_options("dcr[mo]",$strPost[dcr][mo])?></TD>
+	<TD><?day_options("dcr[day]",$strPost[dcr][day])?></TD>
+	<TD><?year_options("dcr[year]",$strPost[dcr][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dcr[hour]",$strPost[dcr][hour])?><font color='red'><?=$strError; ?></font></TD>
+	</TR>
+	</table>
+</TD>
+<TR>
+
+<?php 
+	$strError="";
+	if(isset($_GET[type_error]) && $_GET[type_error]==1) 
+		$strError="Select Acct. Type";		
+?>
+<TR><TD></TD><TD><font color='red'><?=$strError; ?></font></TD></TR>
+
+<TR>
+<TD align=right nowrap><b>Buzz & Banter Acct. Type</b></TD>
+<TD>
+	<select id="subs[type]" name="subs[type]" onchange="Javascript:checkOptions('sub_ps[ctype][1]');">
+	<option value=""></option>
+	<?selectArr(qw("trial gift edu  prem newyear"),$strPost[subs][type])?>
+</select>	
+</TD>
+
+</TR>
+
+<?
+$product_query="select id,name from product order by name";
+foreach(exec_query($product_query) as $row){
+$strProduct[]=$row[id];
+?>
+<TR>
+<TD align=right nowrap><b><?=$row[name]?> Acct Type.</TD>
+<TD align=left nowrap><b>
+<select id="sub_ps[ptype][<?=$row[id]?>]" name="sub_ps[ptype][<?=$row[id]?>]" onchange="Javascript:checkOptions('sub_ps[ctype][1]');">
+<option value=""></option>
+<?
+  selectArr(qw("trial gift prem newyear"),$strPost[sub_ps][ptype]); 
+?>
+</select>
+</TD>
+</TR>
+<? } ?>
+
+<?
+$product_query="select id,name from option_deals order by name";
+foreach(exec_query($product_query) as $row){
+?>
+<TR>
+<TD align=right nowrap><b><?=$row[name]?> Bundle Acct Type.</TD>
+<TD align=left nowrap><b>
+<select id="sub_ps[ctype][<?=$row[id]?>]" name="sub_ps[ctype][<?=$row[id]?>]" onchange="Javascript:checkOptions('sub_ps[ctype][<?=$row[id]?>]');">
+<option value=""></option>
+<? selectArr(qw("trial gift newyear"),$strPost[sub_ps][ctype][$row[id]]); ?>
+</select>
+</TD>
+</TR>
+<? } ?>
+
+<TR>
+<TD align=right nowrap><b>First Name</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[fname_error]) && $_GET[fname_error]==1) 
+		$strError="Enter First Name";		
+?>
+<TD><?input_text("subs[fname]",$strPost[subs][fname])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Last Name</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[lname_error]) && $_GET[lname_error]==1) 
+		$strError="Enter Last Name";		
+?>
+<TD><?input_text("subs[lname]",$strPost[subs][lname])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Address</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[address_error]) && $_GET[address_error]==1) 
+		$strError="Enter Address";		
+?>
+<TD><?input_text("subs[address]",$strPost[subs][address])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Address2</b></TD>
+<TD><?input_text("subs[address2]",$strPost[subs][address2])?></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>City</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[city_error]) && $_GET[city_error]==1) 
+		$strError="Enter City";		
+?>
+<TD><?input_text("subs[city]",$strPost[subs][city])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>State</b></TD>
+<TD><select name="subs[state]"><?display_states($strPost[subs][state])?></select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Zip</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[zip_error]) && $_GET[zip_error]==1) 
+		$strError="Enter Zip Code";		
+?>
+<TD><?input_text("subs[zip]",$strPost[subs][zip])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Country</b></TD>
+<TD><select name="subs[country]">
+	<option value=""></option>
+	<?display_countries($strPost[subs][country])?>
+</select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>H. Phone</b></TD>
+<TD><?input_intonly("subs[tel]",$strPost[subs][tel])?></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>W. Phone</b></TD>
+<TD><?input_intonly("subs[work]",$strPost[subs][work])?></TD>
+</TR>
+
+<TR>
+<TD colspan=2 class="error">credit card changes will not be processed until the user's next billing cycle.</TD>
+</TR>
+
+<TR>
+<?php 
+	$strError="";
+	if(isset($_GET[payment_error]) && $_GET[payment_error]==1) 
+		$strError="Payment Error:".$_GET[payment_message];		
+?>
+<TD colspan=2 class="error"><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>CC Type</b></TD>
+<TD><select name="subs[cc_type]">
+	<?selectHash($STORE_CC_TYPES,$strPost[subs][cc_type])?>
+</select></TD>
+</TR>
+<TR valign=top>
+<TD align=right><b>CC Num</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[cc_num_error]) && $_GET[cc_num_error]==1) 
+		$strError="Enter Credit Card Number";		
+?>
+<TD>
+	<?input_intonly("subs[cc_num]",$strPost[subs][cc_num],16,16)?><font color='red'><?=$strError; ?></font><br>
+
+</TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>CC Expire (mm/YY)</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[cc_expire_error]) && $_GET[cc_expire_error]==1) 
+		$strError="Enter Credit Card Expiry Date";		
+?>
+<TD><?input_text("subs[cc_expire]",$strPost[subs][cc_expire])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>CC CVV2</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[cc_cvv2_error]) && $_GET[cc_cvv2_error]==1) 
+		$strError="Enter Credit CVV2 Number";		
+?>
+<TD><?input_text("subs[cc_cvv2]",$strPost[subs][cc_cvv2])?><font color='red'><?=$strError; ?></font></TD>
+</TR>
+
+</table>
+
+</fieldset>
+
+<fieldset><legend>Misc Info.</legend>
+<table>
+
+<TR>
+<TD align=right nowrap><b>Promo Emails</b></TD>
+<TD><select name="subs[recv_promo]">
+	<?selectHash(array(1=>"yes",0=>"no"),$strPost[subs][recv_promo])?>
+</select></TD>
+<TD align=right nowrap><b>Gaz. Emails</b></TD>
+<TD><select name="subs[recv_daily_gazette]">
+	<?selectHash(array(1=>"yes",0=>"no"),$strPost[subs][recv_daily_gazette])?>
+</select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Age Group</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[agegroup_error]) && $_GET[agegroup_error]==1) 
+		$strError="Select Age Group";		
+?>
+<TD><select name="subs[agegroup]">
+	<option value=""></option>
+	<?display_agegroups($strPost[subs][agegroup])?>
+	</select><font color='red'><?=$strError; ?></font></TD>
+<TD align=right nowrap><b>Income</b> </TD>
+<TD><select name="subs[income]" style="width:100px">
+	<option value=""></option>
+	<?display_incomes($strPost[subs][income])?></select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap> <b>Job Title</b></TD>
+<?php 
+	$strError="";
+	if(isset($_GET[jobtitle_error]) && $_GET[jobtitle_error]==1) 
+		$strError="Select Job Title";		
+?>
+<TD><select name="subs[jobtitle]" style="width:100px"><option value=""></option><?display_jobtitles($strPost[subs][jobtitle])?></select><font color='red'><?=$strError; ?></font></TD>
+<TD align=right nowrap><b>Connection</b></TD>
+<TD><select name="subs[connection]">
+	<option value=""></option>
+	<?selectArr(qw("high low"),$strPost[subs][connection])?>
+	</select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap> <b>School</b></TD>
+<TD><?input_text("subs[school]",$strPost[subs][school],"","","style=width:100px")?></TD>
+<TD align=right nowrap><b>Heard From</b></TD>
+<TD><select name="subs[heardfrom]">
+	<option value=""></option>
+	<?display_heardfrom($strPost[subs][heardfrom])?>
+	</select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Promo Code</b></TD>
+<TD><?input_text("subs[promo_code]",$strPost[subs][promo_code],"","","style=width:100px")?></TD>
+<TD align=right nowrap> <b>Sale</b></TD>
+<TD><select name="subs[sale]" style="width:100px"><option value=""></option><?selectArr(qw("1 2"),$strPost[subs][sale])?></select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap ><b>Referer</b></TD>
+<TD >
+<?echo $_SERVER[HTTP_REFERER];?>
+</TD>
+</TR>
+
+<TR>
+	<TD><strong>Note/Comment</strong>: </TD>
+	<TD colspan="5"><?input_textarea("subs[comment]",$strPost[subs][comment],"","",3,"style=width:350px")?></TD>
+</TR>
+
+</table>
+
+</fieldset>
+
+<fieldset><legend>Save Your Work</legend>
+
+<br><br>
+
+<div align=right>
+	<input type="button" value="save" onclick="validateReg()">
+	<input type="reset" value="reset">
+</div>
+
+<br><br>
+
+</fieldset>
+
+</form>
+<?include("$ADMIN_PATH/_footer.htm")?>

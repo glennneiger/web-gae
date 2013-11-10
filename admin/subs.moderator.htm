@@ -1,0 +1,54 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/_db.php");
+if(!$AD->getPerm("subscribers_all")){//not allowed to edit subscriptions
+	admin_error();
+	exit();
+}
+
+if(!$refer=base64_decode($refer))
+	$refer="exchange_subs.htm";
+if(!$a) {
+if(!$id){
+	location($refer.qsa(array(error=>"Couldn't make moderator. Didn't provide a subscription id")));
+	exit();
+}
+
+     if($m=='1') {
+		 $getmodid=exec_query("select id from admin_features where intname='mod_comment'");
+		 $req[subscription_id]=$id;
+		 $req[feature_ids]=$getmodid[0][id];
+		 $idmod=insert_query("ex_moderator",$req);
+			if (isset($idmod)){
+				location(urlqsa($refer,array(msg=>"This subscription is change to moderator successfully")));
+				return $idmod;
+			} else {
+				location(urlqsa($refer,array(msg=>"This subscription can't change to moderator ")));
+				return;
+			}
+      } else {
+	 		del_query("ex_moderator","subscription_id",$id);
+	 		location(urlqsa($refer,array(msg=>"This moderator is removed successfully")));
+	}
+} else {
+	
+	if(!$id){
+		location($refer.qsa(array(error=>"Couldn't turn off/on email alert. Didn't provide a subscription id")));
+		exit();
+	} else {
+		$temp['email_alert']=$em;
+		update_query("email_alert_authorsubscribe",$temp,array(subscriber_id=>$id));
+		update_query("email_alert_categorysubscribe",$temp,array(subscriber_id=>$id));
+	}
+
+	if ($em=='1') {
+		location(urlqsa($refer,array(msg=>"email alert turn on successfully")));
+	} else {
+		location(urlqsa($refer,array(msg=>"email alert turn off successfully")));
+	}
+}
+
+
+
+?>

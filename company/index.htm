@@ -1,0 +1,33 @@
+<?php
+/* Operative Configuration *****/
+$tile728x90=1;
+$tile120x30=5;
+$tile300x250=3;
+$tile160x600top=4;
+/* End Operative Configuration *****/
+$pageName = "about_us";
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville");
+$zoneName = $pageName;
+include("../_header.htm");
+?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+	 <div class="footer_common_main">
+    	<div class="about_us_left">
+			<div class="about_us_header">Minyanville is a media company</div>
+			<?= renderPageModules($pageDetail['id'],'ABOUT_US_LEFT') ?>
+		</div>
+		<div class="about_us_right">
+			  <?= renderPageModules($pageDetail['id'],'ABOUT_US_RIGHT') ?>
+		</div>
+	</div>
+</div>
+<?php
+$arrRightCols	=	array('show_mostpopular','email_alert','show_rss_emailalert');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

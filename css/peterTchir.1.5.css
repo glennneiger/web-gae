@@ -1,0 +1,513 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin:0;
+	padding:0;
+}
+
+h2{
+	text-transform: none;
+}
+
+#ptc_wrapper{
+	width:987px;
+	margin:0px auto;
+	background-color:#f5f5f5;
+}
+.clr{
+	clear:both;
+	margin:0px;
+	padding:0px;
+}
+/*Top Area Start*/
+.ptc_logo{
+	float: left;
+	width: 188px;
+	height: 49px;
+	display: block;
+	margin: 20px 40px;
+	background-position: left center;
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/logo-PeterTchir.gif) no-repeat;
+}
+#ptc_header{
+	float: left;
+	width: 900px;
+	padding: 20px 40px;
+	border-top: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
+	background-color: #fafafa;
+}
+#ptc_header ul{
+	width: 700px;
+}
+#ptc_header ul li{
+	float: left;	
+	color:#666666;
+	list-style:none;
+	font-size: 16px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+#ptc_header ul li a{
+	color:#666666;
+}
+
+#ptc_header li{
+	margin: 0px 0px;
+	padding: 0px 20px 0px 0px;
+}
+#ptc_header .active{
+	color: #333333;
+	font-weight: bold;
+}
+
+#ptc_header .active a{
+	color: #333333;
+}
+
+.ptc_emailQust{
+	float: right;
+	width: 290px;
+	color:#666666;
+	font-size: 14px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+	font-weight: 700;
+}
+.ptc_emailQust a{
+	color:#167fc5;
+	text-decoration:none;
+}
+.ptc_emailQust a:hover{
+	color:#167fc5;
+	text-decoration:underline;
+}
+
+/*Content Area Start*/
+.ptc_contentPanel{
+	float: left;
+	padding: 40px 40px;
+}
+.ptc_contentPanel .ptcButton{
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:14px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 15px 0px 0px 0px;
+	padding:5px 0px;
+	border-radius: 5px 5px;
+	background-color: #0670c1;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+	float: left;
+}
+
+.ptc_contentPanel .ptcButton:hover{
+	background-color: #0a8cf1;
+}
+
+.ptc_contentPanel .ptcButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+
+.ptc_lftPanel{
+	width: 580px;
+	float: left;
+	margin: 0px 40px 0px 0px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+.ptc_lftPanel h1{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	margin: 0px;
+}
+
+.ptc_lftPanel h1 a hover{
+	color:#167FC5;
+}
+
+.ptc_lftPanel h1.ptc_about{
+	width:580px;
+}
+
+.ptc_lftPanel h1 a{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	
+}
+
+.ptc_lftPanel h1 a:hover{
+	text-decoration:none;
+	color:#167FC5;
+}
+
+.ptc_lftPanel h3{
+	float: left;
+	width: 580px;
+	color:#999999;
+	font-size:14px;
+	font-weight:normal;
+	margin:15px 0px 15px 0px;
+	padding:0px 0px 15px 0px;
+	border-bottom: 1px dashed #aeaeae;
+	text-transform: none;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-size: 14px;
+}
+.ptc_lftPanel p{
+	float: left;
+	color:#333333;
+	font-size:14px;
+	font-weight:normal;
+}
+.ptc_alertBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 15px 0px;
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+	margin:0px 0px 5px 0px;
+}
+
+.ptc_alertDetailBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 15px 0px;
+}
+
+.ptc_pagination{
+	float: left;
+	width: 580px;
+}
+.ptc_pagination .ptcPageButton{
+	float: left;
+	width: 20%;
+	height: 20px;
+	color: #ffffff;
+	font-size:14px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 15px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-radius: 5px 5px;
+	background-color: #ee9220;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+	padding:5px 0px;
+	font-weight: 700;
+}
+
+.ptc_pagination .ptcPageButton:hover{
+	background-color: #ee9220;
+	}
+
+.ptc_pagination .ptcPageButton a{
+	color: #ffffff;
+}
+
+.ptc_pagination .prv_button{
+	float: left;
+}
+.ptc_pagination .nxt_button{
+	float: right;
+}
+
+.rght-panel .ptcBioButton{
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:14px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 15px 0px 0px 0px;
+	padding:5px 0px;
+	border-radius: 5px 5px;
+	background-color: #0670c1;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+	float: left;
+}
+
+.rght-panel .ptcBioButton:hover{
+	background-color: #0a8cf1;
+}
+
+.rght-panel .ptcBioButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+
+.rght-panel{
+	width: 280px;
+	float: left;
+}
+.rght-panel h2{
+	float: left;
+	color:#333333;
+	font-size:28px;
+	font-weight:bold;
+	margin:10px 0px 20px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+}
+.rght-panel input[type="text"]{
+	float: left;
+	width: 160px;
+	height: 28px;
+	color: #999999;
+	font-style:italic;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border:1px solid #e1e1e1;
+	padding: 0px 10px 0px 10px;
+}
+.rght-panel input[type="button"]{
+	float: left;
+	width: 91px;
+	height: 38px;
+	border:none;
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/btn_search.gif) no-repeat;
+	cursor:pointer;
+}
+.rght-panel p{
+	width: 280px;
+	float: left;
+	color:#333333;
+	font-size:14px;
+	font-weight:normal;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+.box-rght{
+	float: left;
+	clear:left;
+	padding:0px 0px 15px 0px;
+}
+.hr{
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+}
+
+.ptc_position{
+	float: left;
+	clear:left;
+	font-weight:bold;
+	margin:15px 0px 0px 0px;
+	padding:0px 0px 15px 0px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+	font-weight: 700;
+}
+
+.ptc_disclaimer{
+	float: left;
+	clear:left;
+	font-weight:normal;
+	font-style:italic;
+	padding:0px 0px 15px 0px;
+	color: #666666;
+    font-family: "Times New Roman",Times,serif;
+    font-size: 12px;
+}
+
+.ptc_alertBottom{
+	float: left;
+	clear:left;
+	width:565px;
+	margin:30px 0px 0px 0px;
+}
+
+#ptcPost{
+	float:left;
+	width:580px;
+	font-size: 14px;
+	color: #333333;		
+	overflow:hidden;
+}
+
+#ptcPost a{
+	color: #167FC5;		
+}
+
+#ptcPost a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+.no_post{
+	color: #333333;
+	font-size: 20px;
+	text-align: center;
+}
+
+#ptcPost ul{
+	margin: 5px 0px 0px 20px;		
+}
+
+#ptcPost ul li{
+	font-size: 14px;
+	color: #333333;		
+}
+
+#ptcPost h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#ptcPost h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+#ptcAlert{
+	float:left;
+	width:580px;
+	font-size: 14px;
+	color: #333333;	
+	overflow:hidden;	
+}
+
+#ptcAlert ul{
+	margin: 0px 0px 0px 5px;		
+}
+
+#ptcAlert a{
+	color: #167FC5;		
+}
+
+#ptcAlert a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+#ptcAlert ul li{
+	font-size: 14px;
+	color: #333333;	
+	margin:15px;	
+}
+
+#ptcAlert h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#ptcAlert h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+
+.ptc_category{
+	float:left;	
+}
+
+.ptc_category span{
+	color:#1174ba;
+}
+
+.ptc_category span:hover{
+	color:#167FC5;	
+	text-decoration:underline;
+}
+.ptc_alertBottom .ptc_goTop{
+	float: right;
+	color:#1174ba;
+	cursor: pointer;
+}
+
+.ptc_goTop:hover{
+	color:#167FC5;	
+	text-decoration:underline;
+}
+
+#ptc_goTop:hover{
+	color:#167FC5;	
+	text-decoration:underline;
+}
+
+.ptc_bioImage{
+	float: left;
+    height: 100%;
+    margin: 0 20px 20px 0;
+    width: 175px;
+}
+
+.ptc_bioImage img{
+	height: auto;
+    width: 100%;	
+}
+.ptc_fancyBox{
+	float:left;
+	width:580px;
+}
+
+#fancybox-close{
+	top:-30px;
+	right:0px;
+	height:24px;
+	width:24px;
+	background-repeat:no-repeat;
+	background: url('http://storage.googleapis.com/mvassets/images/peter-tchir/popup_close.png');
+}
+
+#heatmapEnlarge{
+	float:left;
+	color:#167fc5;
+	cursor:pointer;
+	font-size:14px;
+}
+
+#heatmapEnlarge:hover{
+	text-decoration:underline;
+}
+	
+
+#fancybox-overlay{
+	z-index:'999999';
+}
+
+.no_result{
+	color: red;
+	font-size: 18px;
+	text-align: center;
+}
+.ptc_lftPanel p a{
+     color:#167FC5;
+}
+.ptc_lftPanel p a:hover{
+     text-decoration:underline;
+}
+#fancybox-outer{
+	width:580px;
+}
+
+

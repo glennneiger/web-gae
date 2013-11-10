@@ -1,0 +1,278 @@
+<?
+
+if(!$img_dir)$img_dir="/assets/";
+if($POSTBACK){
+	if($f=$_FILES[myimage]){
+		if($f[size]){
+			$newname="$img_dir/".cleanfilename($f[name]);
+			copy($f[tmp_name],"$D_R$newname");
+			pushToImgServer($newname);
+		}
+	}
+}
+$findcmd="find $D_R$img_dir -iname '*.*'|grep -E '*.jpg|*.gif'";
+?><html>
+<head>
+<title>Insert An Image</title>
+<link rel="stylesheet" href="db_window.css">
+<style>
+body{background:buttonface}
+fieldset{padding:5px}
+</style>
+<script src="/_script.js"></script>
+<script>
+//window.resizeTo(620,440)
+
+function filename(srcFile){
+	if(srcFile.indexOf("/")<0)
+		return
+	return srcFile.substring(srcFile.lastIndexOf("/")+1);
+}
+
+
+
+function previewImage(){
+	srcFrm=document.picker.src;
+        var imageLoc =srcFrm[srcFrm.selectedIndex].value;
+	document.all("preview").src = imageLoc;
+	//document.all("preview").Show(imageLoc);
+}
+
+function adjustWindow(){
+/*
+  var width = document.all("preview").width;
+  if(width > 280)
+  {
+    window.resizeTo(340 + width, 300);
+  }
+  else
+  {
+    window.resizeTo(620, 300);
+  }*/
+}
+
+
+
+function uploadImage(){
+ 	var frm=document.upload;
+	if(!frm.myimage.value){
+		alert("Please click browse and select an image to upload");
+		frm.myimage.focus();
+		return;
+	}
+        if(!frm.myimage.value.match(/\.jpg|\.gif/)){
+		alert("Only .jpg and .gif images are accepted");
+ 		return;
+	}
+	with(document.all.uploadButton){
+		disabled="true";
+		value="Uploading...";
+	}
+	document.all("bcancelbutton").disabled=true;
+	document.all("insertbutton").disabled=true;
+	document.body.style.cursor="wait";
+	frm.submit();
+}
+
+function save(){
+	var srcFrm=document.picker.src;
+	
+	if(srcFrm.selectedIndex<0){
+		alert("Please choose an image from the list to insert. \nOtherwise click cancel");
+		return;
+	}
+
+	var format=  document["formatform"];
+	var copyImg = document.all("preview");
+	var imgTag = document.createElement("IMG");
+	var savedTextFields = "alt border hspace vspace align".split(" ");
+	
+	imgTag.setAttribute("border",0);
+	imgTag.setAttribute("src",srcFrm[srcFrm.selectedIndex].value);
+	imgTag.setAttribute("width",copyImg.width);
+	imgTag.setAttribute("height",copyImg.height);
+	
+	for(i=0;i<savedTextFields.length;i++){
+		var fname = savedTextFields[i];
+		if(format[fname].value){
+			imgTag.setAttribute(fname,format[fname].value)
+		}
+	}
+	
+	if((aln = format["align"][format["align"].selectedIndex].value))
+		imgTag.setAttribute("align",aln);
+	var ed=findObj("htmleditor",window.opener.document);
+	ed.getDocument().all("editBox").setActive();
+	ed.pasteCode(imgTag.outerHTML);
+
+	window.close();
+
+}
+
+function cancel(){
+	window.close();
+}
+
+function init(){
+	window.focus()
+	var sel, selection,srcImg,format;
+	var tbContentElement = findObj("htmleditor",window.opener.document).getDocument();
+	var srcForm = document.picker.src;
+	
+	sel=tbContentElement.selection;
+	if(!sel)return;
+	selection=sel.createRange();
+	if(sel.type.toLowerCase()=="control"){
+		srcImg=selection.item(0);
+		if(srcImg.tagName.toLowerCase()!="img"){
+			return;
+		}
+		format=document.formatform;
+		if(srcImg.border)
+			format.border.value=srcImg.border;
+		if(srcImg.vspace)
+			format.vspace.value=srcImg.vspace
+		if(srcImg.hspace)
+			format.hspace.value=srcImg.hspace
+		if(srcImg.alt)
+			format.alt.value=srcImg.alt;
+		if(srcImg.align){
+			var frmAlign=document.all("align")
+			for(i=0;i<frmAlign.options.length;i++){
+				if(frmAlign.options[i].value.toLowerCase()==srcImg.align.toLowerCase()){
+					frmAlign.selectedIndex=i;
+					break;
+				}
+			}
+		}
+		<?if($newname){?>
+		srcImg.src="<?=$newname?>";
+		<?}?>
+		if(srcImg.src){
+			for(i=0;i<srcForm.options.length;i++){
+				if( filename(srcImg.src)==filename(srcForm.options[i].value) ){
+					srcForm.selectedIndex=i;
+					previewImage();
+					break;
+				}
+			}
+		}
+	}
+	
+}
+
+
+</script>
+</head>
+<body topmargin=2 leftmargin=2 rightmargin=0 bottommargin=0 onLoad="init()" style="border:0px;overflow:auto">
+
+<table width=100% height=95%>
+<TR valign=top>
+<TD width=50%>
+
+<form method="get" action="<?=$PHP_SELF.qsa()?>" name="img_dir_form">
+<fieldset>
+<legend>Select image from: 
+	<select name="img_dir" onchange="this.form.submit()" style="font-size:9px">
+	<?foreach(dirlist() as $dir){?>
+		<?$sel=($img_dir==$dir?" selected":"")?>
+		<option value="<?=$dir?>"<?=$sel?>><?=$dir?></option>
+	<?}?>
+	</select>
+</legend>
+</form>
+<form name="picker">
+<select name="src" size=11 style="width:290px;" onChange="previewImage()">
+<?foreach(assetList($img_dir,array("*.jpg","*.gif","*.png"),1) as $f){?>
+	<option value="<?=$f?>"><?=$f?></option>
+<?}?>
+</select>
+</form>
+or
+ <fieldset><legend>Upload an image</legend>
+<form name="upload" method="POST" action="<?=$PHP_SELF?>" enctype="multipart/form-data">
+<?input_hidden("img_dir")?>
+<input type="file" name="myimage" style="border:1px black solid;margin-bottom:7px"><br> 
+<input type="button" name="uploading" value="Upload" class=submit onClick="uploadImage()" id="uploadButton"> &nbsp;
+<input type="button" value="Cancel" class=submit onClick="document.upload.reset();location.replace(location.href)"> 
+</form>
+</fieldset> 
+<br> 
+</TD>
+<TD width=50% height=100%>
+ 	 <fieldset style="width:290px;height:235px"><legend>Preview</legend>
+	<table  width=100% height=100%>
+	<TR>
+
+	<TD colspan=2 align=center>
+        <img name="preview" src="images/tool-image.gif">
+        </TD>
+	</TR>
+	</table>
+	</fieldset> 
+</TD>
+</TR>
+<TR>
+<form name="formatform" onSubmit="return false">
+<TD colspan=2 align=center>
+		<fieldset><legend>Formatting Options</legend>
+		<table>
+		<TR>
+		<TD align=right>Mouse-over caption:</TD>
+		<TD><input type="text" size=40 name="alt" value=""></TD>
+		</TR>
+		</table>		
+		<table>
+		<TR>
+		<TD>
+			<fieldset><legend>Spacing</legend>
+			<table border=0 cellpadding=1>
+			<tr>
+			<td align=right><label for="vspace">Vertical:</label></td>
+			<td><input type="text" name="vspace" id="vspace" value="" maxlength=2 style="width:80px"></td>
+			</tr>
+			<tr>
+			<td align=right><label for="hspace">Horizontal:</label></td>
+			<td><input type="text" name="hspace" id="hspace" value="" maxlength=2 style="width:80px"></td>
+			</tr>
+			</table>
+			</fieldset>
+		</TD>
+		<TD>
+			<fieldset><legend>Layout</legend>
+			<table border=0 cellpadding=1>
+			<tr>
+			<td><label for=align>Alignment:</label></td>
+			<td>
+				<select name="align" id="align" style="width:80px">	
+				<option value="">(Default)</option>
+				<option value="left">Left
+				<option value="right">Right
+				<option value="center">Center
+				<option value="top">Top
+				<option value="middle">Middle
+				<option value="bottom">Bottom
+				</select>
+			</td>
+			</tr>
+			<tr>
+			<td align=right><label for="border">Border:</label></td>
+			<td><input type="text" name="border" id="border" value="" maxlength=2 style="width:80px"></td>
+			</tr>
+			</table>
+		</fieldset>
+		</TD>
+		</TR>
+		</table>
+		</fieldset>
+</form>
+		
+	
+</TD></TR>
+</table>
+<center>
+<input type="button" id=insertbutton value="Insert" class=submit onClick="save()" title="Insert the image seen on the right"> &nbsp; &nbsp;
+<input type="button" id=bcancelbutton value="Cancel" class=submit onClick="cancel()">
+</center>
+</body>
+</html>

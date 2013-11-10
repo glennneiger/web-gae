@@ -1,0 +1,23 @@
+<?
+$page="library";
+$allperms=array("glossary_edit","rp_edit");
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($allperms)){
+	admin_error();
+}
+?>
+<table align=center>
+<TR>
+<TD><div class=adminheader>Library</div>
+<div style="padding:10px;width:400px">
+	<?if($AD->getPerm("glossary_edit")){?>
+	<a href="glossary.htm"><!--<img src="assets/mv-dictionary.gif" border=0 align=left hspace=5>--><b>Dictionary</a></b><br><br>
+	Edit the Minyanville Dictionary
+
+	<br clear=all><br><br>
+	<?}?>
+</div></TD>
+</TR>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

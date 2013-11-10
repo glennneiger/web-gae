@@ -1,0 +1,69 @@
+<?
+global $D_R,$HTHOST,$HTPFX,$IMG_SERVER;
+session_start();
+$userid=$_SESSION['SID'];
+if($userid){
+	header("Location:/subscription/register/controlPanel.htm");
+	exit;
+}else{
+header("Location:/subscription/");
+exit;
+}
+
+$pageName = "sign-up";
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","profileLogIn");
+
+$objNewControlPanel= new newControlPanel();
+include_once("$D_R/_header.htm");
+include_once("$D_R/lib/_exchange_lib.php");
+?>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("<?=$ga_account_id?>-<?=$ga_profile_id?>");
+</script>
+<script src="<?=$HTPFX.$HTHOST;?>/_script.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/lib/_script.js" type="text/javascript"></script>
+<script src="<?=$HTPFX;?>connect.facebook.net/en_US/all.js" type="text/javascript"></script>
+<div id="fb-root"></div>
+<script src="<?=$HTPFX.$HTHOST;?>/js/facebook/facebook.1.3.js" type="text/javascript"></script> 
+
+<div id="content-container">
+<div class="errorSignup"><span id="signupError"></span></div>
+<div class="logInProfile" align="center">
+	<div class="leftBox">
+		<!--Profile Div Start-->
+		<?= $objNewControlPanel->displayProfileDiv(); ?>
+		<!--Profile Div End-->
+	</div>
+
+	<div class="rightBox">
+		<!--Facebook Div Start-->
+		<?= $objNewControlPanel->displayFacebookDiv(); ?>
+		<!--Facebook Div End-->
+		<!--Mvil Intro Div Start-->
+		<?= $objNewControlPanel->displayMinyanvilleIntro(); ?>
+        <!--Mvil Intro Div End-->
+	</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+	FB.init("a521f2eb1906248f2cab9e484105c6c4", "xd_receiver.htm");
+</script>
+
+<script type="text/javascript"> 
+<? if ($_GET['module']==signUp){ ?>
+	displayLoginProfilePage('signUp');
+<? }else { ?>
+	displayLoginProfilePage('logIn');
+<? } ?>
+</script>
+<? include("$D_R/_footer.htm");
+
+?>
+

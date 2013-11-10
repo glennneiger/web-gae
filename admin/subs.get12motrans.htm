@@ -1,0 +1,21 @@
+<?
+	include("./_header.htm");
+	$qry="SELECT date_format(st.date,'%m/%d/%Y')trans_date,st.trans_type, 
+			st.trans_id, st.amt_charged, s.recurring_charge,
+		concat('<a target=_search href=subs.trans.htm?id=',s.id,'&email=',s.email,'>',s.email,'</a>')semail, 
+		s.type,
+		FROM_UNIXTIME(s.expires,'%m/%d/%Y')mexpires
+		FROM subscription_trans st
+		LEFT JOIN subscription s ON(st.email=s.email OR s.id=st.subscription_id)
+		WHERE s.type='12mo'
+		AND 
+		(UNIX_TIMESTAMP(FROM_UNIXTIME(expires))-UNIX_TIMESTAMP(st.date))<".week(2)."
+		AND recurring_charge>0
+		AND s.account_status='enabled'
+	";
+
+?>
+<br><br>
+Transactions for 12mo accounts that will expire 2 weeks from the time they were last billed.
+<?qry2html($qry,1);?>
+<?include("./_footer.htm")?>

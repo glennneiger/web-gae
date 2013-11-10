@@ -1,0 +1,12 @@
+<?
+$qry="SELECT id FROM articles 
+	 WHERE INSTR(title, 'trading radar')
+	 AND approved = '1'
+	 ORDER  BY date DESC LIMIT 1";
+$id=exec_query($qry,1,"id");
+
+
+
+location("/gazette/newsviews/?id=$id");
+exit();
+?>

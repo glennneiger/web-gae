@@ -1,0 +1,78 @@
+<?
+$hide_ui=1;
+$direct=$d?"DESC":"ASC";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+/*
+$qry="SELECT st.*,DATE_FORMAT(st.date,'%m/%d/%Y %r') transdate
+	  FROM subscription_trans st, subscription s
+	  WHERE (s.id=st.subscription_id AND s.id='$id')
+	  OR    (s.email='$email' AND s.email=st.email AND st.subscription_id='0') ";
+*/
+$qry="SELECT st.*,st.date tdate,DATE_FORMAT(st.date,'%m/%d/%Y %r') transdate
+	  FROM subscription_trans st, subscription s
+	  WHERE s.id=st.subscription_id AND s.id='$id'
+	 UNION
+	  SELECT st.*,st.date tdate,DATE_FORMAT(st.date,'%m/%d/%Y %r') transdate
+	  FROM subscription_trans st, subscription s
+	WHERE s.email='$email' AND s.email=st.email";
+if($s)
+	$qry.=" ORDER BY $s $direct";
+$trans=exec_query($qry);
+if(!count($trans)){
+	echo "Couldn't find transactions with that subscription ID";
+	include("$ADMIN_PATH/_header.htm");
+	exit();
+}
+
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+
+?>
+
+
+<style>
+body{margin:3px;padding:0px;border:0px}
+.datarow td,.datarowAlt td,.datarow td i,.datarowAlt td i{
+	font-size:10px;
+}
+.datarow{
+	background-color:#ddd;
+}
+.datarowAlt{
+	background-color:#bbb;
+}
+.datarowError td,.datarowError td i{
+	color:#cc0000;
+}
+</style>
+<fieldset><legend>Transactions for <?=$email?> [<a href="subs.edit.htm?id=<?=$id?>" style="font-weight:normal" class="small">edit</a>]</legend>
+<table>
+<TR>
+<TD><b><a href="<?=$PHP_SELF.qsa(array(s=>"tdate",d=>!$d))?>">Date</a></b></TD>
+<TD><b><a href="<?=$PHP_SELF.qsa(array(s=>"trans_type",d=>!$d))?>">Type</a></b></TD>
+<TD><b><a href="<?=$PHP_SELF.qsa(array(s=>"trans_id",d=>!$d))?>">OrderID</a></b></TD>
+<TD><b><a href="<?=$PHP_SELF.qsa(array(s=>"trans_code",d=>!$d))?>">TrackingID</a></b></TD>
+<TD><b><a href="<?=$PHP_SELF.qsa(array(s=>"trans_msg",d=>!$d))?>">Error</b></a></TD>
+<TD><b><a href="<?=$PHP_SELF.qsa(array(s=>"amt_charged",d=>!$d))?>">Charged</b></a></TD>
+</TR>
+<?foreach($trans as $i=>$row){
+	$it=$row[trans_type]=="preauth";
+	$error=$row[trans_msg]?" datarowError":"";
+?>
+	<TR valign=top class="datarow<?=($i%2?"Alt":"").$error?>">
+	<TD><?=italic($row[transdate],$it)?></TD>
+	<TD><?=italic($row[trans_type],$it)?></TD>
+	<TD><?=italic($row[trans_id],$it)?></TD>
+	<TD><?=italic($row[trans_code],$it)?></TD>
+	<TD><?=italic($row[trans_msg],$it)?></TD>
+	<TD>$<?=italic(dollars($row[amt_charged]),$it)?></TD>
+	</TR>
+<?}?>
+</table>
+</fieldset>

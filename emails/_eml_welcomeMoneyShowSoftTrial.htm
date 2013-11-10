@@ -1,0 +1,86 @@
+<?php
+global $is_ssl;
+include_once($D_R."/lib/config/_email_config.php");
+include_once($D_R."/lib/config/_products_config.php");
+$firstname=ucfirst(strtolower($_GET['firstname']));
+$email=$_GET['email'];
+$password=$_GET['password'];
+global $viaProductsName,$productImg;
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Welcome to Minyanville</title>
+<style type="text/css">
+body{margin:0px;}
+</style>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td><table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+
+      <tr>
+        <td style="padding-left:15px;">
+        <table cellpadding="0" cellspacing="0">
+			<tr>
+			<td valign="top" style="font:13px Arial, sans-serif;color:#333">
+			<span style="font-family:Arial, Helvetica, sans-serif;background-repeat:no-repeat;font-size:20px;color:#003366;font-weight:bold;">Thank you for selecting a Free 14-Day Trial to Minyanville's Buzz & Banter!</span>
+            </td></tr>
+	  <tr>
+	    <td>
+	    <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">
+	    You can access the Buzz using the information below. Just click the green button and you'll be instantly plugged into the real-time market insights of over 30 professional traders!</span>
+	    </td>
+	  </tr>
+	  	  <tr>
+	    <td>
+	    <span style="font-family:Arial, Helvetica, sans-serif;float:left; font-weight:bold; font-size:14px;line-height:18px;clear:both;padding-top:10px;">
+	    Email address: <?=$email;?>
+	    </span>
+	    </td>
+	  </tr>
+	    <? if(!empty($password)){ ?>
+	    <tr>
+	    <td>
+	    <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-weight:bold; font-size:14px;line-height:18px;clear:both;padding-top:10px;">
+	    Password: <?=$password;?>
+	    </span>
+	    </td>
+	  </tr>
+	   <? } ?>
+			<tr>
+			  <td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;margin:20px 0px;">
+				<a style="cursor:pointer;" href="<?=$HTPFX?><?=$HTHOST?>/buzz/buzz.php" onClick="window.open(this.href, 'popupwindow', 'status=no,toolbar=no,scrollbars=yes,titlebar=yes,menubar=no,resizable=yes,height=708,width=350,directories=no,location=no,top=225');return false;"><img src="<?=$IMG_SERVER?>/images/email/product/buzzWelcome.jpg" /></a>
+			</td></tr>
+
+<tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">Minyanville's Buzz & Banter is the dynamic tool that delivers the Buzz on the Street, and the Banter between some of the industry's smartest traders! Get market commentary, trade set-ups, and expert analysis all in one streaming application - in real-time, throughout each and every trading day.</span></td></tr>
+
+<tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">
+If you have any questions about your free trial, feel free to give us a call at <span style="color:#079ad9;text-decoration:underline;">212-991-9357</span>,or email us at <a href="mailto:support@minyanville.com" style="color:#079ad9; text-decoration:underline;">support@minyanville.com</a>. If you would like to change your password, simply login to Minyanville.com with the credentials provided above and update your information under "My Account." </span></td></tr>
+
+			<tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">We're happy to welcome you to the Buzz community!</span></td></tr>
+			</table></td>
+      </tr>
+
+	  <tr>
+	  	<td style="height:5px;"></td>
+	  </tr>
+
+	  <tr>
+					<td colspan="4" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise With Us</a></p>
+					  </div></center></td>
+		</tr>
+				<tr>
+						<td >&nbsp;</td>
+		</tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

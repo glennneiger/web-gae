@@ -1,0 +1,322 @@
+#os_outer_container {	
+	width:860px;
+	text-align:left;
+	margin:0 auto; /* for the rest */ 
+	padding:0px;
+	background-color:#F2F2F2;
+}
+#option_footer_container
+{
+margin-top: 0;	
+	clear: both;
+	padding-left:19px;
+	padding-right:19px;
+	padding-top:20px;
+	padding-bottom:0px;
+	width:820px;
+	color:#666666;
+	font-size:10px;
+	font-weight:normal;
+	line-height:15px;
+}
+#option_footer_container p
+{
+margin-top:0px;
+margin-bottom:20px;
+padding:0px;
+}
+#os_container {
+    background-color: #FFFFFF;
+    border-top: 0px solid #00090F;
+    border-left: 0px solid #00090F;
+    border-right: 0px solid #00090F;
+    float: left;
+    padding:14px 39px 0px 39px;
+    width: 780px;
+	color:#666666;
+font-size:14px;
+font-weight:normal;
+line-height:18px;
+ margin: 0 auto;
+	}
+	#footer
+	{
+	float:left;
+	}
+#smith_mvp_logo
+{
+width:780px;
+height:46px;
+margin-top:14px;
+margin-bottom:20px;
+}
+#os_left
+{
+margin-right:20px;
+float:left;
+width:460px;
+}
+#os_left_top
+{
+color:#666666;
+font-size:14px;
+font-weight:normal;
+line-height:20px;
+float:left;
+}
+#os_left_top a
+{
+color:#167fc5;
+font-weight:bold;
+text-decoration:underline;
+line-height:20px;
+font-size:14px;
+}
+#os_left_top h1
+{
+margin-bottom:14px;
+padding:0px;
+margin-top:0px;
+line-height:27px;
+color:#4c4c4c;
+font-size:24px;
+letter-spacing:-1px;
+}
+#os_left_top p
+{
+	padding:0px;
+	margin:0px;
+	margin-bottom:14px;	
+	}
+#os_left_middle
+{	
+margin-bottom:17px;
+color:#666666;
+font-size:14px;
+font-weight:normal;
+line-height:20px;
+}
+#os_left_middle ul
+{
+margin-top:0px;
+margin-bottom:20px;
+margin-left:13px;
+margin-right:13px;
+list-style:none;
+float:left;
+clear:both;
+width:100%;
+width:434px;
+padding:0px;
+}
+#os_left_middle ul li
+{
+display:inline;
+float:left;
+color:#3b546b;
+font-size:17px;
+font-weight:bold;
+line-height:20px;
+letter-spacing:-1px;
+}
+#os_you_get
+{
+margin-bottom:20px;
+}
+h1
+{
+color:#4c4c4c;
+font-size:24px;
+font-weight:normal;
+letter-spacing:-1px;
+padding:0px;
+margin:0px;
+}
+#os_you_get h1
+{
+margin-bottom:18px;
+padding:0px;
+margin-top:0px;
+}
+#os_you_get ul
+{
+margin:0px;
+padding:0px;
+margin-bottom:18px;
+float:left;
+}
+#os_you_get ul li
+{
+list-style:none;
+color:#666666;
+font-size:14px;
+font-weight:normal;
+}
+#os_you_get ul li span
+{
+color:#ffa520;
+font-size:14px;
+font-weight:bold;
+margin:0px;
+margin-right:5px;
+padding:0px;
+width:10px;
+float:left;
+}
+#your_option
+{
+	margin-bottom:20px;
+color:#666666;
+font-size:14px;
+font-weight:normal;
+line-height:17px;
+	}
+	#subscription_today
+	{
+	float:left;
+	width:430px;
+	color:#666666;
+font-size:13px;
+font-weight:normal;
+line-height:20px;
+ border: 1px dotted #B3B3B3;
+ padding:14px;
+ margin-bottom:30px;
+ 
+	}
+	#subscription_today h1
+	{	
+	padding-bottom:10px;
+	}
+	h1.green_text
+	{
+	padding:0px;
+	margin:0px;
+	font-size:20px;
+	font-weight:normal;	
+	}
+#os_right
+{
+float:left;
+width:300px;
+}
+#smith_video
+{
+margin-bottom:20px;
+	float:left;
+}
+#smith_free_trial
+{
+	float:left;
+	margin-bottom:20px;
+	}
+#smith_performance
+{
+	float:left;
+margin-bottom:30px;
+}
+#smith_performance h1
+{
+	margin-bottom:20px;
+	}
+#smith_performance ul
+{
+margin:0px;
+padding:0px;
+}
+#smith_performance ul li
+{
+list-style:none;
+color:#666666;
+font-size:14px;
+font-weight:normal;
+line-height:18px;
+list-style:none;
+margin:0px;
+padding:0px;
+}
+#smith_performance span
+{
+color:#579b36;
+font-weight:bold;
+}
+.green_text
+{
+	color:#579b36;
+	}
+	.green_text_bold
+{
+color:#579b36;
+font-weight:bold;
+}
+#money_back_seal
+{
+	background:url(/images/optionsmith/moneyBackSeal.jpg);
+	color:#000000;
+	margin-bottom:20px;
+	width:300px;
+	float:left;
+	}
+	.seal_text
+	{
+	width:140px;
+	margin:10px;
+	float:right;
+	font-size:10px;
+	line-height:15px;
+	}
+	.seal_text a
+	{
+	font-size:10px;
+	line-height:15px;
+	color:#4c3a22;
+	}
+#smith_limited_offer
+{
+border:1px dotted #b3b3b3;
+width:270px;
+padding:14px;
+padding-bottom:0px;
+color:#666666;
+font-size:13px;
+font-weight:normal;
+line-height:15px;
+float:left;
+}
+.offer-text
+{
+color:#3b546b;
+font-size:14px;
+font-weight:bold;
+letter-spacing:-1px;
+line-height:16px;
+float:left;
+width:170px;
+margin-left:10px;
+}
+.free_report
+{
+float:left;
+margin-top:14px;
+width:270px;
+padding:0 0 10px 0;
+}
+.blue-text
+{
+	color:#167fc5;
+	}
+.limited_free_signup
+{
+margin-top:17px;
+color:#167fc5;
+text-decoration:underline;
+font-style:bold;
+}
+.logo_border
+{
+width:533px;
+border-bottom:1px solid #b2b2b2;
+height:35px;
+float:right;
+line-height:0px;
+}

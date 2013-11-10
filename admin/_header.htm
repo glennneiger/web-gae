@@ -1,0 +1,81 @@
+<?
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/_richedit.php");
+include_once("$D_R/admin/FCKeditor/fckeditor.php");
+
+global $HTPFX,$IMG_SERVER;
+
+// Add banter_all banter_own banter_delete banter_approve authorizations for buzz and banter.
+	$navpages = array(
+		gazette=>array(link=>"/admin/gazette.htm",
+					  caption=>"Editing+Posting",
+					  perms=>qw("articles_approve articles_delete chars_edit contrib_self contrib_all gazette_edit articles_own articles_all articles_chars create_banter banter_all banter_own banter_delete banter_approve")),
+
+		option_smith=>array(link=>"/admin/ss/index.htm",
+					  caption=>"OptionSmith",
+					  perms=>qw("ss_alerts_all ss_own_transaction")),
+		cooper=>array(link=>"/admin/cooper/cpgazette.htm",
+						caption=>"Jeff Cooper Market report",
+						perms=>qw("cp_articles cp_approve")),
+		/*jack=>array(link=>"/admin/lavery/laverygazette.htm",
+								  caption=>"Lavery Insight",
+								  perms=>qw("jack_articles jack_approve")),*/
+		/* etf=>array(link=>"/admin/etf/index.htm",
+						caption=>"Grail ETF & Equity Investor",
+						perms=>qw("etf_articles etf_approve etf_performance")), */
+
+		techstrat=>array(link=>"/admin/techstrat/index.htm",
+							caption=>"TechStrat",
+							perms=>qw("techstrat_approve techstrat_post techstrat_performance")),
+		peterTchir=>array(link=>"/admin/peter-tchir/index.htm",
+							caption=>"Tchir's Fixed Income Report",
+							perms=>qw("peterTchir_alerts peterTchir_approve peterTchir_heatmap")),
+		elliottWave=>array(link=>"/admin/elliott-wave-insider/index.htm",
+							caption=>"Elliott Wave Insider",
+							perms=>qw("elliotWave_alerts elliotWave_approve")),
+		keeneOptions=>array(link=>"/admin/keene/index.htm",
+							caption=>"Keene On Options",
+							perms=>qw("keeneOptions_alert keeneOptions_approve")),
+		admintools=>array(link=>"/admin/admin.htm",
+					caption=>"Admin Tools",
+					perms=>qw("admin_users_all admin_users_self subscribers_all contrib_all contrib_self emails ads_edit company_acct_manage"))
+	);
+
+	$logout=qsa(array(action=>"logout",refer=>refer(1)));
+
+?>
+<html>
+<head>
+<title><?=($title?$title:"Minyanville Administration Area")?> </title>
+<link rel="stylesheet" href="<?=$HTPFX.$HTADMINHOST;?>/admin/_style.1.3.css">
+
+<script src="<?=$HTPFX.$HTHOST;?>/js/config.1.2.js" language="JavaScript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/lib/_script.js" language="JavaScript"></script>
+</head>
+<?if(!$hide_ui){?>
+<body topmargin=10 bottommargin=0 leftmargin=5 rightmargin=5 >
+<table width="100%" cellpadding=3 cellspacing=0 border="0">
+<TR><TD colspan=100>
+	<table width=100%>
+	<TR>
+	<TD><a href="/admin/home.htm"><img src="<?=$HTPFX.$HTHOST;?>/admin/assets/headerlogo.gif" border=0></a></TD>
+	<TD nowrap class="adminheader">Site Administration</TD>
+	<TD class="adminheader" style="font-size:10pt"><a href="<?=$HTPFX.$HTHOST;?>/admin/index.htm<?=$logout;?>" style="font-size:9pt">LOGOUT</a><BR><?=$AD->userInfo[username]?></TD>
+	</TR>
+	</table>
+</TD></TR>
+<TR class=solidBg><TD colspan=100><?=spacer(1,5)?></TD></TR>
+<TR valign=top>
+<?foreach($navpages as $np=>$nd){
+	/*if(!$AD->getPerm($nd[perms]))
+		continue;
+	$cls=($page==$np?" class=solidBg":"");*/
+?>
+	<TD align=center<?=$cls?> style="font-size:8pt"><?=href("${nd[link]}",$nd[caption]," style=font-size:11px")?></TD>
+<?}?>
+</TR>
+<TR class=solidBg><TD colspan=100><?=spacer(1,5)?></TD></TR>
+</table>
+<?unset($scriptlist,$cls,$np,$nd);?>
+<table width=800><tr><td id="progress_bar" align="center"></td></tr><TR><TD>
+<?}?>

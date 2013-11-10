@@ -1,0 +1,26 @@
+<?
+$page="company";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($navpages[company])){
+	admin_error();
+}
+?>
+<table align=center>
+<TR>
+<TD><div class=adminheader>Company</div>
+<div style="padding:10px;width:400px">
+	<!--<img src="assets/mv-company.gif" border=0 align=left hspace=5></a>--><b>MV. Company Pages</b><br><br>
+	<li><a href="editpage.htm?filename=/assets/data/privacy.html&page=company&title=Privacy Statement">Privacy Statement</a>
+	<li><a href="editpage.htm?filename=/assets/data/substerms.html&page=company&title=Subscription Terms">Subscription Terms</a>
+	<li><a href="editpage.htm?filename=/assets/data/conflicts.html&page=company&title=Conflicts and Disclosures">Conflicts and Disclosures</a>
+<li><a href="editpage.htm?filename=/assets/data/disclaimers.html&page=company&title=Generic Disclaimer">Disclaimers</a>
+<br clear="all">
+<li><a href="editpage.htm?filename=/assets/data/faqs.html&page=company&title=FAQs">FAQs</a>
+<li><a href="editpage.htm?filename=/assets/data/mvgeneral.html&page=company&title=General Information">General Information</a>
+<li><a href="editpage.htm?filename=/assets/data/mvaccount.html&page=company&title=Membership Account Information">Membership Account Information</a>
+<li><a href="editpage.htm?filename=/assets/data/bulletin.html&page=company&title=Bulletin Delivery">Bulletin Delivery</a>
+</div></TD>
+</TR>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

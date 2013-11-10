@@ -1,0 +1,834 @@
+<?php
+global $IMG_SERVER,$D_R,$STORAGE_SERVER;
+$pageJS=array('config','jquery','global','mobileredirect','emailalert','Articles','modal-window.min','jquery1.3');
+$pageCSS=array("global","layout","nav","modal-window","portfolioStyle","mediaKitStyle");
+$pageName="advertising";
+include($D_R."/_header.htm");
+
+?>
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+<script type="text/javascript">
+			$(document).ready(function(){
+				//To switch directions up/down and left/right just place a "-" in front of the top/left attribute
+				//Vertical Sliding
+				$('.boxgrid.slidedown').hover(function(){
+					$(".cover", this).stop().animate({top:'-127px'},{queue:false,duration:300});
+				}, function() {
+					$(".cover", this).stop().animate({top:'0px'},{queue:false,duration:300});
+				});
+				//Horizontal Sliding
+				$('.boxgrid.slideright').hover(function(){
+					$(".cover", this).stop().animate({left:'160px'},{queue:false,duration:300});
+				}, function() {
+					$(".cover", this).stop().animate({left:'0px'},{queue:false,duration:300});
+				});
+				//Diagnal Sliding
+				$('.boxgrid.thecombo').hover(function(){
+					$(".cover", this).stop().animate({top:'127px', left:'160px'},{queue:false,duration:300});
+				}, function() {
+					$(".cover", this).stop().animate({top:'0px', left:'0px'},{queue:false,duration:300});
+				});
+				//Featured Diagnal Sliding
+				$('.boxgridFeatured.thecombo').hover(function(){
+					$(".cover", this).stop().animate({top:'105px', left:'345px'},{queue:false,duration:300});
+				}, function() {
+					$(".cover", this).stop().animate({top:'0px', left:'0px'},{queue:false,duration:300});
+				});
+
+				//Partial Sliding (Only show some of background)
+				$('.boxgrid.peek').hover(function(){
+					$(".cover", this).stop().animate({top:'90px'},{queue:false,duration:160});
+				}, function() {
+					$(".cover", this).stop().animate({top:'0px'},{queue:false,duration:160});
+				});
+				//Full Caption Sliding (Hidden to Visible)
+				$('.boxgrid.captionfull').hover(function(){
+					$(".cover", this).stop().animate({top:'90px'},{queue:false,duration:160});
+				}, function() {
+					$(".cover", this).stop().animate({top:'180px'},{queue:false,duration:160});
+				});
+				//Caption Sliding (Partially Hidden to Visible)
+				$('.boxgrid.caption').hover(function(){
+					$(".cover", this).stop().animate({top:'90px'},{queue:false,duration:160});
+				}, function() {
+					$(".cover", this).stop().animate({top:'140px'},{queue:false,duration:160});
+				});
+			});
+		</script>
+
+<div class="shadow">
+	<div id="content-container">
+		<?php
+		if($_SESSION['AdsFree'])
+		{
+			echo '<div class="wrap" style="margin:10px auto;">';
+		}
+		else
+		{
+			echo '<div class="wrap">';
+		}
+		?>
+			<div class="mainShelf">
+				<ul class="GridTypeA">
+					<li class="GTA-columnA">
+						<ul class="sidebarNav">
+							<li><a href="#whyMv">Why Minyanville.com?</a></li>
+							<li><a href="#sponsorship">Sponsorships and Direct Ads</a></li>
+							<li><a href="#adOport">Site Advertising Opportunities</a></li>
+							<li><a href="#mvCreative">Minyanville Creative</a></li>
+							<!--	<ul class="creativeSubNav">
+									<li><a href="whyMv">Featured Work</a></li>
+									<li><a href="whyMv">Advertising</a></li>
+									<li><a href="whyMv">Web Design And Development</a></li>
+									<li><a href="whyMv">Facebook Applications Design And Development</a></li>
+								</ul>
+							-->
+						</ul>
+					</li>
+
+					<li class="GTA-columnB">
+
+						<script type="text/javascript" src="http://www.minyanville.com/mvtv/flowplayer/flowplayer-3.2.0.min.js"></script>
+						<div style="width:720px;height:405px; margin:0 auto; padding:0;" id="player"></div>
+						<!-- this script block will install Flowplayer inside previous DIV tag -->
+						<script language="JavaScript">
+						var img_server = '<?=$IMG_SERVER?>';
+						var storage_server = '<?=$STORAGE_SERVER?>';
+                         flowplayer("player", "http://releases.flowplayer.org/swf/flowplayer-3.2.8.swf",  {
+
+							  // here is our playlist with two clips
+							  playlist: [
+
+								  // this first PNG clip works as a splash image
+								 {
+									 url: img_server+"/assets/FCK_Jan2011/images/freddy/2012/03/mvReelStill_720x405.jpg",
+									 scaling: 'orig'
+								 },
+
+								 // second clip is a video. when autoPlay is set to false the splash screen
+								 // will be shown
+								 {
+									 url: storage_server+'/mvtv/videos/sizzlereelfinal_1330786695.flv',
+									 autoPlay: false,
+
+									 // video will be buffered when splash screen is visible
+									 autoBuffering: true
+								 }
+							  ]
+							});
+						</script>
+
+						<div class="indentedDiv"></div>
+
+						<h2><a name="whyMv">Why Minyanville.com?</a></h2>
+						<p>Minyanville creates content and provides tools to help investors of all ages. Our mission is to effect positive change through financial understanding.</p>
+						<p>Minyanville.com attracts 1.5 million unique visitors and 10 million page views a month. We create, produce and curate branded market commentary and Emmy Award winning video to inform, educate and entertain people about the world of investing, business and finance.</p>
+						<p>Content is distributed directly on Minyanville.com and through licensing and syndication agreements with major industry partners such as <em>Yahoo!</em>, <em>MarketWatch</em>, <em>AOL</em>, <em>MSN</em>, <em>Thestreet.com</em>, <em>TD Ameritrade</em>, <em>E*Trade</em> and other leading destinations.</p>
+
+						<div class="indentedDiv"></div>
+
+						<h2><a name="sponsorship">Sponsorships and Direct Ads</a></h2>
+						<p>Minyanville works with advertisers through its exclusive representative, <a target="_blank" href=" http://www.investingmediasolutions.com/">Investing Media Solutions (IMS)</a>, to craft strategies that engage prospects and clients. In addition to standard advertising units, Minyanville is expert at creating custom-made opportunities in a range of formats and platforms designed to meet marketers' communication needs. Surrounded by world class content, either regular features or those created exclusively for an advertiser, Minyanville has proven success integrating marketers' messages into content and creating an environment where quality prospects can socialize and share.</p>
+
+<p style="letter-spacing: -1px;"><b>Investing Media Solutions (IMS)</b></p>
+
+<p><a target="_blank" href=" http://www.investingmediasolutions.com/">Investing Media Solutions (IMS)</a> is one of the fastest growing media companies in the finance vertical.  With Investing Media Solutions seasoned team of professionals, advertisers can reach new audiences and optimize marketing campaigns to maximize return on investment with the highest level of service. To learn more about advertising on Minyanville as well as other sites in the Investing Media Solutions network contact us at:</p>
+<div class="ic_info" >
+<div class="ic_addr" >
+<p>
+Amit Singh<br/>
+Investing Media Solutions<br/>
+<a target="_blank" href="mailto:amit@investingmediasolutions.com?subject=Advertising Inquiry">amit@investingmediasolutions.com</a><br />
+T: [248] 990-1245<br />
+F: [248] 671-0315<br />
+<a href="http://www.investingmediasolutions.com/" target="_blank">www.investingmediasolutions.com</a>
+</p>
+</div>
+<div class="ic_img" ><img width="175px" height="76px" src="<?=$IMG_SERVER;?>/images/ads/IMS_exploration_final_logo_4__1_.png"></div>
+</div>
+
+
+						<div class="indentedDiv"></div>
+
+						<h2><a name="adOport">Site Advertising Opportunities</a></h2>
+						<p>Minyanville offers a variety of advertising options. We tailor campaigns to move the needle in core brand metrics or meet CPM, CPL or CPA targets.</p>
+						<p>Our pricing is competitive and our media and advertising kit offers a full range of advertising options, including geo-targeting, reach extension and re-targeting programs.<br /><a href="http://www.minyanville.com/ads/docs/mvMediaKit2013.pdf" target="_blank">[Click here to download &rarr;]</a></p>
+
+						<div class="mainShelf_content">
+							<ul class="GridTypeA">
+							<li class="GTA-columnA">
+							</li>
+
+							<li class="GTA-columnB">
+
+<!--PLEASE USE THE CODE BELOW TO UPDATE THE EXISTING ON DEV.MINYANVILLE.COM-->
+							<div class="creativesShelf">
+								<ul class="pageTypeGrid">
+
+									<li id="col-1">
+										<h3 class="pTLabel">Homepage</h3>
+										<table  border="0" cellpadding="0" cellspacing="0"  class="pageType">
+											<tbody>
+												<!--Leaderboard + 227x90 Ads START -->
+												<tr valign="top">
+													<td valign="top">
+														<table  border="0" cellpadding="0" cellspacing="0" style="margin-top: 16px; border-spacing: 2px 0; width: 164px;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px;"></td>
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px; width: 37px;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<!--Leaderboard + 227x90 Ads END-->
+
+												<tr valign="top">
+													<td valign="top">
+
+														<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 0; width: 111px; float: left;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="padding-bottom: 50px !important;">
+
+																		<!--Homepage Slider + We Recommend Panels START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px; width: 111px;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 46px;"></td>
+																				</tr>
+
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 23px;"></td>
+																				</tr>
+
+																			</tbody>
+																		</table>
+																		<!--Homepage Slider + We Recommend Panels END -->
+
+																		<!--Main Content Panels START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px 0; width: 111px; float: left;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 160px; width: 55px;"></td>
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 160px; width: 54px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px; width: 111px; float: left;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 38px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px 0; width: 111px; float: left;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 118px; width: 55px;"></td>
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 118px; width: 54px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+
+																		<!--Main Content Panels END -->
+
+																	</td>
+
+																	<td valign="top" style="padding-bottom: 50px !important;">
+																		<!--Right Sidebar START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="margin: 2px 0; width: 51px; float: left;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 42px;"></td>
+																				</tr>
+
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 251px;"></td>
+																				</tr>
+
+																				<tr valign="top">
+																					<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 100px;"></td>
+																				</tr>
+
+																			</tbody>
+																		</table>
+																		<!--Right Sidebar  END -->
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</li>
+
+									<li id="col-2">
+										<h3 class="pTLabel">Article Pages</h3>
+										<table  border="0" cellpadding="0" cellspacing="0"  class="pageType">
+											<tbody>
+												<!-- Top Leaderboard START -->
+												<tr valign="top">
+													<td valign="top">
+														<table  border="0" cellpadding="0" cellspacing="0" style="margin-top: 16px; border-spacing: 2px 0; width: 164px;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 14px;"></td>
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px; width: 117px;"></td>
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 14px;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<!-- Top Leaderboard END-->
+
+												<tr valign="top">
+													<td valign="top">
+
+														<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 0; width: 111px; float: left;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top">
+																		<!-- Main Content Panels START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px 0; width: 111px; float: left; margin-top: 2px; ">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 393px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+
+																		<!-- Main Content Panels END -->
+
+																	</td>
+
+																	<td valign="top">
+																		<!-- Right Sidebar START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="margin: 2px 0; width: 51px; float: left;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 42px;"></td>
+																				</tr>
+
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 251px;"></td>
+																				</tr>
+
+																				<tr valign="top">
+																					<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 100px;"></td>
+																				</tr>
+
+																			</tbody>
+																		</table>
+																		<!--Right Sidebar  END -->
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+
+													</td>
+												</tr>
+
+												<!-- Bottom Leaderboard START -->
+												<tr valign="top">
+													<td valign="top">
+														<table  border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 36px; border-spacing: 2px 0; width: 164px;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 14px;"></td>
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px; width: 117px;"></td>
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 14px;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<!-- Bottom Leaderboard END-->
+											</tbody>
+										</table>
+									</li>
+
+									<li id="col-3">
+										<h3 class="pTLabel">Subsection Pages</h3>
+										<table  border="0" cellpadding="0" cellspacing="0"  class="pageType" style="margin-bottom: 14px;">
+											<tbody>
+												<!--Leaderboard + 227x90 Ads START -->
+												<tr valign="top">
+													<td valign="top">
+														<table  border="0" cellpadding="0" cellspacing="0" style="margin-top: 16px; border-spacing: 2px 0; width: 164px;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px;"></td>
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px; width: 37px;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<!--Leaderboard + 227x90 Ads END-->
+
+												<tr valign="top">
+													<td valign="top">
+
+														<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 0; width: 111px; float: left;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="padding-bottom: 43px !important;">
+
+																		<!--Main Content Panels START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px 0; width: 111px; float: left; margin-top: 2px;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 142px; width: 42px;"></td>
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 142px; width: 24px;"></td>
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 142px; width: 41px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+																		<!--Main Content Panels END -->
+
+																	</td>
+
+																	<td valign="top" style="padding-bottom: 43px !important;">
+																		<!--Right Sidebar START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="margin: 2px 0; width: 51px; float: left;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 42px;"></td>
+																				</tr>
+
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 100px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+																		<!--Right Sidebar  END -->
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+
+													</td>
+												</tr>
+											</tbody>
+										</table>
+
+										<h3 class="pTLabel">Email Newsletter</h3>
+										<table  border="0" cellpadding="0" cellspacing="0"  class="pageType">
+											<tbody>
+												<!-- Top Leaderboard START -->
+												<tr valign="top">
+													<td valign="top">
+														<table  border="0" cellpadding="0" cellspacing="0" style="margin-top: 16px; border-spacing: 2px 0; width: 164px;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 14px;"></td>
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px; width: 160px;"></td>
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 14px;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<!-- Top Leaderboard END-->
+
+												<!--Leaderboard + 227x90 Ads START -->
+												<tr valign="top">
+													<td valign="top">
+														<table  border="0" cellpadding="0" cellspacing="0" style="margin-top: 2px; border-spacing: 2px 0; width: 164px;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 6px;"></td>
+																	<td valign="top" style="background: #ffffff; border: 1px solid #ffffff; border-collapse: collapse; height: 6px; width: 37px;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<!--Leaderboard + 227x90 Ads END-->
+
+												<tr valign="top">
+													<td valign="top">
+
+														<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 0; width: 164px; float: left;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="padding-bottom: 10px !important; padding-left: 4px;">
+
+																		<!--Main Content Panels START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px 0; width: 156px; float: left; margin-top: 2px;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="bottom" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 162px; width: 81px;">
+
+																						<!-- Left Ad START -->
+																						<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 4px; float: left;">
+																							<tbody>
+																								<tr valign="bottom">
+																									<td valign="bottom" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 61px;  width: 74px;"></td>
+																								</tr>
+																							</tbody>
+																						</table>
+																						<!-- Left Ad END -->
+
+																					</td>
+
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 162px; width: 81px;">
+
+																						<!-- Right Sidebar START -->
+																						<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 4px; float: left;">
+																							<tbody>
+																								<tr valign="top">
+																									<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 61px;  width: 74px;"></td>
+																								</tr>
+																							</tbody>
+																						</table>
+																						<!--Right Sidebar  END -->
+
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																		<!--Main Content Panels END -->
+
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</li>
+
+									<li id="col-4" class="nmr">
+										<h3 class="pTLabel">Topic Pages</h3>
+										<table  border="0" cellpadding="0" cellspacing="0"  class="pageType" style="margin-bottom: 14px;">
+											<tbody>
+												<!--Leaderboard + 227x90 Ads START -->
+												<tr valign="top">
+													<td valign="top">
+														<table  border="0" cellpadding="0" cellspacing="0" style="margin-top: 16px; border-spacing: 2px 0; width: 164px;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px;"></td>
+																	<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 14px; width: 37px;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<!--Leaderboard + 227x90 Ads END-->
+
+												<tr valign="top">
+													<td valign="top">
+
+														<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 0; width: 111px; float: left;">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top" style="padding-bottom: 43px !important;">
+
+																		<!--Main Content Panels START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="border-spacing: 2px 0; width: 111px; float: left; margin-top: 2px;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 142px; width: 42px;"></td>
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 142px; width: 24px;"></td>
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 142px; width: 41px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+																		<!--Main Content Panels END -->
+
+																	</td>
+
+																	<td valign="top" style="padding-bottom: 43px !important;">
+																		<!--Right Sidebar START -->
+																		<table  border="0" cellpadding="0" cellspacing="0" style="margin: 2px 0; width: 51px; float: left;">
+																			<tbody>
+																				<tr valign="top">
+																					<td valign="top" style="background: #b2e7fa; border: 1px solid #bfbfbf; border-collapse: collapse; height: 100px;"></td>
+																				</tr>
+
+																				<tr valign="top">
+																					<td valign="top" style="background: #ffffff; border: 1px solid #bfbfbf; border-collapse: collapse; height: 42px;"></td>
+																				</tr>
+																			</tbody>
+																		</table>
+																		<!--Right Sidebar  END -->
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+
+													</td>
+												</tr>
+											</tbody>
+										</table>
+
+										<h3 class="pTLabel">Minyanville Mobile</h3>
+										<img src="<? echo $CDN_SERVER; ?>/ads/images/mvMobileAdSample_116x214.png" alt="Minyanville Mobile" border="" height="214" width="116" />
+									</li>
+
+								</ul>
+							</div>
+							<ul class="GridTypeA">
+					<li class="GTA-columnA">
+					</li>
+
+					<li class="GTA-columnB">
+
+<!--PLEASE USE THE CODE BELOW TO UPDATE THE EXISTING ON DEV.MINYANVILLE.COM-->
+
+						<ul class="creativesShelf" id="creativesShelf_bottom">
+							<li style="width: 358px; float: left; margin-right: 10px; list-style-type: none;"><h3>Standard Banners</h3></li>
+							<li style="width: 350px; float: left; list-style-type: none;"><h3>Also Available</h3></li>
+							<li id="col-A">
+								<div class="creative leaderboard" title="Leaderboard 728x90"><p class="bnrTxt">Leaderboard 728x90</p></div>
+								<div class="creative one70x40" title="170x40"><p class="bnrTxt" style=" margin: 2px 0 0 2px;">170x40</p></div>
+								<div class="creative halfPage" title="Half Page Ad 300x600"><p class="bnrTxt">Half Page 300x600</p></div>
+								<div class="creative mediumRectangle" title="Medium Rectangle Ad 300x250"><p class="bnrTxt">Rectangle 300x250</p></div>
+							</li>
+
+							<li id="col-B">
+								<div class="creative additional-A">
+									<h3><font style="color: #838383;">Rising Stars</font></h3>
+										<ul style="padding-left: 15px;">
+											<li>Pushdown 970&times;90 (970&times;418 expanded)</li>
+											<li>Filmstrip Unit 300&times;600</li>
+											<li>Portrait Unit 300&times;1050</li>
+											<li>Sidekick Unit</li>
+											<li>Slider Unit 970&times;90</li>
+											<li>Billboard Unit 970&times;250</li>
+											<li>Page Skin</li>
+											<li>Homepage Slider 653&times;258</li>
+											<li>Interstitial 640&times;480</li>
+											<li>Text Ad 1&times;1</li>
+										</ul>
+								</div>
+
+								<div class="creative additional-B">
+									<h3><font style="color: #838383;">Mobile Web</font></h3>
+										<ul style="padding-left: 15px;">
+											<li>X-Large Image Banner 300&times;250</li>
+											<li>Large Image Banner 300&times;50</li>
+											<li>Small Image Banner 170&times;40</li>
+											<li>Text Tagline (optional)</li>
+										</ul>
+								</div>
+
+							</li>
+						</ul>
+<!--PLEASE USE THE CODE ABOVE TO UPDATE THE EXISTING ON DEV.MINYANVILLE.COM-->
+
+					</li>
+
+				</ul>
+			</div>
+						<div class="indentedDiv"></div>
+
+						<h2><a name="mvCreative">Minyanville Creative</a></h2>
+						<p>We live, eat, and  breathe finance every day. Our staff knows the intricacies of the capital market and how best to communicate with a high net worth audience. Minyanville Creative boasts a team of writers and designers who have garnered Effies, Emmys, Clios, Cannes Lions, and One Show awards, among many others. </p>
+						<p>Let us put our intimate knowledge of business world to work for your brand. </p>
+						<h3>Minyanville offers a variety of creative solutions for its partners including:</h3>
+						<ul>
+							<li>Web site design and development</li>
+							<li>Customized advertising units</li>
+							<li>Emmy award winning video content production</li>
+						</ul>
+						<p><a href="http://minyanvillemedia.com/portfolio/" target="_blank">[Click here to view our full creative portfolio &rarr;]</a></p>
+
+						<div class="content-box clearfix">
+							<div class="clearfix">
+								<!-- -->
+							  <script type="text/javascript">
+								  $(document).ready(function($) {
+									   $('#accordion dd').hide();
+									   $('#accordion dt a').click(function(){
+											   $('#accordion dd').slideUp();
+											   $(this).parent().next().slideDown();
+											   return false;
+									   });
+									});
+								</script>
+
+								<dl class="clearfix">
+									<dt class="noBrdrTop"><a name="featured" style="color: #005696;">Featured Work</a></dt>
+									<dd class="clearfix">
+										<div class="boxgridFeatured thecombo nmLt">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/featOne.jpg" alt=""/>
+											<h3>Customized Homepage Ad Units For Direxion Funds</h3>
+											<p><b>Client:</b> Direxion Shares<br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/homepage/01/direxion_test_Video01_653x258.html" onclick="$(this).modal({width:653, height:320}).open(); return false;">[Demo Version 1 &rarr;]</a><br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/homepage/02/direxion_test_Video02_653x258.html" onclick="$(this).modal({width:653, height:320}).open(); return false;">[Demo Version 2 &rarr;]</a><br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/homepage/03/direxion_test_Video03_653x258.html" onclick="$(this).modal({width:653, height:320}).open(); return false;">[Demo Version 3 &rarr;]</a><br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/homepage/04/direxion_test_Video04_653x258.html" onclick="$(this).modal({width:653, height:320}).open(); return false;">[Demo Version 4 &rarr;]</a>
+											</p>
+										</div>
+
+										<div class="boxgridFeatured thecombo nmRt">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/featTwo.jpg" alt=""/>
+											<h3>Expandable Ad Units For Direxion Funds</h3>
+											<p><b>Client:</b> Direxion Shares<br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/expandable/01/direxion_970x418_new_Video1.html" onclick="$(this).modal({width:980, height:436}).open(); return false;">[Demo Version 1 &rarr;]</a><br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/expandable/02/direxion_970x418_new_Video2.html" onclick="$(this).modal({width:980, height:436}).open(); return false;">[Demo Version 2 &rarr;]</a><br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/expandable/03/direxion_970x418_new_Video3.html" onclick="$(this).modal({width:980, height:436}).open(); return false;">[Demo Version 3 &rarr;]</a><br />
+											<a href="http://www.minyanville.com/images/ads/direxion/preview/expandable/04/direxion_970x418_new_Video4.html" onclick="$(this).modal({width:980, height:436}).open(); return false;">[Demo Version 4 &rarr;]</a>
+											</p>
+										</div>
+									</dd>
+								</dl>
+								<dl id="accordion">
+									<dt class="noBrdrTop"><a href="">Advertising</a></dt>
+									<dd>
+										<div class="boxgrid thecombo nmLt">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_barterhouse.jpg" alt=""/>
+											<h3>Online Ad Campaing for Barterhouse</h3>
+											<p><b>Client:</b> Barterhouse<br />
+											<a href="<? echo $CDN_SERVER; ?>/ads/images/mv_barterhouse_adCampaign_720x624.jpg" onclick="$(this).modal({width:760, height:624}).open(); return false;">[View Sample &rarr;]</a></p>
+										</div>
+
+										<div class="boxgrid thecombo">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_louisXIII.jpg" alt=""/>
+											<h3>Louis XIII Customized Ad Units and promotional page </h3>
+											<p><b>Client:</b> Louis XIII<br />
+											<a href="<? echo $CDN_SERVER; ?>/ads/images/mv_remyLouisXIII_adsNpage_720x624.jpg" onclick="$(this).modal({width:720, height:624}).open(); return false;">[View Sample &rarr;]</a><br />
+											<a href="http://rpfoundation.org/LOUISXIII.asp" target="_blank">[Visit Page &rarr;]</a>
+											</p>
+										</div>
+
+										<div class="boxgrid thecombo">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_capitalOne.jpg" alt=""/>
+											<h3>Expandable Ad Unit For Capital One</h3>
+											<p><b>Client:</b> Capital One<br />
+											<a href="http://rpfoundation.org/flash/capitalone_pushdown/capOne_pushDown.html" onclick="$(this).modal({width:980, height:436}).open(); return false;">[View Demo &rarr;]</a></p>
+										</div>
+
+										<div class="boxgrid thecombo nmRt">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_irf.jpg" alt=""/>
+											<h3>Online Ad Campaing for International Rectifier</h3>
+											<p><b>Client:</b> International Rectifier<br />
+											<a href="<? echo $CDN_SERVER; ?>/ads/images/mv_irf_adCampaign_720x617.jpg" onclick="$(this).modal({width:720, height:617}).open(); return false;">[View Sample &rarr;]</a></p>
+										</div>
+									<!-- -->
+										<div class="boxgrid thecombo nmLt">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_marketsmith.jpg" alt=""/>
+											<h3>Customized Homepage Ad Units For Marketsmith</h3>
+											<p><b>Client:</b> Marketsmith<br />
+											<a href="http://rpfoundation.org/flash/marketsmith_demo/marketsmith_demo.html" onclick="$(this).modal({width:680, height:280}).open(); return false;">[View Demo &rarr;]</a></p>
+										</div>
+										<div class="boxgrid thecombo ">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_outdoorAdvertising.jpg" alt=""/>
+											<h3>Minyanville's Outdoor Advertising Campaing</h3>
+											<p>Minyanville<br />
+											<a href="<? echo $CDN_SERVER; ?>/ads/images/mv_outdoorAdvetising_534x624.jpg" onclick="$(this).modal({width:534, height:624}).open(); return false;">[View Sample &rarr;]</a></p>
+										</div>
+
+										<div class="boxgridEmpty">
+											<br />
+										</div>
+
+										<div class="boxgridEmpty nmLt">
+											<br />
+										</div>
+									</dd>
+									<!-- -->
+									<dt><a href="">Web Design And Development</a></dt>
+									<dd>
+										<div class="boxgrid thecombo nmLt">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_mvmedia.jpg" alt=""/>
+											<h3>Minyanville Media Corporate Website</h3>
+											<p>Minyanville<br /><a href="http://minyanvillemedia.com/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+										<div class="boxgrid thecombo">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_rpfoundation.jpg" alt=""/>
+											<h3>Ruby Peck Foundation Website</h3>
+											<p>Minyanville<br /><a href="http://rpfoundation.org/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+
+										<div class="boxgrid thecombo">
+											<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_minyanland.jpg" alt=""/>
+											<h3>MinyanLand Website</h3>
+											<p>Minyanville<br /><a href="http://minyanland.com/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+										<div class="boxgrid thecombo nmRt">
+												<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_mvProducts.jpg" alt=""/>
+											<h3>MVP Products Landing Page</h3>
+											<p>Minyanville<br /><a href="http://www.minyanville.com/subscription/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+
+										<!-- -->
+
+										<div class="boxgrid thecombo nmLt">
+												<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_mvAdFree.jpg" alt=""/>
+											<h3>Minyanville Ad Free Landing Page</h3>
+											<p>Minyanville<br /><a href="http://www.minyanville.com/ad-free/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+										<div class="boxgrid thecombo">
+												<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_optionsmiths.jpg" alt=""/>
+											<h3>Optionsmith Landing Page</h3>
+											<p>Minyanville<br /><a href="http://www.minyanville.com/optionsmith/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+
+										<div class="boxgrid thecombo">
+												<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_garyKs.jpg" alt=""/>
+											<h3>Gary K's Equity Trading Setups Landing Page</h3>
+											<p>Minyanville<br /><a href="http://www.minyanville.com/garyk/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+
+										<div class="boxgrid thecombo nmRt">
+												<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_techstrat.jpg" alt=""/>
+											<h3>Techstrat Landing Page</h3>
+											<p>Minyanville<br /><a href="http://www.minyanville.com/techstrat/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+
+										<!-- -->
+
+										<div class="boxgrid thecombo nmLt">
+												<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_housingMkt.jpg" alt=""/>
+											<h3>Housing Market Report Landing Page</h3>
+											<p>Minyanville<br /><a href="https://www.minyanville.com/housing-market-report/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+
+										<div class="boxgrid thecombo">
+												<img class="cover" src="<? echo $CDN_SERVER; ?>/ads/images/thumb_activeInvestor.jpg" alt=""/>
+											<h3>Active Investor Landing Page</h3>
+											<p>Minyanville<br /><a href="http://www.minyanville.com/active-investor/" target="_BLANK">[Visit Page &rarr;]</a></p>
+										</div>
+
+										<div class="boxgridEmpty">
+											<br />
+										</div>
+
+										<div class="boxgridEmpty nmLt">
+											<br />
+										</div>
+
+									</dd>
+								</dl>
+							</div>
+						</div>
+
+					</li>
+				</ul>
+			</div>
+		</div>
+</div>
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";e.async=true;e.src="https://d1ros97qkrwjf5.cloudfront.net/39/eum/rum.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","d523ffa813",1669,"dl0IEhZXCVwHQUlYEVwdFAMXVxBCAVZJXQ5CXAoJBVw=",0,280,new Date().getTime(),"","","","",""])</script>
+<?php include($D_R."/_footer.htm"); ?>

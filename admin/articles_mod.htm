@@ -1,0 +1,20 @@
+<?
+global $S4,$S5,$D_R;
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/admin/lib/_article_data_lib.php");
+$bounceback = "./articles.htm";
+
+$objArticle= new ArticleData();
+
+$objArticle->prepareArticleData($articles);
+if($objArticle->error)
+{
+	location($bounceback.qsa(array(id=>$id,error=>$objArticle->errorMsg)));
+}
+$objArticle->setArticle($id);
+if($objArticle->error)
+{
+	location($bounceback.qsa(array(id=>$objArticle->id,error=>$objArticle->errorMsg)));
+}
+
+?>

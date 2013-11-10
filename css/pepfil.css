@@ -1,0 +1,240 @@
+/* CSS */
+body
+{
+	font-family:arial,helvetica,sans-serif,verdana;
+}
+.FeedMainContainer{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+text-align:left;
+width:95%;
+padding-left:18px;
+float:left;
+padding-top:2px;
+color:#232323;
+clear:both;
+}
+
+.pepfilProdName
+{
+	background-position:center bottom;
+	background-repeat:repeat-x;
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:22px;
+	font-weight:bold;
+	margin:0;
+	padding:5px 0px 2px 7px;
+	text-align:left;
+	text-transform:none;
+	width:auto;
+}
+.pepfilHeader{
+	float:left;
+	margin:0;
+	font-size:11px;
+	width:600px;
+	padding-bottom:10px;
+	border-bottom:1px dotted #ACACAC;
+}
+.pepfilHeader ul{
+margin:0;
+padding:0;
+text-align:left;
+padding:3px 0px 2px 7px;
+}
+.pepfilHeader li{
+color:#013161;
+display:block;
+float:left;
+font-family:Arial,Helvetica,sans-serif;
+font-size:12px;
+font-weight:normal;
+list-style:none outside none;
+padding-top:2px;
+text-align:center;
+text-decoration:none !important;
+}
+
+
+.pepfilHeader ul li a.selected {
+background-color:#042b56;
+color:#FFFFFF;
+display:block;
+font-family:Arial,Helvetica,sans-serif;
+font-size:12px;
+font-weight:bold;
+margin-right:39px;
+/*padding:2px 10px 2px 10px;*/
+padding:5px 8px 5px 10px;
+text-align:center;
+text-decoration:none !important;
+}
+
+.pepfilHeader ul li a {
+color:#013161;
+display:block;
+font-family:Arial,Helvetica,sans-serif;
+font-size:12px;
+font-weight:bold;
+margin-right:39px;
+text-decoration:none !important;
+padding:5px 8px 5px 10px;
+}
+
+.pepfil-datetime
+{
+font-size:11px;
+text-align:left;
+color:#002f54;
+padding:5px 1px 2px;
+font-family:Arial,Helvetica,sans-serif;
+font-weight:normal;
+}
+.pepfil-title {
+text-align:left;
+color:#013161;
+font-family:Arial,Helvetica,sans-serif;
+font-size:20px;
+font-weight:bold;
+padding:1px 2px 2px 0px;
+}
+.pepfil-tags-heading {
+text-align:left;
+font-family:Arial,Helvetica,sans-serif;
+padding-bottom:5px;
+}
+.pepfil-tags
+{
+font:Arial, Helvetica, sans-serif;
+font-weight:bold;
+color:#044ca0;
+font-size:11px;
+}
+.pepfil-tags a
+{
+font:Arial, Helvetica, sans-serif;
+font-weight:bold;
+color:#044ca0;
+font-size:11px;
+cursor:pointer;
+}
+
+.pepfil-cont-right-box {
+color:#2A1414;
+font-size:16px;
+font-weight:bold;
+padding-bottom:2px;
+padding-top:10px;
+float:left;
+padding-right:7px;
+}
+
+.pepfil-cont-name-rghtbox{
+color:#000000;
+font-size:14px;
+font-weight:bold;
+padding-bottom:4px;
+float:left;
+padding-right:7px;
+}
+.divClear{
+clear:both;
+}
+.pepfil-header-rghtbox{
+color:#000000;
+color:#2A1414;
+font-family:Myriad Pro;
+font-size:16px;
+font-weight:bold;
+padding-bottom:5px;
+padding-top:4px;
+}
+.pepfil_display_product_top{
+background:none repeat scroll 0 0 #FFFFFF;
+border:1px solid #000000;
+font-weight:bold;
+line-height:8px;
+padding:4px 12px 10px 10px
+width:288px;
+}
+.pepefilEmailHeading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+float:left;
+color:#000000;
+padding:0px 4px 0px 4px;
+/*padding:2px 4px 2px 0px;*/
+}
+.pepfilEmailLink{
+font:Arial, Helvetica, sans-serif;
+font-weight:bold;
+color:#044ca0;
+font-size:11px;
+cursor:pointer;
+text-decoration:underline;
+}
+
+.pepfil-heading-right-box{
+color:#2A1414;
+font-family:Myriad Pro;
+font-size:16px;
+font-weight:bold;
+padding-bottom:4px;
+padding-top:10px;
+float:left;
+}
+.pepfil-tagcloud
+{
+font:Arial, Helvetica, sans-serif;
+font-weight:bold;
+color:#044ca0;
+font-size:12px;
+padding:4px 2px 4px 10px;
+float:left;
+width:278px;
+line-height:8px;
+}
+
+.allarticle{
+	width:500px;
+	float:left;
+	border-bottom:#a0a0a0 1px dotted;
+	margin:10px 0px 0px 10px;
+}
+
+.pepfilAllReportTitle , .pepfilAllReportTitle a{
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	color:#03305a;
+	cursor:pointer;
+	width:500px;
+}
+
+.pepfilPagination{
+	background-color:#FFFFFF;
+	clear:both;
+	float:left;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	margin-left:2px;
+	margin-top:5px;
+	margin-bottom:5px;
+	padding:5px 15px;
+	width:640px;
+}
+
+.pepfilPagination a {
+	background-color:#FFFFFF;
+	color:#0B3E73;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	padding-left:12px;
+	padding-right:12px;
+	text-decoration:underline;
+	width:auto;
+}

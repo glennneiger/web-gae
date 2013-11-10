@@ -1,0 +1,37 @@
+<?
+include("$D_R/lib/layout_functions.php");
+$strContestdata=$_GET;
+	if($_GET['flag'] == 'contest')
+	{
+		$chklogin = $_GET;
+		$contestUser=$_GET['flag'];
+		$contestQry = "SELECT id as contest_id FROM `ex_contestsubscriber` WHERE email = '$strContestdata[email]'";
+		$contestRes=exec_query($contestQry,1);
+		$count=count($contestRes);
+	?>
+		<tr><td class="underheader">
+		<table border="0" width ="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+				<table align="center" cellpadding="0" cellspacing="0" width="50px;" border="0">
+					<tr>
+					<td colspan="2" style="padding-top:5px;"><img src="<?=$IMG_SERVER?>/images/BContest.jpg" width="456" height="52"/></td><td style="padding-top:5px;"><img src="<?=$IMG_SERVER?>/images/community_images/regThecontest_close.gif" width="34" height="52" onclick="javascript:iboxclose();"/> </td>
+						</td>
+					</tr>
+				</table>
+		  <?if($count==0){
+			unset($strContestdata['flag']);
+			insert_query("ex_contestsubscriber",$strContestdata);
+		  ?>
+		</table>
+		<table border="0" width ="100%" cellspacing="0" cellpadding="0" >
+			 <tr><td class="registrationminute" style="text-align:center">You have sucessfully entered the Ben Bernake "BANK SHOT" Bracket Contest. Thank You!<br><br>
+			</td></tr>
+		</table>
+		<?}
+		else {?>
+		<tr><td class="registrationminute" style="text-align:center">You have already registered for this contest.<br><br>
+			</td></tr>
+		</td></tr>
+	<?} 
+}?>

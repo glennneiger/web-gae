@@ -1,0 +1,43 @@
+<table width="600"  cellpadding="0" cellspacing="0" style="border:#000000 solid 1px;">
+  <tr>
+    <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<?php 
+      include("$D_R/emails/_eml_exchange_header.htm"); ?>
+      <tr>
+        <td align="center"><table width="92%" border="0" cellspacing="5" cellpadding="0" style="margin:10px;">
+          <tr>
+            <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td  align="left" valign="top"><font color="#000000" face="Arial, Helvetica, sans-serif" size="2px">
+				<!-- mail content begins-->
+<?
+$event=$_GET['event'];
+					$subId=$_GET['subid'];
+					$pagename=$_GET['pagename'];
+					$reportattribute=$_GET['reportattribute'];
+					$emailBody=getAlertBody($event, NULL, $subId, NULL, NULL, NULL, $pagename, $reportattribute);
+print_r(strip($emailBody));
+				?>
+				  <!-- mail content ends-->
+                  </font></td>
+                <td align="left">&nbsp;</td>
+                <td width="37%" align="center" valign="top">
+				<table bgcolor="#e5e7e4" border="0" cellspacing="0" cellpadding="5">
+                  <tr>
+                    <td align="left"  style="padding-left:10px;"><font color="#4e4e4e" face="Times New Roman, Times, serif" size="4px"><b>Today in the 'Ville</b></font></td>
+                  </tr>
+				  <?php
+				  $recentArticlesTitle=displayRecentArticlesonEmail();
+				  print_r($recentArticlesTitle);
+				  ?>
+                </table></td>
+              </tr>
+            </table></td>
+            </tr>
+			  <tr>
+            <td>&nbsp;</td>
+          </tr>
+<?php
+$tracking_name = $tracking_name['_eml_report_abuse'];
+include("$D_R/emails/_eml_exchange_footer.htm");
+?>

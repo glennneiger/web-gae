@@ -1,0 +1,181 @@
+<?php
+
+ $event = $_REQUEST['event'];
+ $email = $_REQUEST['recipient_email'];
+ $name = $_REQUEST['name'];
+ $pd = $_REQUEST['pd'];
+ global $HTPFXSSL,$HTHOST;
+ $res = exec_query("select email_body from ex_email_template where event='".$event."'",1);
+ $pat[] = '/\[Name\]/';
+ $rep[] = $name;
+ $pat[] = '/\[Email\]/';
+ $rep[] = $email;
+ $pat[] = '/\[Password\]/';
+ if($pd){
+	 $passwrd="<br>Password: ".$pd."";
+	 $pat[] = '/\[Password\]/';
+	 $rep[] = $passwrd;
+ }else{
+	 $passwrd="";
+	 $pat[] = '/\[Password\]/';
+	 $rep[] = $passwrd;
+ }
+ $pat[] = '/\[Host]/';
+ $rep[] = $HTPFX.$HTHOST;
+ $body = preg_replace($pat,$rep,$res['email_body']);
+?>
+
+<html>
+<head>
+<style type="text/css">
+body{
+margin:0px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#323232;
+}
+.copy_footer{
+font-size:11px;
+text-align:center;
+float:left;
+width:93%;
+padding:15px;
+line-height:20px;
+}
+.copy_footer a{
+color:#3c546c;
+}
+.recent_box_option{
+background-color:#dadada;
+float:left;
+padding:20px 20px 20px 30px;
+width:93%;
+line-height:25px;
+}
+.recent_box_option a{
+color:#083d70;
+font-weight: normal;
+}
+
+.recent_head_opt{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:18px;
+color:#3c546c;
+font-weight:bold;
+}
+.option_alert_body{
+float:left;
+padding-top:15px;
+line-height:20px;
+padding-left:8px;
+padding-bottom:10px;
+
+}
+.option_name{
+font-family: Arial, Helvetica, sans-serif;
+font-size:13px;
+font-weight:bold;
+margin:0px;
+text-align:left;
+color:#5792ca;
+text-decoration:none;
+padding-right:5px;
+}
+.option_name a{
+font-family: Arial, Helvetica, sans-serif;
+font-weight:bold;
+margin:0px;
+font-size:13px;
+padding:0px;
+text-decoration:none;
+color:#5792ca;
+
+}
+.option_date {
+color:#020202;
+font-family:Arial,Helvetica,sans-serif;
+font-size:11px;
+}
+.option_nav{
+background-color:#3c546c;
+color:#FFFFFF;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+padding:5px;
+}
+.option_nav a{
+color:#FFFFFF;
+}
+</style>
+</head>
+
+<body >
+
+<table width="60%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td><a href="<?=$HTPFX.$HTHOST;?>"><img src="<?=$IMG_SERVER;?>/images/redesign/minyan_logo_option_email.jpg" border="0" alt="Minyanville" /></a></td>
+    <td><a href="<?=$HTPFX.$HTHOST;?>/optionsmith"><img src="<?=$IMG_SERVER;?>/images/redesign/option_email_alert_header.jpg" border="0" alt="Option Smith" /></a></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="option_nav" style="background-color:#3c546c;color:#FFFFFF;font-family:Arial, Helvetica, sans-serif;font-size:12px;padding:5px;" >
+    <span style="padding-left:30px; padding-right:100px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>">Minyanville.com</a></span>
+
+    <span style="padding-right:20px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>/optionsmith">OptionSmith Home</a></span>
+
+    <span style="padding-right:20px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>/subscription/">Subscription Products - Free Trial</a></span>
+
+    <a style="color:#FFFFFF;" href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/controlPanel.htm">Free Email Newsletters</a>    </td>
+  </tr>
+
+	<tr><td colspan="2"><?=$body;?>
+
+
+
+<!-- <p>Your 14 day FREE trial to OptionSmith by Steve Smith has begun!</p>
+
+<p>Dear [Name],</p>
+
+<p>Welcome, and thank you for your interest in OptionSmith by Steve Smith!</p>
+
+<p>Steve Smith is a veteran options trader and longtime successful options newsletter author.  With your trial subscription you'll receive Steve's specific options trading ideas as they occur, along with detailed explanations of the strategy and rationale behind each trade.  You'll also have access to the OptionSmith portfolio, trade history and archives.</p>
+
+<p>An account has already been set up for you so you can access OptionSmith by Steve Smith free for 14 days starting today.  </p>
+
+<p>Simply login at <a href="http://www.minyanville.com/optionsmith"> http://www.minyanville.com/optionsmith</a> using the following information:</p>
+
+<p>Email address: [Email]<br/>
+Password: [Password]</p>
+
+<p>You will also receive an email alert every time Steve publishes a new trade alert with a direct link back to the full alert, containing what we hope to be a nicely profitable trade.</p>
+
+<p>At any time during your 14 day trial, you may register for a full subscription on either a monthly or annual basis by <a href=" http://www.minyanville.com/subscription">clicking here </a>  or calling us at 212-991-9357.</p>
+
+<p>If you have any questions or troubles, please feel free to contact us at <a href="mailto:upport@minyanville.com">support@minyanville.com.</a></p> -->
+	</td></tr>
+
+      <tr>
+    <td colspan="2">
+    <div class="copy_footer" style="font-size:11px;text-align:center;float:left;width:93%;padding:15px;line-height:20px;">
+
+    &copy;<?=date("Y");?> Minyanville Media Inc, 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm"> Contact Us</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf">Advertise With Us</a>    </div>    </td>
+  </tr>
+      <tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+*/
+?>
+</div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<?
+global $D_R;
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/_user_data_lib.php");
+$objUserData= new userData();
+
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+$s = $_GET['s'];
+$pagesize = $_GET['pagesize'];
+$search_on = $_GET['search_on'];
+$search_by = $_GET['search_by'];
+$search_param = $_GET['search_param'];
+
+$page="subscribers";
+$p=intval($p);
+if(!$pagesize)$pagesize=20;
+
+$qry="SELECT s.id ID, s.via_id 'Via Id', s.email 'MemberID', s.password 'Password', s.fname 'FirstName',s.lname 'LastName' FROM subscription s ";
+
+/*---------- search params -------------*/
+$qstack=array();
+if($search_on && trim($search_param)){
+	$qstack[]="instr(lower($search_by),lower('$search_param'))";
+}else{
+	unset($search_on,$search_param,$search_by);
+}
+
+if(count($qstack)) { $qry.="WHERE ".implode(" AND ",$qstack); }
+
+/*---------- end search params -------------*/
+$numrows=num_rows($qry);
+$numpages=ceil($numrows/$pagesize);
+$offset=($p*$pagesize);
+
+if($s){
+	if($s=="Modified")$s="s.modified";
+	if($s=="Created")$s="s.date";
+	$qry.=" ORDER BY $s $d";
+}
+$qry.=" LIMIT $offset,$pagesize ";
+
+$pagedata=exec_query($qry);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+?>
+<style>
+.whilite a:hover{color:#fff;}
+</style>
+<div class=adminheader>View Website Subscriptions</div><br>
+<table width=600 bgcolor=#cccccc align=center>
+<TR>
+<TD colspan=4> <b>Search Filters</b></TD>
+</TR>
+<form method="get" action="<?=$PHP_SELF?>">
+<?input_hidden("s");input_hidden("pagesize")?>
+
+<TR bgcolor=#eeeeee>
+<TD width=10><input type="checkbox" checked="checked" name="search_on"<?=($search_on?" checked":"")?>></td>
+<TD width=350 nowrap><span class=small>Show subscriptions where: </span><br><select name="search_by">
+	<option value="s.id" <?=($search_by=="s.id"?"selected":"")?>>ID
+	<option value="s.via_id" <?=($search_by=="s.via_id"?"selected":"")?>>Via Id
+	<option value="s.fname" <?=($search_by=="s.fname"?"selected":"")?>>First Name
+	<option value="s.lname" <?=($search_by=="s.lname"?"selected":"")?>>Last Name
+	<option value="s.email" <?=($search_by=="s.email"?"selected":"")?>>Email
+</select> contains <?input_text("search_param")?></TD>
+<TD width=200>Number of records to show at a time<br><?input_text("pagesize",$pagesize,2,2)?></TD>
+<TD align=center width=40><b>Results: <?=$numrows?></b></TD>
+</TR>
+
+
+<TR><TD colspan=4 align=center><input type="submit" value="go"></TD>
+<TD align=center>
+</TD>
+</TR>
+</form>
+</table><br>
+<table width=600 align=center>
+<TR align=center bgcolor=#bbbbbb>
+<?if(count($pagedata)){?>
+	<?foreach(array_keys($pagedata[0]) as $col){
+		$colcolor=($_GET[s]==$col?"#8da9e6":""); ?>
+		<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><?=$col;?></TD>
+	<?}?>
+		<TD bgcolor="<?=$colcolor?>">&nbsp;</TD>
+		<TD bgcolor="<?=$colcolor?>">&nbsp;</TD>
+	</TR>
+	<?foreach($pagedata as $row){
+		$rowcolor=$i%2?"dddddd":"eeeeee"; ?>
+		<TR bgcolor="<?=$rowcolor?>">
+		<?foreach($row as $k=>$v){
+			$colcolor=($_GET[s]==$k?"#8da9e6":"");?>
+			<? if($k=="Password"){
+					$v = $objUserData->decryptUserPassword($v);
+					$v = str_repeat ('*', strlen ($v)); ?>
+					<TD bgcolor="<?=$colcolor?>" align="center"><?=$v;?></TD>
+			<? }else{?>
+					<TD bgcolor="<?=$colcolor?>" align="center"><?=$v?></TD>
+			<?}?>
+		<?}?>
+		<TD nowrap><a href="/admin/subscribers.info.htm?id=<?=$row[ID]?>" target="_blank">More info</a></TD>
+		<TD nowrap><a href="/admin/subscribers.order.htm?id=<?=$row[ID]?>" target="_blank">Add order</a></TD>
+		</TR>
+	<?}?>
+
+<?}else{//!count($pagedata)?>
+<TR>
+	<TD colspan=100>Nothing found.</TD>
+</TR>
+<?}
+if($pagination){?>
+<TR>
+	<TD colspan=100 align=center><hr />
+	<?=$pagination?><hr /></TD>
+</TR>
+<? } ?>
+</table><br><br>
+<?include("$ADMIN_PATH/_footer.htm")?>

@@ -1,0 +1,29 @@
+
+BODY,#tbContentElement,textarea {
+	scrollbar-3dlight-color: white;
+	scrollbar-highlight-color: threedface;
+	scrollbar-darkshadow-color: threedshadow;
+	scrollbar-track-color: E8E8E8;
+	scrollbar-shadow-color: threedface;
+	background-color: window;
+	cursor: default;
+}
+
+TD, INPUT, DIV, TEXTAREA, SELECT, BODY {font-family: Verdana, Tahoma, Helvetica; font-size: 11px; font-weight: normal;}
+
+FORM {margin: 0; padding: 0;}
+
+
+
+INPUT, TEXTAREA, DIV.select {border: 1; border-style: solid; border-color: 777777 e0e0e0 e0e0e0 777777; background-color: ffffff; margin: 0;}
+
+INPUT {line-height: 13px; padding: 1 2 1 2;}
+
+INPUT.file, INPUT.viewFile {border-width: 1; border-style: solid;}
+
+INPUT.button, INPUT.submit {border-color: threedhighlight threedshadow threedshadow threedhighlight; background-color: threedface;}
+
+INPUT.submit {height: 20; width: 80;}
+
+INPUT.checkbox {border: 0;background:threedface}
+

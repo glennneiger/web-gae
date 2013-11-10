@@ -1,0 +1,119 @@
+<?
+global $D_R,$cm8_ads_1x1_Text,$cm8_ads_WideSkyscraper_160x600,$HTPFX,$HTHOST;
+
+include_once("$D_R/lib/layout_functions.php");
+include_once($D_R."/lib/_disqus_lib.php");
+include_once($D_R."/lib/disqus/disqusapi/disqusapi.php");
+include_once($D_R."/lib/_misc.php");
+include_once($D_R."/lib/config/_cache_config.php");
+include_once($D_R."/admin/lib/_article_data_lib.php");
+include_once($D_R."/lib/_topic_design_lib.php");
+$month=$_GET['m'];
+$year=$_GET['y'];
+$objCache= new Cache();
+
+if($_SERVER['REQUEST_URI'])
+{
+	$subSectionArr=explode('/',$_SERVER['REQUEST_URI']);
+	$subSection = strtolower($subSectionArr[2]);
+}
+$meta_description="A collection of the latest news and headlines from Minyanville discussing stocks, personal finance, family finance, and financial news.";
+$objArticle= new ArticleData();
+$objTopic= new TopicArticle();
+
+if($subSection=="commodities-and-options"){
+   		Header("Location: ".$HTPFX.$HTHOST."/trading-and-investing/commodities/");
+	exit;
+}
+if($subSection=="emerging-markets"){
+   		Header("Location: ".$HTPFX.$HTHOST."/sectors/global-markets");
+	exit;
+}
+
+
+if($subSection=="latest"){
+		    $subSection = substr($_SERVER['REDIRECT_URL'],1,-8);
+			$subSectionData =$objCache->getTopicSectionCache($subSection);
+			$subSectionDataName="";
+			$subSectionName=$subSectionData['name'];
+}else{
+   if($subSection=="five-things"){
+   		$subSection="5-things";
+   }
+	$subSectionData =$objCache->getTopicPageLatestArticleCache($subSection);
+   if($subSection=="5-things"){
+		$subSectionName="Five Things";
+   }else{
+   		$subSectionName=$subSectionData['name'];
+   }
+}
+$sectionId = $subSectionData['section_id'];
+if(!$sectionId || $sectionId==""){
+	Header("Location: ".$HTPFX.$HTHOST."/errors/?code=404");
+	exit;
+}
+$obArticleCache = new ArticleCache();
+
+if(isset($month) && isset($year))
+{
+	if(is_numeric($month) && is_numeric($year))
+	{
+		$arArticles = $obArticleCache->getArchiveSectionArticles($sectionId,$month,$year);
+	}
+	else
+	{
+		$arArticles = $obArticleCache->getLatestSectionArticles($sectionId);
+	}
+}
+else
+{
+ $arArticles = $obArticleCache->getLatestSectionArticles($sectionId);
+}
+$pageName = $subSectionName;
+
+$topicPageID=$subSectionData['topic_page_id'];
+if(empty($topicPageID)){
+	$topicPageID=$subSectionData['page_id'];
+}
+$pageJS=array("config","nav","search","ajax","jquery","topic");
+$pageCSS=array("global","rightColumn","nav","minyanville","topic","fontStylesheet");
+include($D_R."/_header.htm");
+?>
+<div class="shadow">
+<div id="content-container"><!--left contaner start from here-->
+
+<?=showBreadCrum($breadcrum,$subSectionName);?>
+	<div id="eft_articles_2">
+		<?php $objTopic->topicheader($subSectionName); ?>
+
+	<div class="free_min">
+		<?php $objTopic->topicSubscribeNewsLetter($subSectionData,$sectionId);  ?>
+	</div>
+
+	</div>
+<div id="etf-wrap">
+<div class="dottedlinemain">
+	<?php $objTopic->latestArticle($arArticles[0],$subSectionName); ?>
+
+	<div id="etf-ltColumn"><?php $objTopic->topicLatestArticle($arArticles); ?></div>
+	<div id="etf-rtColumn">
+		<?php
+		if(!$_SESSION['AdsFree']) {
+		?>
+	    <div class="text-ad-container-button">
+		</div>
+		<?php
+		}
+		$objTopic->topicRecommendation(); ?>
+		<?php showTwitterWidget(); ?>
+		<?php $objTopic->topicSponsoredLinks(); ?>
+	</div>
+</div>
+</div>
+<!--left contaner end here--> <?
+$arrRightCols	=	array('show_300x250','show_section_archive','most_commented','most_read','most_tickers','financial_product_guide','show_MediumRectangle_300x250');
+include($D_R."/_rightcolumn.htm"); ?></div>
+</div>
+<?
+include($D_R."/_footer.htm");
+?>

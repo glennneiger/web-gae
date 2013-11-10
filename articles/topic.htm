@@ -1,0 +1,168 @@
+<?
+$pageName = "articlelisting";
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville");
+include($D_R."/_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+include_once($D_R."/lib/ads/_indstrybrains_class.php");
+global $cm8_ads_1x1_Text,$cm8_ads_WideSkyscraper_160x600;
+require_once($D_R.'/lib/ap/_view.php');
+
+$articleArr = getKeyVal('limit',$_SERVER['REQUEST_URI']);
+$limit = ($articleArr['limit']=="" ? $_GET['limit'] : $articleArr['limit']);
+
+//variable for filtering
+$pageLimit = 30;
+if ($limit != "") {
+	$start = $limit;
+	$end = $start +$pageLimit;
+} else {
+	$start = 0;
+	$end = $pageLimit;
+}
+
+$sectionId = $_GET['section'];
+
+$sectionId = 49;
+$latest_sql = "select articles.id id, articles.title,articles.character_text, contributors.name author, articles.contributor,
+contrib_id authorid, IF(publish_date,publish_date,date) as date from articles, contributors where
+articles.contrib_id = contributors.id and FIND_IN_SET('" .$sectionId ."', articles.subsection_ids)
+and articles.approved='1' and articles.is_live='1' ORDER BY date DESC LIMIT 0,1 ";
+
+$arLatest = exec_query($latest_sql,1);
+$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor,
+contrib_id authorid, IF(publish_date,publish_date,date) as date from articles, contributors where
+articles.contrib_id = contributors.id and FIND_IN_SET('" .$sectionId ."', articles.subsection_ids)
+and articles.approved='1' and articles.is_live='1' ORDER BY date DESC LIMIT " . $start . "," . $pageLimit ;
+
+$results = exec_query($sql);
+?>
+
+<link rel='stylesheet' href='<?=$HTPFX.$HTHOST?>/css/topic.css' type='text/css' media='all' />
+
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+
+<div id="etf-wrap">
+		<div id="etfPg-hdr" style="clear: both;">
+		     <div class="socialHdr_btns">
+				<a href="#" class="allETFs-label">ALL ETFs ARTICLES</a>
+				<a href="http://www.facebook.com/MinyanvilleMedia" class="fcbk-btn">Find Us On Facebook</a>
+				<a href="http://twitter.com/minyanville" class="twtr-btn">Follow Us On Twitter</a>
+				<a href="#" class="reddit-btn">Reddit This</a>
+				<a href="http://www.minyanville.com/rss/minyanfeed.php" class="rss-btn">RSS Feed</a>
+			 </div>
+		</div>
+		<div id="latest-article">
+			<h1>
+				<div class="konafilter">
+				<?=mswordReplaceSpecialChars($arLatest['title']); ?>
+				</div>
+			</h1>
+			<div class="konafilter" id="article-byline">
+					By 
+				<a href="/gazette/bios.htm?bio=266"><?=$arLatest['author']?>l</a>
+				<?= date('M d, Y g:i a',strtotime($arLatest['date'])); ?>
+			</div>
+			<div class="konafilter" id="article-dek">
+			<h2><? echo mswordReplaceSpecialChars($arLatest['character_text']); ?></h2>
+			</div>
+		</div>
+		<div id="etf-ltColumn">
+			<ul id="articleList">
+            <?
+           foreach ($results as $row )
+			{
+				if (($row['contributor'] != '') && ($row['contributor'] != $row['author']))
+				{
+					$row['author'] = $row['contributor'];
+				}
+            ?>
+			    <li><a href="<?= $HTPFX.$HTHOST.makeArticleslink($row['id'])?>"><?= mswordReplaceSpecialChars($row['title']); ?></a><br><span>by 
+               <? if($row['author'] == "Associated Press"){?>
+               <a><?= $row['author']; ?></a>               
+               <? }else{?>
+               <a href="/gazette/bios.htm?bio=<?= $row['authorid']; ?>"><?= $row['author']; ?></a>
+               <?}?>
+                 at <?= date('g:i a',strtotime($row['date'])); ?></span></li>
+			<?
+            }
+            ?>				
+			                    						
+			</ul>
+            <div id="more-articles">
+                 More: 
+                  <? if ($start > 0) { ?>
+                  <a href="<?=$HTPFX.$HTHOST?>/investing/etf/limit/<?=$start - $pageLimit;?>">Recent Articles</a> |
+                  <? } ?>
+                  <a href="<?=$HTPFX.$HTHOST?>/investing/etf/limit/<?=$end;?>">Past Articles</a>                
+                <br />
+            </div>
+	</div>		
+	<div id="etf-rtColumn">
+	<div id="guideToETF-hdr"><img src="<?=$IMG_SERVER?>/images/topic/guideToETFs_hdr.gif" border="0" width="105" height="14" alt="GUIDE TO ETFs" title="GUIDE TO ETFs"/></div>
+		<div class="etfGuide-box">
+			<ul class="guideArray">
+				<li class="guideItem">
+				<a href="#">Byroad Market Stocks</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Large Cap Stocks</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Mid Cap Stocks</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Small Cap Stocks</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Global Industry Sector Stocks</a>
+				</li>
+				<li class="guideItem taller">
+				<a href="#">Intl. & Emerging Markets Industry Sector Stocks</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">U.S. Industry Sector Stocks</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Global & International Stocks</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Emerging Markets</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Long/Leveraged ETFs and ETNs</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Short/Leveraged ETFs & ETNs</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Specialty ETFs & ETNs</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Fixed Income</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Commodity</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Currency</a>
+				</li>
+				<li class="guideItem">
+				<a href="#">Unmanaged Baskets</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!--left contaner end here-->
+<?
+$arrRightCols	=	array('show_video','show_industrybrains','show_mostpopular','email_alert','show_rss_emailalert','show_localguides');
+include($D_R."/_rightcolumn.htm"); ?>
+</div>
+</div>
+<?
+include($D_R."/_footer.htm");
+?>

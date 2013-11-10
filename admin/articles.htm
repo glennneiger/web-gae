@@ -1,0 +1,658 @@
+<?
+global $S4,$S5,$D_R;
+
+include_once("$D_R/lib/_news.php");
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/admin/lib/_article_data_lib.php");
+include("$D_R/admin/FCKeditor/fckeditor.php") ;
+include_once("$D_R/admin/lib/_admin_data_lib.php");
+include_once("$D_R/lib/config/_yahoobuzz_config.php");
+/*--page  authentication----------------------------*/
+$page="gazette";
+$id=$_GET['id'];
+$contributor_id=$_GET['contributor_id'];
+$objCache= new Cache();
+$upload_url = "/admin/lib/uploadFileBucket.php";
+include("$ADMIN_PATH/_header.htm");
+
+/*==================Initialize Variables===================*/
+$layout_type[0]['name'] = 'No Photo';
+$layout_type[0]['layout_type'] = 'no-photo';
+$layout_type[1]['name'] = 'Large Photo 620 X 214 px';
+$layout_type[1]['layout_type'] = 'large-photo';
+$layout_type[2]['name'] = 'Small Photo 257 x 194 px';
+$layout_type[2]['layout_type'] = 'small-photo';
+$layout_type[3]['name'] = 'No Related Links or Photos';
+$layout_type[3]['layout_type'] = 'no-related';
+$layout_type[4]['name'] = 'No Byline,Date, Related Links or Photos';
+$layout_type[4]['layout_type'] = 'no-byline-date';
+$layout_type[5]['name'] = 'Live Blog';
+$layout_type[5]['layout_type'] = 'live-blog';
+$layout_type[6]['name'] = 'TheStreet';
+$layout_type[6]['layout_type'] = 'thestreet';
+$layout_type[7]['name'] = 'Real Money Silver';
+$layout_type[7]['layout_type'] = 'realmoneysilver';
+$layout_type[8]['name'] = 'The New York Observer';
+$layout_type[8]['layout_type'] = 'observer';
+$layout_type[9]['name'] = 'Radio';
+$layout_type[9]['layout_type'] = 'radio';
+
+
+/*=========================*/
+//htmlprint_r($_POST);
+/*============set up permissions=================*/
+$editanyuser=$AD->getPerm("articles_all");//can't create anything
+$onlyself=$AD->getPerm("articles_own");
+$candelete=$AD->getPerm("articles_delete");
+$canapprove=($AD->getPerm("approve_gazette")||$AD->getPerm("approve_schoolhouse"));
+$edit_sch=$AD->getPerm("create_schoolhouse");
+$edit_gaz=$AD->getPerm("create_gazette");
+$edit_radar=$AD->getPerm("create_radar");
+
+$cancreate=($edit_gaz||$edit_sch||$edit_radar);//they can create articles
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+
+/*==========related article contributors list=============*/
+$contrib_query="select distinct contributors.id,contributors.name from contributors,articles where contributors.id=articles.contrib_id order by contributors.name";
+
+/*==========list of articles==================*/
+if (!isset($contributor_id) and strlen($contributor_id)==0)
+{
+    $contributor_id=$AD->userInfo[contrib_id];
+}
+$objArticle= new ArticleData();
+$subsection_list=get_article_subsections();
+$ar_IcTag = $objArticle->getIcTag($id);
+$nagigation_section_list=$subsection_list;
+$email_category_list=get_all_email_categories();
+
+$stArticleError = $_GET['error'];
+/* Handle Form Post here */
+if(!empty($_POST)){
+
+	switch($_POST['action']){
+		case "save":
+			$objArticle->prepareArticleData($_POST['articles']);
+			if(!$objArticle->error) // If there is no error while preparing data
+			{
+                $objArticle->setArticle($id);
+                if($_POST['articles']['savetype']=="save")
+                {
+                	location($bounceback.qsa(array(id=>$objArticle->id,error=>$objArticle->errorMsg)));
+                }
+                else if($_POST['articles']['savetype']=="savecancel")
+                {
+                	$unlockRes = $objArticle->unlockArticle($objArticle->id);
+                	$bounceback = "approve.htm";
+                	location($bounceback.qsa(array(error=>"Article has been saved.")));
+                }
+			}
+			else
+			{
+				$stArticleError =$objArticle->errorMsg;
+				$pagedata=$_POST['articles']; // set form data.
+			}
+		break;
+		case "pagechange":
+			$pagedata=$_POST['articles'];
+			$pagedata['featureimage'] = stripslashes($pagedata['featureimage']);
+		break;
+	}
+}else if($id)
+{
+    // Set Locking
+    $qry = "SELECT CL.id,author_id,AU.name FROM content_locking as CL ,admin_users as AU WHERE author_id = AU.id AND item_id=".$id." AND item_type = 1";
+    $res = exec_query($qry,1);
+    if($res['id'])
+    {
+        if($res['author_id'] != $_SESSION['AID'])
+        {
+            echo "<font color=red>".$res['name']." is already editing this article</font>";
+            exit();
+        }
+    }
+    else
+    {
+    	insert_query('content_locking',array('item_id' => $id, 'item_type' => '1' , 'author_id' => $_SESSION['AID'],'last_visit'=>mysqlNow()));
+    }
+    $pagedata=$objArticle->prepareFormData($id);
+
+}else{
+	global $DATE_STR;
+	$pagedata[contributor]=$AD->userInfo[name];
+	$pagedata[contrib_id]=$AD->userInfo[contrib_id];
+	$pagedata[date]=mysqlNow();
+	$pagedata[udate]=time();
+	$pagedata[position]=$DEFAULT_NO_POS;
+	$pagedata[is_public]=1;
+	$pagedata[is_marketwatch]=0;
+	$pagedata[is_featured]=0;
+	$pagedata[is_live]=0;
+	$pagedata['total_pages']=1;
+}
+
+if($_REQUEST['restore']==1 && empty($id))
+{
+	$pagedata=$objArticle->restoreFormData($_SESSION[AID]);
+	$contributor_id=$pagedata[contrib_id];
+	if($pagedata[id])
+		$id=$pagedata[id];
+}
+?>
+<script>
+<?php if(!empty($id)) { ?>
+var ArtID='<?=$id?>';
+<?php }else{ ?>
+var ArtID=null;
+<?php } ?>
+</script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/jquery.autocomplete.1.2.js"></script>
+
+
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+
+<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.jqEasyCharCounter.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/adminArticle.1.10.js"></script>
+
+<!--
+<style type="text/css">
+
+.stickynote{
+position:absolute;
+visibility:hidden;
+width: 300px;
+border: 0px solid black;
+background-color: lightyellow;
+padding: 4px;
+box-shadow: 3px 3px 8px #818181;
+-webkit-box-shadow: 3px 3px 8px #818181;
+-moz-box-shadow: 3px 3px 8px #818181;
+}
+
+</style>
+
+<script src="<?=$HTPFX.$HTHOST?>/js/stickynote.js"></script>
+-->
+
+<?php if(!empty($id)) { ?>
+<script>
+//$(window).bind('beforeunload', unlock_content(<?=$id?>));
+window.onbeforeunload = function() {
+unlock_content(<?=$id?>,'TRUE');
+}
+</script>
+<?php } ?>
+<br><br>
+<?if($AD->getPerm("banter_all")||$AD->getPerm("banter_own")||$AD->getPerm("create_banter")){?>
+	<a href="banter.htm">Create/ Edit Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("banter_approve")){?>
+	<a href="approvebanter.htm">Approve Buzz and Banter</a><br>
+<?}?>
+<?if($canapprove){?>
+<a href="approve.htm">Approve Articles</a><br>
+<?}?>
+<?if($stArticleError){?><div class=error><?=strip($stArticleError)?></div><?}?>
+<table><tr><td>
+<form method=get action="<?=$PHP_SELF?>">
+<table align="left" width="800px" border=0>
+<TR>
+<TD>Select a contributor to view article:
+<select name="contributor_id" onchange="setFormSubmitMarker(this.form,'contributor');this.form.submit();">
+<option value="">--select contributor--</option>
+<?
+foreach(exec_query($contrib_query) as $row){
+		$sel=($contributor_id==$row[id]?" selected":"");
+		$disp=$row[name];
+		$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+	?>
+		<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+	<?}?>
+</select>
+</TD>
+<TR>
+<TR>
+<TD>Select an article to Edit:
+	<select name="id" onchange="this.form.submit()">
+	<?if($cancreate){?><option value="">--New Article--</option><?}?>
+	<?
+	if (strlen($contributor_id)<>0)
+	{
+	$arAuthorArticles = $objArticle->getAuthorAtricles($contributor_id,100);
+	foreach($arAuthorArticles as $row){
+		$sel=($id==$row[id]?" selected":"");
+		$disp=$row[name]." - ".$row[title]." (${row[date]})";
+		$style=" style='background:#".($row[contrib_id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+	?>
+		<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+	<?}}?>
+	</select>
+    <input type="hidden" name="submitname" value="">
+</TD></TR>
+</table>
+</form>
+</td></tr>
+<tr><td>
+<form method="post" action="" name="articleForm" id="articleForm" enctype="multipart/form-data">
+<?input_hidden("action");?>
+<table align=left width="800px" border="0">
+<!--<TR>
+<TD colspan="3"><label for="articles[seo_title]"><b>SEO Page Title</b></label></TD>
+</TR>
+<TR>
+<TD colspan="3"><?php input_text("articles[seo_title]",html_entity_decode($pagedata[seo_title]),0,255," style='width:100%'")?></TD>
+</TR>
+--><TR>
+<TD colspan="3"><label for="articles[title]"><b>Article Headline</b></label></TD>
+</TR>
+<TR>
+<TD colspan="3"><? input_text("articles[title]",html_entity_decode($pagedata[title]),0,255," style='width:100%'")?></TD>
+</TR>
+<TR>
+<TD colspan="3"><label for="articles[character_text]"><b>Dek/Description/Talk Bubble</b></label></TD>
+</tr>
+<tr>
+<TD colspan="3"><? input_text("articles[character_text]",html_entity_decode($pagedata[character_text]),0,255," style='width:100%'")?></TD>
+</TR>
+
+<tr>
+<td colspan="3"><a href="https://adwords.google.com/select/KeywordToolExternal" target="_blank">Click here for the Google Adwords Keyword Tool</a><br /><br /></td>
+</tr>
+<TR>
+<TD align=left><b>Navigation Sections:</b></TD>
+<input type="hidden" name="contentWordCount" value="475" />
+<TD colspan="2"><select name="articles[navigation_section_id][]" align=absmiddle style="width:300px;">
+    <?
+
+	if(!$pagedata[navigation_section_id]){
+	?>
+		<option selected="" value=""></option>
+	<?
+	}
+
+	?>
+	<? //selectHashArr($nagigation_section_list,"section_id","name",$pagedata[navigation_section_id])
+
+
+	$objArticle->showNavigationListCombo($nagigation_section_list,$pagedata[navigation_section_id]);
+	?>
+	</select>(Used to display Breadcrums,URL and ads of article)
+</TD>
+</TR>
+
+<TR>
+<TD align=left><b>Sub-Sections:</b></TD>
+<TD colspan="2"><select name="articles[subsection_ids][]" multiple align=absmiddle size="8" style="width:300px;">
+	<?selectHashArr($subsection_list,"section_id","name",$pagedata[subsection_ids])?>
+	</select> [ctrl]+[click] to select multiple
+</select></TD>
+</TR>
+<TR>
+
+<TD align=left><b>Email Categories:</b></TD>
+<TD colspan="2"><select name="articles[email_category_ids][]" multiple align=absmiddle size="8" style="width:300px;">
+	<?selectHashArr($email_category_list,"id","title",$pagedata['email_category_ids'])?>
+	</select> [ctrl]+[click] to select multiple
+</select></TD>
+</TR>
+<TR>
+<TD align=right><label for="articles[contrib_id]"><b>Author</b>:</label></TD>
+<TD width="300px" >
+<select id="author-drop-down" name="articles[contrib_id]" style="width:300px;" onchange="load_contib_data(this.value);">
+<option value="">--Select Contributor--</option>
+<?
+$arAllContributors = get_active_contributors();
+foreach($arAllContributors  as $row){
+		$sel=(trim($pagedata[contrib_id])==$row[id]?" selected":"");
+		$disp=$row[name];
+		$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+	?>
+		<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+	<?}?>
+</select>
+<?input_hidden("articles[publish_date]",$pagedata[publish_date])?>
+<?input_hidden("articles[is_live]",$pagedata[is_live])?></TD>
+<td id="load_contributor" class="error" align="left"></td>
+</TR>
+<TR>
+<TD align=right></TD>
+<TD colspan="2">
+	<?input_hidden("articles[date]",$pagedata["date"] );?></TD>
+</TR>
+<tr><td>
+<b>Layout Type:</b> &nbsp;</td>
+<td colspan="2">
+<SELECT id="layout-type"  name="articles[layout_type]" style="width:300px;" onchange="toggleLayoutEditor();getblogLive();">
+<?selectHashArr($layout_type,"layout_type","name",$pagedata['layout_type'])?>
+</SELECT></td></tr>
+<tr><td>
+<b>Editor Note:</b> &nbsp;
+</td>
+<td colspan="2">
+<SELECT id="editor_note_title"  name="articles[editor_note_title]" style="width:300px;" onchange="document.getElementById('editor_note').value=this.value">
+<option value="">-select-</option>
+<?selectHashArr($objArticle->getEditorNote(),"text","title")?>
+</SELECT></td></tr>
+
+<tr><td>
+<b>Editor Text:</b> &nbsp;</td>
+<td colspan="2">
+<textarea id="editor_note" name="articles[editor_note]" cols="50"><?=htmlentities(stripslashes($pagedata[editor_note]))?></textarea></td></tr>
+
+<tr>
+	<td><b>Upload mp3: </b></td>
+	<td style="float:left; width:600px;">
+		<div id="showerr" style="color:#000;display:block;font-family:Arial,Helvetica,sans-serif;font-size:11px;text-align:left;"><?
+		if($pagedata[audioFile]!=""){
+		?><input type="checkbox" checked="checked" value="<?=$pagedata[audioFile];?>" name="chkMp3" id="chkMp3"><? echo $pagedata[audioFile]; }?></div>
+		<input type="hidden" id="audioFile" name="articles[audioFile]" value="<?=$pagedata[audioFile];?>" />
+		<input style="float:left;margin: 12px 10px 0px 0px;" type="file" name="articleFile" id="articleFile">
+                <img style="float:left;cursor:pointer;" src="<?=$IMG_SERVER?>/images/DailyFeed/upload-file.jpg" onClick="uploadArtFile('articleFile','<?=$upload_url?>');" >
+                &nbsp;&nbsp;&nbsp;&nbsp;<div id="output" style=" margin: 15px 0px 0px 10px;float: left; width: 150px; font-weight: bold; color: red; "></div>
+	</td>
+</tr>
+
+<TR style="display:<? if($pagedata['layout_type'] == 'no-photo' || $pagedata['layout_type'] == 'live-blog' || $pagedata['layout_type'] == 'thestreet' || $pagedata['layout_type'] == 'observer'  ) echo 'none'; ?>;" id="layouteditor">
+<TD><b>Featured Image</b></TD>
+<TD colspan="2">
+<?php
+input_textarea("articles[featureimage]",strip($pagedata['featureimage']),"600");
+?>
+<script language="javascript">
+showEditor('articles[featureimage]',800,100);
+</script></TD>
+</TR>
+
+<TR style="display:<? if($pagedata['layout_type'] != 'live-blog') echo 'none' ; ?>;" id='layoutcoverlive'>
+<td colspan="3" width="100%">
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<TD><b>Live Blog Script</b></TD>
+<TD>
+<textarea name="articles[cover_it_live]" id="articles[cover_it_live]" cols=50 rows=5 style="width:100%">
+<?=$pagedata[cover_it_live]?>
+</textarea></TD>
+</tr>
+<tr><td>&nbsp;</td></tr>
+<tr>
+<TD><b>Live Blog Desc</b></TD>
+<TD>
+<?php
+input_textarea("articles[contr_live_login_desc]",strip($articles[contr_live_login_desc]),"600");
+?>
+<script language="javascript">
+showEditor('articles[contr_live_login_desc]',800,100);
+</script></TD>
+</tr>
+</table></td>
+</TR>
+<tr>
+<td>&nbsp;</td>
+<td colspan="2"><a href="<?=$HTPFX.$HTHOST;?>/ad_code.htm" target="_blank">Subscription Image and Text Link Codes</a><br /><br /></td>
+</tr>
+
+<TR valign=top>
+<TD align=right><b>Entry <?=$i;?></b>:</TD>
+<TD colspan="2" align=left>
+<b>Use {PAGE_BREAK} to create another page.</b>
+<b style="float:right;cursor:pointer;" onClick="markWordLimit();">Click here to see where the word limit is crossed .</b><br>
+
+<b>Use {AUDIO} to add MP3 player.</b><br/>
+
+<textarea id="article_body" name="articles[body]"><?php echo strip($pagedata[body]) ?></textarea>
+<script language="javascript">
+showEditor('article_body',800,600);
+</script></TD>
+</TR>
+
+
+<TR>
+<td>&nbsp;<input type="hidden" id="editorDatafld" name="editorDatafld" value="" /></td>
+<TD ><label for="articles[keyword]"><b>Keywords</b>:</label>
+<div id="pop_tags_msg" style="font-size:11px; height:30px; padding-top:3px;">(Please click on the right side button to populate Tags)&nbsp;<img style="cursor: pointer; vertical-align: middle;" src="<?=$IMG_SERVER?>/images/DailyFeed/bttn_populate.png"  alt="Populate Tags" title="Populate Tags" id="pop_tags_img" onclick="callTags(editor.getData());" > </div></TD>
+<TD ><label for="articles[tag]"><b>Tickers</b>:</label>
+<div id="pop_tickers_msg" style="font-size:11px; height:30px; padding-top:3px; ">(Please click on the right side button to populate Tickers)&nbsp;<img style="cursor: pointer; vertical-align: middle;" src="<?=$IMG_SERVER?>/images/DailyFeed/bttn_populate.png"  alt="Populate Tickers" title="Populate Tickers" id="pop_tickers_img" onclick="callTickers(editor.getData());" ><!-- (Add comma separated ticker)-->
+</div></TD>
+</tr>
+
+<tr>
+<?
+ if(!$editanyuser && $pagedata[keyword]!="" && $pagedata[approved])
+	$disabled="DISABLED ";
+?>
+<td>&nbsp;</td>
+<TD  >
+<textarea id="articles[keyword]"  name="articles[keyword]" rows="8" cols="50" class="textinput" <?php echo $disabled; ?>><?php echo $pagedata[keyword]?></textarea>
+</TD>
+
+<TD  >
+<textarea id="articles[tag]"  name="articles[tag]" rows="8" cols="50" class="textinput"><?php echo $pagedata[tag]?></textarea>
+</TD>
+</TR>
+
+<script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
+
+<TR>
+<TD><label for="articles[position]"><b>Position:</b></label></TD>
+<TD colspan="2"><? input_text("articles[position]",html_entity_decode($pagedata[position]),0,255," style='width:100%'")?></TD>
+</TR>
+<tr>
+<TD><label for="articles[note]"><b>Note:</b></label></TD>
+<TD colspan="2"><? input_text("articles[note]",$pagedata[note],0,255," style='width:100%'")?></TD>
+</tr>
+<tr>
+<TD><label for="articles[note]"><b>Add Category</b></label></TD>
+<TD colspan="2"><? input_text("articles[ic_tag]",$art_ic_tag,0,255," style='width:100%'")?></TD>
+</tr>
+<TR>
+<TD ><label for="articles[ic_tag]"><b>Ad Zone Category</b>:</label></TD>
+<TD width="300px" >
+<select id="ictag-drop-down" name="articles[ic_tag]" style="width:300px;" >
+<option value="">--Select Category--</option>
+<?
+$arIcTag = $objCache->getIcTags();
+foreach($arIcTag  as $row){
+		$sel=(trim($ar_IcTag['item_value'])==$row[id]?" selected":"");
+		$disp=$row[ic_tag];
+		$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+	?>
+		<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+	<?}?>
+</select>
+</TR>
+<tr>
+<td colspan="3">
+<table width="=100%" cellpadding="0" cellspacing="0">
+<tr>
+  <td valign="top" >&nbsp;</td>
+  <TD valign="top">&nbsp;</TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+</tr>
+
+<tr>
+  <td valign="top" ><strong>Editor's Pick</strong></td>
+  <TD valign="top"><?input_check("articles[google_editors_pick]",$pagedata[google_editors_pick],"",1); ?></TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+</tr>
+<tr>
+  <td valign="top" ><strong>No-Follow tag</strong></td>
+  <TD valign="top"><?input_check("articles[no_follow_tag]",$pagedata[no_follow_tag],"",1); ?></TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+</tr>
+<tr>
+  <td valign="top" ><strong>Google News Standout</strong> </td>
+  <TD valign="top"><?input_check("articles[google_news_standout]",$pagedata[google_news_standout],"",1); ?></TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+</tr>
+<tr>
+  <td valign="top" >&nbsp;</td>
+  <TD valign="top">&nbsp;</TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+  <TD colspan="2" valign="top">&nbsp;</TD>
+</tr>
+<tr height="30px">
+<TD colspan="2" valign="top" width="25%"><div align="left"><strong>Send to Yahoo</strong>
+<?
+input_check("articles[is_yahoofeed]",$pagedata[is_yahoofeed],"onclick=displayHostYahoo();",1);
+?>
+</div>
+<div id="yahooFeed" align="left" colspan="2" style=<?=($pagedata[is_yahoofeed]==1)?"":"display:none"; ?>>
+<b>Hosted By</b>
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><?input_radio("articles[hosted_yahoo_by]","Minyanville",$pagedata[hosted_yahoo_by],"checked")?></td>
+			<td><label for="articles[hosted_yahoo_by]Minyanville">Minyanville</label></td>
+		</tr>
+	</table>
+</div></TD>
+<TD colspan="2" valign="top" width="21%"><div align="left"><strong>Send to Buzz</strong>
+<?
+if(empty($id))
+{
+	input_check("articles[is_buzzalert]","1","",1);
+}
+else
+{
+	input_check("articles[is_buzzalert]",$pagedata[is_buzzalert],"",1);
+}
+
+?>
+</div></TD>
+<td colspan="2" valign="top" width="31%" ><div align="left"><strong>Send feed to Nasdaq</strong><?
+if(empty($id))
+{
+	 input_check("articles[is_nasdaqFeed]","1","",1);
+}
+else
+{
+	 input_check("articles[is_nasdaqFeed]",$pagedata[is_nasdaqFeed],"",1);
+}
+ ?></div></td>
+ <TD colspan="2" valign="top" width="22%"><div align="left"><strong>Send to AOL DF/Motley Fool</strong>
+<?
+if($id)
+{
+	input_check("articles[is_dailyfinance]",$pagedata[is_dailyfinance],"",1);
+}
+else {
+	input_check("articles[is_dailyfinance]","1","",1);
+}
+?>
+</div></TD>
+</tr>
+<TR>
+<td colspan="2">
+<strong>Stop Auto Refresh</strong>
+<?
+input_check("articles[stop_autorefresh]",$pagedata[stop_autorefresh],"",1);
+?>
+</td>
+<td colspan="2" valign="top"><div align="left"><strong>Send to Google Currents</strong><?
+if(empty($id))
+{
+	input_check("articles[aafb_syndicate]","1","",1);
+}
+else
+{
+	input_check("articles[aafb_syndicate]",$pagedata[aafb_syndicate],"",1);
+}
+?></div></td>
+<td colspan="2" valign="top"><div align="left"><strong>Syndicate Headline to Content Partners</strong>
+<?
+
+if(empty($id))
+{
+	input_check("articles[headline_syndicate]","1","",1);
+}
+else
+{
+	input_check("articles[headline_syndicate]",$pagedata[headline_syndicate],"",1);
+}
+?></div></td>
+<td colspan="2" valign="top"><div align="left"><strong>Send to Yahoo(Full Body)</strong>
+<?
+	input_check("articles[yahoo_full_body]",$pagedata[yahoo_full_body],"onclick=checkYahoo();",1);
+?></div></td>
+</TR>
+</table></td>
+</tr>
+<?if(isset($id)){?>
+<tr><td colspan="3">
+<a target="_blank" href="/admin/related-articles/index.htm?id=<?=$id?>">Create Article Related Links</a>
+</td></tr>
+<?}?>
+<TR>
+<TD colspan=3 align=center>
+	<hr width=100% size=1 color="#000000"><br>
+	<input type="button" name="save" id="save" value="Save" onclick="Save('save');">&nbsp;&nbsp;
+	<input type="button" name="cancel" value="Cancel" onclick="unlock_content(<?=$id?>);">&nbsp;&nbsp;
+	<input type="button" name="save_cancel" id="save_cancel" value="Save and Cancel" onclick="Save('savecancel');">&nbsp;&nbsp;
+
+	<?php if($id) {
+$linkUrl=$objCache->getItemLink($id,'1');
+	?>
+
+	<input type="button" value="Preview This Article" onclick="window.open('<?php echo $HTPFX.$HTHOST.$linkUrl?>');">
+	&nbsp;&nbsp;
+	<?} if($candelete && $id){?><input type="button" value="Delete This Article" onclick="deleteIt()"><?}?></TD>
+</TR>
+<?input_hidden("id")?>
+<?input_hidden("articles[sent]",$pagedata[sent])?>
+</table>
+<?input_hidden("articles[savetype]",'')?>
+</form>
+</td></tr>
+</table>
+<!--
+<div id="stickynote1" class="stickynote">
+Saving Data...
+</div>
+-->
+<script>
+setInterval("SaveDataToDraft()",30000);
+
+
+function SaveDataToDraft()
+{
+/*	var mysticky=new stickynote({
+		content:{divid:'stickynote1', source:'inline'},
+		showfrequency:'always',
+		pos:['center', 'top'],
+		hidebox:4
+	})
+
+	mysticky.showhidenote("show");
+*/
+	jQuery("#save").css('opacity','0.4');
+	jQuery("#editorDatafld").val(editor.getData());
+
+	var form_data = jQuery("#articleForm").serialize();
+
+	jQuery.ajax({
+		   type: "POST",
+		   url: "article-draft.php",
+		   data: form_data,
+		   success: function(msg){
+		   //alert(msg);
+		   jQuery("#save").css('opacity','1');
+		   }
+
+		});
+}
+</script>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

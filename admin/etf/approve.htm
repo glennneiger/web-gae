@@ -1,0 +1,183 @@
+<?
+global $DATE_STR;
+include_once("$D_R/lib/etf/_etf_lib.php");
+$objetf= new Etftrader();
+$d=$_GET['d'];
+$s=$_GET['s'];
+$p=$_GET['p'];
+$viewapproved=$_GET['viewapproved'];
+$page = "gazette";
+
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+
+$viewapproved=intval($viewapproved);
+include("$ADMIN_PATH/_header.htm");
+?>
+<script type="text/javascript">
+function submitETFArticle(){
+	var delchk  = document.frmETFapprove.delETFarticle.length;
+	var delcount = "";
+	if(delchk==undefined){
+		 if(document.frmETFapprove.delETFarticle.checked){
+			delcount=1;
+		}
+	}else{
+		for (i = 0; i < delchk; i++) {
+			if (document.frmETFapprove.delETFarticle[i].checked) {
+					delcount = 1;
+			}
+		}
+	}
+	var appchk  = document.frmETFapprove.appETFarticle.length;
+	var appcount = "";
+	if(appchk==undefined){
+		if(document.frmETFapprove.appETFarticle.checked){
+			appcount=1;
+		 }
+	}else{
+		for (i = 0; i < appchk; i++) {
+			if (document.frmETFapprove.appETFarticle[i].checked) {
+					appcount =1;
+			}
+		}
+	}
+	if(delcount=="1"){
+	  if (confirm("Are you sure you want to delete article(s).")) {
+		 frmETFapprove.submit();
+	  }
+	}else if(appcount=="1"){
+	   frmETFapprove.submit();
+	}else{
+	  alert("Please select an article.");
+	}
+}
+
+</script>
+
+<?
+$editarticlesall=$AD->getPerm("etf_articles");
+
+$appr_gazette=$AD->getPerm("etf_approve");
+
+if(!$appr_gazette){
+	admin_error();
+}
+$handler="approve_mod.htm";
+
+/*-- query params --*/
+
+$pagesize=10;
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+//Redirect articles to edit page.
+$qry = "SELECT CA.id, CA.date date,CA.title,CA.approved,CA.contributor name,CA.contrib_id ,CA.note,keyword,concat( 'articles.htm?id=', CA.id ) arturl,concat( '/articles/index/a/', CA.id ) arturl1
+		FROM etf_articles CA WHERE CA.approved='$viewapproved'";
+		
+if($viewapproved)$qry.=" AND To_days('".mysqlNow()."') - TO_DAYS(CA.date)<=30";
+$qry.=" GROUP BY CA.id";
+if($s)$qry.=" ORDER BY $s $d ";
+
+/*--- end query params --*/
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+/*-- end paging  ---*/
+$pagedata = exec_query($qry);
+?>
+<div class=adminheader>Grail ETF & Equity Investor - Approve Articles</div><br />
+<?if($AD->getPerm("etf_articles")){?>
+<a href="articles.htm">Create/ Edit Articles</a><br>
+<? } ?>
+<?if($AD->getPerm("etf_performance")){?>
+	<a href="performance.htm">Upload Performance</a><br />
+<?}?>
+<br />
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<center>
+<br />
+<?if(!$viewapproved){?>
+<div style="width:700;text-align:left">These are the articles that are awaiting approval. Check the articles you've approved, click save and they will be posted live to the site and an email will be sent to all your subscribers.<br>&nbsp;</div>
+<?}else{?>
+<div style="width:700;text-align:left">These are the articles that are approved. Check the articles you've disapproved, click save and they will be disapproved.<br>&nbsp;</div>
+<?}?>
+</center>
+<table width="100%" align=center style="border:1px black solid">
+<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array('viewapproved'=>1),"p"),"View Approved Articles","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array('viewapproved'=>'0'),"p"),"View Unapproved Articles","class=small",(!$viewapproved))?></TD>
+<TD colspan=3>&nbsp;</TD>
+</TR>
+<form name="frmETFapprove" method="post" action="<?=$handler?>">
+<?input_hidden("viewapproved")?>
+<TR bgcolor=#cccccc align=center>
+<TD<?colclass("date")?>><a href="<?=$PHP_SELF.qsa(array(s=>"date",d=>togD($d)))?>">Article Date</a></TD>
+<TD<?colclass("title")?>><a href="<?=$PHP_SELF.qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+<TD<?colclass("note")?>><a href="<?=$PHP_SELF.qsa(array(s=>"note",d=>togD($d)))?>">Note</a></TD>
+<TD<?colclass("name")?>><a href="<?=$PHP_SELF.qsa(array(s=>"name",d=>togD($d)))?>">Author</a></TD>
+<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>
+<TD>Delete</TD>
+<TD>Preview</td>
+</TR>
+<?if(count($pagedata)){?>
+	<?foreach($pagedata as $i=>$row){
+		$color=$i%2?"dddddd":"eeeeee";
+		$link=urlqsa($row[arturl],array(PHPSESSID=>$PHPSESSID,AMADMIN=>1,contributor_id=>$row[contrib_id]),"*");
+		$link1=$HTPFX.$HTHOST.makeArticleslinkETF($row['id'],$row['keyword']);
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?>><?=date($DATE_STR,strtotime($row['date']))?></TD>
+	<TD nowrap <?colclass("title")?>>
+	<!-- Add script to make link to titles according to authorizations to edit-->
+	<a href="<?=$link?>" target="_blank"><?=($row[title]?$row[title]:"(legacy data w/out title)")?></a></TD>
+	<TD nowrap<?colclass("note")?>><?=$row[note]?></TD>
+	<TD nowrap<?colclass("name")?>><?=$row[name]?></TD>
+	<TD align=center><input type="checkbox" id="appETFarticle" name="approve[<?=$row[id]?>]" title="Check this to approve the article then submit the page"></TD>
+
+	<TD>
+	<input type="checkbox" id="delETFarticle" name="delarticle[<?=$row[id]?>]" title="Check to remove have this article removed">
+	</TD>
+	<td>
+	<a href="<?=$link1?>" target="_blank">Preview</a></TD>
+	<?}?>
+	</TR>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There are no articles awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<input type="button" value="Save Changes" onclick="javascript:submitETFArticle();">
+
+</TD>
+</TR>
+</form>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

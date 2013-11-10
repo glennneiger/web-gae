@@ -1,0 +1,45 @@
+<?php
+global $HTPFX,$HTHOST;
+ 
+$bounceback=$HTPFX.$HTHOST."/admin/brandedlogo.htm";
+if(($_POST['logo'])&&($_POST['msg'])){
+	echo $_POST['msg'];
+} else {
+	if(!count($_POST)){
+			header( "HTTP/1.1 301 Moved Permanently" );
+			header( "Location: ".$bounceback."?error=No changes were made");
+			exit;
+	}
+
+				$logoname=$_POST['logoname'];
+				$logourl=$_POST['logourl'];
+				$logo_id=$_POST['logo_id'];
+				if(!$logo_id) $logo_id=0;
+				$table="branded_images";
+				$params['name']=$logoname;
+				$newimg=$_FILES[newimg];
+					if($newimg['name']){
+						$imgpath=$LOGO_PATH.str_replace(" ","_",$newimg[name]);
+						$params['assets']=$imgpath;	
+						$gs_name = $newimg['tmp_name'];
+						move_uploaded_file($gs_name,"gs://mvassets".$imgpath);
+					}
+				$params['url']=$logourl;
+                               
+
+				/*code added on 01/28/2009*/
+				$qrydata=exec_query("SELECT id,name FROM branded_images WHERE name='$logoname'",1); 
+				if($qrydata['id']){
+				    update_query($table,$params,array('name'=>$logoname));
+				}else {
+					$id=insert_query($table,$params,$safe=0);
+					$msg=1;
+				}
+				if(!$id) $id=$qrydata['id'];
+
+			header( "HTTP/1.1 301 Moved Permanently" );
+			header( "Location: ".$bounceback."?msg=".$msg."&id=".$id);
+			exit;
+
+	}		
+?>

@@ -1,0 +1,811 @@
+<?
+$hide_ui=1;
+include("$ADMIN_PATH/_header.htm");
+$subs=exec_query("SELECT * FROM subscription WHERE id='$id'",1);
+$gift=exec_query("SELECT * FROM subscription_keys WHERE user_id='$id'",1);
+
+$combo_query="SELECT * FROM option_deals";
+$prod_query="SELECT * FROM product";
+
+$doex=explode("/",$subs['edate']);
+
+if(!count($subs)){
+	echo "Couldn't find a subscription with that ID";
+	include("$ADMIN_PATH/_header.htm");
+	exit();
+}
+
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+foreach(exec_query($combo_query) as $row) //to select the type in a combo opted for user
+{
+$qry="SELECT type from subscription_ps where subid='$id' and combo_id='$row[id]' and account_status='enabled'  ";
+$ctype=exec_query($qry,1);
+$sub_ps[ctype][$row[id]]=$ctype[type];
+}
+
+foreach(exec_query($prod_query) as $row)//to select the type in a product opted for user
+{
+$qry="SELECT type from subscription_ps where subid='$id' and prof_id='$row[id]' and account_status='enabled'";
+$ptype=exec_query($qry,1);
+$sub_ps[ptype][$row[id]]=$ptype[type];
+}
+
+if(($subs[combo]==1 && $subs[cancelsubs]==0) || ($subs[account_status]=='disabled'))
+//subtype shud nt be slected in case of combo or disabled
+{
+  $subs[type]="";
+}
+
+$cc_num_disp=CartDisplay::hideCCNum($subs[cc_num]);
+
+
+$breakDateStr="n|j|Y|G";
+$date_fields=array(
+	date_billingstart=>"dbs",
+	date_lastbilled=>"dlb",
+	date_nextbill=>"dnb",
+	date_disabled=>"dds",
+	expires=>"dexp",
+	"date"=>"dcr"
+);
+foreach($date_fields as $fieldname=>$arr){
+	if($subs[$fieldname]){
+		$list=explode("|",date($breakDateStr,$subs[$fieldname]));
+		list($m, $d,$y,$h,$s)=$list;
+		if($y=="2000"){//invalid date
+			$GLOBALS[$arr]=array();
+		}else{
+			$GLOBALS[$arr]=array(mo=>$m,day=>$d,year=>$y,hour=>$h);
+		}
+	}else{
+		$$arr=array();
+	}
+}
+
+$pdate_fields=array(
+	date_billingstart=>"pdbs",
+	date_lastbilled=>"pdlb",
+	date_nextbill=>"pdnb",
+	date_disabled=>"pdds",
+	expires=>"pdexp",
+	"date"=>"pdcr"
+);
+
+
+$ddate_fields=array(
+	date_billingstart=>"ddbs",
+	date_lastbilled=>"ddlb",
+	date_nextbill=>"ddnb",
+	date_disabled=>"ddds",
+	expires=>"ddexp",
+	"date"=>"ddcr"
+);
+
+
+		$deal_qry="select sp.*,od.description 'Bundle',od.recurring_charge 'Bundle Price' from subscription_ps sp,option_deals od where sp.combo_id=od.id and sp.subid=$subs[id]";
+		$deal_results=exec_query($deal_qry);
+		foreach($deal_results as $id=>$value)
+		{
+			$deal_details[]=$value;
+			foreach($ddate_fields as $fieldname=>$arr){
+			if($value[$fieldname]){
+				$list=explode("|",date($breakDateStr,$value[$fieldname]));
+				list($m, $d,$y,$h,$s)=$list;
+				if($y=="2000"){//invalid date
+					$GLOBALS[$arr]=array();
+				}else{
+					$GLOBALS[$arr][$value['id']]=array(mo=>$m,day=>$d,year=>$y,hour=>$h);
+				}
+			}else{
+			$$arr=array();
+			}
+		}
+		}
+?>
+
+
+<style>
+body{margin:3px;padding:0px;border:0px}
+</style>
+<script>
+function saveSubs(){
+findObj("subform").submit();
+}
+
+</script>
+<?if($error){?><div class="error"><?=$error?></div><?}?>
+<form method="post" action="subs.edit.mod.htm" name="subform">
+<?input_hidden("bounceback",$PHP_SELF);input_hidden("id",$subs['id'])?>
+
+<fieldset><legend>Billing Info [<a href="subs.trans.htm?id=<?=$subs['id']?>&email=<?=$subs[email]?>" class="small" style="font-weight:normal">view transactions</a>]</legend>
+<table>
+<TR>
+<TD align=right nowrap><b>DB ID:</b></TD>
+<TD><?=$subs[id]?></TD>
+</TR>
+<?if($subs[type]=="gift"){?>
+	<TR valign=top>
+	<TD align=right nowrap><b>Gift Codes:</b></TD>
+	<TD>
+		Entry Code: <b><?=$gift[key1]?> </b><br>
+		Pass Code: <b><?=$gift[key2]?></b>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD align=right nowrap><b>Member ID:</b></TD>
+<TD><?input_text("subs[email]",$subs[email])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Password</b></TD>
+<TD><?input_text("subs[password]",$subs[password])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Premium</b>:</TD>
+<TD><select name="subs[premium]">
+	<?selectHash(array(1=>"yes",0=>"no"),$subs[premium])?>
+</select></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Preferred User</b>:</TD>
+<TD><select name="subs[preferred_user]">
+	<?selectHash(array(1=>"yes",0=>"no"),$subs[preferred_user])?>
+</select>(<i class="small">account is free and never expires</i>)</TD>
+</TR>
+<TR valign=top>
+<TD align=right nowrap><b>Created</b></TD>
+<TD>
+	<?if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("dcr[mo]",$dcr[mo])?></TD>
+	<TD><?day_options("dcr[day]",$dcr[day])?></TD>
+	<TD><?year_options("dcr[year]",$dcr[year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dcr[hour]",$dcr[hour])?></TD>
+	</TR>
+	</table>
+	<?}else{
+		input_hidden("dcr[mo]",$dcr[mo]);
+		input_hidden("dcr[day]",$dcr[day]);
+		input_hidden("dcr[year]",$dcr[year]);
+		input_hidden("dcr[hour]",$dcr[hour]);
+		if($subs["date"]){
+			echo date("m/d/Y g:i a",$subs["date"]);
+		}else{
+			echo "n/a";
+		}
+	}?>
+</TD>
+<TR valign=top>
+<TD align=right nowrap><b>Last Active</b></TD>
+<TD>
+	<?if($subs["login_lastactive"]){?>
+		<?=date("m/d/Y g:i a",$subs["login_lastactive"]);?>
+	<?}else{?>
+		n/a
+	<?}?>
+</TD>
+<td>
+
+</TD>
+<TD>
+
+</TR>
+<tr>
+  <td align=right nowrap><strong>B&B Next Billing Date </strong></TD>
+  <td>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("dnb[mo]",$dnb[mo])?></TD>
+	<TD><?day_options("dnb[day]",$dnb[day])?></TD>
+	<TD><?year_options("dnb[year]",$dnb[year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dnb[hour]",$dnb[hour])?></TD>
+	</TR>
+	</table></td>
+</tr>
+<? if($subs['corpuser']){ ?>
+<TR>
+ <TD align=right nowrap><b>Corporate name</b></TD>
+<TD><?=$subs['corpuser'];?></TD>
+</TR>
+<? } ?>
+<TR>
+ <TD align=right nowrap><b>B&B Acct. Type</b></TD>
+<TD>
+	<select id="subs[type]" name="subs[type]" );">
+	<option value=""></option>
+	<?selectArr(qw("trial gift edu prem newyear"),$subs[type])?>
+</select>
+
+</TD>
+</TR>
+
+
+<?foreach(exec_query($prod_query) as $row){?>
+<TR>
+<TD align=right nowrap><b><?=$row[name]?> Acct. Type</b></TD>
+<TD>
+   <select id="sub_ps[ptype][<?=$row[id]?>]" name="sub_ps[ptype][<?=$row[id]?>]" );">
+   <option value=""></option>
+<?selectArr(qw("trial gift prem newyear"),$sub_ps[ptype][$row[id]])?>
+</select>
+	</TD>
+	</TD>
+
+	<?}?>
+
+	<?foreach(exec_query($combo_query) as $row){
+input_hidden("sub_ps[buzz][$row[id]]",$row[is_buzz]);?>
+<TR>
+<TD align=right nowrap><b><?=$row[name]?> Bundle Acct. Type</b></TD>
+<TD>
+   <select id="sub_ps[ctype][<?=$row[id]?>]" name="sub_ps[ctype][<?=$row[id]?>]" );">
+
+   <option value=""></option>
+	<?selectArr(qw("trial gift newyear"),$sub_ps[ctype][$row[id]])?>
+</select>
+	</TD>
+	<?}?>
+	</TR>
+<?
+if($subs[type]!="a")
+{
+?>
+<TR valign=top>
+<TD align=right nowrap><b>Subscriptions</b></TD>
+<TD>
+<table border=1>
+<tr>
+	<td><strong>Product</strong></td>
+	<td><strong>Started Billing</strong></td>
+	<td><strong>Next Bill</strong></TD>
+	<td><strong>Last Billed</strong></TD>
+	<td><strong>Subscription Disabled On</strong></TD>
+	<td><strong>Account Status</strong></TD>
+	<td><strong>Recurring Charge</strong></TD>
+	<td><strong>Expires on</strong></TD>
+</tr>
+<? if($subs[premium] && !$subs[combo]){ ?>
+<tr>
+	<td>Buzz & Banter</td>
+	<td><?if($is_dev){?>
+		<table cellpadding=0 cellspacing=0 border=0>
+		<TR>
+		<TD><?month_options("dbs[mo]",$dbs[mo])?></TD>
+		<TD><?day_options("dbs[day]",$dbs[day])?></TD>
+		<TD><?year_options("dbs[year]",$dbs[year],"",2002,date("Y")+3)?></TD>
+		<TD><?hour_options("dbs[hour]",$dbs[hour])?></TD>
+		</TR>
+		</table>
+	<?}else{
+		input_hidden("dbs[mo]",$dbs[mo]);
+		input_hidden("dbs[day]",$dbs[day]);
+		input_hidden("dbs[year]",$dbs[year]);
+		input_hidden("dbs[hour]",$dbs[hour]);
+		if($subs[date_billingstart]){
+			echo date("m/d/Y g:i a",$subs[date_billingstart]);
+		}else{
+			echo "n/a";
+		}
+	}?></TD>
+	<td>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("dnb[mo]",$dnb[mo])?></TD>
+	<TD><?day_options("dnb[day]",$dnb[day])?></TD>
+	<TD><?year_options("dnb[year]",$dnb[year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dnb[hour]",$dnb[hour])?></TD>
+	</TR>
+	</table></td>
+	<TD>
+	<?if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("dlb[mo]",$dlb[mo])?></TD>
+	<TD><?day_options("dlb[day]",$dlb[day])?></TD>
+	<TD><?year_options("dlb[year]",$dlb[year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dlb[hour]",$dlb[hour])?></TD>
+	</TR>
+	</table>
+	<?}else{
+		input_hidden("dlb[mo]",$dlb[mo]);
+		input_hidden("dlb[day]",$dlb[day]);
+		input_hidden("dlb[year]",$dlb[year]);
+		input_hidden("dlb[hour]",$dlb[hour]);
+		if($subs[date_lastbilled]){
+			echo date("m/d/Y g:i a",$subs[date_lastbilled]);
+		}else{
+			echo "n/a";
+		}
+	}?>
+
+</TD>
+<TD>
+	<?//if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("dds[mo]",$dds[mo])?></TD>
+	<TD><?day_options("dds[day]",$dds[day])?></TD>
+	<TD><?year_options("dds[year]",$dds[year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dds[hour]",$dds[hour])?></TD>
+	</TR>
+	</table>
+	<?/*}else{
+		input_hidden("dds[mo]",$dds[mo]);
+		input_hidden("dds[day]",$dds[day]);
+		input_hidden("dds[year]",$dds[year]);
+		input_hidden("dds[hour]",$dds[hour]);
+		if($subs[date_disabled]){ //mydisable
+			echo date("m/d/Y g:i a",$subs[date_disabled]);
+		}else{
+			echo "n/a";
+		}
+	}*/?>
+
+	<div class="small error">Enabled accounts get disabled 3 days after this date</div>
+</TD>
+<TD><select name="subs[account_status]">
+	<?selectArr(qw("disabled enabled"),$subs[account_status])?>
+</select></TD>
+<TD><?input_numsonly("subs[recurring_charge]",$subs[recurring_charge])?></TD>
+<TD>
+
+	<?//if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("dexp[mo]",$dexp[mo])?></TD>
+	<TD><?day_options("dexp[day]",$dexp[day])?></TD>
+	<TD><?year_options("dexp[year]",$dexp[year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dexp[hour]",$dexp[hour])?></TD>
+	</TR>
+	</table>
+</TD>
+
+</tr>
+<? }
+
+/*****************************************************/
+
+
+$product_qry="select sp.*,
+					 p.name 'Product'
+				from subscription_ps sp,product p where sp.prof_id=p.id and combo='0' and subid=$subs[id]";
+		$product_results=exec_query($product_qry);
+		foreach($product_results as $id=>$value)
+		{
+			$product_details[]=$value;
+		}
+
+
+foreach($product_details as $id=>$value)
+{
+	foreach($pdate_fields as $fieldname=>$arr){
+			if($value[$fieldname]){
+				$list=explode("|",date($breakDateStr,$value[$fieldname]));
+				list($m, $d,$y,$h,$s)=$list;
+				if($y=="2000"){//invalid date
+					$GLOBALS[$arr]=array();
+				}else{
+					$GLOBALS[$arr][$value[id]]=array(mo=>$m,day=>$d,year=>$y,hour=>$h);
+				}
+			}else{
+			$$arr=array();
+			}
+	}
+?>
+	<tr><td><?=$value['Product'];input_hidden("subs_ps[$value[id]][id]",$value[id]);?></TD>
+	<td><?if($is_dev){?>
+		<table cellpadding=0 cellspacing=0 border=0>
+		<TD><?month_options("pdbs[$value[id]][mo]",$pdbs[$value[id]][mo])?></TD>
+		<TD><?day_options("pdbs[$value[id]][day]",$pdbs[$value[id]][day])?></TD>
+		<TD><?year_options("pdbs[$value[id]][year]",$pdbs[$value[id]][year],"",2002,date("Y")+3)?></TD>
+		<TD><?hour_options("pdbs[$value[id]][hour]",$pdbs[$value[id]][hour])?></TD>
+		</TR>
+		</table>
+	<?}else{
+		input_hidden("pdbs[$value[id]][mo]",$pdbs[$value[id]][mo]);
+		input_hidden("pdbs[$value[id]][day]",$pdbs[$value[id]][day]);
+		input_hidden("pdbs[$value[id]][year]",$pdbs[$value[id]][year]);
+		input_hidden("pdbs[$value[id]][hour]",$pdbs[$value[id]][hour]);
+		if($value[date_billingstart]){
+			echo date("m/d/Y g:i a",$value[date_billingstart]);
+		}else{
+			echo "n/a";
+		}
+	}?></TD><td>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("pdnb[$value[id]][mo]",$pdnb[$value[id]][mo])?></TD>
+	<TD><?day_options("pdnb[$value[id]][day]",$pdnb[$value[id]][day])?></TD>
+	<TD><?year_options("pdnb[$value[id]][year]",$pdnb[$value[id]][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("pdnb[$value[id]][hour]",$pdnb[$value[id]][hour])?></TD>
+	</TR>
+	</table></TD>
+	<TD>
+	<?if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("pdlb[$value[id]][mo]",$pdlb[$value[id]][mo])?></TD>
+	<TD><?day_options("pdlb[$value[id]][day]",$pdlb[$value[id]][day])?></TD>
+	<TD><?year_options("pdlb[$value[id]][year]",$pdlb[$value[id]][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("pdlb[$value[id]][hour]",$pdlb[$value[id]][hour])?></TD>
+	</TR>
+	</table>
+	<?}else{
+		input_hidden("pdlb[$value[id]][mo]",$pdlb[$value[id]][mo]);
+		input_hidden("pdlb[$value[id]][day]",$pdlb[$value[id]][day]);
+		input_hidden("pdlb[$value[id]][year]",$pdlb[$value[id]][year]);
+		input_hidden("pdlb[$value[id]][hour]",$pdlb[$value[id]][hour]);
+		if($value[date_lastbilled]){
+			echo date("m/d/Y g:i a",$value[date_lastbilled]);
+		}else{
+			echo "n/a";
+		}
+	}?>
+
+</TD>
+<TD>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("pdds[$value[id]][mo]",$pdds[$value[id]][mo])?></TD>
+	<TD><?day_options("pdds[$value[id]][day]",$pdds[$value[id]][day])?></TD>
+	<TD><?year_options("pdds[$value[id]][year]",$pdds[$value[id]][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("pdds[$value[id]][hour]",$pdds[$value[id]][hour])?></TD>
+	</TR>
+	</table>
+	<div class="small error">Enabled accounts get disabled 3 days after this date</div>
+</TD>
+<TD><select name="<? echo "subs_ps[".$value[id]."][account_status]"?>">
+	<?selectArr(qw("disabled enabled"),$value[account_status])?>
+</select></TD>
+<TD><?input_numsonly("subs_ps[$value[id]][recurring_charge]",$value[recurring_charge])?></TD>
+
+
+<TD>
+	<?//if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("pdexp[$value[id]][mo]",$pdexp[$value[id]][mo])?></TD>
+	<TD><?day_options("pdexp[$value[id]][day]",$pdexp[$value[id]][day])?></TD>
+	<TD><?year_options("pdexp[$value[id]][year]",$pdexp[$value[id]][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("pdexp[$value[id]][hour]",$pdexp[$value[id]][hour])?></TD>
+	</TR>
+	</table>	
+</TD>
+<?} ?>
+</tr><tr>
+<?
+foreach($deal_details as $id=>$value)
+{ ?>
+	<tr><td><?=$value['Bundle'];input_hidden("subs_ps[$value[id]][id]",$value[id]);?></TD>
+	<td><?if($is_dev){?>
+		<table cellpadding=0 cellspacing=0 border=0>
+		<TR>
+		<TD><?month_options("ddbs[$value[id]][mo]",$ddbs[$value[id]][mo])?></TD>
+		<TD><?day_options("ddbs[$value[id]][day]",$ddbs[$value[id]][day])?></TD>
+		<TD><?year_options("ddbs[$value[id]][year]",$ddbs[$value[id]][year],"",2002,date("Y")+3)?></TD>
+		<TD><?hour_options("ddbs[$value[id]][hour]",$ddbs[$value[id]][hour])?></TD>
+		</TR>
+		</table>
+	<?}else{
+		input_hidden("ddbs[$value[id]][mo]",$ddbs[$value[id]][mo]);
+		input_hidden("ddbs[$value[id]][day]",$ddbs[$value[id]][day]);
+		input_hidden("ddbs[$value[id]][year]",$ddbs[$value[id]][year]);
+		input_hidden("ddbs[$value[id]][hour]",$ddbs[$value[id]][hour]);
+		if($value[date_billingstart]){
+			echo date("m/d/Y g:i a",$value[date_billingstart]);
+		}else{
+			echo "n/a";
+		}
+	}?></TD><td>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("ddnb[$value[id]][mo]",$ddnb[$value[id]][mo])?></TD>
+	<TD><?day_options("ddnb[$value[id]][day]",$ddnb[$value[id]][day])?></TD>
+	<TD><?year_options("ddnb[$value[id]][year]",$ddnb[$value[id]][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("ddnb[$value[id]][hour]",$ddnb[$value[id]][hour])?></TD>
+	</TR>
+	</table></TD>
+	<TD>
+	<?if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("ddlb[$value[id]][mo]",$ddlb[$value[id]][mo])?></TD>
+	<TD><?day_options("ddlb[$value[id]][day]",$ddlb[$value[id]][day])?></TD>
+	<TD><?year_options("ddlb[$value[id]][year]",$ddlb[$value[id]][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("ddlb[$value[id]][hour]",$ddlb[$value[id]][hour])?></TD>
+	</TR>
+	</table>
+	<?}else{
+		input_hidden("ddlb[$value[id]][mo]",$ddlb[$value[id]][mo]);
+		input_hidden("ddlb[$value[id]][day]",$ddlb[$value[id]][day]);
+		input_hidden("ddlb[$value[id]][year]",$ddlb[$value[id]][year]);
+		input_hidden("ddlb[$value[id]][hour]",$ddlb[$value[id]][hour]);
+		if($value[date_lastbilled]){
+			echo date("m/d/Y g:i a",$value[date_lastbilled]);
+		}else{
+			echo "n/a";
+		}
+	}
+?>
+	</TD>
+
+<TD>
+	<?//if($is_dev){?>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("ddds[$value[id]][mo]",$ddds[$value[id]][mo])?></TD>
+	<TD><?day_options("ddds[$value[id]][day]",$ddds[$value[id]][day])?></TD>
+	<TD><?year_options("ddds[$value[id]][year]",$ddds[$value[id]][year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("ddds[$value[id]][hour]",$ddds[$value[id]][hour])?></TD>
+	</TR>
+	</table>
+	<?/*}else{
+		input_hidden("ddds[$value[id]][mo]",$ddds[$value[id]][mo]);
+		input_hidden("ddds[$value[id]][day]",$ddds[$value[id]][day]);
+		input_hidden("ddds[$value[id]][year]",$ddds[$value[id]][year]);
+		input_hidden("ddds[$value[id]][hour]",$ddds[$value[id]][hour]);
+		if($value[date_disabled]){
+			echo date("m/d/Y g:i a",$value[date_disabled]);
+		}else{
+			echo "n/a";
+		}
+	}*/?>
+
+	<div class="small error">Enabled accounts get disabled 3 days after this date</div>
+</TD>
+<TD>
+<select name="<? echo "subs_ps[".$value[id]."][account_status]"?>">
+	<?selectArr(qw("disabled enabled"),$value[account_status])?>
+</select>  </TD>
+<TD><?input_numsonly("subs_ps[$value[id]][recurring_charge]",$value[recurring_charge])?></TD>
+<?	}?>
+</tr>
+</table>
+</TD>
+</TR>
+
+<?if($subs[type]=="12mo"){?>
+<TR valign=top>
+<TD align=right nowrap><b>Expires On</b></TD>
+<TD>
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD><?month_options("dexp[mo]",$dexp[mo])?></TD>
+	<TD><?day_options("dexp[day]",$dexp[day])?></TD>
+	<TD><?year_options("dexp[year]",$dexp[year],"",2002,date("Y")+3)?></TD>
+	<TD><?hour_options("dexp[hour]",$dexp[hour])?></TD>
+	</TR>
+	</table>
+	<div class="small error">12mo accounts get disabled and converted to 1mo on this date</div>
+</TD>
+</TR>
+<?}
+}
+?>
+<!--<TR>
+<TD align=right nowrap><b>Acct. Status</b></TD>
+<TD><select name="subs[account_status]">
+	<?selectArr(qw("disabled enabled"),$subs[account_status])?>
+</select></TD>
+</TR>-->
+<?
+if($subs['type']=="trial")
+{
+?>
+<TR>
+<TD align=right nowrap><b>Trial Status</b></TD>
+<TD><select name="subs[trial_status]">
+	<?selectArr(qw("active inactive"),$subs[trial_status])?>
+</select></TD>
+</TR>
+<?
+}
+?>
+<?
+if($subs['type']!="edu")
+{
+?>
+<TR>
+<TD align=right nowrap><b>Disabled Warning</b>:</TD>
+<TD><?if($is_dev){?>
+		<select name="subs[notified_disabled_warn]">
+		<?selectHash(array(1=>"yes",0=>"no"),$subs[notified_disabled_warn])?>
+		</select>
+	<?}else{?>
+		<b><?=($subs[notified_disabled_warn]?"yes":"no");?></b>
+	<?}?>
+	(<i class="small">was sent warning email of suspension</i>)</TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Disabled Notified</b>:</TD>
+<TD><?if($is_dev){?>
+		<select name="subs[notified_disabled]">
+		<?selectHash(array(1=>"yes",0=>"no"),$subs[notified_disabled])?>
+		</select>
+	<?}else{?>
+		<b><?=($subs[notified_disabled]?"yes":"no");?></b>
+	<?}?>
+	(<i class="small">was sent email of suspension</i>)</TD>
+</TR>
+<?
+}
+?>
+<TR>
+<TD align=right nowrap><b>First Name</b></TD>
+<TD><?input_text("subs[fname]",$subs[fname])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Last Name</b></TD>
+<TD><?input_text("subs[lname]",$subs[lname])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Address</b></TD>
+<TD><?input_text("subs[address]",$subs[address])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Address2</b></TD>
+<TD><?input_text("subs[address2]",$subs[address2])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>City</b></TD>
+<TD><?input_text("subs[city]",$subs[city])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>State</b></TD>
+<TD><select name="subs[state]"><?display_states($subs[state])?></select></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Zip</b></TD>
+<TD><?input_text("subs[zip]",$subs[zip])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>Country</b></TD>
+<TD><select name="subs[country]">
+	<option value=""></option>
+	<?display_countries($subs[country])?>
+</select></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>H. Phone</b></TD>
+<TD><?input_intonly("subs[tel]",$subs[tel])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>W. Phone</b></TD>
+<TD><?input_intonly("subs[work]",$subs[work])?></TD>
+</TR>
+<?
+if($subs['type']!="edu")
+{
+?>
+<TR>
+<TD colspan=2 class="error">credit card changes will not be processed until the user's next billing cycle.</TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>CC Type</b></TD>
+<TD><select name="subs[cc_type]">
+	<?selectHash($STORE_CC_TYPES,$subs[cc_type])?>
+</select></TD>
+</TR>
+<TR valign=top>
+<TD align=right><b>CC Num</b></TD>
+<TD>
+	<?input_hidden("subs[cc_num]",$subs[cc_num])?>
+	<?input_intonly("new_cc_num",$cc_num_disp,16,16,"onclick=this.value='' onblur=if(this.value=='')this.value='$cc_num_disp'")?><br>
+
+</TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>CC Expire (mm/YY)</b></TD>
+<TD><?input_text("subs[cc_expire]",$subs[cc_expire])?></TD>
+</TR>
+<TR>
+<TD align=right nowrap><b>CC CVV2</b></TD>
+<TD><?input_text("subs[cc_cvv2]",$subs[cc_cvv2])?></TD>
+</TR>
+<?
+}
+?>
+</table>
+</fieldset>
+
+
+<fieldset><legend>Misc Info.</legend>
+<table>
+
+<TR>
+<TD align=right nowrap><b>Gaz. Emails</b></TD>
+<TD><select name="subs[recv_daily_gazette]">
+	<?selectHash(array(1=>"yes",0=>"no"),$subs[recv_daily_gazette])?>
+</select></TD>
+
+
+
+	<TD align=right nowrap><b>Promo Emails</b></TD>
+<TD><select name="subs[recv_promo]">
+	<?selectHash(array(1=>"yes",0=>"no"),$subs[recv_promo])?>
+</select></TD>
+</TR>
+
+
+
+
+
+<TR>
+<TD align=right nowrap><b>Age Group</b></TD>
+<TD><select name="subs[agegroup]">
+	<option value=""></option>
+	<?display_agegroups($subs[agegroup])?>
+	</select>   </TD>
+<TD align=right nowrap><b>Income</b> </TD>
+<TD><select name="subs[income]" style="width:100px">
+	<option value=""></option>
+	<?display_incomes($subs[income])?></select></TD>
+
+</TR>
+
+<TR>
+<TD align=right nowrap> <b>Job Title</b></TD>
+<TD><select name="subs[jobtitle]" style="width:100px"><option value=""></option><?display_jobtitles($subs[jobtitle])?></select></TD>
+<TD align=right nowrap><b>Connection</b></TD>
+<TD><select name="subs[connection]">
+	<option value=""></option>
+	<?selectArr(qw("high low"),$subs[connection])?>
+	</select></TD>
+</TR>
+
+
+<TR>
+<TD align=right nowrap> <b>School</b></TD>
+<TD><?input_text("subs[school]",$subs[school],"","","style=width:100px")?></TD>
+<TD align=right nowrap><b>Heard From</b></TD>
+<TD><select name="subs[heardfrom]">
+	<option value=""></option>
+	<?display_heardfrom($subs[heardfrom])?>
+	</select></TD>
+</TR>
+
+<TR>
+<TD align=right nowrap><b>Promo Code</b></TD>
+<TD><?input_text("subs[promo_code]",$subs[promo_code],"","","style=width:100px")?></TD>
+
+<TD align=right nowrap><b>Email Format</b></TD>
+<TD>HTML<?input_hidden("subs[eml_format]","html")?></TD>
+
+</TR>
+
+<TR>
+<TD align=right nowrap ><b>Referer</b></TD>
+<TD >
+<?echo $subs[referer];?><?input_hidden("subs[eml_format]",$subs[referer])?>
+</TD>
+
+<TD align=right nowrap> <b>Sale</b></TD>
+<TD><select name="subs[sale]" style="width:100px"><option value=""></option><?selectArr(qw("1 2"),$subs[sale])?></select></TD>
+
+</TR>
+<TR>
+	<TD><strong>Note/Comment</strong>: </TD>
+	<TD colspan="5"><?input_textarea("subs[comment]",$subs[comment],"","",3,"style=width:350px")?></TD>
+</TR>
+
+</table>
+</fieldset>
+<fieldset><legend>Save Your Work</legend>
+<br><br>
+<div align=right>
+	<input type="button" value="save" onclick="saveSubs()">
+	<input type="reset" value="reset">
+</div>
+<br><br>
+</fieldset>
+
+
+</form>
+
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

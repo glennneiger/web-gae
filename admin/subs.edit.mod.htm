@@ -1,0 +1,514 @@
+<title>&quot;&quot;</title><?
+include("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$ADMIN_PATH/_authenticate.htm");
+
+//errors-----------------
+if(!$id){
+	location($bounceback.qsa(array(error=>"Problem getting subscirption info")));
+	exit();
+}
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+$subscription_id=$id;
+function is_paid($type)
+{
+	if($type=="prem" || $type=="newyear")
+		return true;
+	else
+		return false;
+}
+
+function enable_account($subscription,$is_combo=0)
+{
+	$subscription['account_status']="enabled";
+	$subscription['date_disabled']=0;
+	$subscription['notified_disabled']=0;
+	$subscription['notified_disabled_warn']=0;
+	$subscription['cancelsubs']='0';
+	if($is_combo)
+	{
+		$temp['combo']='1';
+		$temp['recurring_charge']=$subscription['recurring_charge'];
+		$subscription['cancelsubs']='0';
+		$temp['account_status']='enabled';
+		update_query("subscription",$temp,array(id=>$subscription['subid']));
+	}
+	return $subscription;
+}
+
+function disable_account($subscription,$is_combo=0)
+{
+	$subscription['account_status']="disabled";
+	$subscription['date_disabled']=time();
+	$subscription['notified_disabled']=1;
+	$subscription['notified_disabled_warn']=1;
+	$subscription['cancelsubs']='1';
+	if($is_combo)
+	{
+		$temp['recurring_charge']="00.00";
+		$temp['cancelsubs']='1';
+		$temp['account_status']='disabled';
+		update_query("subscription",$temp,array(id=>$subscription['subid']));
+	}
+	return $subscription;
+}
+
+
+function set_manualoverdefault($subscription_changed,$subscription,$field,$value)
+{
+	if($subscription_changed[$field]==1)
+		return $subscription[$field];
+	else
+		return $value;
+}
+
+function get_changed($subscription,$old_subscription)
+{
+	foreach($old_subscription as $id=>$value)
+	{
+		if($old_subscription[$id]!=$subscription[$id])
+			$fields_changed[$id]=$subscription[$id];
+	}
+	return $fields_changed;
+}
+
+function setgift($subscription)
+{
+	$subscription['date_nextbill']=0;
+	$subscription['premium']="1";
+	$subscription['recurring_charge']=0;
+	return $subscription;
+}
+
+function do_preauth($subscription,$old_subscription,$id)
+{
+	global $D_R;
+	include_once("$D_R/lib/_robots.php");
+	//---------- account changed just do a pre-auth.
+		debug("close to cycle, and account type changed. ");
+		$subscription['recurring_charge']= getSubsTotal($subscription);
+		$subscription['id'] = $id;
+		$robot=new Robot();
+		$result=$robot->capturePayment($subscription);
+
+/*=======check whether the capturepayment success=====*/
+	 if(!$result[success] && is_array($result))//didn't go through
+	 {
+		debug("transaction failed: ${result[trans_msg]}");
+		$errors["payment_error"]=1;
+		$errors["payment_message"]=$result[trans_msg];
+
+		//--- ROLL BACK ACCOUNT TYPE. MAKE SURE 1MO+PREM STILL CHANGES TO "prem"
+		$subscription['recurring_charge']=$old_subscription['recurring_charge'];
+		$subscription['account_status']=$old_subscription['account_status'];
+		$subscription['type']=$old_subscription['type'];
+		$subscription['premium']=$old_subscription['premium'];
+	}
+	if($result['success'])
+	{
+		if(!is_paid($old_subscription) && is_paid($subscription)) //its almost a new registration
+		{
+			$subscription['date_billingstart']=($robot->now+$robot->trialLength);//set the billing start date and a trial for
+			$subscription['date_nextbill']=$subscription[date_billingstart];
+			$subscription['account_status']=enabled;
+			$subscription['date_disabled']=0;
+			$subscription['cancelsubs']=0;
+			$subscription['notified_disabled']=0;
+			$subscription['notified_disabled_warn']=0;
+		}
+	}
+}
+
+function set_secondaryinfo($subscription_parent,$subscription_child)
+{
+	$primary_info=array("id","date","date_billingstart","modified","date_lastbilled","date_disabled","date_nextbill","notified_removed_warn","notified_disabled","notified_disabled_warn","expires","account_status","type","recurring_charge","trial_status","date_trialconverted","date_cancelled","prof_id","combo","combo_id","subid","cancelsubs","comment");
+	foreach($subscription_parent as $id=>$value)
+	{
+		if(!in_array($id,$primary_info))
+			$subscription_child[$id]=$value;
+	}
+	return $subscription_child;
+}
+
+function update_product($subs_ps)
+{
+	global $D_R;
+	include_once("$D_R/lib/_robots.php");
+    $subscription['trial_status']=$subs_ps['trial_status'];
+ 	$subscription['subid']=$subs_ps['subid'];
+	$old_subscription=exec_query("SELECT * from subscription_ps where id=$subs_ps[id] and prof_id='$subs_ps[prof_id]'",1);
+	$subscription['type']=$subs_ps['type'];
+	if($subscription['type']=="")
+		return;
+	if($old_subscription)
+	{
+		if($subscription['type']=='gift')
+			$subscription=setgift($subscription);
+		if(!is_paid($subscription['type']))
+			$subscription['recurring_charge']="00.00";
+		else
+			$subscription['recurring_charge']=getSubsTotalProf($subscription,$subs_ps['prof_id']);
+		if($subscription['type']!=$old_subscription['type'])
+		{
+			$subscription['account_status']="enabled";
+			$subscription['date_disabled']=0;
+			$subscription['notified_disabled']= 0;
+			$subscription['notified_disabled_warn']= 0;
+			$subscription['cancelsubs']=0;
+		}
+		// Override Mannual values
+		$pdate_fields=array(
+		date_billingstart=>"pdbs",
+		date_lastbilled=>"pdlb",
+		date_nextbill=>"pdnb",
+		date_disabled=>"pdds"
+		);
+		foreach($pdate_fields as $fieldname=>$arr)//arr hashname of date fields
+		{
+				global $$arr;
+				$arr=$$arr;
+				if(!is_array($arr))$arr=array();
+				if(count(trim_arr(array_values($arr),1)))
+				{
+				$temp_subscription[$fieldname]=strtotime($arr[$subs_ps['id']]['year']."-".$arr[$subs_ps['id']]['mo']."-".$arr[$subs_ps['id']]['day']." ".$arr[$subs_ps['id']]['hour'].":00:00"]);
+				/*$temp_subscription[$fieldname]=mktime($arr[$subs_ps['id']]['hour'],0,0, $arr[$subs_ps['id']]['mo'],$arr[$subs_ps['id']]['day'],$arr[$subs_ps['id']]['year']);*/
+					if($old_subscription[$fieldname]!=$temp_subscription[$fieldname])
+					{
+						$subscription[$fieldname]=$temp_subscription[$fieldname];
+					}
+					if($subscription[$fieldname]==-1)
+						$subscription[$fieldname]=0;
+				}
+				else{
+					$subscription[$fieldname]=0;
+				}
+		}
+		if($old_subscription['date_disabled']==0 && $subs_ps['date_disabled']!=0)
+		{
+			$subscription['notified_disabled_warn']="1";
+			$subscription['cancelsubs']="1";
+		}
+		if($old_subscription['account_status']!=$subs_ps['account_status'])
+		{
+			if($subs_ps['account_status']=="disabled")
+				$subscription=disable_account($subscription);
+			else
+				$subscription=enable_account($subscription);
+		}
+		if($old_subscription['recurring_charge']!=$subs_ps['recurring_charge'])
+			$subscription['recurring_charge']=$subs_ps['recurring_charge'];
+			$subscription['modified']=time();
+			$subscription=set_secondaryinfo($subs_ps,$subscription);
+		if($subscription['type']=="")
+			$subscription['type']=$old_subscription['type'];
+		update_query("subscription_ps",$subscription,array(id=>$subs_ps['id']));
+	}
+}
+
+function insert_product($subs_ps)
+{
+	$subscription['subid']=$subs_ps['subid'];
+	$subscription['type']=$subs_ps['type'];
+	$subscription['prof_id']=$subs_ps['prof_id'];
+	if($subscription['type']=="")
+		return;
+	if($subscription['type']=='gift')
+			$subscription=setgift($subscription);
+		if($subscription['type']=='trial')
+			$subscription['date_disabled']=time()+$RBT_TRIAL_LENGTH;
+		if(!is_paid($subscription['type']))
+			$subscription['recurring_charge']="00.00";
+		else
+		{
+			$subscription['recurring_charge']=getSubsTotalProf($subscription,$subscription['prof_id']);//030907
+			//$subscription['recurring_charge']=getSubsTotalProf($subscription,$product_id);//030907
+			$subscription['date_billingstart']=time()+$RBT_TRIAL_LENGTH;
+			$subscription['date_nextbill']=time()+$RBT_TRIAL_LENGTH;
+		}
+		$subscription['account_status']="enabled";
+		$subscription['date_disabled']=0;
+		$subscription['date']=time();
+		$subscription['notified_disabled']= 0;
+		$subscription['notified_disabled_warn']= 0;
+		$subscription['cancelsubs']=0;
+		$subscription=set_secondaryinfo($subs_ps,$subscription);
+		insert_query("subscription_ps",$subscription);
+		update_query("subscription",$temp,array(id=>$subscription['subid']));
+}
+
+function update_combo($subs_ps)
+{   	 
+	global $D_R;
+	include_once("$D_R/lib/_robots.php");
+
+	$subscription['subid']=$subs_ps['subid'];
+	$old_subscription=exec_query("SELECT * from subscription_ps where id=$subs_ps[id] and combo_id='$subs_ps[combo_id]'",1);
+	$subscription['type']=$subs_ps['type'];
+    $subscription['combo']=$subs_ps['combo'];
+	$subscription['combo_id']=$subs_ps['combo_id'];
+	if($subscription['type']=="")
+		return;		  		
+	if($old_subscription)
+	{   	
+		if($subscription['type']=='gift')
+			$subscription=setgift($subscription);
+		if(!is_paid($subscription['type']))
+			$subscription['recurring_charge']="00.00";
+		else
+			$subscription['recurring_charge']=getSubsTotalCombo($subscription,$subs_ps['combo_id']);
+		if($subscription['type']!=$old_subscription['type'])
+		{
+			$subscription['account_status']="enabled";
+			$subscription['date_disabled']=0;
+			$subscription['notified_disabled']= 0;
+			$subscription['notified_disabled_warn']= 0;
+			$subscription['cancelsubs']=0;
+		}
+		// Override Mannual values
+		$ddate_fields=array(
+			date_billingstart=>"ddbs",
+			date_lastbilled=>"ddlb",
+			date_nextbill=>"ddnb",
+			date_disabled=>"ddds"
+		);		
+		foreach($ddate_fields as $fieldname=>$arr)
+		{//arr hashname of date fields		
+				global $$arr;
+				$arr=$$arr;
+				if(!is_array($arr))$arr=array();
+				if(count(trim_arr(array_values($arr),1)))
+				{
+				$temp_subscription[$fieldname]=strtotime($arr[$subs_ps['id']]['year']."-".$arr[$subs_ps['id']]['mo']."-".$arr[$subs_ps['id']]['day']." ".$arr[$subs_ps['id']]['hour'].":00:00");
+					/*$temp_subscription[$fieldname]=mktime($arr[$subs_ps['id']]['hour'],0,0, $arr[$subs_ps['id']]['mo'],$arr[$subs_ps['id']]['day'],$arr[$subs_ps['id']]['year']);*/
+						if($old_subscription[$fieldname]!=$temp_subscription[$fieldname])
+						{
+							$subscription[$fieldname]=$temp_subscription[$fieldname];
+						}
+							if($subscription[$fieldname]==-1)
+								$subscription[$fieldname]=0;
+					}
+					else{
+						$subscription[$fieldname]=0;
+					}
+		}  // for loop end				
+				if($old_subscription['date_disabled']==0 && $subs_ps['date_disabled']!=0)
+				{
+					$subscription['notified_disabled_warn']="1";
+					$subscription['cancelsubs']="1";
+				}		
+				if($old_subscription['account_status']!=$subs_ps['account_status'])
+				{
+					if($subs_ps['account_status']=="disabled")
+						$subscription=disable_account($subscription,1);
+					else
+						$subscription=enable_account($subscription,1);
+				}
+				if($old_subscription['recurring_charge']!=$subs_ps['recurring_charge'])
+					$subscription['recurring_charge']=$subs_ps['recurring_charge'];
+			$subscription['modified']=time();
+			$subscription=set_secondaryinfo($subs_ps,$subscription);
+			if($subscription['type']=="")
+				$subscription['type']=$old_subscription['type'];
+			update_query("subscription_ps",$subscription,array(id=>$subs_ps['id']));
+			$temp['recurring_charge']=$subscription['recurring_charge'];
+			$temp['cancelsubs']='0';
+			$temp['type']=$subscription['type'];
+	
+			if($subscription['combo']==1) //030907
+				$temp['combo']=1;
+          
+		    update_query("subscription",$temp,array(id=>$subs_ps['subid']));
+	}
+}
+
+function insert_combo($subs_ps)
+{
+	global $D_R;
+	include_once("$D_R/lib/_robots.php");
+
+	$subscription['subid']=$subs_ps['subid'];
+	$subscription['type']=$subs_ps['type'];
+	$subscription['combo']=$subs_ps['combo'];
+	$subscription['is_buzz']=1;
+	$subscription['combo_id']=$subs_ps['combo_id'];
+	if($subscription['type']=="")
+		return;
+		if(!is_paid($subscription['type']))
+			$subscription['recurring_charge']="00.00";
+		else
+		{
+			$subscription['recurring_charge']=getSubsTotalCombo($subscription,$subs_ps['combo_id']);
+			$subscription['date_billingstart']=time()+$RBT_TRIAL_LENGTH;
+			$subscription['date_nextbill']=time()+$RBT_TRIAL_LENGTH;
+		}
+		if($subscription['type']=='gift')
+			$subscription=setgift($subscription);
+		if($subscription['type']=='trial')
+			$subscription['date_disabled']=time()+$RBT_TRIAL_LENGTH;
+		$subscription['account_status']="enabled";
+		$subscription['date_disabled']=0;
+		$subscription['date']=time();
+		$subscription['notified_disabled']= 0;
+		$subscription['notified_disabled_warn']= 0;
+		$subscription['cancelsubs']=0;
+		$subscription=set_secondaryinfo($subs_ps,$subscription);
+		insert_query("subscription_ps",$subscription);
+		$temp['account_status']="enabled";
+		$temp['combo']=1;
+		$temp['notified_disabled_warn']=0;
+		$temp['notified_disabled']=0;
+		$temp['date_disabled']=0;
+		$temp['recurring_charge']=$subscription['recurring_charge'];
+		$temp['cancelsubs']='0';
+		$temp['type']=$subscription['type'];
+		$temp['trial_status']="";
+		$temp['premium']=1;
+		update_query("subscription",$temp,array(id=>$subs_ps['subid']));
+
+}
+/**** Start steing for subscription tables *****/
+
+$old_sub=exec_query("SELECT * FROM subscription WHERE id='$subscription_id'",1);
+//date field formatting
+$date_fields=array(
+	date_billingstart=>"dbs",
+	date_lastbilled=>"dlb",
+	date_nextbill=>"dnb",
+	date_disabled=>"dds",
+	expires=>"dexp",
+	"date"=>"dcr",
+);
+foreach($date_fields as $fieldname=>$arr){//arr hashname of date fields
+	$arr=$$arr;
+	if(!is_array($arr))$arr=array();
+	if(count(trim_arr(array_values($arr),1))){//date_billingstart
+		//$subs[$fieldname]=mktime($arr[hour],0,0, $arr[mo],$arr[day],$arr[year]);
+		$subs[$fieldname]=strtotime($arr[year]."-".$arr[mo]."-".$arr[day]." ".$arr[hour].":00:00"]);
+		if($subs[$fieldname]==-1)
+			$subs[$fieldname]=0;
+	}else{
+		$subs[$fieldname]=0;
+	}
+}
+if($new_cc_num && !stristr($new_cc_num,"*"))
+	$subs[cc_num]=$new_cc_num;
+
+//just disabled the account
+if($old_sub[account_status]=="enabled" && $subs[account_status]=="disabled" && count($dds)<>0)
+	$subs=disable_account($subs);
+
+//just enabled the account reset disabled date
+if($old_sub[account_status]=="disabled" && $subs[account_status]=="enabled")
+	$subs=enable_account($subs);
+
+//if account type is gift NEVER bill them
+if($old_sub[type]=="gift")
+	$subs=setgift($subs);
+
+if($old_sub[type]=="trial" && $old_sub[trial_status]=="inactive" && $subs[trial_status]=="active"){
+	$subs[expires]=date('U')+$RBT_TRIAL_LENGTH;
+}
+
+if($old_sub[type]=="trial" && $old_sub[trial_status]=="active" && $subs[trial_status]=="inactive"){
+
+	$subs[expires]=0;
+
+}
+
+if($subs['type']!=""){
+	$subs["premium"]="1";
+}
+
+
+//second option in type when after a combo is cancelled and some 1 selects B&B (again a type change);
+$type_changed      	  = (($old_sub['type']!=$subs['type']) || ($old_sub['combo']==1 && $subs['type']));
+if($type_changed)
+	$subs['combo']=0;
+if(!is_paid($subs['type']))
+{
+	$type_changed=0;
+	$do_capturePayment=0; //as only charges updated
+	$subs[recurring_charge]=00.00;
+}elseif($type_changed){
+	$subs['date_billingstart']=time()+$RBT_TRIAL_LENGTH;//set the billing start date and a trial for
+	$subs['date_nextbill']=$subscription[date_billingstart];
+	$subs['account_status']=enabled;
+	$subs['date_disabled']=0;
+	$subs['cancelsubs']=0;
+	$subs['notified_disabled']=0;
+	$subs['notified_disabled_warn']=0;
+	$subs['recurring_charge']= getSubsTotal($subs);//030907
+	//$subs['recurring_charge']= getSubsTotal($subscription);//030907
+}
+if($subs['type']=="")
+	$subs['type']=$old_sub['type'];
+//update database
+if((($sub_ps['ptype']['2']) || ($sub_ps['ptype']['3'])) && $subs['type']=="exchange"){
+	$subs['type']="nonbuzz";
+}
+    	
+update_query("subscription",$subs,array(id=>$id));
+
+foreach(array_keys($sub_ps[ptype]) as $row_id)
+{
+	$subscription_productresult=exec_query("select id,prof_id,account_status,type from subscription_ps where subid=$subscription_id and combo='0' and prof_id='$row_id'",1);		
+ 	if($subscription_productresult and  ($sub_ps[ptype][$row_id]!="" or $subscription_productresult['account_status']!=$subs_ps[$subscription_productresult['id']]['account_status']))
+	{  
+			if($subscription_productresult['account_status']!=$subs_ps[$subscription_productresult['id']]['account_status'] and $sub_ps[ptype][$row_id]=="")
+				$subs_ps[$subscription_productresult['id']]['type']=$subscription_productresult['type'];
+			else
+				$subs_ps[$subscription_productresult['id']]['type']=$sub_ps[ptype][$row_id];
+			$subs_ps[$subscription_productresult['id']]=set_secondaryinfo($subs,$subs_ps[$subscription_productresult['id']]);
+			$subs_ps[$subscription_productresult['id']]['prof_id']=$row_id;
+			$subs_ps[$subscription_productresult['id']]['subid']=$subscription_id;
+			$subs_ps[$subscription_productresult['id']]['id']=$subscription_productresult['id'];
+			$subs_ps[$subscription_productresult['id']]['trial_status']=$subs['trial_status'];
+			update_product($subs_ps[$subscription_productresult['id']]);
+	}
+	elseif($sub_ps[ptype][$row_id]!="")
+	{
+
+		$subs_ps[0]['type']=$sub_ps[ptype][$row_id];
+		$subs_ps[0]['prof_id']=$row_id;
+		$subs_ps[0]['subid']=$subscription_id;
+		$subs_ps[0]=set_secondaryinfo($subs,$subs_ps[0]);
+		insert_product($subs_ps[0]);
+		unset($subs_ps[0]);
+	}
+}
+// for combo
+foreach(array_keys($sub_ps[ctype]) as $row_id)
+{
+	$subscription_comboresult=exec_query("select id,combo_id,account_status,type from subscription_ps where subid=$subscription_id and combo_id=$row_id",1);
+	if($subscription_comboresult and  ($sub_ps[ctype][$row_id]!="" or $subscription_comboresult['account_status']!=$subs_ps[$subscription_comboresult['id']]['account_status']))
+	{
+			if($subscription_comboresult['account_status']!=$subs_ps[$subscription_comboresult['id']]['account_status'] and $sub_ps[ptype][$row_id]=="")
+				$subs_ps[$subscription_comboresult['id']]['type']=$subscription_comboresult['type'];
+			else
+			if($sub_ps[ctype][$row_id]!=""){
+				$subs_ps[$subscription_comboresult['id']]['type']=$sub_ps[ctype][$row_id];
+		    } else {
+           // change check if $sub_ps[ctype][$row_id] =="";		
+		    $subs_ps[$subscription_comboresult['id']]['type']=$subscription_comboresult['type'];
+			}
+			$subs_ps[$subscription_comboresult['id']]=set_secondaryinfo($subs,$subs_ps[$subscription_comboresult['id']]);
+			$subs_ps[$subscription_comboresult['id']]['combo_id']=$row_id;
+			$subs_ps[$subscription_comboresult['id']]['combo']='1';
+			$subs_ps[$subscription_comboresult['id']]['id']=$subscription_comboresult['id'];
+			$subs_ps[$subscription_comboresult['id']]['subid']=$subscription_id;
+			update_combo($subs_ps[$subscription_comboresult['id']]);
+	}
+	elseif($sub_ps[ctype][$row_id]!="")
+	{
+		$subs_ps[0]['type']=$sub_ps[ctype][$row_id];
+		$subs_ps[0]['combo_id']=$row_id;
+		$subs_ps[0]['subid']=$subscription_id;
+		$subs_ps[0]['combo']='1';
+		$subs_ps[0]=set_secondaryinfo($subs,$subs_ps[0]);
+		insert_combo($subs_ps[0]);
+		unset($subs_ps[0]);
+	}
+}
+location($bounceback.qsa(array(id=>$id,error=>"The info was updated")));
+?>

@@ -1,0 +1,120 @@
+<?
+$page="transaction";
+include("$ADMIN_PATH/_header.htm");
+
+include_once("$D_R/admin/techstrat/techstrat_classes/class_transaction.php");
+include_once("$D_R/lib/config/_techstrat_config.php");
+include_once("$D_R/lib/layout_functions.php");
+
+/*============set up permissions=================*/
+$performtransaction=$AD->getPerm("techstrat_add_transaction");//can't create anything
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+	admin_error("You're not allowed to use this page.");
+}
+
+$transobj=new techstratTransaction();
+if(!isset($mode))
+{
+	$mode='';
+}
+else{
+	switch($mode){
+		case 'save':
+		{
+			 $creatdate=date('Y-m-d',strtotime($selldate));
+			 $creatdateconv=$creatdate." ".date('H:i:s');
+			 if(isset($btcarr)){unset($btcarr);}
+			 $btcarr=array();
+			 $btcarr['quote_id']=$quoteid_get;
+			 $btcarr['transaction_type']=3;
+			 $btcarr['creation_date']=$creatdateconv;
+			 $btcarr['quantity']=$shareqty;
+			 $btcarr['unit_price']=$price;
+			 $btcarr['description']=$notes;
+		     $insertid=insert_query("techstrat_transaction",$btcarr);
+			 $trsactionid=base64_decode(strrev($trsactionid));
+			 if(isset($insertid)){
+			 	$transactiondata_sell = array('sell_trans_id'=>$trsactionid,'buy_trans_id'=>$insertid,'creation_date'=>$creatdateconv);
+				$insertsellid=insert_query("techstrat_sell_transaction",$transactiondata_sell);
+				$sqlbtcqty="select sum(quantity)as total_buytocover from techstrat_transaction where id in (select buy_trans_id as id from techstrat_sell_transaction where sell_trans_id='$trsactionid' and buy_trans_id!=0 and status=1) and transaction_type=3 and status=1";
+				 if(isset($searchfound)) unset($searchfound);
+				 $searchfound=exec_query($sqlbtcqty);
+				 if(count($searchfound)>0){
+				 	foreach($searchfound as $allresultexchg){
+				 		$totalbtc=$allresultexchg['total_buytocover'];
+				 	}
+				 }else{}
+
+				 if($shareqty==$orgssqty){
+					$req_update=array();
+					$req_update['updation_date']=$creatdateconv;
+					$req_update['trans_status']='done';
+ 					$ret_up=update_query('techstrat_sell_transaction',$req_update,array(sell_trans_id=>$trsactionid,buy_trans_id=>'0'));
+				 }else{}
+			 }
+			 $memCacheDelete = new memCacheObj();
+			 $key="techStratOpenPositiontrade";
+			 $memCacheDelete->deleteKey($key);
+			 $key="techStratOpenPosition";
+			 $memCacheDelete->deleteKey($key);
+			 $key="techStratDisplayPerformance";
+			 $memCacheDelete->deleteKey($key);
+			 $transobj->updateOpenPositionRecords();
+
+			echo "<script language='javascript'>";
+			echo "window.location.href='transaction.htm?msg=success'";
+			echo "</script>";
+			break;
+		}
+	} // end of switch($mode)
+}
+?>
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/techstrat-admin.css">
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/min/jquery-ui-datepicker.1.1.css" type="text/css" media="all" />
+	<script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/datetimepicker.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_actb.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/actb_common.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript" ></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/transaction.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/techstratPortfolio.js" type="text/javascript"></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		$( ".portfolioBuyToCoverDate" ).datepicker({
+			dateFormat: "yy-mm-dd",
+			changeMonth: true,
+			changeYear: true,
+			showOn: "button",
+			buttonImage: "<?=$IMG_SERVER?>/images/datepicker/calendar_icon.png",
+			buttonImageOnly: true,
+			buttonText: 'Pick a Date'
+		});
+	});
+	</script>
+</head>
+<body>
+<?
+$str=base64_decode(strrev($tranautoid));
+$autoidup=$str;
+?>
+
+	<div class=adminheader>TechStrat Portfolio - QUINT Portfolio</div><br>
+	<div class="techPortMoreOptions">
+		<?php if($AD->getPerm("techstrat_add_transaction")){?>
+			<div class="techPortOption"><a href="transaction.htm">Add Transaction</a></div>
+		<? } ?>
+		<?php if($AD->getPerm("techstrat_edit_transaction")){?>
+			<div class="techPortOption"><a href="edittransaction.htm" >Edit Transactions</a></div>
+		<? } ?>
+		<?php if($AD->getPerm("techstrat_edit_transaction")){?>
+			<div class="techPortOption"><a href="selltransaction.htm" >Sell Transactions</a></div>
+		<? } ?>
+	</div>
+	<?=$transobj->buytocover($autoidup);?>
+
+</body>
+</html>

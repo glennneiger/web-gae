@@ -1,0 +1,35 @@
+<?
+global $HTPFX,$HTHOST,$IMG_SERVER;
+include("$ADMIN_PATH/_header.htm"); ?>
+</td>
+<? if(!$AD->getPerm(qw("publish_worry create_worry approve_worry"))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Wall of Worry</div>
+	<div style="padding:0px 0px 0px 5px;width:400px">
+	<div class="main">
+		<div class="shadow">
+			<?if($AD->getPerm("create_worry")){?>
+				<div class="icon-box"><a id="lnk" href="<?=$HTPFX.$HTADMINHOST?>/admin/lloyds-wall-of-worry/worry-create.htm">
+					<img src="<?=$HTPFX.$HTADMINHOST?>/images/admin-icon/icon_createWW.gif" />
+					<br><span>Worry Databank</span></a>
+				</div>
+			<? } ?>
+			<?if($AD->getPerm("publish_worry")){?>
+			<div class="icon-box"><a id="lnk" href="<?=$HTPFX.$HTADMINHOST?>/admin/lloyds-wall-of-worry/worry-publish.htm">
+				<img src="<?=$HTPFX.$HTADMINHOST?>/images/admin-icon/icon_createnewWW.gif" />
+				<br><span>Create Wall of Worry</span></a>
+			</div>
+			<? } ?>
+			<?if($AD->getPerm("approve_worry")){?>
+			<div class="icon-box"><a id="lnk" href="<?=$HTPFX.$HTADMINHOST?>/admin/lloyds-wall-of-worry/approve.htm">
+				<img src="<?=$HTPFX.$HTADMINHOST?>/images/admin-icon/icon_approveWW.gif" />
+				<br><span>Approve Worry</span></a>
+			</div>
+			<? } ?>
+		</div>
+	</div>
+	</div>
+	<td>
+<?include("$ADMIN_PATH/_footer.htm");?>

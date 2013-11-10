@@ -1,0 +1,138 @@
+<?
+global $D_R;
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once($D_R."/admin/lib/_contributor_class.php");
+$page="observer_articles";
+if(!$page)$page="admintools";
+$handler="observer_articles_mod.htm";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+$articleId	=	trim($_GET['article']);
+$edit_articles=$AD->getPerm("observer_edit");			//page authentication
+if(!$edit_articles){
+	admin_error();
+}														// end-page authentication
+	
+$pagedata=array();
+$sqlArticles	=	"select * from observer_articles where approved='0' order by id desc";
+$resultArticles	= 	exec_query($sqlArticles);
+if($articleId!='')
+{
+$ts_article_qry	=	"SELECT * FROM observer_articles os where os.id=".$articleId ;
+$articleData	=	exec_query($ts_article_qry,1);
+$pagedata	=	$articleData;
+}
+?>
+<script language="javascript">
+function checkArticle()
+{
+	
+	if(document.getElementById('article').value	== '')
+	{
+		alert("Please select TheStreet Article");
+		document.getElementById('article').focus();
+		return false;
+	}
+	if(document.getElementById('articles[title]').value	== '')
+	{
+		alert("Please enter article Title");
+		document.getElementById('articles[title]').focus();
+		return false;
+	}
+	
+	 var oEditor = FCKeditorAPI.GetInstance('articles[body]');
+	 var fckText = oEditor.GetHTML(true);
+	 if(fckText=='<br>'){
+		alert("Please enter text in entry for the post.\n");
+		return false;
+	 }
+	 return true;
+}
+
+
+</script>
+<br>
+<div class="adminheader">Manage The New York Observer Articles</div>
+<br><br>
+<?if($error){?><div class="error"><?=strip($error);?></div><?}?>
+<table width="600px" align=center>
+<form method=get action="<?=$PHP_SELF?>">
+<?input_hidden("page")?>
+<TR>
+<td>Select Article</td>
+<TD >
+	<select name="article" id="article" onchange="this.form.submit(this.value);">
+	<option value="">--Select Article--</option>
+	<?php
+	foreach($resultArticles as $article)
+	{
+		if($article['id'] == $articleId)
+		{
+			$selArticle = 'selected';
+		}
+		else
+		{
+			$selArticle = '';
+		}
+		echo "<option value='".$article['id']."' $selArticle>".$article['title']."</option>>";
+	}
+	?>
+	</select>
+</TD>
+</TR>
+
+</form>
+</table>
+<table width=600px border=0 align=center>
+<form method="post" action="<?=$handler?>" name="theform" enctype="multipart/form-data">
+<?input_hidden("article",$_GET[article])?>
+<?input_hidden("user_id")?>
+<?input_hidden("page")?>
+<?
+?>
+<TR>
+<TD colspan="2"><label for="articles[title]"><b>Article Headline</b></label></TD>
+</TR>
+<TR>
+<TD colspan="2">
+<?input_text("articles[title]",$pagedata[title],0,255," style='width:100%'")?></TD>
+</TR>
+
+<TR>
+<TD colspan="2"><label for="articles[character_text]"><b>Description</b></label></TD>
+</TR>
+
+<TR>
+<TD colspan="2"><?input_text("articles[character_text]",html_entity_decode($pagedata[character_text]),0,255," style='width:100%'")?></TD>
+</TR>
+<TR>
+<TD colspan='2'><label for="articles[contrib_name]"><b>Autor</b></label></TD>
+</TR>
+<TR>
+<TD colspan='2'><?input_text("articles[contrib_name]",html_entity_decode($pagedata[contrib_name]),0,255," style='width:100%'")?></TD>
+</TR>
+
+<tr>
+<TD colspan='2'><b>Entry</b></TD>
+</tr>
+<TR>
+<TD colspan='2'>
+<?
+		$oFCKeditor = new FCKeditor('articles[body]') ;
+		$oFCKeditor->BasePath = '/admin/FCKeditor/';
+		$oFCKeditor->Width = "750px";
+		$oFCKeditor->Height = "500px";
+	    $oFCKeditor->Config["CustomConfigurationsPath"] = "/admin/FCKeditor/fckconfig.1.1.js";
+		$oFCKeditor->Value1 = html_entity_decode($pagedata['body']);
+		$oFCKeditor->Create();
+?>
+</TD>
+</tr>
+
+<TR><TD colspan=2><hr></TD></TR>
+<TR><TD colspan=2 align=center>
+<input type="submit" value="Save" class=inbtn onClick="Javascript:return checkArticle();">&nbsp;&nbsp;
+<input type="button" value="cancel" onclick="location.replace(location.href)"></TD></TR>
+</form>
+</table>
+<? googleanalytics(); ?>

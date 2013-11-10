@@ -1,0 +1,19 @@
+<public:component tagName="seperator" lightWeight>
+
+	<public:attach event=ondocumentready onevent=drawSep() />
+	
+</public:component>
+
+<script>
+
+function drawSep()
+{
+	with(element.style)
+	{
+		fontSize = 0;
+		height = "20px";
+		border = "1.5 inset #efefef";
+	}
+}
+
+</script>

@@ -1,0 +1,73 @@
+<?
+global $IMG_SERVER, $D_R;
+//phpAdServe zone ID
+$zoneIDSky = $SEC_TO_ZONE['communitytop'];
+$zoneIDLeft = $SEC_TO_ZONE['communityleft'];
+$zoneIDRight = $SEC_TO_ZONE['communityright'];
+$zoneIDBottom = $SEC_TO_ZONE['communitybottom'];
+$zoneIDBottom2 = $SEC_TO_ZONE['communitybottom2'];
+$zoneIDFooter = $SEC_TO_ZONE['communityfooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['communityfooter2'];
+// Operative Configuration 
+$zone_name="whatisit";
+$tile728x90=1;
+$tile160x600top=2;
+$tile160x600bottom=3;
+// End Operative Configuration 
+$pageName = "whatisit";
+$title="Buzz & Banter";
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/layout_functions.php");
+include("$D_R/emails/_header_newregisteration.htm");
+
+$category = 12;
+$dynamicModule['category'] = $category;
+$IMG_SERVER="http://localhost";
+//$modules = getModules();
+?>
+<title>Buzz & Banter</title>
+<div align="center" >
+<table class="body1" border="0" width="670px" cellspacing="0" cellpadding="0">
+	<tr><td>
+	<?
+	include_once("$D_R/emails/homelinks.htm");
+	?>
+	</td></tr>
+	<tr>
+		<td valign="baseline" colspan="4" class="welcome"><div align="center">Welcome to The Buzz & Banter <br />
+		<img src="http://storage.googleapis.com/mvassets/images/newregistration_images/line.gif" width="530" height="12" /></div></td>
+	</tr>
+	<tr>
+		<td colspan="2" valign="top" class="trial">
+			<table border="0" width="100%" cellpadding="0" cellspacing="0" align="center">
+				<tr>
+					<td class="trial" width="52%" valign="top">
+						Your 14 day FREE trial is live.<br />
+	    <br />
+	    <p class="textbnb">login now to find out what our &quot;professors&quot; - traders in stocks, commodities, precious metals, currencies and futures; fund, money and asset managers; analysts and techinicals- have posted today in the past hour, and in the last few minutes.</p>
+		<p>&nbsp;</p>
+	    <p class="textlink">You're one click away from being a better trader. </p>
+		<p>&nbsp;</p>
+      <span><a href="<?=$HTPFX.$HTHOST?>/register/login.htm"><img src="<?=$IMG_SERVER?>/images/newregistration_images/btnlogin.gif" /></a>					
+			 	  </td>
+					<td width="48%">
+						<img src="<?=$IMG_SERVER?>/images/newregistration_images/flash.jpg" />					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td width="51%" height="34">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+		
+		</td>
+	</tr>
+</table>
+	<?
+		$tracking_name = $tracking_name['_eml_register_new'];
+		include_once("$D_R/emails/_footer_newregistration.htm");
+		?>	
+</div>
+</div>

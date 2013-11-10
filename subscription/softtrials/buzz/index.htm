@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+session_start();
+global $D_R,$STORAGE_SERVER;
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/_includes.php");
+global $viaProducts,$HTHOST,$HTPFX,$IMG_SERVER;
+$productName="subBuzzBanter";
+$trialtype="SoftTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+if($_GET['from']){
+	$from=$_GET['from'];
+}else{
+	$from=substr($_SERVER['HTTP_REFERER'],7);
+}
+$pcode = (isset($_REQUEST['pcode']))? trim($_REQUEST['pcode']):'Enter Promo Code (Optional)';
+$trackname = createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+$pageName = "buzz_softtrial";
+$objPage= new Page($pageName);
+$pageMetaData=$objPage->getMetaData();
+
+if(strtolower($from) == 'google' ){
+	$refererSourceId ='google';
+}elseif(strtolower($from) == 'yahoo' ){
+	$refererSourceId ='yahoo';
+}elseif(strtolower($from) == 'bing' ){
+	$refererSourceId ='bing';
+}else{
+	$refererSourceId='';
+}
+?>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$pageMetaData['title']?>-Minyanville</title>
+<meta name="description" content="<?=$pageMetaData['description']?>" >
+<meta name="keywords" content="<?=$pageMetaData['keywords']?>">
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/min/ibox.1.1-min.js" type="text/javascript"></script>
+<link href="<?=$HTPFX.$HTHOST?>/css/buzzSoft.css" rel="stylesheet" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/soft_trials.1.4.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/redesign.1.26.js" type="text/javascript"></script>
+<!-- google anaytics  code -->
+
+
+</head>
+
+<body>
+<!--Buzz main start from here-->
+<center>
+<div class="BuzzSoftMAin">
+
+<table cellpadding="0" cellspacing="0" border="0" align="center">
+<tr><td>
+<!--Main body start from here-->
+<div class="BuzzSoftMAininner">
+<div class="BuzzHeader">
+<img src="<?=$IMG_SERVER?>/images/buzzTrial/buzzHeader.jpg" border="0" alt="Buzz Banter" />
+</div>
+
+<div class="left_cont_buzz">
+<div class="buzz_soft_title">
+Buzz & Banter is a real-time connection to some of the market's most astute traders throughout each trading day.
+</div>
+
+
+<div class="BuzzFreeTrialBoxMain">
+<div class="BuzzFreeTrialBox">
+<h1>Trading ideas, insight and news you need to know...<br />Before you know you need it.</h1>
+
+
+<div class="BuzzFreeTrialBoxLeft">
+<h1>14 day free trial</h1>
+<div class="product_text"><!--Lorem Ipsum is simply dummy text of the printing and typesetting industry.--></div>
+</div>
+
+<div class="BuzzFreeTrialBoxRight" >
+
+<form action="" method="get">
+
+<input id="fname" name="fname" type="text" value="Enter First Name" onfocus="javascript:if(this.value=='Enter First Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('fname',this.value,'Enter First Name');" tabindex="1" />
+<input id="lname" name="lname" type="text" value="Enter Last Name" onfocus="javascript:if(this.value=='Enter Last Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('lname',this.value,'Enter Last Name');" tabindex="2" />
+<input id="uid" name="uid" type="text" value="Enter Email" onfocus="javascript:if(this.value=='Enter Email') this.value=''; return false;" onblur="javascript:chkSpaceNull('uid',this.value,'Enter Email');" tabindex="3" />
+
+<input name="pwd_t" id="pwd_t" style="display:;" type="text" onfocus="convertTextToPass('pwd_t','pwd','password');"  value="Password" class="search_input_box_pass" tabindex="4" />
+
+<input name="pwd" id="pwd" style="display:none;" type="password" onblur="javascript:checkPassNull('pwd_t','pwd');" value="" class="search_input_box_pass" tabindex="4" />
+
+<input id="repwd_t" name="repwd_t" style="display:;" type="text" onfocus="convertTextToPass('repwd_t','repwd','password');" value="Re-Enter-Password" class="search_input_box_pass" tabindex="5" />
+<input id="repwd" name="repwd" style="display:none;" type="password" onblur="javascript:checkPassNull('repwd_t','repwd');"  value="" class="search_input_box_pass" tabindex="5" />
+
+<input id="promocode" name="promocode" type="text" value="<?=$pcode?>" onfocus="javascript:if(this.value=='Enter Promo Code (Optional)') this.value=''; return false;" onblur="javascript:chkSpaceNull('promocode',this.value,'Enter Promo Code (Optional)');" tabindex="6" />
+<div class="buzzerrmsg" id="errmsg">&nbsp;</div><div style="float:right;"><img src="<?=$IMG_SERVER?>/images/buzzTrial/submitTrial.jpg" onclick="Javascript:validateSoftTrial('buzz','14','<?=$trackname;?>','<?=$refererSourceId?>');" alt="Submit" align="right"  style="cursor:pointer; padding-right:37px;" tabindex="7" /></div>
+
+</form>
+</div>
+</div>
+</div>
+
+
+
+<!--Minyan banter area start from here-->
+<div class="banter_window_soft_trial_box">
+
+<div class="banter_window_trial_boxLeft">
+<script type="text/javascript">
+AC_FL_RunContent( 'codebase','http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0','width','340','height','703','title','Buzz Demo','src','<?=$HTPFX.$HTHOST;?>/flash/buzzpopup/buzzPopup','quality','high','pluginspage','http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash','movie','<?=$HTPFX.$HTHOST;?>/flash/buzzpopup/buzzPopup','wmode','opaque' ); //end AC code
+</script><noscript><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="340" height="703" title="Buzz Demo">
+  <param name="movie" value="<?=$HTPFX.$HTHOST;?>/flash/buzzpopup/buzzPopup.swf" />
+	<param name="wmode" value="opaque"/>
+	<param name="movie" value="<?=$HTPFX.$HTHOST;?>/register/new_registration/swf/buzz_popup2.swf" /><param name="quality" value="high" /><param name="bgcolor" value="transparent" /><embed src="<?=$HTPFX.$HTHOST?>/register/new_registration/swf/buzz_popup2.swf" quality="high" bgcolor="#ffffff" width="340" height="703" name="buzz_popup2" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="opaque" />
+	</object>
+</noscript>
+
+</div>
+
+<div class="banter_window_trial_boxRight">
+ <h1>Anatomy of the<br/>Buzz & Banter<br/> Window</h1>
+<br/>
+Using Buzz & Banter is simple and intuitive. We'll alert you every  time a new post is added right on your desktop. You'll be connected to 35 of Wall Street's top traders every day - as they consider - and excute - their own traders.<br/><br/><br/>
+Know in real time when positions are taken.<br/><br/><br/>
+Skim through today's posts.<br/><br/><br/>
+Bookmark or print the post you's most interested in.<br/><br/><br/>
+Search Minyanville.com post and articles without ever leaving the Buzz & Banter window.
+</div>
+
+</div>
+
+<!--Minyan banter area Ends here-->
+
+
+
+<div class="Addtocartmain">
+<h1>Get <span>Buzz &amp; Banter</span> Now!</h1>
+</div>
+
+<div class="Buzz_main_cart_container">
+
+<table width="100%" align="center" border="0" cellpadding="0" cellspacing="3" class="add_to_cart">
+<tr>
+<td width="50%" class="Buzz_recurring">Monthly</td>
+<td width="1px" rowspan="3"><img src="<?=$IMG_SERVER?>/images/buzzTrial/cart_divider.jpg" width="1" height="70" /></td>
+<td width="50%"class="Buzz_recurring">Annual</td>
+</tr>
+<tr>
+<td>$<?=$viaProducts['BuzzMonthly']['price']?></td>
+<td>$<?=$viaProducts['BuzzAnnual']['price']?></td>
+</tr>
+<tr>
+<td><a style="cursor:pointer;"><img src="<?=$IMG_SERVER?>/images/buzzTrial/BuyNow.jpg" alt="add to cart" onclick="checkcart('2','3','SUBSCRIPTION')" border="0" /></a></td>
+<td><a style="cursor:pointer;"><img src="<?=$IMG_SERVER?>/images/buzzTrial/BuyNow.jpg" alt="add to cart" onclick="checkcart('4','3','SUBSCRIPTION')" border="0" /></a></td>
+</tr>
+</table>
+</div>
+
+<div class="Contactmain">
+<p>Questions? Contact us at 212-991-9357 or</p> <span><a href="mailto:support@minyanville.com">support@minyanville.com</a></span>
+</div>
+
+
+
+</div>
+
+
+
+<div class="right_cont_Buzz">
+
+<div class="RightCommonBuzzContainer">
+<span>The Buzz is a unique application</span> that will automatically update with each new post and bring you value added information all day directly to your desktop. There are in depth conversations and actionable ideas each day. Topics include a wide variety of investments from equities to derivatives, to commodities to bonds. It's insight you won't get anywhere else.
+</div>
+
+<div class="RightCommonBuzzContainer">
+<h1>Who's it for?</h1>
+Independent traders, money managers, anyone who is interested in the stock market and wants to benefit from the ideas, perspective and astute observations of Minyanville's trusted contributors. The Buzz acts as your own independent trading desk, sharing ideas and knowledge.
+</div>
+
+<div class="RightVideoContainer">
+<script type="text/javascript" src="http://objects.tremormedia.com/embed/js/embed.js"></script>
+<script type="text/javascript" src="http://objects.tremormedia.com/embed/js/49cc40070d67c_p.js"></script>
+<script type="text/javascript">
+    var storage_server = '<?=$STORAGE_SERVER?>';
+	tmObj.set("VideoURL", storage_server+"/mvtv/videos/BB.flv");
+	tmObj.set("ContentType", "progressive");
+	tmObj.set("VideoTitle", "Buzz & Banter");
+	tmObj.set("ProgrammableAreaURL", "");
+	tmObj.start("49cc40070d67c");
+</script>
+
+<!-- <img src="<?=$IMG_SERVER?>/images/buzzTrial/video.jpg" /> -->
+</div>
+
+<div class="RightCommonBuzzContainer">
+<div class="buzzRightarticle">
+  <ul>
+  Specifically you'll get:
+  <li>Long and short term investment ideas.</li>
+  <li>Analysis of important news of the day along with
+  macro themes that will affect your portfolio.</li>
+  <li>A mix of fundamental analysis and technical analysis.</li>
+  <li>Insight and Ideas from those who know the markets
+  best. </li>
+   </ul>
+</div>
+</div>
+
+
+<div class="RightCommonBuzzContainer">
+<h1>Some of our contributors include: </h1>
+<strong>Todd Harrison, Jeff Macke, Kevin Depew, Jeff Cooper, Jon Najarian, Smita Sadana, Steve Smith, Jason Goepfert and many more.</strong>
+</div>
+
+
+
+<div class="RightCommonBuzzContainer">
+<h1> What Subscribers are Saying:</h1>
+<br/>
+"I've been in the investment business almost 14 years and your take on things is amazing! It makes me think and often gives me an angle I wouldn't otherwise have considered. Great stuff!"
+- Minyan Mike
+<br/><br/>
+"I only found you a couple of weeks ago and already it's my favorite tool. Well done!"
+- Minyan James
+<br/><br/>
+"I was still in my free trial and made some trades based on the stuff I read on the Buzz that will pay for my subscription for many years. Glad I found you guys!"
+- Minyan Bradley
+<br/><br/>
+"I just manage a small family portfolio from home, but with the Buzz I feel like I'm in the flow of Wall Street. Thanks for helping out a little guy like me."
+- Minyan Chaz
+</div>
+
+
+
+</div>
+
+</td>
+</tr>
+</table>
+</div>
+<!--Main body Ends here-->
+
+
+<!--Buzz main Ends here-->
+<div class="TrialFooter"><img src="<?=$IMG_SERVER?>/images/buzzTrial/trialFooter.jpg" /></div>
+</div>
+
+<?php
+$profileid=1;
+//googleanalytics($profileid,$trackname);
+googleanalytics();
+?>
+</center>
+</body>
+</html>

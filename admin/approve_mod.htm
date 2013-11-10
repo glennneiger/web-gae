@@ -1,0 +1,149 @@
+<?
+ini_set('memory_limit', '64M');
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once($D_R.'/lib/email_alert/_lib.php');
+include_once($D_R.'/lib/_action.php');
+include_once("$D_R/admin/lib/_article_data_lib.php");
+include_once("$D_R/admin/lib/_admin_data_lib.php");
+include_once($D_R.'/lib/config/_article_config.php');
+include_once($D_R.'/lib/_action.php');
+$objAction= new Action();
+$objArticleData = new ArticleData();
+global $S4,$S5;
+$delarticle=array();
+$approve=array();
+$viewapproved=$_POST[viewapproved];
+$delarticle=$_POST[delarticle];
+$approve=$_POST[approve];
+$publishdatefield = $_POST['publishdatefield'];
+
+
+
+$objremove= new Content();
+$bounceback="./approve.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="DELETE FROM $ARTICLE_TABLE WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	/*remove deleted article from object search*/
+	$objremove->removeUnapprovedItems($keys,$ARTICLE_TABLE);
+
+	/*delete cache for this article */
+	$objAction->trigger('articleDelete',array_keys($delarticle));
+	deleteThread($keys);
+}
+// $viewapproved set to 1 when there is a request to unapprove an article
+// $viewapproved set to 0 when there is a request to unapprove an article
+if(is_array($approve))
+{
+	foreach($approve as $article_id => $status)
+	{
+		if($viewapproved=='1')
+		{
+                    update_query($ARTICLE_TABLE,array(approved=>'0',is_live=>'0'),array(id=>$article_id));
+
+                    // remove unapprove article from object search
+                    update_query('ex_item_meta',array('is_live'=>0), array(item_id=>$article_id,item_type=>1));
+                    // delete cache for this article
+                    $objAction->trigger('articleDelete',$article_id);
+                }
+		else
+		{  $startdae=date('Y-m-d H:i',strtotime($publishdatefield[year][$article_id]."-".$publishdatefield[mo][$article_id]."-".$publishdatefield[day][$article_id]." ".$publishdatefield[hour][$article_id].":".$publishdatefield["min"][$article_id]));
+		     $publish_date_stamp=strtotime($startdae);
+				if($publish_date_stamp)
+			{
+				$publish_date=mysqlNow($publish_date_stamp);
+				if($publish_date_stamp > strtotime(date('Y-m-d H:i')))
+				{
+					$is_live = 0;
+				}
+				else
+				{
+					$is_live = 1;
+				}
+			}
+			else
+			{
+				$publish_date = '0000-00-00 00:00:00';
+				$is_live = 1;
+			}
+
+			update_query($ARTICLE_TABLE,array(is_live=>$is_live,approved=>'1',publish_date=>$publish_date),array(id=>$article_id));
+
+			// Start of code to update ex_item_meta table while editing an article
+			$obContent = new Content(1,$article_id);
+			$obContent->setArticleMeta();
+			if($is_live == 1) // Perform actions for Live articles
+			{
+				$articleQuery = "SELECT * FROM articles where approved='1' and is_live='1' and id=".$article_id;
+				$arArticle = exec_query($articleQuery,1);
+				if(count($arArticle) >0)
+				{
+                                        $objAction->trigger('articlePublish',$article_id);
+					$articleScoQuery = "SELECT * FROM content_seo_url where item_id=$article_id and item_type='1'";
+					$arScoArticle = exec_query($articleScoQuery,1);
+					if(count($arScoArticle) == 0)
+					{
+
+						if($arArticle['is_buzzalert'] == '1')
+						{
+							echo "sending buzz".$article_id;
+							//wgetArticle($article_id);
+							spamJournalToUsers($article_id);
+						}
+					}
+
+					$yahooFullBody = $objArticleData->getYahooFullBodySynd($arArticle['id']);
+					// Generating Yahoo XML Start
+						if($arArticle['is_yahoofeed']=="1" || $yahooFullBody=="1")
+						{
+							if($arArticle['is_yahoofeed']=="1")
+							{
+								$syndchannel="yahoo";
+								$chkSyndication = getSyndication($arArticle['id'],'1',$syndchannel);
+								if(count($chkSyndication)>0){}
+								else { $yahoosynd="1"; }
+							}
+							$itemtype="articles";
+							if($yahoosynd=="1" || $yahooFullBody=="1")
+							{
+								$chkftp=generateYahooXml($arArticle,$itemtype,$yahoosynd,$yahooFullBody);
+							}
+						}
+				// insert data into content_seo_url table
+                                $seo_url_qry="select item_id from content_seo_url where item_id=$article_id";
+                                $existArticle=exec_query($seo_url_qry);
+                                
+                                
+                                if(empty($existArticle))
+                                {                   
+                                    insert_query("content_seo_url",array("item_id"=>$article_id,"item_type"=>"1","url"=>makeArticleslink($article_id),"time"=>mysqlNow()));
+                                }
+                                
+                                }
+			}
+		}
+	} // End foreach
+}
+
+//Change error message for deleted articles.
+if (count($delarticle))
+{
+	location($bounceback.urlencode("The articles were deleted"));
+	exit;
+}
+if(!$viewapproved)
+{
+	location($bounceback.urlencode("The articles were changed"));
+}
+else
+{
+	location($bounceback.urlencode("The articles were changed and are now not live on the site"));
+}
+exit;
+?>

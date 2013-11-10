@@ -1,0 +1,421 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #ffffff;
+	color: #555555;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+a {
+	color: #41812a ;
+}
+
+.greenTxt {
+	color: #41812a !important;
+	font-size: 13px;
+}
+
+.nmLt {
+	margin-left: 0 !important;
+}
+
+.nmRt {
+	margin-right: 0 !important;
+}
+
+/* IE Floats Bug Fix Start */
+.header-box, .content-box,.footer-box, .highlights-container, .highlights-columns-box, .highlight-A, .highlight-B {
+	overflow : hidden;
+	height : 1%;
+}
+/* IE Floats Bug Fix End */
+
+
+.container, .top-borders, .bottom-borders {
+	margin: 0 auto;
+	padding: 0;
+	width: 940px;
+	background: #ffffff;
+}
+
+.header-box {
+	margin-bottom: 20px;
+}
+
+.top-borders {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px 0px; no-repeat;
+	height: 10px;
+}
+
+.bottom-borders {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -129px; no-repeat;
+	height: 10px;
+}
+
+.header-main {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -10px; no-repeat;
+	height: 119px;
+}
+
+.buzz-tagline {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -3px no-repeat;
+	height: 86px;
+	width: 512px;
+	margin: 0;
+	padding: 0;
+	text-indent: -9999px;
+	float: left;
+}
+
+.content-box {
+	margin: 0;
+	background: #ffffff;
+}
+
+.content-box h1 {
+	color: #333333;
+	font-size: 26px;
+	font-weight: normal;
+	letter-spacing: -1px;
+	margin: 0 0 16px 0;
+	padding: 0;
+}
+
+.content-box p {
+	color: #333333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	margin: 0 0 19px 0;
+	padding: 0;
+}
+
+.highlights-container {
+	width: 780px;
+	margin: 0 10px 20px 0;
+}
+
+.highlights-columns-box {
+	width: 780px;
+	margin:  0 10px 0 0;
+	float: left;
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -161px no-repeat;
+}
+
+.hl-borders-top {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -141px no-repeat;
+	height: 8px;
+}
+
+.hl-borders-btm{
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -151px no-repeat;
+	height: 8px;
+}
+
+.highlight-A, .highlight-B {
+	width: 380px;
+	float: left;
+	margin: 0 10px 0 10px;
+}
+
+.highlight-A p, .highlight-B p {
+	color: #ffffff;
+	margin: 0;
+	padding: 20px;
+	float: left;
+}
+
+.trialButton {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) no-repeat;
+	background-position: 0px -615px;
+	float: left;
+	height: 30px;
+	width: 340px;
+	text-indent: -9999px;
+	margin: 0 20px 10px 20px;
+}
+
+.trialButton:hover {
+	background-position: -344px -615px;
+}
+
+.volatile-box {
+	float: left;
+	margin: 0 10px 0 0;
+	width: 440px;
+}
+
+.rt-column-box {
+	width: 320px;
+	margin:  0 0 0 10px;
+	float: left;
+}
+
+.signup-legend {
+	font-size: 13px;
+	font-weight: bold;
+	color: #0066ff !important;
+	list-style-type: none;
+	width: 320px;
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
+.signup-legend  li {
+	float: left;
+	display: inline;
+	margin: 0;
+	padding: 0;
+	width: 245px;
+}
+
+.legend-narrow {
+	width: 54px !important;
+	font-size: 10px;
+	margin-left: 20px !important;
+	color: #000000 !important;
+}
+
+.registration-form {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) -0px -889px no-repeat;	
+}
+
+.labels, .openFields {
+	margin: 0;
+	padding: 0;
+	float: left;
+	list-style-type: none;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.labels li {
+	color: #ffffff;
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 16px;
+	width: 88px;
+	padding: 7px 0 7px 10px;
+	margin: 0 0 10px 0;
+}
+
+.openFields input {
+	background: none;
+	border: 0;
+	color: #4c4c4c;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 30px;
+	width: 222px;
+	margin:  0 0 10px 0;
+	padding: 0;
+}
+
+.submit-button {
+	background: none;
+	background-image: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png);
+	background-position:  -324px -889px ;
+	cursor: pointer;
+	float: right;
+	height: 41px;
+	width: 166px;
+	border: 0;
+	text-indent: -9999px;
+}
+
+input.submit-button:focus {
+	border: 2px solid #ff8a00 !important;
+}
+
+.professors-box {
+	float: right;
+	width: 140px;
+}
+
+
+.subscribe-box {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -647px no-repeat;
+	float: left;
+	height: 198px;
+	width: 900px;
+	margin: 0 0 20px 0;
+	padding: 20px;
+}
+
+.benefits-list {
+	float: left;
+	margin: 15px 40px 0 40px;
+	padding: 0;
+	color: #5a8f32;
+	list-style-type: bullet;
+}
+
+.benefits-list p {
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.benefits-list li {
+	float: left;
+	width: 380px;
+	padding: 0 0 0 10px;
+	margin: 0 20px 0 0;
+}
+
+.benefits-list li.wide {
+	width: 100%;
+	margin-top: 15px;
+}
+
+.bottom-box {
+	float: left;
+}
+
+.footer {
+	color: #00395f;
+	font-size: 12px;
+	float: left;
+	list-style-type: none;
+	margin: 40px 0 0 0;
+	padding: 0;
+}
+
+.footer li {
+	float: left;
+	display: inline;
+	width: 300px;
+	margin: 0 10px 0 10px;
+}
+
+.buzzerrmsg {
+    color: #FF0000;
+    float: left;
+    text-align: left;
+    width: 100%;
+    font-size:12px;
+}
+
+/*Welcome page css*/
+
+
+.clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+
+.ltBlueTxt {
+	color: #65bcfd !important;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 0;
+	width: 940px;
+	background: #ffffff;
+}
+
+.welcome-box {
+	background: #000000 url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/mainBkg.png) left top no-repeat;
+	height: 385px;
+	padding: 20px 0 0 20px;
+	width:920px;
+}
+
+.col-01 {
+	float: left;
+	width: 442px;
+	margin-right: 18px;
+}
+
+.details {
+	padding: 20px;
+	font-family: Arial, helvetica, sans-serif;
+	font-size: 13px;
+	color: #fafafa;
+}
+
+.details a {
+	color: #65bcfd;
+}
+
+.col-02 {
+	float: left;
+	width: 450px;
+}
+
+.callToAction {
+	list-style-type: none;
+	margin: 0 0 29px 0;
+	padding: 0;
+}
+
+.callToAction li {
+	float: left;
+	display: inline;
+}
+
+.buzz-logo {
+	width: 250px;
+	margin: 10px 0 0 10px;
+}
+
+.launch-buzz {
+	width: 181px;
+}
+
+.launch-buzz-btn {
+	float: left;
+	height: 35px;
+	width: 181px;
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/launchBuzz_btn.png) left top no-repeat;
+	text-indent: -9999px;
+	outline: 0;
+	cursor:pointer;
+}
+
+.launch-buzz-btn:hover {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/launchBuzz_hover_btn.png) left top no-repeat;
+}
+
+.sembuzz-footer{
+	margin:0px 0px 0px 40px;
+    
+    text-align: center;
+    width: 940px;
+}
+
+#footer-container-nonav{
+	width:940px;
+	margin-top: 0;
+	padding: 0px;
+	background: #00395F;
+	float: left;
+	/*clear: both;*/
+}
+
+#footer-nonav {
+    font-size: 1.2em;
+    height: 70px;
+    text-align: center;
+    width: 940px;
+}
+.header_ads_promotional
+{
+height:24px;
+min-height:0px;
+padding:0px;
+}
+

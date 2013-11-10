@@ -1,0 +1,5 @@
+<?php
+	$unlockQuery="DELETE FROM content_locking WHERE last_visit < '".mysqlNow()."' - INTERVAL 6 MINUTE";
+	$resunlockQuery=exec_query($unlockQuery);
+	echo "<br>"."Stories unlocked sucessfully";
+?>

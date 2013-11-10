@@ -1,0 +1,74 @@
+<?php
+global $D_R,$recurlyApiKey;
+set_time_limit (0);
+ini_set('memory_limit','256M');
+include_once($D_R."/lib/recurly/_recurly_data_lib.php");
+include_once($D_R."/lib/config/_recurly_config.php");
+include_once($D_R."/lib/recurly/recurly.php");
+
+$objRecurly = new recurlyData();
+Recurly_Client::$apiKey = $recurlyApiKey;
+
+$productName = $_GET['product'];
+$fromDate = $_GET['fromDate'];
+$toDate = $_GET['toDate'];
+$formatToDate = date("Y-m-d", strtotime($toDate));
+
+$qry="SELECT st.subscription_id AS recurlyId, st.subscriptionId AS orderId, DATE_FORMAT(st.date,'%m/%d/%Y') AS refundDate, ROUND((st.amountInCents/100),2) AS refundPrice, s.email, CONCAT(s.fname ,' ',s.lname) AS accountName, s.via_id, sco.id AS accountNum, p.subGroup, p.subType AS term, ROUND((sco.recurly_total_amount_in_cents/100),2) AS purchasePrice,  DATE_FORMAT(sco.recurly_current_period_started_at,'%m/%d/%Y') AS startDate
+FROM subscription_transaction AS st, subscription AS s, subscription_cust_order AS sco, product p
+WHERE DATE_FORMAT(st.date,'%Y/%m/%d')>='".$fromDate."' AND
+DATE_FORMAT(st.date,'%Y/%m/%d')<='".$toDate."' AND st.action='refund' AND st.subscription_id=s.id
+AND st.subscriptionId=sco.recurly_uuid AND st.subscription_id=sco.subscription_id
+AND sco.recurly_plan_code=p.recurly_plan_code";
+if($productName!='0'){
+	$qry .= " AND p.subGroup='".$productName."'";
+}
+$qry .= " GROUP BY subGroup,email,purchasePrice ORDER BY refundDate DESC";
+
+$res = exec_query($qry);
+$mergeCount = count($res);
+
+if(!empty($res) && count($res)>0){
+	foreach($res as $key=>$value){
+		$accountName = $value['fname'].' '.$value['lname'];
+		$startDate = $value['startDate'];
+
+		$term = strtolower($value['term']);
+
+		switch($value['term']){
+			case 'Quaterly':
+				$value['term']="Quarterly ";
+				break;
+			case 'Monthly Trial':
+				$value['term']="Monthly";
+				break;
+			case 'Quaterly Trial':
+				$value['term']="Quarterly ";
+				break;
+			case 'Annual Trial':
+				$value['term']="Annual ";
+				break;
+		}
+
+		$reportContent[$key]['MV Account Number'] = trim($value['accountNum']);
+		$reportContent[$key]['Product'] = trim($value['subGroup']);
+		$reportContent[$key]['Term'] = trim($value['term']);
+		$reportContent[$key]['Subscription Start Date (MM/DD/YYYY)'] = date('m/d/Y',strtotime($value['startDate']));
+		$reportContent[$key]['Refund Date (MM/DD/YYYY)'] = date('m/d/Y',strtotime($value['refundDate']));
+		$reportContent[$key]['Purchase Price'] = $value['purchasePrice'];
+		$reportContent[$key]['Refund Price'] = $value['refundPrice'];
+		$reportContent[$key]['Account Name'] = ucwords($value['accountName']);
+		$reportContent[$key]['Email'] = trim($value['email']);
+		$reportContent[$key]['Recurly ID'] = trim($value['recurlyId']);
+		$reportContent[$key]['VIA ID'] = trim($value['via_id']);
+	}
+
+	$fileName = 'refund-'.$fromDate.'-'.$toDate.'.csv';
+
+	csv_header($fileName,"text/csv");
+	$datestr="%m/%d/%Y";
+	data2csv($reportContent);
+}else{
+	echo "No Record Found!";
+}
+?>

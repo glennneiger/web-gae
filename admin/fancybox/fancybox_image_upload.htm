@@ -1,0 +1,113 @@
+<?php
+global $D_R,$IMG_SERVER;
+include_once($D_R."/lib/config/_mailchimp_config.php");
+include_once($D_R."/lib/mailchipapi/MCAPI.class.php");
+include_once($D_R."/lib/mailchipapi/mailchimp_data_lib.php");
+include_once("$ADMIN_PATH/_header.htm");
+
+$objMailChimpData= new mailChimp();
+$objCache = new Cache();
+$getList=$objMailChimpData->mailChimpListNames();
+$handler="./fancybox_image_mod.htm";
+if(!$AD->getPerm("fancybox_image_upload")){
+	admin_error();
+}
+
+$id=$_POST['list_id'];
+if(!empty($_GET['id'])){
+	$id=$_GET['id'];
+}
+if(!empty($id)){
+	$result=$objMailChimpData->getMailChimpDataById($id);
+	if(empty($result)){
+		$list_id=$id;
+	}else{
+		$list_id=$result['listid'];
+	}
+	$getGroupList=$objMailChimpData->mailChimpListGroupNames($list_id);
+}
+else
+{
+	$getMailChimpListName=$objCache->getMailChimpActiveList();
+	if(!empty($getMailChimpListName))
+	{
+		$id = $getMailChimpListName['listid'];
+		$result=$objMailChimpData->getMailChimpDataById($id);
+		$getGroupList=$objMailChimpData->mailChimpListGroupNames($id);
+		if(empty($result)){
+			$list_id=$id;
+		}else{
+			$list_id=$result['listid'];
+		}
+	}
+
+}
+
+
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/admin_mailchimp.1.1.js" type="text/javascript"></script>
+<br>
+<div style="padding-bottom:20px;" class=adminheader>
+	Fancybox Image Upload
+</div>
+	<table width="100%" border="0">
+	<div style="color:#FF0000;" id="savemsg"> </div>
+
+	<tr>
+	<form method="post" action="<?=$PHP_SELF?>">
+			<td width="14%" nowrap="nowrap"><b><label>Select mailchimp list to edit:</label></td>
+			<td width="26%">
+				<select name="list_id" id="list_id" style="width:350px;" class="search_author_drop_down" onchange="this.form.submit()">
+				<option>-Select Mailchimp List-</option>
+				<?selectHashArr($getList['data'],"id","name",$list_id)?>
+				</select>
+			</td>
+			</form>
+			<td>&nbsp;</td>
+	</tr>
+
+<form name="frmlogo" method="post" action="<?=$handler?>" enctype="multipart/form-data">
+     	  <tr>
+
+		  <td width="14%" colspan="2"><input type="hidden" value="" name="listname" id="listname" /></td>
+		  <td width="14%" ><input type="hidden" value="" name="listid" id="listid" /></td>
+	  </tr>
+	  <? if(!empty($getGroupList)){	?>
+	  <td width="14%" nowrap="nowrap"><b><label>Select mailchimp group list to edit:</label></td>
+	  <td width="26%">
+				<input type="hidden" name="group_id" value="<?=$getGroupList[0]['id']?>" >
+				<select name="list_group_name" id="list_group_name" style="width:350px;" class="search_author_drop_down">
+
+				<option>-Select Mailchimp Group List-</option>
+				<?selectHashArr($getGroupList[0]['groups'],"name","name",$result['group_name'])?>
+				</select>
+	  </td>
+	 <?
+	  }
+	 if($result['imagename']){ ?>
+	  <tr>
+		<td><b><label>Uploaded Image:</label></td>
+		<td><img id="uploadedimage" src="<?=$IMG_SERVER.'/'.$result['imagename']?>" border=0 align=absmiddle></td>
+		<td>&nbsp;</td>
+	  </tr>
+	  <? } ?>
+	  <tr>
+		<td><b><label>Upload Image:</label></td>
+		<td><input id="newimg" type="file" name="newimg"></td>
+		<td>&nbsp;</td>
+	  </tr>
+
+	  <tr>
+		<td>&nbsp;</td>
+		<td><!--<input type="button" value="save" onclick="saveFancyBoxImage();">&nbsp;-->
+		<img style="cursor:pointer;"; src="<?=$IMG_SERVER;?>/images/redesign/activate.jpg" alt="Activate" onclick="saveFancyBoxImage();">
+
+		</td>
+		<td>&nbsp;</td>
+	  </tr>
+</form>
+	</table>
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

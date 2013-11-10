@@ -1,0 +1,9 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+
+csv_header("tmp-subscriptions.csv");
+$datestr="%m/%d/%Y %r";
+$qry="SELECT *, DATE_FORMAT(time, '$datestr')time FROM tmp_registration ORDER BY time DESC";
+qry2csv($qry);
+
+?>

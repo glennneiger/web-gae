@@ -1,0 +1,76 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/_gallery.php");
+$bounceback="./characters.htm";
+
+if(!count($_POST)){
+	location($bounceback.qsa(array(error=>"No changes were made",id=>$id,page=>$page)));
+	exit;
+}
+
+htmlprint_r($_FILES);
+
+//format data
+if(!count($del_img))$del_img=array();
+if(!count($char_imgs))$char_imgs=array();
+// end format data
+
+
+//update db
+if(!$id){
+	$id=insert_query("characters",$character);
+	$error.=" - The character was created<br>";
+}else{
+	$ba=$_FILES[bioimg];
+	if($ba[size]){
+		$bpath="$CHAR_PATH/".$ba[name];
+		copy($ba[tmp_name],"$D_R$bpath");
+		//push to image server
+		pushToImgServer($bpath);
+		$character[bio_asset]=$bpath;
+		$error.=" - The bio image was created<br>";
+	}
+	if($rmbioimg){
+		munlink($D_R.$rmbioimg);
+		$character[bio_asset]="";
+		$error.=" - The bio image was removed<br>";
+	}
+	update_query( "characters", $character, array(id=>$id) );
+	$error.=" - The character was updated<br>";
+	foreach($char_imgs as $rowid=>$row){
+		update_query("character_images",$row,array(id=>$rowid));
+		$error.=" - ${row[name]} image updated.<br>";
+	}
+}
+//end update db
+//uploads
+$newimg=$_FILES[newimg];
+if($newimg[size] && $newimg[name]){
+	$ncharpath="$CHAR_PATH/".$newimg[name];
+	copy($newimg[tmp_name],"$D_R/$ncharpath");
+	pushToImgServer($ncharpath);
+	$newrec=array(name=>$new_img[name],asset=>$ncharpath,character_id=>$id);
+	insert_query("character_images",$newrec);
+	$error.=" - ${new_img[name]} created.<br>";
+}
+
+
+//end uploads
+
+//handle removals - dependencies: filesystem, articles, character_images
+foreach($del_img as $chimg_id=>$on){
+	exec_query_nores("UPDATE $ARTICLE_TABLE SET character_img_id='0' WHERE character_img_id='$chimg_id'");
+	$res=exec_query("SELECT name,asset FROM character_images WHERE id='$chimg_id'",1);
+	$img=$res[asset];
+	$imgname=$res[name];
+	munlink($D_R.$img);
+	delFromImgServer($img);//del from remote
+	del_query("character_images","id",$chimg_id);
+	$error.=" - $imgname removed<br>";
+	$error.=" - Articles using $imgname ($img) updated<br>";
+}
+
+	location($bounceback.qsa(array(error=>$error,id=>$id,page=>$page)));
+	exit;
+
+?>

@@ -1,0 +1,201 @@
+<?
+global $ADMIN_PATH,$D_R,$HTADMINHOST,$HTPFX,$HTHOST;
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-cache");
+header("Cache-Control: post-check=0,pre-check=0");
+header("Cache-Control: max-age=0");
+header("Pragma: no-cache");
+$page="techstratSellTrans";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/admin/techstrat/techstrat_classes/class_transaction.php");
+include_once("$D_R/lib/config/_techstrat_config.php");
+include_once("$D_R/lib/layout_functions.php");
+
+$performtransaction=$AD->getPerm("techstrat_sell_transaction"); //set permission
+if(!$performtransaction){	// Check Permission
+	admin_error("You're not allowed to use this page.");
+}
+
+$transobj=new techstratTransaction();
+
+$updatemode=$_POST['mode'];
+$serchexchgname=$_POST['exchangename'];
+$serchsymname=$_POST['serchsymname'];
+$quoteidserched=$_POST['quoteidserched'];
+
+if(!isset($updatemode)){
+	$updatemode='';
+}
+else{
+	switch($updatemode)
+	{
+		case 'save':
+			$stockid_get_all_get="\$stockid_get_all1=&\$stockid_get_all1;";
+			eval($stockid_get_all_get);
+
+			$updatedidsarr=explode(',',$stockid_get_all1);
+			$cntLT1=count($updatedidsarr);
+
+			// process items
+			if($cntLT1>0){
+				for($x=0;$x<$cntLT1;$x++){
+					$allids[]=$updatedidsarr[$x];
+				}
+			}
+
+			$noofrecords = $totrecords-1;
+			for($i = 0; $i <= $noofrecords; $i++){
+				$autoids=$allids[$i];
+				$status=0;
+				$selectedchk="\$isselected=&\$sellchk_".$autoids.";";
+				eval($selectedchk);
+				if((isset($isselected)) && ($isselected!='')){
+					$status=0;
+				}else{
+					$status=1;
+				}
+
+				if($status==0){
+					$sharesval="\$updatedshares=&\$sellqty_".$autoids.";";
+					eval($sharesval);
+					$pershare="\$unitsellprice=&\$sellprice_".$autoids.";";
+					eval($pershare);
+					$selldate="\$selldateentered=&\$selldate_".$autoids.";";
+					eval($selldate);
+					$selldateentered=date('Y-m-d',strtotime($selldateentered));
+					$selldateconv=$selldateentered." ".date('H:i:s');
+					$descriptions="\$description=&\$sellnote_".$autoids.";";
+					eval($descriptions);
+					$stockauto=$isselected;
+					$datetime = date('Y-m-d h:i:s');
+
+					$transactiondata=array(
+					   quote_id=>$quoteidserched,
+					   transaction_type=>1,
+					   creation_date=>$selldateconv,
+					   unit_price=>$unitsellprice,
+					   quantity=>$updatedshares,
+					   description=>$description
+					   );
+
+					$insertid=insert_query("techstrat_transaction",$transactiondata);
+					//***echo "New id entered : ".$insertid."<br>";
+
+					if(isset($insertid)){
+						$memCacheDelete = new memCacheObj();
+						$key="techStratOpenPositiontrade";
+						$memCacheDelete->deleteKey($key);
+						$key="techStratOpenPosition";
+						$memCacheDelete->deleteKey($key);
+						$key="techStratDisplayPerformance";
+						$memCacheDelete->deleteKey($key);
+						$transobj->updateOpenPositionRecords();
+						# after sell entries saved in techstrat_transaction table
+						# update the stock amount in techstrat_user_portfolio table by $quoteidserched
+						if(isset($avgsharearr)) unset($avgsharearr);
+						$avg_unit_price=$transobj->avgunitpriceofstockinhand($quoteidserched);
+						# stocks in hand
+						$getstockbuyarr=$transobj->getallbuystocks();
+						$totbuyqty=0;
+						$totbuyqty=$getstockbuyarr[$quoteidserched];
+						$sql_chk="select id from techstrat_user_portfolio where quote_id='$quoteidserched'";
+						unset($searchfound);
+						$searchfound=exec_query($sql_chk);
+						if(count($searchfound)>0){
+							# Update except avg price
+							$transactiondata_up=array(quantity=>$totbuyqty,recent_trade_date=>$selldateconv);
+							update_query("techstrat_user_portfolio",$transactiondata_up,array(quote_id=>$quoteidserched));
+							$memCacheDelete = new memCacheObj();
+							$key="techStratOpenPositiontrade";
+							$memCacheDelete->deleteKey($key);
+							$key="techStratOpenPosition";
+							$memCacheDelete->deleteKey($key);
+							$key="techStratDisplayPerformance";
+							$memCacheDelete->deleteKey($key);
+							$transobj->updateOpenPositionRecords();
+						}else if((count($searchfound))==0){
+							$transactiondata_ins=array(quote_id=>$quoteidserched,quantity=>$totbuyqty,purchase_date=>$selldateconv,recent_trade_date=>$selldateconv);
+							insert_query("techstrat_user_portfolio",$transactiondata_ins);
+							$memCacheDelete = new memCacheObj();
+							$key="techStratOpenPositiontrade";
+							$memCacheDelete->deleteKey($key);
+							$key="techStratOpenPosition";
+							$memCacheDelete->deleteKey($key);
+							$key="techStratDisplayPerformance";
+							$memCacheDelete->deleteKey($key);
+							$transobj->updateOpenPositionRecords();
+						}
+
+						$transactiondata_sell=array(sell_trans_id=>$insertid,buy_trans_id=>$autoids,creation_date=>$selldateconv);
+						$insertsellid=insert_query("techstrat_sell_transaction",$transactiondata_sell);
+						$memCacheDelete = new memCacheObj();
+						$key="techStratOpenPositiontrade";
+						$memCacheDelete->deleteKey($key);
+						$key="techStratOpenPosition";
+						$memCacheDelete->deleteKey($key);
+						$key="techStratDisplayPerformance";
+						$memCacheDelete->deleteKey($key);
+						$transobj->updateOpenPositionRecords();
+						# After storing in sell table we are updating the avg. price of lot table
+						if(isset($insertsellid)){
+							$avg_unit_price=0;
+							$avg_unit_price=$transobj->avgunitpriceofstockinhand($quoteidserched);
+							# Update avg unit price
+							unset($transactiondata_up);
+							$transactiondata_up=array(avg_unit_price=>$avg_unit_price);
+							//htmlprint_r($transactiondata_up);
+							update_query("techstrat_user_portfolio",$transactiondata_up,array(quote_id=>$quoteidserched));
+							$memCacheDelete = new memCacheObj();
+							$key="techStratOpenPositiontrade";
+							$memCacheDelete->deleteKey($key);
+							$key="techStratOpenPosition";
+							$memCacheDelete->deleteKey($key);
+							$key="techStratDisplayPerformance";
+							$memCacheDelete->deleteKey($key);
+							$transobj->updateOpenPositionRecords();
+						}
+					}// end of if
+				}
+			}//	end of for loop
+			echo "<script language='javascript'>";
+			echo "window.location.href='transaction.htm?msg=success'";
+			echo "</script>";
+			break;
+		 break;
+	} // end of switch($updatemode)
+}
+
+?>
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/techstrat-admin.css">
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/min/jquery-ui-datepicker.1.1.css" type="text/css" media="all" />
+
+	<script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_actb.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/actb_common.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript" ></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/transaction.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/techstratPortfolio.js" type="text/javascript"></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+
+	<div class=adminheader>TechStrat Portfolio - Sell Transaction</div><br>
+	<div class="techPortMoreOptions">
+		<?php if($AD->getPerm("techstrat_add_transaction")){?>
+			<div class="techPortOption"><a href="transaction.htm">View Transaction</a></div>
+		<? } ?>
+		<?php if($AD->getPerm("techstrat_sell_transaction")){?>
+			<div class="techPortOption"><a href="edittransaction.htm" >Edit Transactions</a></div>
+		<? } ?>
+		<?php if($AD->getPerm("techstrat_sell_transaction")){?>
+			<div class="techPortOption"><a href="cashentry.htm">Initial Cash Entry</a></div>
+		<? } ?>
+	</div>
+	<div class="techstratSellDiv">
+		<p>Enter Symbol :</p>
+		<input name="symbolsearch" id="symbolsearch" type="text" value="<? echo $serchsymname;?>" size="20" maxlength="25" onkeydown="Javascript: if (event.keyCode==13) techStratSearchSell();"> &nbsp; <input type="button" name="go" Value="Go" class="techStratGoBttn" onClick="javascript:techStratSearchSell();" onkeydown="Javascript: if (event.keyCode==13) techStratSearchSell();">
+	</div>
+	<div style="clear:left;"></div>
+	<div id="techSearchStockDetail" class="techSearchStockDetail"></div>
+</body>
+</html>

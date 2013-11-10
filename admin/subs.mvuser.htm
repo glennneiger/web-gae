@@ -1,0 +1,35 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/_db.php");
+if(!$AD->getPerm("subscribers_all")){//not allowed to edit subscriptions
+	admin_error();
+	exit();
+}
+
+if(!$refer=base64_decode($refer))
+	$refer="exchange_subs.htm";
+
+if(!$id){
+	location($refer.qsa(array(error=>"Couldn't make Mv recommended  user. Didn't provide a subscription id")));
+	exit();
+}
+$mv=$_GET['mv'];
+$subid=$_GET['id'];
+     if(($mv=='1') && ($subid)){
+		 $req[subscription_id]=$subid;
+		 $idmod=insert_query("tt_mvrecommended",$req);
+			if (isset($idmod)){
+				 location(urlqsa($refer,array(msg=>"Updated to MV recommended  successfully")));
+				return $idmod;
+			} else {
+				 location(urlqsa($refer,array(msg=>"Not updated to Mv recommended  ")));
+				return;
+			}
+      } else {
+	 		del_query("tt_mvrecommended","subscription_id",$subid);
+	 		location(urlqsa($refer,array(msg=>"This MV recommended  user is removed successfully")));
+	}
+
+
+?>

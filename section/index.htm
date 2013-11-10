@@ -1,0 +1,90 @@
+<?php
+if($_GET['pagename'])
+{
+	$pageName=$_GET['pagename'];
+}
+include_once($D_R."/lib/ads/_indstrybrains_class.php");
+include("../_minyanville_header.htm");
+global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$bannername=$cm8_ads_Button_160x30;
+?>
+<!--Body area start from here-->
+<!--left contaner start from here-->
+<div class="left_contant">
+	<div class="section_top">
+		<div class="section_top_left">
+			<div class="sub_section_common_title">
+            <table width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td><?=$pageDetail['page_title']?></td>
+				<td align=right>Sponsored By</td>
+			  </tr>
+			</table>
+            </div>
+			<?= renderPageModules($pageDetail['id'],'Section Feature Module') ?>
+			<table border="0" cellpadding="0" cellspacing="0" width="100%" align="left">
+				<tr class="section_article_listing">
+					<td valign="top" class="section_middle_left"><?= renderPageModules($pageDetail['id'],'Subsection1') ?></td>
+					<td valign="top" class="section_middle_center"><?= renderPageModules($pageDetail['id'],'Subsection2') ?></td>
+				</tr>
+				<tr class="section_article_listing">
+					<td valign="top" class="section_middle_left"><?= renderPageModules($pageDetail['id'],'Subsection4') ?></td>
+					<td valign="top" class="section_middle_center"><?= renderPageModules($pageDetail['id'],'Subsection5') ?></td>
+				</tr>
+			</table>
+		</div>
+		<div class="section_top_right_ads">
+		<div style="text-align:center;padding-bottom:3px">
+				<? CM8_ShowAd($bannername); ?>
+		</div>
+		</div>
+		<div class="section_top_right" style=""><?= renderPageModules($pageDetail['id'],'Section Latest Module') ?>
+		<table border="0" cellpadding="0" cellspacing="0" width="100%" align="left">
+
+		<tr class="section_article_listing">
+			<td valign="top" class="section_middle_right"><?= renderPageModules($pageDetail['id'],'Subsection3') ?></td>
+		</tr>
+		<tr class="section_article_listing">
+			<td valign="top" class="section_middle_right"><?= renderPageModules($pageDetail['id'],'Subsection6') ?></td>
+		</tr>
+
+	</table>
+		</div>
+		<div><?section_showPartnerCenter();?></div>
+        <div class="article-right-module-header">
+		<img src="<?=$IMG_SERVER;?>/images/articles/section_headers_partnerlinks.gif" />
+		<div id="markets-partners" style="width:620px;margin-top:10px;">
+		<?php
+				$objindustrybrains=new industrybrains();
+				$objindustrybrains->displayads($pageName,"650x250");
+		?>
+		</div>
+</div>
+</div>
+</div>
+<!--left contaner end here-->
+<?
+if($pageName == 'familyfinance')
+{
+$featuredProfId = $familyfinanceIds[array_rand($familyfinanceIds)];
+$Right_panel_video  ='false';
+$Right_panel_polupararticle='false';
+?>
+<div class="right_contant" >
+<br />
+<div class="watch_video">
+ <? CM8_ShowAd($bannernameMR); ?>
+</div>
+<?
+}
+elseif($pageName == 'lifemoney') {
+$featuredProfId = $lifemoneyIds[array_rand($lifemoneyIds)];
+}
+elseif($pageName == 'businessmarket') {
+$featuredProfId = $businessmarketIds[array_rand($businessmarketIds)];
+}
+
+$Right_panel_right_ads=='true';
+include("../_minyanville_right.htm");
+include("../_minyanville_footer.htm"); ?>

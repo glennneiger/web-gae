@@ -1,0 +1,151 @@
+<?
+session_start();
+include_once("$D_R/lib/techstrat/_techstratData.php");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$D_R/lib/config/_techstrat_config.php");
+include_once("$D_R/lib/_misc.php");
+$bounceback="approve.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+global $techStratFromName,$techStratFromEmail, $techStratTemplate;
+$objData= new techstartData("techstrat_posts","");
+$objremove= new Content("techstrat_posts","");
+$FEED_TABLE="techstrat_posts";
+$viewapproved	=	trim($_REQUEST['viewapproved']);
+if($viewapproved){
+	$is_live=0;
+}else{
+	$is_live=1;
+}
+
+$approve		=	$_REQUEST['approve'];
+$delarticle		=	$_REQUEST['delarticle'];
+
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="update techstrat_posts set is_deleted='1' WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	foreach ($delarticle as $k=>$v)
+	{
+		$currentValue=$objremove->getTableData($k,"techstrat_posts");
+        $itemId=$k;
+        $updatedValue=$currentValue;
+        $action="Delete";
+		$objremove->userAuditAlerts($itemId,$currentValue,$updatedValue,$action);
+		$syndicate_id = $objremove->getSyndicate($itemId,$objData->contentType);
+		if($syndicate_id){
+			$premium_remove['is_deleted']=1;
+			$objremove->updatePremiumContent($premium_remove,$itemId);
+		}
+	}
+	$objData->deleteTechStartTopic($keys);
+	$objData->deleteTechStartTickers($keys);
+	$objremove->removeUnapprovedItems($keys,$FEED_TABLE);
+}
+
+
+if(is_array($approve)){
+	$keys = implode(",",array_keys($approve));
+	$qry = "UPDATE techstrat_posts SET is_draft='0',is_approved='".($viewapproved?0:1)."',is_live='".$is_live."'";
+	if(!$viewapproved)
+		$qry.=", creation_date='".mysqlNow()."'";
+	$qry.=" WHERE find_in_set(id,'$keys')
+		   AND is_approved='".($viewapproved?1:0)."'
+		  LIMIT ".count($approve);
+	exec_query_nores($qry);
+
+	if($viewapproved=='1'){
+		/*remove unapprove article from object search*/
+		$objremove->removeUnapprovedItems($keys,$FEED_TABLE);
+		/*$objData->deleteTechStartTopic($keys);*/
+		/*$objData->deleteTechStartTickers($keys);*/
+		foreach ($approve as $k=>$v)
+		{
+			 /*Insert in user_audit_alert table*/
+            $currentValue=$objremove->getTableData($k,"techstrat_posts");
+            $itemId=$k;
+            $updatedValue=$currentValue;
+            $action="unappprove";
+            $objremove->userAuditAlerts($itemId,$currentValue,$updatedValue,$action);
+			$syndicate_id = $objremove->getSyndicate($itemId,$objData->contentType);
+			if($syndicate_id){
+				$premium_live['is_live']=0;
+				$objremove->updatePremiumContent($premium_live,$itemId);
+			}
+		}
+
+	}
+	else
+	{
+		foreach ($approve as $k=>$v)
+		{
+			/*Insert in user_audit_alert table*/
+            $currentValue=$objremove->getTableData($k,"techstrat_posts");
+            $itemId=$k;
+            $updatedValue=$currentValue;
+            $action="approve";
+            $objremove->userAuditAlerts($itemId,$currentValue,$updatedValue,$action);
+			$syndicate_id = $objremove->getSyndicate($itemId,$objData->contentType);
+			if($syndicate_id){
+				$premium_live['is_live']=1;
+				$objremove->updatePremiumContent($premium_live,$itemId);
+			}
+		}
+	}
+}
+
+/* set data in meta table and content seo*/
+if($is_live){
+	$feedarray=array();
+	$feedarray=explode(",",$keys);
+
+	foreach($feedarray as $fid){
+		$objContent = new Content('techstrat_posts',$fid);
+		$url=$objContent->getTechStratUrl($fid);
+		$objContent->updateContentSeoUrl($fid,$objData->contentType,$url);
+		$objContent->setTechStartMeta();
+	}
+}
+
+/*Start sending email to subscriber using Via*/
+
+if($viewapproved=='0'){
+    foreach($approve as $k=>$v) {
+        $qry="select is_sent,title from techstrat_posts where id='".$k."'";
+        $sendEmailResult=exec_query($qry,1);
+        $sentEmail=$sendEmailResult['is_sent'];
+            if($sentEmail=="0" || $sentEmail==""){
+                        update_query("techstrat_posts",array(is_sent=>1),array(id=>$k));
+                        $from[$techStratFromEmail]= $techStratFromName;
+                        $subject=trim(stripslashes($sendEmailResult['title']));
+                        $msgfile="/tmp/spam_techstrat_".mrand().".eml";
+                        $msghtmlfile="$D_R/assets/data/".basename($msgfile);
+                        $msgurl=$techStratTemplate.qsa(array(id=>$k));
+                        $mailbody=inc_web($msgurl);
+                        include_once("$D_R/lib/_user_controller_lib.php");
+                        $userObj=new user();
+                        $result = $userObj->emailDetails($from,$subject,utf8_encode($mailbody),'TechStrat');
+                        $error="Posts were changed and an email was sent to subscribers.";
+
+            }
+    }
+}
+
+if(count($delarticle))
+{
+	location($bounceback.urlencode("The Posts were deleted"));
+exit();
+}
+if(!$viewapproved)
+{
+	location($bounceback.urlencode("The Posts were changed"));
+}
+else
+{
+	location($bounceback.urlencode("The posts were changed and are now not live on the site"));
+
+}
+exit;
+?>

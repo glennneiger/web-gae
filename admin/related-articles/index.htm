@@ -1,0 +1,261 @@
+
+<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+
+<script>
+function removeRelated(link) {
+var parentId = <?=$_GET['id']?>;
+var relatedId = link;
+alert ("parent is " + parentId);
+alert("related is " + relatedId);
+window.location = "/admin/related-articles/remove.php?parent=" + parentId + "&related=" + relatedId; 
+
+
+}
+
+</script>
+
+<style>
+.filter-dates {
+        width:250px;
+        float:left;
+
+}
+
+#page-container {
+	width:600px;
+
+}
+
+#related-links {
+background:#cccccc; float:right; width:300px;
+font-size:13px;
+margin:10px;
+padding:10px;
+
+}
+
+#related-links ul {
+	margin:5px;
+	padding:5px;
+}
+
+#related-links input {
+	width:20px;
+
+}
+
+</style>
+
+
+<?
+$articleid = $_GET['id'];
+function getAllAuthors() {
+	$sql = "select id, name from contributors order by name";
+	$results=exec_query($sql);
+	foreach ($results as $author) {
+		$id = $author['id'];
+		$name = $author['name'];
+		echo "<option value='".$id."'>".$name."</option>";	
+	}
+
+}
+
+function getArticlesRelatedLinks($articleid) {
+	$sql = "select id,title, article_type,item_type, article_id, position from article_related_links where parent_article_id = '".$articleid."' order by position";
+	$results=exec_query($sql);
+	//print_r($results);
+	//return $results;
+	foreach ($results as $article) {
+		$title =  $article['title'];
+		$relatedId = $article['article_id'];
+		$position = $article['position'];
+		$type = $article['article_type'];
+        $item_type = $article['item_type'];
+		if ($type == 'mv') {
+		echo "<li>
+		<input type='text' value='".$position."' name='link-position[".$relatedId."]'> <a href='".$HTPFX.$HTHOST.getItemURL($item_type,$relatedId)."'>".$title."</a>"?> <a href="javascript://" style="color:red;" onclick="removeRelated('<?=$article['id']?>');">Remove</a> <?
+		} else if ($type == 'ap') {
+		echo "<li><a href='/articles/keyword/index/ap/".$relatedId."'>".$title."</a> - Position = ".$position;
+		} else if ($type == 'manual') {
+		echo "<li><a href='http://".$relatedId."'>".$title."</a> - Position = ".$position;
+		}
+	}
+}
+
+
+?>
+
+<script>
+function searchForArticle(keyword, author, searchsection) {
+	$("#search-results").load("/admin/related-articles/search.htm?id=" + keyword + "&author=" + author + "&location=" + searchsection + "&parentId=<?echo $articleid ?>");
+}
+
+function getArticleLocation() {
+var articeLocation = "";
+
+var articleTitle =  $('input[value=article-title]').is(':checked');
+var articleBody = $('input[value=article-body]').is(':checked');
+
+if (articleTitle == true) {
+	articleLocation = "searchTitle";
+} else {
+
+	articleLocation = "searchBody";
+}
+return articleLocation;
+}
+
+$(document).ready(function() {
+$("#search").bind("click", function() {
+	var keyword = $("#search-field").val();
+	var author =  $("#author-list").val();
+	var searchSection = getArticleLocation();
+	searchForArticle(keyword, author, searchSection);
+});
+
+});
+
+</script>
+
+
+<div id="page-container">
+
+<div id="related-links">
+	<form name="related-form" method="post" action="/admin/related-articles/order.php">
+	<ul>
+		<? getArticlesRelatedLinks($articleid); ?>
+	</ul>
+	<input name="parent" type="hidden" value="<?=$_GET['id']?>">
+	<input type="submit" style="width:100px;">
+	</form>
+</div>
+
+<div id="search-for-article" style="margin-top:50px;">
+<!--
+Search for an article<br><br>
+<input type="radio" name="article-type" value="mv" checked> Minyanville Article<br>
+<input type="radio" name="article-type" value="ap"> AP Article<br>
+<p>
+-->
+<!--
+
+<select id="start-day" value=''>Select Day</option>
+<option value='01'>01</option>
+<option value='02'>02</option>
+<option value='03'>03</option>
+<option value='04'>04</option>
+<option value='05'>05</option>
+<option value='06'>06</option>
+<option value='07'>07</option>
+<option value='08'>08</option>
+<option value='09'>09</option>
+<option value='10'>10</option>
+<option value='11'>11</option>
+<option value='12'>12</option>
+<option value='13'>13</option>
+<option value='14'>14</option>
+<option value='15'>15</option>
+<option value='16'>16</option>
+<option value='17'>17</option>
+<option value='18'>18</option>
+<option value='19'>19</option>
+<option value='20'>20</option>
+<option value='21'>21</option>
+<option value='22'>22</option>
+<option value='23'>23</option>
+<option value='24'>24</option>
+<option value='25'>25</option>
+<option value='26'>26</option>
+<option value='27'>27</option>
+<option value='28'>28</option>
+<option value='29'>29</option>
+<option value='30'>30</option>
+<option value='31'>31</option>
+</select>
+
+</div>
+
+
+<div class="filter-dates">
+End Date <br>
+
+<select id="start-year" value="">Select Year</option>
+<option value='2009'>2009</option>
+<option value='2008'>2008</option>
+<option value='2007'>2007</option>
+</select>
+
+<select id="start-month" value=''>Select Month</option>
+<option value='01'>January</option>
+<option value='02'>February</option>
+<option value='03'>March</option>
+<option value='04'>April</option>
+<option value='05'>May</option>
+<option value='06'>June</option>
+<option value='07'>July</option>
+<option value='08'>August</option>
+<option value='09'>September</option>
+<option value='10'>October</option>
+<option value='11'>November</option>
+<option value='12'>December</option>
+</select>
+
+
+<select id="start-day" value=''>Select Day</option>
+<option value='01'>01</option>
+<option value='02'>02</option>
+<option value='03'>03</option>
+<option value='04'>04</option>
+<option value='05'>05</option>
+<option value='06'>06</option>
+<option value='07'>07</option>
+<option value='08'>08</option>
+<option value='09'>09</option>
+<option value='10'>10</option>
+<option value='11'>11</option>
+<option value='12'>12</option>
+<option value='13'>13</option>
+<option value='14'>14</option>
+<option value='15'>15</option>
+<option value='16'>16</option>
+<option value='17'>17</option>
+<option value='18'>18</option>
+<option value='19'>19</option>
+<option value='20'>20</option>
+<option value='21'>21</option>
+<option value='22'>22</option>
+<option value='23'>23</option>
+<option value='24'>24</option>
+<option value='25'>25</option>
+<option value='26'>26</option>
+<option value='27'>27</option>
+<option value='28'>28</option>
+<option value='29'>29</option>
+<option value='30'>30</option>
+<option value='31'>31</option>
+</select>
+
+</div>
+<div style="clear:both;"></div> -->
+<p>
+
+Filter by Author:<br>
+<select id="author-list">
+<option id="all" value="all">All</option>
+<? getAllAuthors(); ?>
+</select>
+
+<p>
+Search by Keyword:<br>
+<input type="radio" name="article-location" value="article-title" checked> Article Title<br>
+<input type="radio" name="article-location" value="article-body"> Article Body<br>
+
+<input id="search-field"> <a id="search" href="javascript://">Search</a>
+
+</div>
+<div style="clear:both;"></div>
+<div id="search-results">
+</div>
+
+
+</div> <!-- end page container -->

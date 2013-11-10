@@ -1,0 +1,65 @@
+<?
+
+$start=$_GET['start'];
+$end=$_GET['end'];
+$type=$_GET['type'];
+
+function getArticleCount($type,$start, $end)
+{
+if($type == 'AR')
+{
+$sql="SELECT CP.id, CP.name, COUNT(AR.id) AS article_count FROM articles AS AR, contributors AS CP WHERE is_live='1' AND approved='1'
+AND CP.id = contrib_id AND  DATE(date) >='".$start."' and DATE(date) <='".$end."' GROUP BY contrib_id ORDER BY name";
+}
+else if($type == 'DF')
+{
+$sql= "SELECT CP.id, CP.name, COUNT(DF.id) AS article_count FROM daily_feed AS DF, contributors AS CP
+WHERE is_live='1' AND is_approved='1' AND is_deleted = '0' AND CP.id = contrib_id AND DATE(creation_date) >='".$start."' and DATE(creation_date) <='".$end."' GROUP BY contrib_id ORDER BY name";
+
+}else if($type == 'BUZZ'){
+	$sql= "SELECT CP.id, CP.name, COUNT(B.id) AS article_count FROM buzzbanter AS B, contributors AS CP
+WHERE B.is_live='1' AND B.approved='1' AND CP.id = B.contrib_id AND DATE(if(B.publish_date,B.publish_date,B.date)) >='".$start."' and DATE(if(B.publish_date,B.publish_date,B.date)) <='".$end."' GROUP BY B.contrib_id ORDER BY name";
+}
+ return $results=exec_query($sql);
+
+}
+
+$arCount = getArticleCount($type,$start, $end);
+$total =0;
+$i =1;
+foreach($arCount as $arValue)
+{
+
+$subsQuery = "SELECT COUNT(subscriber_id) as email_count FROM email_alert_authorsubscribe WHERE FIND_IN_SET('".$arValue[id]."',author_id) AND email_alert = 1";
+$arSubs  = exec_query($subsQuery,1);
+$arData['name'] = $arValue['name'];
+$arData['article_count'] = $arValue['article_count'];
+$arData['email_subscribers'] = $arSubs['email_count'];
+
+$arArticle[$i] = $arData;
+$total +=$arValue['article_count'];
+$i++;
+}
+if($type=='DF')
+{
+	$type = 'Daily Feed';
+}
+else if($type=='AR')
+{
+	$type = 'Articles';
+}else if($type=='BUZZ'){
+	$type="Buzz Posts";
+}
+/*$arArticle[0][$type." during ".$start." and ".$end." is "] = "";
+$arArticle[0][$total] = "";*/
+$arArticle[0]['Author'] = "";
+$arArticle[0][$type] = "";
+$arArticle[0]['Email Subscribers'] = "";
+
+csv_header("article_count.csv");
+$datestr="%m/%d/%Y";
+ksort($arArticle);
+data2csv($arArticle);
+//echo $total;
+//htmlprint_r($arArticle);
+?>

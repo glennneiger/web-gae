@@ -1,0 +1,103 @@
+<?php
+global $is_ssl;
+include_once($D_R."/lib/config/_email_config.php");
+include_once($D_R."/lib/config/_products_config.php");
+
+$firstName=$_GET['firstname'];
+$email=$_GET['email'];
+$password=$_GET['password'];
+$product=strtolower($product);
+global $viaProductsName,$productImg;
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Welcome to Minyanville</title>
+<style type="text/css">
+body{margin:0px;}
+</style>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td>
+      <table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+      </tr>
+      <tr>
+        <td style="padding-left:15px;">
+        <table cellpadding="0" cellspacing="0">
+			<tr>
+			<td valign="top" style="font:13px Arial, sans-serif;color:#333">
+			<span style="font-family:Arial, Helvetica, sans-serif;background-repeat:no-repeat;font-size:20px;color:#2b5614;font-weight:bold;">Dear <?=ucfirst(strtolower($firstName)); ?>,</span>
+            </td></tr>
+            <tr><td>
+            <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">Welcome to your Free Week of the <?=$viaProductsName[$product];?>!</span>
+            </td></tr>
+            <tr><td>
+			<span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">
+<? if($product=="buzz"){ ?>
+				<a style="cursor:pointer;color:#079ad9; text-decoration:underline;" href="<?=$HTPFX?><?=$HTHOST?>/buzz/buzz.php" onClick="window.open(this.href, 'popupwindow', 'status=no,toolbar=no,scrollbars=yes,titlebar=yes,menubar=no,resizable=yes,height=708,width=350,directories=no,location=no,top=225');return false;">Click Here</a>
+		<? 	}else{ ?>
+				<a style="cursor:pointer;color:#079ad9; text-decoration:underline;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/login.htm">Click Here</a>
+		<? 	}  ?>
+		to access your dynamic desktop application each trading day, and follow along as our renowned roster of over 30 professional contributors weigh in on today&acute;s hottest issues, while providing smart, actionable trading ideas that can make you money!
+			</span>
+			</td></tr>
+
+<tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">Login with the information below!</span></td></tr>
+ <tr>
+	    <td>
+	    <span style="font-family:Arial, Helvetica, sans-serif;float:left; font-weight:bold; font-size:14px;line-height:18px;clear:both;padding-top:10px;">
+	    Email address: <?=$email;?>
+	    </span>
+	    </td>
+	  </tr>
+	    <? if(!empty($password)){ ?>
+	    <tr>
+	     <td>
+	    <span style="font-family:Arial, Helvetica, sans-serif;float:left;font-weight:bold; font-size:14px;line-height:18px;clear:both;padding-top:10px;">
+	    Password: <?=$password;?>
+	    </span>
+	    </td>
+	  </tr>
+	   <? } ?>
+			<tr><td>
+			<span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;margin:20px 0px;">
+			<? if($product=="buzz"){ ?>
+				<a style="cursor:pointer;" href="<?=$HTPFX?><?=$HTHOST?>/buzz/buzz.php" onClick="window.open(this.href, 'popupwindow', 'status=no,toolbar=no,scrollbars=yes,titlebar=yes,menubar=no,resizable=yes,height=708,width=350,directories=no,location=no,top=225');return false;"><img src="<?=$IMG_SERVER?>/images/email/product/<?=$productImg[$product];?>" /></a>
+		<? 	}else{ ?>
+				<a style="cursor:pointer;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/login.htm"><img src="<?=$IMG_SERVER?>/images/email/product/<?=$productImg[$product];?>" /></a>
+		<? 	}  ?>
+			</span></td></tr>
+
+<tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">Don&acute;t forget to join us for our Live Webcast on Wednesday, September 12th at 4:15pm EST - we&acute;ll follow up with a link and password to the webcast, so keep checking your inbox!</span></td></tr>
+
+<tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">
+If you have any questions about your free week to the <?=$viaProductsName[$product];?>, feel free to give us a call at <span style="color:#079ad9;text-decoration:underline;">212-991-9357</span>,or email us at <a href="mailto:support@minyanville.com" style="color:#079ad9; text-decoration:underline;">support@minyanville.com</a>. </span></td></tr>
+
+			<tr><td><span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:13px;line-height:18px;clear:both;padding-top:10px;">We look forward to Buzzing with you!</span></td></tr>
+			</table></td>
+      </tr>
+
+	  <tr>
+	  	<td style="height:5px;"></td>
+	  </tr>
+
+	  <tr>
+					<td colspan="4" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise With Us</a></p>
+					  </div></center></td>
+		</tr>
+				<tr>
+						<td >&nbsp;</td>
+		</tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<?php
+global $D_R;
+ini_set("max_execution_time",3600);
+$pageName = "subscription_account_update";
+$pageId='welcome';
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","registration");
+
+session_start();
+$orderStatus=0;
+$dtValue=date('Y-m-d').'T00:00:00';
+
+
+include($D_R."/_header.htm");
+if(!$_SESSION['viaid']){
+   location("$HTPFX$HTHOST/");
+}
+global $lang;
+build_lang($pageId);
+?>
+<!--Body area start from here-->
+<!--left contaner start from here-->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+
+<div class="register_container">
+	<div id="Registrationstepfinish" class="1st_step_container">
+	<font size='4'>Welcome <?= ucwords($_SESSION['nameFirst'])." ".ucwords($_SESSION['nameLast']);  ?>,</font><br><HR>
+	</div>
+		<br/><br/>
+
+</div>
+<div class="register_container"><font size='2'>
+
+Your account information has been updated successfully.
+<br><br>
+Click here to manage your <a href="<?=$page_config['register_manage']['URL']?>manage.htm">account settings</a>.
+<br><br>
+
+Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com">support@minyanville.com</a> or 212-991-9357
+</div>
+
+</div><!--left contaner end here-->
+
+<!--right contaner start from here-->
+<div class="right_contant" >
+<!---Cart box start from here--->
+<? // =renderyourcart($_SESSION['viacart']);?>
+<!---Cart box block end here--->
+<!--right contaner end here-->
+</div>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<?include("$D_R/_footer.htm");?>
+
+<!-----------------------   For Ads Free Landing Page   ------------------------------->
+	<!-- Google Website Optimizer Conversion Script -->
+	<script type="text/javascript">
+	if(typeof(_gat)!='object')document.write('<sc'+'ript src="http'+
+	(document.location.protocol=='https:'?'s://ssl':'://www')+
+	'.google-analytics.com/ga.js"></sc'+'ript>')</script>
+	<script type="text/javascript">
+	try {
+	var gwoTracker=_gat._getTracker("UA-30222-16");
+	gwoTracker._trackPageview("/1957662600/goal");
+	}catch(err){}</script>
+	<!-- End of Google Website Optimizer Conversion Script -->
+
+<!-----------------------   For OptionSmith Landing Page   ------------------------------->
+<!-- Google Website Optimizer Conversion Script -->
+<script type="text/javascript">
+if(typeof(_gat)!='object')document.write('<sc'+'ript src="http'+
+(document.location.protocol=='https:'?'s://ssl':'://www')+
+'.google-analytics.com/ga.js"></sc'+'ript>')</script>
+<script type="text/javascript">
+try {
+var gwoTracker=_gat._getTracker("UA-30222-16");
+gwoTracker._trackPageview("/3760028665/goal");
+}catch(err){}</script>
+<!-- End of Google Website Optimizer Conversion Script -->

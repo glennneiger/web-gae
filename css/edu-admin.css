@@ -1,0 +1,163 @@
+@CHARSET "UTF-8";
+.eduMoreOptions, .eduGlossary{
+	float:left; 
+	width:700px;
+	margin:0px 0px 10px 0px;
+}
+.eduLabel{
+	float:left; 
+	width:200px;
+}
+
+.alertEditLabel{
+	float:left; 
+	width:120px;
+	font-weight:bold;
+	margin:5px 0px 0px 0px;
+}
+
+.alertCreateLabel{
+	float:left; 
+	width:70px;
+	font-weight:bold;
+	margin:5px 0px 0px 0px;
+}
+
+.eduMoreOptions input[type="text"]{
+	float:left; 
+	width:530px;
+}
+
+.eduMoreOptions input[type="checkbox"]{
+	float:left; 
+	width:20px;
+}
+
+.eduMoreOptions select{
+	float:left; 
+	width:480px;
+}
+
+.ewiInstr{
+	float:right;
+	font-weight:bold;
+}
+
+.eduErrorMsg{
+	float:left;
+	color:red;
+	font-weight:bold;
+	height:35px;
+	margin:0px 0px 0px 0px;
+}
+
+.eduCreate{
+	float:left;
+	clear:both;
+	margin:20px 0px 0px 20px;
+}
+
+.eduDate{
+	float:left;
+	width:310px;
+}
+
+.eduAuthor{
+	float:left;
+}
+
+.eduDate input[type="text"], .eduAuthor select{
+	float:left; 
+	width:220px;
+	margin:0px;
+	font-weight:bold;
+}
+
+.eduCategory{
+	float:left;
+	width:700px;	
+}
+
+.eduCategory select{
+	width:200px;
+	height:70px;
+}
+
+.eduMultiText{
+	float:left;
+	margin:50px 0px 0px 5px;	
+}
+
+.eduBttn{
+	float:left;
+	margin:0px 200px;
+}
+
+.eduMoreOptions input#eduImgFile{
+	float:left;
+	width: 200px;
+	border-radius:4px;
+}
+
+.eduUploadedImg{
+	float:left;
+	margin:0px 0px 0px 10px;	
+}
+
+.eduVideoErr{
+	color:#000; 
+	display:block; 
+	font-size:11px; 
+	text-align:left;
+	font-family:Arial,Helvetica,sans-serif;
+}
+
+.error{
+	clear: both;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.eduGlossaryLabel{
+	float:left; 
+	width:120px;
+	font-weight:bold;
+	margin:5px 0px 0px 0px;
+}
+
+.eduGlossary input[type="text"]{
+	float:left; 
+	width:375px;
+}
+
+.eduGlossary select{
+	float:left; 
+	width:200px;
+}
+
+
+.eduGlossaryBttn{
+	float:left;
+	margin:0 100px;	
+}
+
+.eduAddProductBttn{
+	width: 85px;
+	height: 35px;
+	float: left;
+	padding: 2px;
+	margin: 0px 5px;
+	color: #666666;
+	cursor:pointer; 
+	font-weight: bold;
+	border-radius: 16px;
+	word-break: break-word;
+	border: 2px solid #4d4c4c;
+}
+
+.eduUpdateBttn{
+	cursor:pointer; 
+	border:none;
+	float:left;
+}

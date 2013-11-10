@@ -1,0 +1,41 @@
+<?
+cache_client_wholepage("$D_R/assets/data/terms.html");
+$SECTION="company";
+$PAGE="terms";
+$HEADER="/assets/Companybanner.jpg";
+$title="Minyanville : Terms of Use";
+$noDefaultLoad=TRUE;
+$pageCSS=array("global","rightColumn","nav","minyanville","fontStylesheet");
+
+include("$D_R/_header.htm");?>
+	
+	
+		<table id="home-news" cellpadding="0" cellspacing="0" width="100%"><tr>
+		<td width="10"><img src="http://storage.googleapis.com/mvassets/images/lc.gif" width="10" alt="" /></td>
+		<td class="top"><img src="<? $pfx?>/images/10x1.gif" /></td>
+		<td width="13"><img src="http://storage.googleapis.com/mvassets/images/cr.gif" width="13" alt="" /></td>
+		</tr>
+		<tr>
+		<td class="left-border">&nbsp;</td>
+		<td id="home-news-main">
+		  <div id="home-news-main">
+		    <div id="home-news-content">
+			  <h3 class="new-head">TERMS OF USE</h3>
+			  <p class="simple-separator">&nbsp;</p>
+			  <h3><?= displayDate() ?></h3>
+			  <p class="double-separator">&nbsp;</p>
+			  <br />
+	<?readfile("$D_R/assets/data/terms.html")?>
+	
+	  
+			</div>
+		  </div> 
+		</td>
+		<td class="right-border">&nbsp;</td></tr>
+		<tr>
+		<td><img src="http://storage.googleapis.com/mvassets/images/lr_corner.gif" width="10" alt="" /></td>
+		<td class="bottom"><img src="<? $pfx?>/images/10x1.gif" /></td>
+		<td><img src="http://storage.googleapis.com/mvassets/images/rb_corner.gif" width="13" alt="" /></td>
+		</table>
+		<!-- end news area -->
+<?include("$D_R/_footer.htm");?>

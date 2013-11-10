@@ -1,0 +1,75 @@
+<?
+header( 'Content-Type: application/rss+xml; charset=utf-8' );
+global $D_R,$HTPFX,$HTHOST;
+include_once("$D_R/layout/dbconnect.php");
+include_once("$D_R/lib/_misc.php");
+include_once("$D_R/lib/config/_article_config.php");
+include_once("$D_R/lib/config/_rss_config.php");
+include_once("$D_R/admin/lib/_contributor_class.php");
+$currentFilter=$_GET['from'];
+$objContrib= new contributor();
+$articleRssArr = getKeyVal('sec_id',$_SERVER['REQUEST_URI']);
+$sectionId = ($_GET['sec_id']=="" ? $articleRssArr['sec_id'] : $_GET['sec_id']);
+$query ="SELECT name from section where section_id = ".$sectionId;
+$arSection = exec_query($query,1);
+$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, publish_date, blurb, body, position, character_text,IF(publish_date = '0000-00-0000:00:00',date,publish_date) AS publish_date ";
+$sql .= "from articles, contributors ";
+$sql .= "where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' ";
+if($sectionId)
+{
+ $sql .=" and FIND_IN_SET('" .$sectionId ."', articles.subsection_ids)";
+}
+
+if($currentFilter){
+    $contribFilterId=$objContrib->getExcludedPartnerId();
+	$sql .= " and contributors.id IN (SELECT CGM.contributor_id FROM contributor_groups_mapping CGM,
+contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($contribFilterId)) ";
+	$urlPostFix = "?from=".$currentFilter;
+}
+
+$sql .= "ORDER BY publish_date DESC LIMIT 0,2";
+
+$results = exec_query($sql);
+?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<atom:link href="<?=htmlentities($HTPFX.$HTHOST.$_SERVER['REQUEST_URI'])?>" rel="self" type="application/rss+xml" />
+<title>Minyanville - <?=$arSection['name']?></title>
+<description>The Trusted Choice for the Wall Street Voice</description>
+<lastBuildDate><?=date('D, j M Y H:i:s',strtotime($results[0]['publish_date'])) ?> EST</lastBuildDate>
+<link>http://www.minyanville.com</link>
+<copyright><?=date('Y')?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
+
+<?
+
+foreach ($results as $result) {
+
+	$numWords = 100;
+    $articlebody=strip_tag_style($result['body']);
+	$articlebody=replaceArticleAds($articlebody);
+	$tempBody = htmlentities(mswordReplaceSpecialChars(strip_tags($articlebody,'ENT_QUOTES')));
+	$bodyArray = str_word_count($tempBody,1);
+    $bodyArray = preg_split("/[\s,]+/",$tempBody);
+	for($i=0;$i<$numWords;$i++) {
+		$body .= $bodyArray[$i] . " ";
+	}
+	
+	$body = utf8_encode($body);
+	$result['title']=utf8_encode($result['title']);
+?>
+
+     <item>
+        <title><![CDATA[<?=mswordReplaceSpecialChars($result['title']); ?>]]></title>
+		<description><![CDATA[<?=$body?>]]></description>
+         <guid><?=$HTPFX.$HTHOST.makeArticleslink($result['id'],$result['keyword'],$result['blurb'],"");?></guid>
+		<link><?=$HTPFX.$HTHOST.makeArticleslink($result['id'],$result['keyword'],$result['blurb'],"").$urlPostFix;?></link>
+		<author><?=$result['author']; ?></author> 
+        <pubDate><?=date('D, j M Y H:i:s',strtotime($result['publish_date'])) ?> EDT</pubDate>
+     </item>
+<?
+	$body = "";
+	}
+?>
+
+</channel>
+</rss>

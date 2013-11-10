@@ -1,0 +1,250 @@
+<?
+global $is_ssl,$D_R,$IMG_SERVER;
+include_once($D_R."/lib/layout_functions.php");
+include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
+include_once($D_R."/lib/MemCache.php");
+include_once($D_R."/lib/config/_article_config.php");
+$pageName="dailyfeed_emailalert";
+$objDailyfeed= new Dailyfeed();
+global $HTPFX,$HTHOST,$cm8_ads_Leaderboard, $$cm8_ads_MediumRectangle;
+$objMemcache= new Cache();
+$bannername1=$cm8_ads_MediumRectangle;
+
+$bannername2=$cm8_ads_1x1_Text;
+$UNSUB=1;
+$SECTION="digest";
+$datestr="%m/%d/%Y";
+
+$get_feed_date = date("Ymd");
+
+$feed_mail_date = date('F j, Y',strtotime($get_feed_date));
+
+$view_online_link = $HTNOSSLDOMAIN."/assets/data/".$get_feed_date."_df_digest.eml";
+
+$title = "The MV Premium - ".$feed_mail_date;
+
+$qry = "SELECT DF.id,DF.title,DF.body,DF.title_link,DF.creation_date,DF.publish_date,DF.contrib_id,DF.updation_date,C.name
+FROM daily_feed DF LEFT JOIN
+contributors C ON (C.id=DF.contrib_id) WHERE DF.is_approved='1' AND DF.is_deleted='0' AND DF.is_live='1' and DATE_FORMAT(DF.publish_date,'$datestr') = DATE_FORMAT('".mysqlNow()."','$datestr') ORDER BY DF.publish_date desc,DF.creation_date DESC";
+
+$stQuery = "SELECT id,title,body,source,source_link,title_link,creation_date,updation_date from daily_feed where is_live='1' AND is_approved='1' and is_deleted='0' order by publish_date desc,creation_date desc limit 5,5";
+
+$sqlMostViewded = "select article_recent.id, article_recent.title,article_recent.keyword,article_recent.blurb,article_recent.total from article_recent order by total desc limit 5";
+$resultMostViewed = exec_query($sqlMostViewded);
+
+if(!$resultMostViewed){
+	$sqlMostViewded = "SELECT articles.id, articles.title,articles.keyword,articles.blurb
+	FROM articles WHERE articles.approved='1' AND articles.is_live='1' ORDER BY id DESC LIMIT 5";
+	$resultMostViewed = exec_query($sqlMostViewded);
+}
+
+$arrMostViewedArt = $resultMostViewed;
+?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?= $title?></title>
+<style type="text/css">
+body{margin:0px;}
+</style>
+<? show_adds_checkmate($pageName); ?>
+</head>
+<body>
+<SCRIPT language="JavaScript" src="http://minyanvilledigital.checkm8.com/adam/cm8adam_1_call.js"></SCRIPT>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td>
+    <table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+       <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+        <tr><td style="font-size:10px;font-family:Arial, Helvetica, sans-serif;">Don't miss our emails! <a style="font-size:10px;font-family:Arial, Helvetica, sans-serif;" href="<?=$HTNOSSLDOMAIN?>/gazette/addressbook.htm" target="_blank">Add support@minyanville.com to your address book.</a></td></tr>
+        <tr><td height="18" style="font-size:10px;font-family:Arial, Helvetica, sans-serif;">Having trouble with this message? <a href="<?=$view_online_link?>" target="_blank" style="font-size:10px;font-family:Arial, Helvetica, sans-serif;">View it online.</a></td></tr>
+          <tr>
+            <td width=70%><a href="<?=$HTNOSSLDOMAIN?>/dailyfeed/"><img src="<?=$IMG_SERVER;?>/images/DailyFeed/premium_email_banner.jpg" width="560" height="58" usemap="#Map" border=0/></a><map name="Map" id="Map"><area shape="rect" coords="287,31,331,50" href="<?=$HTNOSSLDOMAIN?>/rss/dailyfeed.rss" /><area shape="rect" coords="333,30,528,50" href="<?=$HTNOSSLDOMAIN?>/dailyfeed/" /></map></td>
+            <td width=30% align="center" valign="top"><a href="<?=$HTNOSSLDOMAIN?>" target="_blank"><img src="<?=$IMG_SERVER;?>/images/DailyFeed/dailyfeed_mv_logo.jpg" width="168" height="58" border="0"></a></td>
+          </tr>
+          <tr>
+		   <td colspan=2>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+				   <tr><td valign="top" width="10%"><img src="<?=$IMG_SERVER;?>/images/DailyFeed/dailyfeed_header_bottom.jpg" width="45" height="15" /></td>
+				   <td align="left" width="30%">
+				   <span valign="top" style="font-size:16px;font-style:italic;color:#66a146;font-weight:bold;float:left;valign:top;">
+			  <?=$feed_mail_date;?></span>
+			  </td>
+			  <td align="right" valign="top" style="padding-right:2px;">
+			  	 <img src="<?=$IMG_SERVER;?>/images/DailyFeed/dailyfeed_forward_.jpg" width="368" height="21" border="0" usemap="#Map3"><map name="Map3" id="Map3"><area shape="rect" coords="217,4,362,21" href="<?=$HTNOSSLDOMAIN?>/share/daily_feed_email.htm?feed_date=<?=$get_feed_date?>" target="_blank"></map>
+			  </td><td width="20%" align="right"><a href="<?=$HTNOSSLDOMAIN?>" target="_blank"><img src="<?=$IMG_SERVER;?>/images/DailyFeed/dailyfeed_mv.jpg" width="168" height="21" border="0"></a></td></tr>
+			</table></td></tr>
+       </table></td>
+      </tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr><td><?=show_cm8_noscript_ad($pageName,$cm8_ads_Leaderboard,NULL);?></td></tr>
+      <tr>
+        <td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr><td>
+
+        <table width="100%" border="0" cellspacing="4" cellpadding="0">
+
+          <tr>
+            <td>
+			<?
+            $tracking_parm = "?utm_campaign=Newsletter&utm_medium=".urlencode("The MV Premium")."&utm_source=".date('Ymd');
+            foreach(exec_query($qry) as $row){
+			$row['body'] = substr(strip_tags(preg_replace('/<br \/?>/',' ',$row['body'])),0,350);
+			$urltitle=$objDailyfeed->getDailyFeedUrl($row['id']);
+            $urltitle.=$tracking_parm;
+			 $date="";
+			if($row['publish_date'] && $row['publish_date']!=="0000-00-00 00:00:00"){
+				$date=date('g:i A',strtotime($row['creation_date']));
+			}else{
+			    $date=date('g:i A',strtotime($row['creation_date']));
+			}
+
+			?>
+
+
+			<!-- START NEWS ITEM -->
+
+			<table width=100% border=0 cellpadding="0" cellspacing="0">
+			<tr>
+			<td valign="top">
+			<a style="font-family:Arial, Helvetica, sans-serif;background-repeat:no-repeat;margin:0px;font-size:18px;line-height:24px;color:#2b5614;font-weight:bold;text-decoration:none;" href="<?=$HTNOSSLDOMAIN.$urltitle?>" target="_blank">
+			<span><?=$row[title]?></span></a>
+			</td></tr>
+
+			<tr><td>
+			<span style="font-family:Arial, Helvetica, sans-serif;font-size:10px;line-height:15px;color:#494949;">By <a style="font-size:11px;color:#494949;font-style:italic;text-decoration:underline;text-transform:uppercase;" target="_blank" href="<?=$HTNOSSLDOMAIN.'/gazette/bios.htm?bio='.$row['contrib_id']?>"><?=$row['name']?></a>&nbsp;&nbsp;Posted at&nbsp;<?=$date;?></span>
+			</td></tr>
+
+			<tr><td>
+			<span style="font-family:Arial, Helvetica, sans-serif;float:left;font-size:11px;line-height:18px;clear:both;padding-top:10px;"><?=$objMemcache->replaceBlankArticleAd($row['body']); ?>...</span>
+			</td></tr>
+
+			<tr><td>
+			<span style="line-height:38px;"><a target="_blank" href="<?=$HTNOSSLDOMAIN.$urltitle?>" style="text-decoration:none;">
+			<span style="font:11px Arial, sans-serif;color:#00385d">READ MORE</span></a>
+			</td></tr>
+
+			<tr><td><hr></td></tr>
+
+			</table>
+
+
+			<!-- END NEWS ITEM -->
+
+			<?}?>
+
+
+			</td>
+			<td valign="top" width="300px">
+			<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+            	<td style="padding-bottom:10px;">
+                <table border="0">
+                <tr>
+                <td>
+                <a target="_blank" href="http://www.facebook.com/MinyanvilleMedia"><img border="0" src="<?=$IMG_SERVER;?>/images/facebook.png" title="Become a fan on facebook" /></a>     </td>
+                <td> <a target="_blank" href="https://twitter.com/Minyanville"><img border="0" src="<?=$IMG_SERVER;?>/images/twitter.png" title="Follow us on twitter" /></a></td>
+                <td>       <a target="_blank" href="http://www.youtube.com/user/Minyanville"><img border="0" src="<?=$IMG_SERVER;?>/images/youtube_icon.png" title="Subscribe to our channel" /></a>
+         </td>
+                </tr>
+                </table>
+                </td>
+            </tr>
+           <!--  <tr>
+			   <td style="padding-bottom:10px;">
+				<? show_cm8_noscript_ad($pageName,$bannername1,""); ?>
+				</td>
+			</tr> -->
+            <tr>
+			 <td>
+			 <table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="border:solid 1px #A5A5A5">
+			 <tr><td background="<?=$IMG_SERVER;?>/images/DailyFeed/right_common_main_green_bg.jpg" style="text-align:center;background-repeat:repeat-x;clear:both;height:28px;">
+			   <img src="<?=$IMG_SERVER?>/images/DailyFeed/whatpopin_green.jpg"  alt="What's popular in the ville" align="left"/>
+			 </td></tr>
+			 <tr><td><ol>
+				<?
+				foreach($arrMostViewedArt as $row)
+						{
+							$article_link = $HTPFX.$HTHOST.makeArticleslink($row['id']).$tracking_parm;
+
+
+
+							echo '<li style="font-family: Arial, Helvetica, sans-serif;color:#2b5614;font-size:12px;padding-right:5px;padding-top:10px;text-decoration:none;">
+							<a style="font-family: Arial, Helvetica, sans-serif;color:#2b5614;font-size:12px;padding-right:5px;padding-top:10px;text-decoration:none;" href="'.$article_link.'" target="_blank">'.$row['title'].'</a></li>'."\n";
+        }
+        ?>
+        </ol></td></tr>
+		<tr><td>
+			<table align=center width="93%" cellspacing="0" cellpadding="0" border="0">
+					  <tr>
+						<td align=right height=45 style="border-top:1px solid #A5A5A5;" width=35%><a href="<?=$HTNOSSLDOMAIN?>/articles/articlelisting.htm"><img height="34" width="36" alt="" src="<?=$IMG_SERVER?>/assets/FCK_Aug2007/Image/mv_dailylink_calendar.gif" border="0"/></a>&nbsp;&nbsp;</td>
+						<td align=left style="font-size:11px; font-family:Arial, Helvetica, sans-serif;border-top:1px solid #A5A5A5;"><b><a style="color:#2b5614; "href="<?=$HTNOSSLDOMAIN?>/articles/articlelisting.htm">Daily Article Index&nbsp;</a></b>&raquo;</td>
+					</tr>
+			</table>
+		 </td></tr>
+
+ </table>
+			 </td>
+			</tr>
+			<tr>
+			<td style="padding-top:10px;">
+					<? show_cm8_noscript_ad($pageName,$bannername1,""); ?>
+			</td>
+			</tr>
+
+
+        </table></td>
+      </tr>
+
+	<tr>
+		<td colspan=2>
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<? foreach(exec_query($stQuery) as $row_summary){
+			$urltitle=$objDailyfeed->getDailyFeedUrl($row_summary['id']).$tracking_parm;
+		?>
+		<tr><td>
+			<a style="font-family:Arial, Helvetica, sans-serif;background-repeat:no-repeat;margin:0px;font-size:14px;line-height:24px;color:#2b5614;font-weight:bold;text-decoration:none;" href="<?=$HTNOSSLDOMAIN.$urltitle?>" target="_blank"><?=$row_summary['title'];?></a>&nbsp;&nbsp;&nbsp;<span style="line-height:25px;"><a href="<?=$HTNOSSLDOMAIN.$urltitle?>" style="text-decoration:none;"><span style="font:11px Arial, sans-serif;color:#00385d" target="_blank">READ MORE</span>
+		</td></tr>
+		<? } ?>
+		</table>
+		</td>
+		</tr>
+		<tr>
+			  	  	<td colspan=2 style="height:15px;"></td>
+	  </tr>
+		<tr><td colspan=2 align="center"><a href="<?=$HTNOSSLDOMAIN?>/dailyfeed/">
+		<img src="<?=$IMG_SERVER;?>/images/DailyFeed/df_newsletter_mv_footer.jpg" width="673" height="39" border="0" usemap="#Map1" /></a>
+		<map name="Map1" id="Map"><area shape="rect" coords="552,11,661,31" href="<?=$HTNOSSLDOMAIN?>/dailyfeed/" /></map>
+		</td></tr>
+	  <tr>
+	  	<td colspan=2 style="height:5px;"></td>
+	  </tr>
+	  <tr><td colspan=2 align="center"><a href="<?=$HTNOSSLDOMAIN?>/share/daily_feed_email.htm?feed_date=<?=$get_feed_date?>" target="_blank" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-weight:bold;color: #3c6928;text-decoration:underline;text-transform:uppercase;">click here to forward this email</a>
+	  </td></tr>
+	  <tr>
+					<td colspan="2" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/" target="_new">About Us</a></p>
+					  </div></center></td>
+		</tr>
+				<tr>
+						<td >&nbsp;</td>
+		</tr>
+    </table></td>
+  </tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$is_ssl,$tracking_name['_eml_email_alert']);
+$profileid=1;
+googleanalytics($profileid,$is_ssl,$tracking_name['_eml_email_alert']);
+*/
+?>
+</body>
+</html>

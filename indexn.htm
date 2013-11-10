@@ -1,0 +1,129 @@
+<?php
+session_start();
+//CheckMobile('','');
+global $D_R,$HTHOST,$HTPFX,$HTPFXSSL,$IMG_SERVER,$articleListingHomePageSize,$objCache,$showFancybox,$mobile_itemID,$mobile_itemType;
+$pageName='home';
+$page_code = 'index.htm';
+$preview=$_GET['preview'];
+$mobile_itemType="";
+$mobile_itemID="";
+global $is_ssl;
+global $cm8_ads_1x1_Text,$cm8_ads_MicroBar;
+$bannername=$cm8_ads_1x1_Text;
+$bannermicro=$cm8_ads_MicroBar;
+$bannernameMR="MediumRectangle_300x250_300x600_bottom";
+$noDefaultLoad=TRUE;
+$pageJS=array('config','dailyfeed','jquery','global','featuredslider','mobileredirect','emailalert','Articles','stickycontent','sticky','stickyscroller','getset','fancybox','mailchimp','modernizr');
+$pageCSS=array("global","layout","nav","codaslider","fontStylesheet","homepage","rightColumn","fancybox","mailchimp","sub_homepage");
+$objCache = new Cache();
+
+include_once($D_R."/lib/mailchipapi/mailchimp_design_lib.php");
+include_once($D_R."/lib/config/_mailchimp_config.php");
+include_once($D_R."/lib/config/_article_config.php");
+include_once($D_R."/lib/_homepage_design.php");
+include_once($D_R."/lib/mailchipapi/mailchimp_data_lib.php");
+$objMailChimp= new mailChimp();
+$objHPDesign = new homeDesign();
+
+include("_header.htm");
+
+if($_SESSION['email']) {
+
+	?>
+<script>
+$j(document).ready(function() {
+	$j("#emailAddress").attr("value", "<? echo $_SESSION['email']; ?>");
+});
+</script>
+	<?php } ?>
+<!-- end feature-container -->
+
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+<div id="homepage-top">
+        <div id="feature-container">
+          <?php
+          if(isset($_SESSION['AdsFree']))
+          {
+          	echo $objCache->getFeaturedSliderNoAd();
+          }
+          else
+          {
+            //$exp_time = time(23,0,0,date('m'),date('j'),date('Y'));
+            if(!isset($_COOKIE['slider_ad_frequency_cap']) || $_COOKIE['slider_ad_frequency_cap'] > $_COOKIE['slider_ad_viewed'])
+            {
+            	echo $objCache->getFeaturedSlider();
+                    }
+                    else
+                    {
+                echo $objCache->getFeaturedSliderNoAd();
+                    }
+                }
+
+		  ?>
+          <script type="text/javascript">
+				_xMainFeature.init('main-feature','655');
+				var slider_ad_frequency = jQuery('#slider_ad_frequency').val();
+				if(slider_ad_frequency >0)
+				{
+					if(getCookie('slider_ad_frequency_cap') == null)
+					{
+						setCookie("slider_ad_frequency_cap",slider_ad_frequency,'midnight');
+					}
+					var viewed_cookie_count = 	getCookie('slider_ad_viewed')
+					if(viewed_cookie_count == null)
+					{
+						viewed_cookie_count = 1;
+					}
+					else
+					{
+						viewed_cookie_count = parseInt(viewed_cookie_count)+1;
+					}
+					setCookie("slider_ad_viewed",viewed_cookie_count,'midnight');
+          		}
+            </script>
+	</div>
+        <?php
+			$objHPDesign->homeNewsletter();
+		?>
+       <!-- <div class="wercmmnd_section"> <?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Recommend'); ?> </div> -->
+        <div class="top-module-article" id="all-articles-module">
+          <?php
+			$objHPDesign->homeAllArticles();
+			?>
+	</div>
+		 <div id="daily-feed-module" class="top-module-df">
+          <div class="hpBorder" id="hpBuzz"><?php echo $objCache->getPageModules($pageDetail['id'],'Home Buzz Banter'); ?></div>
+          <script>
+			var pageId="<?=$pageDetail['id']?>";
+          setInterval("realHpBuzz(pageId,'Home Buzz Banter')",60000);</script>
+          <?php echo $objCache->getPageModules($pageDetail['id'],'Home Edu'); ?>
+           <div class="hpBorder"><?php echo $objCache->getPageModules($pageDetail['id'],'Home Daily Feed'); ?></div>
+		</div>
+</div>
+      <!-- end homepage-top -->
+      <?php $objHPDesign->homeProducts();?>
+<!-- end homepage-middle -->
+<div id="homepage-bottom">
+        <div class="homepage-bottom-module">
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 1') ?></div>
+		  <div class="ltBtmPanel-btmDiv"></div>
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 2') ?></div>
+        </div> <!--left end -->
+        <div class="hompg-rght-module">
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 3') ?></div>
+		  <div class="ltBtmPanel-btmDiv"></div>
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 4') ?></div>
+        </div><!--right end -->
+</div>
+      <!-- end homepage-bottom -->
+    </div>
+    <?php
+$arrRightCols	=	array('trading_calendar','show_300x250','daily_recap_module','show_mostpopular','show_300x100','ticker_widget','financial_product_guide','sponsoredlinks','recommendation','twitterWidget','show_MediumRectangle_300x250','show_ads');
+include("_rightcolumn.htm"); ?>
+  </div>
+  <!--Content contaner end here-->
+</div>
+<!-- shadow end -->
+<?php include("_footer.htm"); ?>

@@ -1,0 +1,29 @@
+<?
+csv_header();
+$report="SELECT s.*, s.id subid, FROM_UNIXTIME(s.date,'%m/%d/%Y') date,
+		FROM_UNIXTIME(s.modified,'%m/%d/%Y') modified,
+		b.address1 baddress1, b.address2 baddress2, b.city bcity, b.state bstate ,b.zip bzip,
+		b.country bcounry,sa.country scountry,
+		sa.address1 saddress1, sa.address2 saddress2, sa.city scity, sa.state sstate ,
+		sa.zip szip,
+		cc.type cctype,cc.num ccnum , cc.expiry ccexpiry, cc.code cccode,c.fulfilled,
+		sk.key1, sk.key2
+	FROM subscription s
+		LEFT JOIN addr_billing b on(b.user_id=s.id)
+	    LEFT JOIN addr_shipping sa on(sa.user_id=s.id)
+	 	LEFT JOIN subscription_keys sk on(sk.user_id=s.id)
+		LEFT JOIN cc on (cc.user_id=s.id)
+		LEFT JOIN comments c on (c.user_id=s.id)";
+foreach(exec_query($report) as $i=>$row){
+	if($cc=$row[cc_num]){
+		$row[cc_num]=implode(" ",sscanf($cc,"%4s%4s%4s%10s"));
+	}
+	if(!$i){
+		echo uc('"'.implode('","',array_keys($row))."\"\n");
+	}
+	$echo=array();
+	$row[fulfilled]=intval($row[fulfilled]);
+	foreach($row as $k=>$v){ $echo[]='"'.$v.'"';  }
+	echo implode(",",$echo)."\n";
+}
+?>

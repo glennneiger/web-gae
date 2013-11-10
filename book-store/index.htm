@@ -1,0 +1,61 @@
+<?php
+global $D_R;
+session_start();
+$pageName = "toodbook";
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","nav","toddbook");
+
+include($D_R."/_header.htm");
+global $HTPFXSSL,$HTHOST;
+
+?>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher:'c33749e3-a8dd-48d6-af73-7568c530a7f8',onhover: false});</script>
+
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+
+	<!-- Body content will display here -->
+        <div class="productdetails-area">
+        	<div class="box-prdct">
+           <!-- <iframe src="http://astore.amazon.com/minymediinc_buyhedge-20/detail/0132825244" width="100%" height="2650" frameborder="0" scrolling="no"></iframe> -->
+	  <iframe src="http://astore.amazon.com/minymediinc_moodsmarkets-20/detail/0132947218" width="100%" height="2500" frameborder="0" scrolling="no"></iframe>
+
+            </div>
+            <div class="right-box">
+                <div class="box-shrbuks">
+                    <h2>Share this Book with Friends</h2>
+                    <div id="share_tweet" class="st_twitter_vcount" displayText="Tweet"></div>
+                    <div id="share_fb" class="st_facebook_vcount" displayText="Share"></div>
+                    <div id="share_email" class="st_email_vcount" displayText="Email"></div>
+                    <div id="share_this" class="st_sharethis_vcount" displayText="Share"></div>
+
+                    <div class="featuredarea">
+                        <h2>Featured Author:<br /> Peter Atwater</h2>
+                        <div class="author_area">
+                        <div class="athrsnap">
+                            <a href="http://www.amazon.com/Peter-Atwater/e/B008E7XPJE/ref=sr_ntt_srch_lnk_1?qid=1344227387&sr=8-1" target="_blank"><img src="<?=$IMG_SERVER?>/images/toddbook/Peter_Atwater.png"  align="left" alt=""  /></a>
+                        </div><!--auther snap end -->
+                        <div class="authrarea"><strong class="nametxt">Peter Atwater</strong><br />He is the president of Financial Insyghts, a consulting firm that advises institutional investors, corporations and public policymakers on issues affecting the financial services industry and how social mood affects decision making and ...<br /><a href="<?=$HTPFXSSL.$HTHOST?>/gazette/bios.htm?bio=106" target="_blank">Read more</a></div>
+                    	</div>
+                         <div class="author_area">
+                         <a href="http://itunes.apple.com/us/book/moods-markets-new-way-to-invest/id542656231?mt=11" target="_blank"><img src="<?=$IMG_SERVER?>/images/toddbook/iBookstore.gif" align="left" alt="Available on iBook Store" style="padding-right:20px;"  /></a>
+                         <a href="http://www.amazon.com/Moods-Markets-Invest-Times-Minyanville/dp/0132947218/" target="_blank"><img src="<?=$IMG_SERVER?>/images/toddbook/amazon-01.png" align="left" alt="Read more"  /></a>
+                         <!--Read More from <a href="http://www.buyandhedge.com/" target="_blank">Jay and Wayne's "Buy and Hedge" Blog Here</a>-->
+                         </div>
+	    		 <div class="author_area">
+				<a href="http://www.barnesandnoble.com/w/moods-and-markets-peter-atwater/1110769376?ean=9780132947213" target="_blank"><img src="<?=$IMG_SERVER?>/images/toddbook/button_barnes.jpg" align="left" alt="Read more"  /></a>
+			 </div>
+                    </div>
+                </div><!--Share Book end -->
+                <div class="widget">
+                <SCRIPT charset="utf-8" type="text/javascript" src="http://ws.amazon.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822/US/minymediinc-20/8001/35aa2f1d-6f6c-4f58-8aa2-42de1f01f18c"> </SCRIPT> <NOSCRIPT><A HREF="http://ws.amazon.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fminymediinc-20%2F8001%2F35aa2f1d-6f6c-4f58-8aa2-42de1f01f18c&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
+                </div>
+                <div class="widget">
+                <SCRIPT charset="utf-8" type="text/javascript" src="http://ws.amazon.com/widgets/q?ServiceVersion=20070822&MarketPlace=US&ID=V20070822/US/minymediinc-20/8001/c5ffb050-3567-4db6-8c83-004323da884d"> </SCRIPT> <NOSCRIPT><A HREF="http://ws.amazon.com/widgets/q?ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fminymediinc-20%2F8001%2Fc5ffb050-3567-4db6-8c83-004323da884d&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
+                </div>
+            </div>
+        </div><!--product details end -->
+</div>
+</div>
+<? include($D_R."/_footer.htm"); ?>

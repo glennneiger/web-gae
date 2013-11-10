@@ -1,0 +1,90 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Minyanville Subscriptions</title>
+<?php include_once("$D_R/_minyanville_header.htm"); 
+
+$fname = (isset($_REQUEST['fname']))? trim($_REQUEST['fname']):'';
+$lname = (isset($_REQUEST['lname']))?trim($_REQUEST['lname']):'';
+$email= (isset($_REQUEST['email']))? trim($_REQUEST['email']):'';
+$pcode = (isset($_REQUEST['pcode']))? trim($_REQUEST['pcode']):'';
+ 
+if(!preg_match('/^[a-zA-Z]+$/',$fname)){$fname ='';}
+if(!preg_match('/^[a-zA-Z]+$/',$lname)){$lname ='';}
+if(!preg_match('/^[A-Za-z0-9\.|-|_]*[@]{1}[A-Za-z0-9\.|-|_]*[.]{1}[a-z]{2,5}$/', $email))  {$email ='';}
+if(!preg_match('/^(\w)+$/', $pcode))  {$pcode ='';}
+?>
+<link href="<?=$HTPFX.$HTHOST?>/css/scottrade.css" rel="stylesheet" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/registration_ajax_1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/scottrade.1.3.js" type="text/javascript"></script>
+</head>
+
+<body >
+<div align="center">
+<div  class="landing_main">
+<div id="main_box" >
+<h1>Below is a quick registration form to get you started.</h1>
+<table border="0" cellpadding="0" cellspacing="5">
+<tr>
+				<td colspan="2" align="center"><span id="statusmsgstep1" class="erordiv"></span></td>
+				
+			</tr>
+			<tr>
+				<td align="right">First Name:</td>
+				<td><?php input_wordsonly("firstname","$fname",20,255,"onKeyPress=get_register_key_Scott(event); tabindex=211"); ?></td>
+			</tr>
+			<tr>
+				<td align="right">Last Name:</td>
+				<td><?php input_wordsonly("lastname","$lname",20,255," onKeyPress=get_register_key_Scott(event); TABINDEX=212"); ?></td>
+			</tr>
+			<tr>
+				<td align="right">Email Address (username):</td>
+				<td><?php input_text("viauserid","$email",20,0,"onKeyPress=get_register_key_Scott(event); TABINDEX=213"); ?></td>
+			</tr>
+			<tr>
+				<td align="right">Password:</td>
+				<td><?php input_pass("viapass","",20,255,"onKeyPress=get_register_key_Scott(event); TABINDEX=214"); ?></td>
+			</tr>
+			<tr>
+				<td align="right">Promo Code:</td>
+				<td><?php input_text("promocode","$pcode",20,255,"onKeyPress=get_register_key_Scott(event); TABINDEX=215"); ?></td>
+			</tr>			
+			<tr bgcolor="#FFFDDD">
+				<td  align="right"><b>Products</b></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><?php input_check("BuzzST",0," align=left TABINDEX=216"); ?> Buzz & Banter </td>
+				<td><?php input_check("CooperST",0," TABINDEX=217"); ?> Cooper </td>
+			</tr>			
+			<tr>
+				<td><?php input_check("OptionST",0," TABINDEX=218"); ?> Option Smith </td>
+				<td><?php input_check("FlexFolioST",0," TABINDEX=219"); ?> FlexFolio </td>
+			</tr>			
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php input_check("JackST",0," TABINDEX=220"); ?> Jack </td>
+			</tr>	
+			<tr>
+				<td colspan="2" align="center"><span>
+  <img tabindex="219" onKeyPress="get_register_key_Scott(event);" style="cursor:pointer;" src="<?=$HTPFX.$HTHOST?>/images/redesign/submit.jpg" onclick="javascript:validate_softtrials('statusmsgstep1');" /></span></td>
+			</tr>			
+</table>
+		
+
+</div>
+</div>
+
+
+</div>
+<?php 
+//include("../../_minyanville_right.htm");
+include("$D_R/_minyanville_footer.htm"); 
+?>
+</body>
+</html>

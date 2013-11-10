@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<sitemap>
+<loc>http://www.minyanville.com/manual_sitemap.xml</loc>
+</sitemap>
+<sitemap>
+<loc>http://www.minyanville.com/markets_sitemap.xml</loc>
+</sitemap>
+<sitemap>
+<loc>http://www.minyanville.com/business_news_sitemap.xml</loc>
+</sitemap>
+<sitemap>
+<loc>http://www.minyanville.com/investing_sitemap.xml</loc>
+</sitemap>
+<sitemap>
+<loc>http://www.minyanville.com/trading_and_investing_sitemap.xml</loc>
+</sitemap>
+<sitemap>
+<loc>http://www.minyanville.com/sectors_sitemap.xml</loc>
+</sitemap>
+<sitemap>
+<loc>http://www.minyanville.com/special_features_sitemap.xml</loc>
+</sitemap>
+<sitemap>
+<loc>http://www.minyanville.com/daily_feed_sitemap.xml</loc>
+</sitemap>
+</sitemapindex>

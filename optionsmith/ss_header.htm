@@ -1,0 +1,33 @@
+<?php
+$USER=new user();
+$loginid = $USER->id;
+include_once("$D_R/lib/ss/_news.php");
+$getresult=getOptionsSmithname();
+$contribid =$getresult['id'];
+$oid = obejctid('ss_alert');
+$width = "Width:100%;";
+   $hm ='';$op ='';$cl ='';$sa ='';$sav ='';
+   switch ($pageName){
+      case 'sshome':
+      	$hm = "selected";
+		$width = "Width:654px;";
+        break;
+      case 'openpositions':
+         $op = "selected";
+         break;
+      case 'closepositions':
+        $cl = "selected";
+         break;
+      case 'search_alerts':
+        $sa = "selected";
+        break;
+    }
+?> 
+<div class="option_smith" style="<?=$width?>" >
+    <ul>
+    <li> <a href="<?=$page_config['sshome']['URL']?>" class="<?=$hm?>">home</a></li>
+    <li><a href="<?=$page_config['openpositions']['URL']?>" class="<?=$op?>">open positions</a></li>
+	<li><a href="<?=$page_config['closepositions']['URL']?>" class="<?=$cl?>">closed positions</a></li>
+	<li ><a href="<?=$HTPFX.$HTHOST?>/library/search.htm?contrib_id=<?=$contribid?>&frm=sshome&oid=<?=$oid ?>" class="<?=$sa?>">alert archive</a></li>
+    </ul>
+</div>

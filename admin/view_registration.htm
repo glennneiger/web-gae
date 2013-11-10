@@ -1,0 +1,235 @@
+<?
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("view_registration")){
+	admin_error();
+}
+$pageName="registration_detail";
+$p=$_GET['p'];
+build_lang($pageName);
+$search_param=trim(lc($search_param));
+if(!$pagesize)$pagesize=40;
+
+$qry="SELECT SQL_CALC_FOUND_ROWS n.id ID, DATE_FORMAT(n.date,'%m/%d/%Y') 'Created', n.email 'MemberID', n.firstname 'FirstName', n.lastname 'LastName',concat(n.address1,n.address2) 'address',n.city,n.state,n.zipcode,n.country,n.phone,n.product_id,n.last_step_performed FROM new_registeration n ";
+
+if($search_on)
+{
+	$qry.= " where instr(lower($search_by),lower('$search_param'))";
+}
+
+if($_GET['d']!='')
+{
+	$ordr	=trim($_GET['d']);
+}
+else
+{
+	$ordr	='DESC';
+}
+
+if($_GET['s']!='')
+{
+	$column	=	trim($_GET['s']);
+}
+else
+{
+	$column	=	'ID';
+}
+$qry.=" ORDER BY $column $ordr";
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+
+
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($_SERVER['PHP_SELF'].qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+$pagedata=exec_query($qry);
+
+//$numrows=exec_query("SELECT FOUND_ROWS()c",1,"c");
+/*$numrows=count($pagedata);
+echo $numpages=ceil($numrows/$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}*/
+//echo $pagination;
+$searchtypes=array(
+	"n.firstname"=>"First Name",
+	"n.lastname"=>"Last Name",
+	"n.email"=>"Email",
+	"n.address"=>"Address",
+	"n.city"=>"City",
+	"n.state"=>"State",
+	"n.zipcode"=>"Zip Code",
+);
+
+?>
+<style>
+.whilite a:hover{color:#fff;}
+.smbutton{
+	height:14px;
+ 	padding:0px;
+	font-size:9px;
+
+}
+</style>
+<div id="dhtmltooltip"></div>
+<script type="text/javascript" language="JavaScript" src="toolTiphome.js"></script>
+<script language="javascript">
+function validFunc()
+{
+	if(document.getElementById('search_on').checked == true)
+	{
+		if(document.getElementById('search_param').value == '')
+		{
+			alert("Enter the string for search!!!");
+			return false;
+		}
+	}
+	return true;
+}
+
+function removeSubs(leadid){
+	var msg="Are you sure you want to remove this lead? The action cannot be undone";
+	if(confirm(msg)){
+		location.replace("regleads.remove.htm?refer=<?=refer(1)?>&id="+leadid);
+	}
+}
+</script>
+<link href="tooltip.css" type="text/css" rel="stylesheet">
+<div class=adminheader>View Registrations Detail</div><br />
+<? if(!$_GET['msg']){
+	$error=$_GET['error'];
+}else{
+	$error=$_GET['msg'];
+}?>
+<div style="color:#FF0000;"><?=$error;?></div>
+<table border="0" width="900px" align=center>
+<tr><td>
+<table border="0" width="100%" bgcolor=#cccccc align=center>
+<TR>
+<TD colspan=4> <b>Search Filters</b></TD>
+</TR>
+<form method="POST" action="<?=$PHP_SELF?>">
+<?input_hidden("s");input_hidden("pagesize")?>
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" id='search_on' name="search_on"<?=($search_on?" checked":"")?>></td>
+<TD width=80% nowrap><span class=small>Show Registration where: </span><br>
+	<select name="search_by">
+	<?selectHash($searchtypes,$search_by)?>
+	</select> contains <?input_text("search_param")?>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of records to show at a time is : <b><?=trim($pagesize);?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Search" name="search" onclick="return validFunc();">
+</TD>
+<TD align=center>
+		<b>Results: <?=ceil(num_rows($qry));?></b>
+</TD>
+</TR>
+<TR>
+<td colspan="3"><b>Summary of Users</b></td>
+</TR>
+</form>
+</table>
+</td></tr>
+<tr><td>
+<table border="1" width="100%" align=center>
+<TR align=center bgcolor=#bbbbbb>
+<?if(count($pagedata)){
+	$hidecolumn=array('remember_me','alerts','address','city','state','zipcode','country','phone','product_id','last_step_performed');
+
+	foreach(array_keys($pagedata[0]) as $col){
+		if(!in_array($col,$hidecolumn))
+		{
+		$colcolor=($_POST[s]==$col?"#8da9e6":"");
+	?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><?=href($PHP_SELF.qsa(array(s=>$col,d=>($d=="ASC"?"DESC":"ASC"))),$col)?></TD>
+	<?}}?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Phone</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Address</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>City</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>State</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Zipcode</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Country</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Products</strong></TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><strong>Last Completed Step</strong></TD>
+	</TR>
+	<?foreach($pagedata as $row){
+		$rowcolor=$i%2?"dddddd":"eeeeee";
+
+	?>
+		<TR bgcolor="<?=$rowcolor?>">
+		<?foreach($row as $k=>$v){
+			if(!in_array($k,$hidecolumn))
+			{
+				$colcolor=($_POST[s]==$k?"#8da9e6":"");
+		?>	<TD bgcolor="<?=$colcolor?>"><?=$v?></TD>
+
+		<?}} ?>
+		<td><?=$row['phone']?></td>
+		<td><?=$row['address']?></td>
+		<td><?=$row['city']?></td>
+		<td><?=$row['state']?></td>
+		<td><?=$row['zipcode']?></td>
+		<td><?=$row['country']?></td>
+		<?php
+		$exp_prod	=	 explode(",",$row['product_id']);
+		$strProd	=	'';
+		foreach($exp_prod as $key=>$value)
+		{
+			 $qryproduct="select product from product where subscription_def_id='".$value."'";
+			$getproduct=exec_query($qryproduct,1);
+			 $strProd	=	$getproduct['product'].",".$strProd;
+		}
+		 $strProd	=	substr($strProd,0,-1);
+		?>
+		<td><?=$strProd?></td>
+		<td><?=$row['last_step_performed']?></td>
+		<td><input type="button" onclick="removeSubs('<?=$row[ID]?>')" class="smbutton" value="x" title="Remove this lead"></td>
+		<? } }else{//!count($pagedata)?>
+	<TR>
+	<TD colspan=100>Nothing found.<br>
+	<?=mysql_error()?>
+	</TD>
+</TR>
+<?}?>
+<? if($pagination) { ?>
+<TR>
+<TD colspan=100 align=center>
+<hr />
+<?=$pagination?>
+<hr />
+</TD>
+</TR>
+<?php } ?>
+</table>
+</td></tr>
+</table>
+<?php
+if($search_on)
+{
+	$url	= "registration.export.htm/?offset=$offset&pagesize=$pagesize&search_by=$search_by&search_param=$search_param";
+}
+else
+{
+	$url = "registration.export.htm/?offset=$offset&pagesize=$pagesize";
+}
+$url	=	$url."&column=$column&ordr=$ordr";
+?>
+<?php
+if(ceil(num_rows($qry))>0)
+{
+?>
+<a href="<?=$url?>">Download Excel Spreadsheet of this data</a>
+<?php } ?>
+<br><br>
+<?include("$ADMIN_PATH/_footer.htm");?>

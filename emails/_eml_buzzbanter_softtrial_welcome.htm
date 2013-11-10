@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Buzz and Banter - Welcome</title>
+</head>
+<?php
+
+$email=$_GET['email'];
+$pwd=$_GET['pwd'];
+$fname=$_GET['fname'];
+
+?>
+
+<body>
+<table cellspacing="0" cellpadding="0" border="1" width="594">
+  <tbody><tr>
+    <td><a target="_blank" href="http://www.minyanville.com/buzzbanter/?trial=hard"><img height="70" border="0" width="594" alt="Buzz &amp; Banter Powered by Minyanville" src="http://www.minyanville.com/images/buzzimages/bB_eml_d3_header.jpg"></a>
+  <div style="max-width: 546px; padding: 24px;">
+<p align="left" style="font-size: 18px; color: rgb(41, 41, 41); font-family: Verdana; font-style: normal; font-weight: normal; text-align: left;">Dear <?=ucfirst($fname);?>,</p>
+<p align="left" style="font-size: 14px; color: rgb(41, 41, 41); font-family: Verdana; font-style: normal; font-weight: normal; text-align: left;">Thank you for selecting a 30 days trial to Minyanville's Buzz and Banter during your MoneyShow registration process.  We are excited about your free 30 days trial with us and are confident you will find the trading, investing ideas and insight from our top Wall Street contributors a vital component to your investment and trading strategy.  And it's absolutely FREE for 30 days!</p>
+<p align="left" style="font-size: 14px; color: rgb(8, 61, 112); font-family: Verdana; font-style: normal; font-weight: bold; text-align: left;"><a target="_blank" href="http://www.minyanville.com/buzz/buzz.php">Click Here To Launch the Buzz &amp; Banter</a></p>
+<p align="left" style="font-size: 14px; color: rgb(41, 41, 41); font-family: Verdana; font-style: normal; font-weight: normal; text-align: left;">Access our dynamic desktop application each trading day as our renowned roster of over 30 professional contributors weigh in on a host of timely issues, providing smart actionable ideas that can make you money.</p>
+<div style="border: 0px solid rgb(48, 48, 48); min-height: 80px; width: 546px; padding: 0px; margin: auto;">
+  <p align="left" style="color: rgb(0, 0, 0); font-size: 14px; font-family: Verdana; font-style: normal; font-weight: bold; text-align: left;">Use the following information to log in:</p>
+  <p align="left" style="color: rgb(74, 74, 74); font-size: 14px; font-family: Verdana; font-style: normal; font-weight: bold; text-align: left;">Email address:  <strong><font color="#000000" style="font-size: 14px;">&nbsp; <a target="_blank" href="mailto:<?=$email;?>"><?=$email;?></a> </font></strong></p>
+  <p align="left" style="color: rgb(74, 74, 74); font-size: 14px; font-family: Verdana; font-style: normal; font-weight: bold; text-align: left;">Password:  <strong><font color="#000000" style="font-size: 14px;">&nbsp;<?=$pwd;?> </font></strong></p>
+  <p align="left" style="color: rgb(74, 74, 74); font-size: 14px; font-family: Verdana; font-style: normal; font-weight: bold; text-align: left;"><strong><font color="#000000" style="font-size: 12px;">If <span class="il">you</span> don't know <span class="il">your</span> password, <a target="_blank" href="https://www.minyanville.com/subscription/register/login.htm">click here</a> to <span class="il">have</span> it reset and emailed to <span class="il">you</span>.</font></strong></p>
+</div><p align="left" style="font-size: 14px; color: rgb(41, 41, 41); font-family: Verdana; font-style: normal; font-weight: normal; text-align: left;">And please remember, to prevent any disruption of your free trial subscription after your 30 day trial, you may register for a full monthly or annual subscription by <strong><font color="#083d70" style="font-size: 13px;"><a target="_blank" href="http://www.minyanville.com/buzzbanter/">clicking here</a></font></strong> or calling <b>212-991-9357</b>.</p>
+<p align="left" style="font-size: 14px; color: rgb(41, 41, 41); font-family: Verdana; font-style: normal; font-weight: normal; text-align: left;">Please contact us at <font color="#083d70" style="font-size: 14px;"><a target="_blank" href="mailto:support@minyanville.com">support@minyanville.com</a></font> with any questions.</p><p align="left" style="font-size: 14px; color: rgb(41, 41, 41); font-family: Verdana; font-style: normal; font-weight: normal; text-align: left;">Sincerely,<br><font color="#083d70" style="font-size: 14px;">Bill Meehan<br>
+        <em>General Manager, Subscription Products</em></font></p>
+
+ </div></td>
+  </tr>
+</tbody></table>
+</body>
+</html>

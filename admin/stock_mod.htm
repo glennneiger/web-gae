@@ -1,0 +1,34 @@
+<?
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/admin/ss/ss_classes/class_Optiontransaction.php");
+$bounceback = "./add_ticker.htm";
+$objTickerCheck = new optiontransaction();
+
+
+$stockSymbol=$_POST['stocksymbol'];
+if(is_stock($stock))
+{
+	$msg="Ticker already exist in our Database";
+}
+else
+{
+	$result=$objTickerCheck->getQuoteDetails($stockSymbol,'');
+	if(!empty($result)){
+		$stock["stocksymbol"] = $stockSymbol;
+		$companyName =  $result['CompanyName'];
+		$stock['SecurityName'] = $stock['CompanyName'] = $companyName;
+		$stock["exchange"] = $result['ExchangeCode'];
+
+	    $stockid=insert_query("ex_stock",$stock);
+	    if($stockid){
+	    	$msg="Ticker Sucessfully Added.";
+	    }else{
+	    	$msg="There is some error while adding this ticker.";
+	    }
+	}else{
+		$msg = "The ticker ".$stockSymbol." doesn't appear to be registered.";
+	}
+}
+location( "$bounceback".qsa(array(id=>$stockid,error=>$msg)) );
+exit();
+?>

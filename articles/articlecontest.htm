@@ -1,0 +1,72 @@
+<?php
+global $HTPFX,$HTHOST;
+$page="51";
+build_lang($page);
+include("../lib/_exchange_config.php");?>
+
+<script src="<?$HTPFX.$HTHOST?>/js/contest.js" type="text/javascript"></script>
+<script src="<?$HTPFX.$HTHOST?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
+<script src="<?$HTPFX.$HTHOST?>/js/contest_ibox.js" type="text/javascript"></script>
+<script src="<?$HTPFX.$HTHOST?>/js/config.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/contest_ibox.css" type="text/css" />
+<style>
+body{margin:3px;padding:0px;border:0px}
+</style>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/main.css" type="text/css" />
+
+<div id="contest">
+<table align="center" width="50px" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" border="0">
+		<tr>
+			<td>
+				<table align="center" cellpadding="0" cellspacing="0" width="50px;" border="0">
+					<tr>
+		            	<td colspan="2" style="padding-top:5px;"><img src="<?=$IMG_SERVER?>/images/BContest.jpg" width="456" height="52"/></td><td style="padding-top:5px;"><img src="<?=$IMG_SERVER?>/images/community_images/regThecontest_close.gif" width="34" height="52" onclick="javascript:iboxclose();"/> </td>
+		            </tr>
+
+<table border="1" cellspacing="0" cellpadding="0" width="500px;" bordercolor="#eff0f2">			
+	<tr>
+		<td colspan="2" style="padding-top:5px;" ><img src="<?=$IMG_SERVER?>/images/community_images/contest_image.jpg" width="140px" height="200px" /></td>
+<td width="400px;">
+<form method="post" name="subform">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr><td colspan="2" width="400px;" class="registrationminute" style="padding-left:2px; padding-right:2px; padding-bottom:20px;">
+Welcome to Minyanville's Bernanke's "Bank Shot" Bracket Contest! To be eligible for the grand prize--two tickets to the Men's NCAA Basketball Championship game on April 7th, 2008--simply fill in your name and email (phone number optional). The winner will be chosen at random and announced on March 28th, 2008.
+</td></tr>
+	<tr>
+		<td class="registrationlogin1"><?php echo $lang['email'].'*';?> </td>
+		<td><? input_text("contestemail","",0,255,"style='width:158' align='right' class='registrationtextcontrol'  ")?></td>
+	</tr>
+
+	<tr>
+	<td class="registrationlogin1"><?php echo $lang['name'].'*';?></td>
+	<td><? input_text("contestname","",0,255,"style='width:158' align='right' class='registrationtextcontrol'  ")?></td>
+	</tr>
+	<tr>
+	<td class="registrationlogin1"><?php echo $lang['phone'];?></td>
+	<td><? input_text("contestphone","",0,255,"style='width:158' align='right' class='registrationtextcontrol'")?></td>
+	</tr>
+
+<tr>
+	<td></td>
+	<td>
+		<div align="left" style="padding-top:5px;">
+		<input type="image" src="<?=$IMG_SERVER?>/images/community_images/Submit.gif" style="border:none" onkeypress="return saveSubs();" onclick="return saveSubs();"/>
+		<input type="reset" style="background:url(<?=$IMG_SERVER?>/images/community_images/cancel_blue.gif); vertical-align:top; width:77px; height:23px; cursor:pointer; border: none;" value="" border="0" />
+		</div>	
+	</td>
+</tr>
+
+
+</table>
+
+
+</form>
+</td></table>
+<tr>
+<td colspan="2" class="registrationminute" style="padding-top:2px; text-align:left;">
+The offer to participate in this drawing is void in any state or jurisdiction where it is prohibited. The winner shall be responsible for arranging and paying for  transportation and hotel stay and other expenses at the Final Four event. All participants represent that they are over the age of 18. Officers and employees of Minyanville Publishing and Multimedia may not participate. All drawings shall be final. Winner shall be notified by email. In the event the winner does not repond to the notification in a timely manner  or cannot attend the event, no cash prize will be awarded as an alternative. The winner shall have the right to transfer the tickets to another person or persons at his or her discretion.</td>
+</tr>
+</td></tr></table>
+</div>				 
+
+

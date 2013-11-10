@@ -1,0 +1,235 @@
+<?
+$page="edittransaction";
+include_once("$ADMIN_PATH/_header.htm");
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+include_once("$D_R/lib/layout_functions.php");
+include_once("$D_R/lib/ss/_ss_config.php");
+/*============set up permissions=================*/
+$performtransaction=$AD->getPerm("own_transaction");//can't create anything
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+	admin_error("You're not allowed to use this page.");
+}
+$transobj=new Qtransaction();
+// Newly added
+$HTHOST=$HTADMINHOST;
+$STOCKACTBJSSCRIPT=$HTPFX.$HTHOST."/js/stock_actb.js";
+$ACTB_COMMONJSSCRIPT=$HTPFX.$HTHOST."/js/actb_common.js";
+// Newly added
+?>
+    <script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/datetimepicker.js" type="text/javascript"></script>
+	<script src="<?php echo $STOCKACTBJSSCRIPT; ?>" language="javascript" type="text/javascript"></script>
+	<script src="<?php echo $ACTB_COMMONJSSCRIPT; ?>" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/sstransaction.js" type="text/javascript"></script>
+
+<script language="javascript">
+function updatefilds(){
+document.edittransactionfrm.action = "<? echo "edittransaction.htm?updatemode=save";?>"
+document.edittransactionfrm.submit(this.form);
+}
+</script>
+<?php
+$updatemode=$_GET['updatemode'];
+
+if(!isset($updatemode))
+{
+	$updatemode='';
+}
+else{
+
+	switch($updatemode)
+	{
+		case 'save':
+		{
+			$datetime = date('Y-m-d h:i:s');
+			$startindx="\$startindxget=&\$sratindx;";
+			eval($startindx);
+			$endindxes="\$endindxget=&\$endindx;";
+			eval($endindxes);
+			$stockid_get_all_get="\$stockid_get_all=&\$stockid_get_all;";
+			eval($stockid_get_all_get);
+			/*
+			Array
+(
+    [0] => 15
+    [1] => 12
+    [2] => 11
+    [3] => 9
+    [4] => 10
+)
+
+			 */
+			$updatedidsarr=explode(',',$stockid_get_all);
+			$cntLT1=count($updatedidsarr);
+			// process items
+			if($cntLT1>0){
+				for($x=0;$x<$cntLT1;$x++){
+					$allids[]=$updatedidsarr[$x];
+				}
+			}
+
+	$noofrecords = $totrecords-1;
+	for($i = 0; $i <= $noofrecords; $i++)
+	{
+	# First Delete the ids selected just change the status to 0
+	# 0 = removing
+	# 1 = dont remove live
+//	$trstype=''; this stores the value of the combo that comes frm the hidden field
+		
+	$autoids=$allids[$i];
+
+	$selectedchk="\$isselected=&\$selectids_".$autoids.";";
+	eval($selectedchk);
+
+	$updatedsymb="\$upqtid=&\$qtid_".$autoids.";";
+	eval($updatedsymb);
+	$status=1;// dont change this value never
+	if((isset($isselected)) && ($isselected!='')){$status=0;}else{$status=1;}
+	
+	$sharesval="\$updatedshares=&\$shares_".$autoids.";";
+	eval($sharesval);
+
+	$pershare="\$unitprice=&\$price_".$autoids.";";
+	eval($pershare);
+
+	$descriptions="\$description=&\$notes_".$autoids.";";
+	eval($descriptions);
+
+	$crdate="\$creatdate=&\$creatdate_".$autoids.";";
+	eval($crdate);
+
+	$creatdate=$transobj->formatdate2dbSTD($creatdate);
+	$creatdateconv=$creatdate." ".date('H:i:s');
+			
+	$transtypesel="\$trstype=&\$hcombo_".$autoids.";";
+	eval($transtypesel);
+
+	$updatedon=date('Y-m-d H:i:s');
+	if(isset($req_update)){unset($req_update);}
+	
+#### if its buy $trstype==0 and not removed status=1  (start)
+				 if($trstype==0 && $status==1){
+				 $transupdate='';
+				 $updated='';
+				 $transupdate=$transobj->updatetranstabl($creatdateconv,$updatedon,$updatedshares,$unitprice,$description,$status,$allids[$i]);
+				 $updated=$transobj->updatelottabl($upqtid);
+				 }
+#### if its buy $trstype==0 and status=1  (end)
+
+#### else if its buy $trstype==0 and removed status=0 (start)
+				 else if($trstype==0 && $status==0){
+				 $sellupdated='';
+				 $updated='';
+				 $transupdate=$transobj->updatetranstabl($creatdateconv,$updatedon,$updatedshares,$unitprice,$description,$status,$allids[$i]);
+				 $updated=$transobj->updatelottabl($upqtid);
+				 $sellupdated=$transobj->updateselltabl($autoids,$trstype);
+				 }
+#### else if its buy $trstype==0 and status=0 (end)
+
+#### else if its sell $trstype==1 and status=0 (start)
+if($trstype==1 && $status==0){
+	$sellupdated='';
+	$updated='';
+	$transupdate=$transobj->updatetranstabl($creatdateconv,$updatedon,$updatedshares,$unitprice,$description,$status,$allids[$i]);
+	$updated=$transobj->updatelottabl($upqtid);
+	$sellupdated=$transobj->updateselltabl($autoids,$trstype);
+}
+#### else if its buy $trstype==1 and status=0 (end)
+
+#### else if its sell $trstype==2 and status=0 (start)
+if($trstype==2 && $status==0){
+	$sellupdated='';
+	$updated='';
+	$transupdate=$transobj->updatetranstabl($creatdateconv,$updatedon,$updatedshares,$unitprice,$description,$status,$allids[$i]);
+	$sellupdated=$transobj->updateselltabl($autoids,$trstype);
+}
+#### else if its buy $trstype==3 and status=0 (end)
+
+#### else if its sell $trstype==3 and status=0 (start)
+if($trstype==3 && $status==0){
+	$sellupdated='';
+	$updated='';
+	$transupdate=$transobj->updatetranstabl($creatdateconv,$updatedon,$updatedshares,$unitprice,$description,$status,$allids[$i]);
+	$sellupdated=$transobj->updateselltabl($autoids,$trstype);
+}
+#### else if its buy $trstype==3 and status=0 (end)
+
+
+	}// end of for loop
+	echo "<script language='javascript'>";
+	//***** echo "window.location.href='transaction.htm'";
+	echo "</script>";
+	break;
+	} // end of save switch
+	} // end of switch($updatemode)
+}
+?>
+   <table border=0 style="border-left:0px solid #cccccc; padding:0px;margin:0px; border-top:0px solid #cccccc; border-bottom:0px solid #cccccc;  border-right:0px solid #cccccc; padding:0px;margin:0px;" align="left" cellpadding="0" cellspacing="0" width="900px">
+   <tr>
+	<td width="95" ><img src="<?=$IMG_SERVER?>/images/quint_images/quint-photo.gif" /></td>
+	<td width="195"  class="quintportfolio">QUINT Portfolio</td>
+	<td width="646"  class="quintportfolio"><a href="transaction.htm">View Transaction</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="ss_selltransaction.htm">Sell Transaction</a></td>
+	</tr>
+	<tr>
+	<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr>
+	<td  colspan="3">
+	<?= $transobj->alltransactionedit();?>
+	</td>
+	</tr>
+	<tr>
+    <td colspan="3">
+	<!-- ADD TRANSACTION START--
+	<br>
+	-- hidded as this functionality removed to add transaction page 
+	<p><b>Add Transaction</b>&nbsp;(Symbol Format = <b>NYSE : AET</b>)</p>
+	<div id="addentry"><form name="addform">
+	<table border="0" bordercolor=red cellspacing="0" cellpadding="2" width="100%"  class="quintportfolio">
+	
+							<!-- Entry starts--
+							<tr><td width="100%">
+											<table style="border-left:1px solid #cccccc; padding:0px;margin:0px; border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc; padding:0px;margin:0px;" width="100%" border=0 cellspacing="0" cellpadding="2" bordercolor=black>
+											<tr>
+											<td class="quintportfolio">Symbol</td>
+											<td class="quintportfolio">Type</td>
+											<td class="quintportfolio"><nobr>Date(mm/dd/yyyy)</td>
+											<td class="quintportfolio">Shares</td>
+											<td class="quintportfolio">Price </td>
+											<td class="quintportfolio">Notes</td>
+											</tr>
+											<tr bgcolor="#EFEFEF"><td>
+											<?php input_text("symbol",$symbol, 0, 40," autocomplete='off'")?>
+											<input type='hidden' id='sid_hid'>
+											<script>
+											var obj = actb(document.getElementById('symbol'),customarray);
+											</script></td>
+											<td><select name="comotype" id="comotype" disabled><option value="0">Buy</option>
+												<!--<option value="1">Sell</option>--
+												</select></td>
+											<td>
+											<input type="text" size="10" id="demo2" name="date" readonly>
+											&nbsp;<a href="javascript:NewCal('demo2','mmddyyyy')"><img src="<?=$IMG_SERVER?>/images/quint_images/cal.gif" width="16" height="16" align="absmiddle" border="0" alt="Pick a date"></a></td>
+											<td><input size="8" type="text" id="shares" onKeyup="javascript:chknosvalidation('addform',this);"></td>
+											<td><input size="8" type="text" name="price" id="price" onKeyup="javascript:chknosvalidation('addform',this);"></td>
+											<td><input type="text" name="notes" id="notes" size="55">
+											<input type="hidden" name="addmode" id="addmode" value="">
+											</td></tr>
+											<tr><td colspan="6"></td></tr>
+											<tr><td colspan="6"><img src="<?=$IMG_SERVER?>/images/quint_images/addtoportfolio.gif" onClick="javascript:validateentryforedit();" /><br/></td></tr>
+											</table>
+				</td></tr>
+				<tr><td>
+				</td></tr>
+				</table></form></div>
+	<!-- ADD TRANSACTION END -->
+	</td></tr>
+    </table>	<?
+$profileid=1;
+$tracking_name=$page;
+//googleanalytics($profileid,$tracking_name);
+googleanalytics();
+universalGoogleAnalytics();
+?>

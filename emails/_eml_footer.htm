@@ -1,0 +1,33 @@
+<?php
+global $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+?>
+<?if($type!="text"){?></td>
+  </tr>
+  <tr>
+    <td valign="top" align="center" colspan="5" height="24"><font face="Arial" size="2" color="#333333">Go
+      to the site:</font><font face="Verdana, Arial, Helvetica, sans-serif" color="#000066">
+      </font><a href="<?=$HTNOSSLDOMAIN?>"><font color="#000066" face="Verdana, Arial, Helvetica, sans-serif" ><b>Minyanville.com</b></font></a></td>
+  </tr>
+  <tr>
+    <td valign="top" align="center" colspan="5"><a href="<?=$HTNOSSLDOMAIN?>/company/help.htm"><font face="Arial" size="2" color="#24478A">Help</font></a><font face="Arial" size="2">
+      || <a href="<?=$HTNOSSLDOMAIN?>/company/privacy.htm"><font color="#24478A">Privacy Policy</font></a>
+      || <a href="<?=$HTNOSSLDOMAIN?>/company/substerms.htm"><font color="#24478A">Subscription Agreement and Terms of Use </font></a>
+     || <a href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm"><font color="#24478A">Disclaimers</font></a></font>
+<br><br>
+<?if($UNSUB){?><br><br>
+<font size=1><a href="<?=$HTNOSSLDOMAIN?>/register/unsubscribe.htm">Click here</a> to unsubscribe.</font>
+<?}?>
+
+</td>
+  </tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name);
+$profileid=1;
+googleanalytics($profileid,$tracking_name);
+*/
+?></body>
+<?}?>

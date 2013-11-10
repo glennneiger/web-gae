@@ -1,0 +1,237 @@
+<?
+global $DATE_STR, $D_R;
+include_once($D_R."/lib/_robots.php");
+$page = "gazette";
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+$islive=0;
+$p=$_GET['p'];
+$viewapproved=$_GET[viewapproved];
+$viewapproved=intval($viewapproved);
+if($viewapproved){
+	$islive=1;
+}
+include("$ADMIN_PATH/_header.htm");
+
+?>
+<script type="text/javascript">
+function submitDailyFeed(){
+	var delchk  = document.frmdailyfeed.deldailyfeed.length;
+	var delcount = "";
+	if(delchk==undefined){
+		 if(document.frmdailyfeed.deldailyfeed.checked){
+			delcount=1;
+		 }
+	}else{
+		for (i = 0; i < delchk; i++) {
+			if (document.frmdailyfeed.deldailyfeed[i].checked) {
+					delcount = 1;
+			}
+		}
+	}
+	var appchk  = document.frmdailyfeed.appdailyfeed.length;
+	var appcount = "";
+	if(appchk==undefined){
+		if(document.frmdailyfeed.appdailyfeed.checked){
+			appcount=1;
+		 }
+	}else{
+		for (i = 0; i < appchk; i++) {
+			if (document.frmdailyfeed.appdailyfeed[i].checked) {
+					appcount =1;
+			}
+		}
+	}
+
+	if(delcount=="1"){
+	  if (confirm("Are you sure you want to delete post(s).")) {
+		 frmdailyfeed.submit();
+	  }
+	}else if(appcount=="1"){
+	   frmdailyfeed.submit();
+	}else{
+	  alert("Please select a post.");
+	}
+}
+
+</script>
+<?
+$edit_approve_feed=$AD->getPerm("feed_edit_approve");
+
+if(!$edit_approve_feed){
+	admin_error();
+}
+
+$handler="apprfeed_mod.htm";
+
+
+$pagesize=10;
+$d	=	trim($_REQUEST['d']);
+$s	=	trim($_REQUEST['s']);
+
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+
+/*Search Code Start*/
+if (isset($_GET['txtArticleAuthor']) && trim($_GET['txtArticleAuthor'])!='' ){
+	$_POST['txtArticleAuthor']=$_GET['txtArticleAuthor'];
+}
+if (isset($_GET['txtArticleTitle']) && trim($_GET['txtArticleTitle'])!='' ){
+	$_POST['txtArticleTitle']=$_GET['txtArticleTitle'];
+}
+
+if (isset($_POST['txtArticleAuthor']) && trim($_POST['txtArticleAuthor'])!='' ){
+
+
+	$filter=" and C.name like '%".trim($_POST['txtArticleAuthor'])."%' ";
+}
+
+if (isset($_POST['txtArticleTitle']) && trim($_POST['txtArticleTitle'])!='' ){
+
+	$filter.=" and DF.title like '%".trim($_POST['txtArticleTitle'])."%' ";
+}
+/*Search Code Start*/
+$posttitle="concat(mid(body,1,40),'...')";
+ $qry = "SELECT DF.id,creation_date date,title,is_approved,updation_date,
+CONCAT( 'feed.htm?id=', DF.id ) arturl FROM daily_feed DF,contributors C
+		WHERE C.id=DF.contrib_id AND  is_approved='".$viewapproved."' and is_deleted='0'";
+if(!empty($filter)) $qry.= $filter;
+if($s)$qry.=" ORDER BY $s $d ";
+
+/*--- end query params --*/
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i,txtArticleAuthor=>$_POST['txtArticleAuthor'],txtArticleTitle=>$_POST['txtArticleTitle'])),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+/*-- end paging  ---*/
+
+$pagedata = exec_query($qry);
+
+?>
+<br>
+<?if($AD->getPerm("feed_edit_approve")){?>
+	<a href="feed.htm">Create/ Edit MV Premium</a><br>
+<?}?>
+<script src='<?php echo $HTPFX.$HTHOST;?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
+<script language="javascript">
+function searchArticles(){
+	$('#errMsg').text('');
+	var strAuthorName= $('#txtArticleAuthor').val();
+	strAuthorName= $.trim(strAuthorName);
+	var strTitle= $('#txtArticleTitle').val();
+	strTitle= $.trim(strTitle);
+
+	if (strAuthorName=="" && strTitle==""){
+		$('#errMsg').text('Please enter title or author name to filter');
+		return false;
+	}
+	document.frmSearchArticles.submit();
+}
+function clearForm(){
+
+	window.location.href='/admin/approvefeed.htm';
+}
+</script>
+<br>
+<div style='float:left;width:100%'><form action="/admin/approvefeed.htm" method="post" name="frmSearchArticles" >
+<div style='float:left;width:100%;'></div>
+<table style="border:1px solid black;">
+<tr><td colspan='6' style='font-size:12px;font-weight:bold;background-color:#8DA9E6;'><div style="float:left;width:150px;font-weight:bold;">Filter Approval Queue</div><div style="color:FFFFFF;float:left;width:300px;font-weight:bold;" id="errMsg"></div></td></tr>
+<tr><td><b>Author:</b>&nbsp;</td><td><input type="text" size="30" name="txtArticleAuthor" id="txtArticleAuthor" value="<?php echo trim($_POST['txtArticleAuthor']);?>" onkeydown="if (event.keyCode == 13)searchArticles();" /> </td><td><b>Title:</b>&nbsp;</td><td><input type="text" size="65" id="txtArticleTitle" name="txtArticleTitle" value="<?php echo trim($_POST['txtArticleTitle']);?>" onkeydown="if (event.keyCode == 13)searchArticles();" /></td><td> <input onClick="Javascript:searchArticles();" type="button" value="Search">&nbsp; <input onClick="Javascript:clearForm();" type="button" value="Cancel"></td></tr>
+
+</table>
+<br/>
+</form></div>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<center>
+<?if(!$viewapproved){?>
+<div style="width:500;text-align:left">These are the MV Premium posts that are awaiting approval. Check the posts you've approved, click save and they will be posted live to the site.<br>&nbsp;</div>
+<?}else{?>
+<div style="width:500;text-align:left">These are the MV Premium posts that are approved. Check the posts you've disapproved, click save and they will be disapproved.<br>&nbsp;</div>
+<?}?>
+</center>
+<table width=300 align=center style="border:1px black solid">
+<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>1,txtArticleAuthor=>$_POST['txtArticleAuthor'],txtArticleTitle=>$_POST['txtArticleTitle']),"p"),"View Approved Premiums","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>0,txtArticleAuthor=>$_POST['txtArticleAuthor'],txtArticleTitle=>$_POST['txtArticleTitle']),"p"),"View Unapproved Premiums","class=small",(!$viewapproved))?></TD>
+<TD colspan=3>&nbsp;</TD>
+</TR>
+<form name="frmdailyfeed" method="post" action="<?=$handler?>">
+<?input_hidden("viewapproved")?>
+<TR bgcolor=#cccccc align=center>
+<TD<?colclass("date")?>><a href="<?=$PHP_SELF.qsa(array(s=>"date",d=>togD($d)))?>">Feed posted Date</a></TD>
+<TD<?colclass("title")?>><a href="<?=$PHP_SELF.qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+<!--<TD<?colclass("login")?>><a href="<?=$PHP_SELF.qsa(array(s=>"login",d=>togD($d)))?>">Author</a></TD>-->
+<!--<TD nowrap>Publish date</td>-->
+<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>
+<TD>Delete</TD>
+</TR>
+<?if(count($pagedata)){?>
+	<?foreach($pagedata as $i=>$row){
+	$breakDateStr="n|j|Y|G|i";
+		list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,convert_date_to_unix($row[publish_date])));
+		if($y=="2000" || $y=="1969"){//invalid date
+			$publishdatefield=array();
+		}else{
+			$publishdatefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+		}
+		if($row[publish_date] == "0000-00-00 00:00:00")
+		{
+			$publishdatefield="";
+			$row[publish_date]="";
+
+	}
+		$color=$i%2?"dddddd":"eeeeee";
+		$link=urlqsa($row[arturl],array(AMADMIN=>1),"*");
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?>><?=date($DATE_STR,strtotime($row['date']))?></TD>
+	<TD nowrap <?colclass("title")?>>
+	<a href="<?=$link?>" target="_blank"><?=($row[title]?htmlspecialchars($row[title],ENT_QUOTES):"(legacy data w/out title)")?></a></TD>
+
+	<TD align=center><input type="checkbox" id="appdailyfeed" name="approve[<?=$row[id]?>]" title="Check this to approve the article then submit the page"></TD>
+
+	<TD>
+	<input type="checkbox" id="deldailyfeed" name="delarticle[<?=$row[id]?>]" title="Check to remove have this article removed">
+	</TD>
+	</TR>
+	<?}?>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There are no posts awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<input type="button" value="Save Changes" onclick="javascript:submitDailyFeed();">
+
+</TD>
+</TR>
+</form>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

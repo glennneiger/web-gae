@@ -1,0 +1,19 @@
+<?php
+    include_once("$D_R/lib/_redesign_design_lib.php");
+	include_once("$D_R/lib/_redesign_data_lib.php");
+	$userid=$_POST['userid'];
+	$offset=$_POST['offset'];
+	$pageName=$_POST['pageName'];
+	$hide=$_POST['hide'];
+	$youraccount=$_POST['youraccount'];
+	$listticker=$_POST['listticker'];
+	if($listticker){
+		controlPannelWatchlist($userid,$offset,$pageName);
+	}elseif($youraccount){
+		yourAccount($hide);		
+		//echo "Vijay";
+	}else{
+		watchlistdata($userid,$offset);
+	}
+	
+?>

@@ -1,0 +1,50 @@
+<?
+global $IMG_SERVER;
+cache_client_wholepage("$D_R/assets/data/rpfoundation.html");
+$SECTION="library";
+$PAGE="foundation";
+$pageName="foundation";
+$HEADER="/assets/RPfoundbanner.jpg";
+$contrib_id=1;
+
+$title="Minyanville : Library : Ruby Peck Foundation";
+
+$pageJS=array('config','dailyfeed','jquery','global','featuredslider','mobileredirect','emailalert','Articles','stickycontent','sticky','stickyscroller','getset','fancybox','mailchimp');
+$pageCSS=array("global","layout","nav","codaslider","fontStylesheet","homepage","rightColumn","fancybox","mailchimp","surveyBox");
+
+include("$D_R/_header.htm");
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/layout_functions.php");
+?>
+
+<table id="home-news" cellpadding="0" cellspacing="0" width="100%"><tr>
+		<td width="10"><img src="<?=$pfx; ?>/images/lc.gif" width="10" alt="" /></td>
+		<td class="top"><img src="<?=$pfx; ?>/images/10x1.gif" /></td>
+		<td width="13"><img src="<?=$IMG_SERVER?>/images/cr.gif" width="13" alt="" /></td>
+		</tr>
+		<tr>
+		<td class="left-border">&nbsp;</td>
+		<td id="home-news-main">
+		  <div id="home-news-main">
+		    <div id="home-news-content">
+
+			  <h1>RUBY PECK FOUNDATION</h1>
+			  <p class="simple-separator">&nbsp;</p>
+			  <h3><?= displayDate() ?></h3>
+			  <p class="double-separator">&nbsp;</p><br />
+<br>&nbsp;
+
+
+		<?readfile("$D_R/assets/data/rpfoundation.html")?>
+
+</div>
+		  </div>
+		</td>
+		<td class="right-border">&nbsp;</td></tr>
+		<tr>
+		<td><img src="<?=$IMG_SERVER?>/images/lr_corner.gif" width="13" alt="" /></td>
+		<td class="bottom">&nbsp;</td>
+		<td><img src="<?=$IMG_SERVER?>/images/rb_corner.gif" width="13" alt="" /></td>
+		</table>
+
+<?include("$D_R/_footer.htm");?>

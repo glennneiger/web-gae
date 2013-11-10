@@ -1,0 +1,175 @@
+<?php
+$pageName = "sshome";
+$zone_name="closepositions";
+$tile728x90=1;
+$tile120x30=5;
+$tile300x250=3;
+$tile160x600top=4;
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville","optionsmith");
+include("../_header.htm");
+include("../layout/dbconnect.php");
+include_once("../lib/layout_functions.php");
+include("../lib/ss/_search_lib.php");
+include("../lib/ss/_home_lib.php");
+include("../admin/ss/ss_classes/class_transaction.php");
+include("../admin/ss/ss_classes/class_ytdreturn.php");
+include("../admin/ss/ss_classes/class_Performance.php");
+include("$D_R/lib/ss/_ss_config.php");
+include_once("$D_R/lib/_auth.php");
+include_once("$D_R/lib/ss/_news.php");
+# we will be passing subscription_id from session here
+build_ss_lang('sshome');
+global $transobj,$ytdobj,$lang,$HTPFXSSL;
+$performanceobj=new Performance();
+$transobj=new Qtransaction();
+$ytdobj=new YTDRET();
+$unitpriceofstockinhand=$transobj->unitpriceofstockinhand();
+$costbasispershareforshortsell=$transobj->costbasispershareforshortsell();
+$pageName="closepositions";
+$USER=new user();
+$loginid = $USER->id;
+$loginoption = $USER->is_option();
+$getresult=getOptionsSmithname();
+$contribid =$getresult['id'];
+$oid = obejctid('ss_alert');
+		?>
+		<script language="javascript">
+		function redirectpage(i){
+			var passid=i;
+			if(passid==1){
+				window.location.href="<?=$HTPFX.$HTHOST?>/optionsmith/openpositions.htm";
+			}
+			else {
+			   if(passid==2){
+				 window.location.href="<?=$HTPFX.$HTHOST?>/optionsmith/openpositions-trade.htm";
+				}
+			}
+		}
+		</script>
+<script>
+	function docKeyDown1(oEvent){ // controls keyboard navigation
+		var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+		var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+		var intKeyCode = oEvent.keyCode;
+		if(intKeyCode==13) {
+		   if($F("optionsearch")){
+				optionsearchalert('optionsearch','<?=$contribid?>','optionsearch','<?=$oid?>');
+			}
+		}
+	}
+ document.onkeydown=docKeyDown1;
+</script>
+<div class="shadow">
+<div id="content-container">
+<div style="margin-bottom:10px;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+
+<!---flexfolio by quint start from here-->
+<div class="flexfolio_container_closed" >
+
+<?  if($loginoption){  ?>
+<div class="sub_common_title">OptionSmith's - Closed Positions </div>
+
+
+
+<?include("../optionsmith/ss_header.htm");} ?>
+
+
+<div class="common_content" style="display: block;" id="folio2">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left" >
+	<tr><td colspan="9">
+	<?if($loginoption) {?>
+   	 <div class="open_main_container">
+        <link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/ext-al.1.1.css">
+        <link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/xtheme-gray.css"><!-- LIBS -->
+        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/ext-base.js"></script><!-- ENDLIBS -->
+        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/ext-all.1.1.js"></script>
+        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/closepositions_optionsmith.js"></script>
+        <!--<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/lib.css">-->
+        <div id="topic-grid" ></div>
+     </div>
+
+	 <?}
+	 elseif(!$_SESSION['LoggedIn']){
+     	loginRedirection();
+	 }
+	 else{
+	 echo '<script>alert("Please register for OptionSmith. ");</script>';
+	 location($HTPFXSSL.$HTHOST."/subscription/register/");exit;
+
+	//echo '<div class="recent_alert_main"><div class="recent_heading">'.$lang['NotLoggedIN'].'</div></div>';
+	 }
+	 ?>
+    </td></tr>
+  <tr>
+  <td >&nbsp;  </td>
+    </tr>
+  <tr>
+    <td colspan="9">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left">
+  <tr>
+    <td width="309" valign="top">
+    <?php
+		if($loginoption){
+    		 echo $performanceobj->datadisplayperformance($loginoption,$home);
+     }
+
+     ?>
+  </td>
+  </tr>
+  </table>
+    <!--Current flexfolio end here-->
+    <!--- alert  search start from here--->
+	<? if($loginoption){?>
+<div class="search_alert">
+<table width="300" border="0" cellpadding="3" cellspacing="5">
+	<tr><td colspan="2" align="center"><h2>alerts search</h2> </td></tr>
+	<tr>
+		<td align="center" ><input name="optionsearch"  id ="optionsearch" class="quint_alert_input" type="text" /></td>
+		<td valign="top"><a href="#"><img src="<?=$IMG_SERVER?>/images/redesign/go.jpg" vspace="6" border="0" onclick="optionsearchalert('optionsearch','<?=$contribid?>','sshome','<?=$oid?>');"/></a></td>
+	</tr>
+</table>
+
+</div>
+
+<?}?>
+<!---alert search block end here--->
+     </td>
+     <td width="20"></td>
+    <td  valign="top"><?
+
+    if($loginoption){
+		echo $performanceobj->displayoptionperformence($loginoption,$home);
+	}?>
+
+    <!--flexfolio performence end here-->
+    </td>
+    <td width="155"></td>
+  </tr>
+  <tr><td colspan="9" valign="bottom">
+  <?optiondesc();?>
+  </td>
+</table>
+</div>
+    </td>
+     </tr>
+</table>
+
+
+</div>
+<!---flexfolio by quint end here-->
+
+</td>
+</tr>
+</table>
+<script>
+$('logouttarget').value=window.location.pathname;
+</script>
+<!--Main flexfolio middle container start end here-->
+
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("$D_R/_footer.htm"); ?>

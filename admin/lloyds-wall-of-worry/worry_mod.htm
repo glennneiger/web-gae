@@ -1,0 +1,82 @@
+<?php
+global $D_R;
+
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
+include_once($D_R."/lib/_image_rsync.php");
+$objWryData = new worryData();
+$id=$_POST['id'];
+switch($_POST['action']){
+	case "delete" :
+		$worryId=$_POST['worry_id'];
+	   // $worrySequence=str_replace($worryId,"",$_POST['sequence']);
+	   // $worrySequence=str_replace(",,",",",$worrySequence);
+		   $worrySequence=$_POST['sequence'];
+			$objWryData->deteteWorryItem($id,$worrySequence,$worryId);
+			$qry = "SELECT id,title FROM upload_worry";
+			if($worrySequence!=''){
+				$qry .= " where id NOT IN (".$worrySequence.")";
+			}
+			$qry .= " order by title";
+			$wryData = exec_query($qry);
+		?>
+			<td><b>Add Worry to Wall : </b></td>
+			<td><select id="wryList" name="wryList" onchange="javascript:addWorryInList(this.value,'<?=$id?>');" >
+			<option>--Select Worry-- </option>
+				<? foreach($wryData as $key=>$val){ ?>
+					<option value="<?=$val['id']?>"><?=$val['title']?></option>
+				<? } ?>
+			</select></td>
+	<?	 
+		break;
+		
+	 case "dragworry" :
+		$worrySequence=$_POST['sequence'];
+		$objWryData->dragWorry($id,$worrySequence);
+		echo $id;
+		break; 
+		
+	case "addWorry" :
+		$worrySequence=$_POST['sequence'];
+		$worryId=$_POST['worry_id'];
+		$id = $_POST['id'];
+		$qry = "select title from upload_worry where id='".$worryId."'";
+		$result = exec_query($qry,1);
+		if($id!=''){
+			$objWryData->addWorry($id,$worryId,$result['title'],$worrySequence);
+		}
+	?>
+		<tr class="highlight_row" style="cursor: move; background-color: transparent;" id="<?=$worryId?>">
+			<td><?=$_POST['serialCount'];?></td>
+            <td class="highlight_row" width="200px"><div id="title"><?=$result['title']?></div></td>
+			<td onclick="checkWorrySummary('<?=$worryId;?>');"><input type="text" name="summary[<?=$worryId?>]" id="summary-<?=$worryId?>" value="Enter mouse over copy here"  size="60" onblur="javascript:updateSummary(this.value,'<?=$id?>','<?=$worryId?>');" /></td>
+			<td class="downdel" width="50px" onclick="javascript:deleteWryFrm('delete','<?=$id?>','<?=$worryId?>');">REMOVE</td>
+		</tr>
+	<?	break;
+	
+	case "removefrmlist" :
+		$worrySequence=$_POST['sequence'];
+		$qry = "SELECT id,title FROM upload_worry";
+		if($worrySequence!=''){
+		 	$qry .= " where id NOT IN (".$worrySequence.")";
+		}
+		$qry .= " order by title";
+		$wryData = exec_query($qry);
+		?>
+		<td><b>Add Worry to Wall : </b></td>
+		<td><select id="wryList" name="wryList" onchange="javascript:addWorryInList(this.value,'<?=$id?>');" >
+		<option>--Select Worry-- </option>
+			<? foreach($wryData as $key=>$val){ ?>
+				<option value="<?=$val['id']?>"><?=$val['title']?></option>
+			<? } ?>
+		</select></td>
+	<? break;
+	
+	case "updateSummary":
+		$id = $_POST['id'];
+		$worryId = $_POST['worryId'];
+		$summary = $_POST['summary'];
+		$objWryData->updateSummary($id,$worryId,$summary);
+		break;
+		
+}  //switch
+?>

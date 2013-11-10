@@ -1,0 +1,157 @@
+@CHARSET "UTF-8";
+.techPortMoreOptions{
+	float:left; 
+	width:600px;
+}
+.techPortOption{
+	float:left; 
+	width:200px;
+}
+
+.techErrorMsg{
+	float:left;
+	color:#298A08;
+	font-weight:bold;
+	height:15px;
+	margin:0px 0px 0px 0px;
+}
+
+#techAddloadImg{
+	display:none;
+}
+
+/* Initial cash Entry Start */
+.techPortCashMain{
+	float:left; 
+	width:600px; 
+	margin:10px 0px 0px 0px;
+}
+
+.techstratCashDiv{
+	float:left;
+	width:200px;
+	margin:0px 0px 0px 0px;
+	border:1px solid #cccccc;
+}
+
+.techstratCashDiv p{
+	margin: 0px;
+	font-weight: bold;
+	padding: 5px 0px 5px 5px;
+	background-color:#EFEFEF;
+}
+
+.techstratCashDiv input{
+	margin:5px;
+}
+
+.techPortCashField{
+	float:left; 
+	width:600px;
+	margin:10px 0px 0px 0px;
+}
+
+.techPortCashBttn{
+	float:left; 
+	width:600px; 
+	margin:15px 130px 0px 130px;
+}
+
+.techPortCashSaveBttn{
+	width:40px;
+	cursor:pointer;
+	border-radius:5px;
+}
+
+.techPortCashResetBttn{
+	float:left;
+	width:50px;
+	cursor:pointer;
+	margin:0px 0px 0px 10px;
+}
+/* Initial cash Entry End */
+
+/* Add Transaction Start */
+.techPortCashMain{
+	float:left; 
+	width:900px;
+	margin:10px 0px 0px 0px;
+}
+
+.techtransDetail{
+	float:left;
+	width:900px;
+	margin:5px 0px 0px 0px;
+}
+
+.techStratAddTransMain{
+	float:left;
+	border:1px solid #cccccc;
+}
+
+.techStratAddTrans{
+	float:left; 
+	width:880px; 
+	padding:0px 10px;
+}
+
+.techStratAddTransFields{
+	float:left;
+}
+
+.techStratAddTransFieldVal{
+	margin:3px 0px 0px 0px;
+}
+
+.techStratAddTransFields p{
+	margin:5px 2px;
+	font-weight: bold;
+}
+
+.techStratAddTransMidFields{
+	float:left;
+	margin:0px 0px 0px 5px;
+}
+
+.techStratAddTransMidFields p{
+	margin:5px 2px;
+	font-weight: bold;
+}
+
+.techStratAddTransBttn{
+	float:left; 
+	width:780px; 
+	padding:10px;
+	cursor:pointer;
+}
+/* Add Transaction End */
+
+/*Sell Transaction Start*/
+.techstratSellDiv{
+	float:left;
+	width:200px;
+	margin:10px 0px 0px 0px;
+	border:1px solid #cccccc;
+}
+
+.techstratSellDiv p{
+	margin: 0px;
+	font-weight: bold;
+	padding: 5px 0px 5px 5px;
+	background-color:#EFEFEF;
+}
+
+.techstratSellDiv input{
+	margin:5px;
+}
+
+.techStratGoBttn{
+	width:30px;
+	cursor:pointer;
+	border-radius:5px;
+}
+
+.techSearchStockDetail{
+	margin:10px 0px 0px 0px;	
+}
+/*Sell Transaction End*/

@@ -1,0 +1,19 @@
+<?include("$D_R/emails/_eml_header.htm")?>
+<br>
+<p>Dear <?= $row[fname]?>,
+  <br>
+  <br>
+It&rsquo;s been two days since your trial to the Buzz &amp; Banter  ended.&nbsp; Don&rsquo;t you miss:</p>
+<ul>
+  <li>Kevin Depew&rsquo;s Five Things?</li>
+  <li>Todd Harrison&rsquo;s Random Thoughts?</li>
+  <li>The insights and ideas of 30 of the brightest  minds on Wall St?</li>
+</ul>
+<p>If you answered &lsquo;yes&rsquo; to any of these three questions, then  simply <a href="<?=$HTDOMAIN?>/register/trial/manage.htm" target="_blank"><strong>click  here</strong></a> and rejoin us.</p>
+<p>Come on, you mean to tell me that you got nothing out of the  Buzz &amp; Banter? No, really, we want you back.&nbsp; <a href="<?=$HTDOMAIN?>/register/trial/manage.htm" target="_blank"><strong>Click  here</strong></a> and enjoy the full benefits of being a part of the Minyanville  community.</p>
+<p>We hope to see you in the &lsquo;Ville.</p>
+
+<?php
+$tracking_name = $tracking_name['_eml_trial_after_expiration'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?>

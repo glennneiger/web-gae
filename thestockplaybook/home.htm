@@ -1,0 +1,42 @@
+<?php
+global $D_R;
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav");
+$pageName="thestockplaybook";
+include("../_header.htm");
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$USER=new user();
+$hasTSP = $USER->is_theStockPlayBook();
+$hasTSPPremium=$USER->is_theStockPlayBookPremium();
+if($hasTSP || $hasTSPPremium){
+	$checkTSP=1;
+}
+
+if(!$USER->id)
+{
+		loginRedirection();
+}
+else if(!$checkTSP)
+{
+	echo '<script>alert("Please register for the Stock Playbook.");</script>';
+	location($HTPFX.$HTHOST."/the-stock-playbook/");
+	exit;
+}
+else
+{
+ ?>
+ <div class="shadow">
+<div id="content-container">
+	<div id="homepage-content" style="width:985px;text-align:center;">
+	<? if($hasTSPPremium) { ?>
+		<iframe src="http://www.thestockplaybook.com/todays_plays_minyan_premium.php?CDI=<?=MD5($USER->id);?>" scrolling="no" frameborder="0" width="960px" height="3500px" padding="0" margin="0"></iframe>
+	<? } elseif($hasTSP) {  ?>
+	<iframe src="http://www.thestockplaybook.com/todays_plays_minyan.php?CDI=<?=MD5($USER->id);?>" scrolling="no" frameborder="0" width="960px" height="3500px" padding="0" margin="0"></iframe>
+	<? } ?>		
+	</div>
+</div>
+</div>
+<?
+}
+include("../_footer.htm"); ?>

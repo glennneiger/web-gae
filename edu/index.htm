@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+global $D_R,$HTPFX,$HTHOST,$pageName,$sectionName;
+session_start();
+
+$pageName="edu-home";
+include($D_R."/edu/eduHeader.htm");
+include_once($D_R."/lib/_content_data_lib.php");
+include_once($D_R."/lib/config/_edu_config.php");
+include_once($D_R."/lib/edu/_edu_data_lib.php");
+include_once($D_R."/lib/edu/_edu_design_lib.php");
+$pageJS=array("jquery","config","redesign","edu","fancybox","endscroll");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","edu","sub_homepage","eduslider");
+$objEduData = new eduData('edu_alerts');
+$objEduDesign = new eduDesign();
+$objPage = new Page($pageName);
+$pageDetail=$objPage->getPageDetail();
+$objCache = new Cache();
+$obOuterTemplate = new OuterTemplate($pageName); 
+loadjavascriptheader($pageCSS,$pageJS,'H',$noDefaultLoad);
+global $objEduData, $objEduDesign, $pageName,$productUrlArr;
+
+$p=0;
+$offset=0;
+if($_GET['p']){
+	$p=$_GET['p'];
+	$offset=$_GET['p'];
+}
+$sectionName="Home";
+
+?>
+<style>
+.eduSearchBox input[type="text"].search{
+width:198px;
+}
+</style>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<body>
+<div id="eduOuterContainer">
+	<div class="articleNotFound" id="eduNotFound">Sorry!! The article you are trying to read is not available now.</div>
+		<?php if($_SESSION['eduNotFound']=='1'){ ?>
+				<script>
+					jQuery('#eduNotFound').css('display','block');
+					setTimeout("jQuery('#eduNotFound').hide()",15000);
+				</script>
+				<? unset($_SESSION['eduNotFound']);
+		}?>
+	<?=$objEduDesign->displayEduHeader($sectionName);?>
+	<div class="eduContentContainer">
+		<div class="eduContainer">
+			<div class="eduHomeUp">
+				<div class="eduSlider"><?php echo $objCache->getEduSliderModuleCache('Edu Slider'); ?></div>
+			      
+				<!-- SlidesJS Required: Link to jquery.slides.js -->
+				<script src="<?php echo $HTPFX.$HTHOST; ?>/js/jquery.slides.min.js"></script>
+				<!-- End SlidesJS Required -->
+			      
+				<!-- SlidesJS Required: Initialize SlidesJS with a jQuery doc ready -->
+				<script>
+				  jQuery(function() {
+				    jQuery('#slides').slidesjs({
+				      width: 620,
+				      height: 350,
+				      navigation: false
+				    });
+				  });
+				</script>
+				<?php echo $objEduDesign->displayEduRightCol(); ?>
+			</div>
+			<div class="eduHomeDown">
+				<div class="eduModuleContainer">
+					<?php echo $objCache->getPageModules($pageDetail['id'],'Edu Trade Invest'); ?>
+					<div class="eduTwoModuleContainer">
+						<?php echo $objCache->getPageModules($pageDetail['id'],'Edu Buzz'); ?>
+						<script>var pageId="<?=$pageDetail['id']?>";
+					setInterval("realEduBuzz('"+pageId+"','Edu Buzz')",60000);</script>
+					<?php echo $objEduDesign->displayMvpSubscription();?>
+				</div>
+				</div>
+				<div style="clear:both;"></div>
+				<div class="eduModuleContainer">
+					<?php echo $objEduDesign->displayEduProducts();?>
+					<div id="eduModules"><?php echo $objCache->getPageModules($pageDetail['id'],'Edu Video Finance'); ?></div>
+				</div>
+			</div>
+			<script type="text/javascript" charset="utf-8">
+				addScrollContent();
+           </script>
+
+
+			
+		</div>
+	</div>
+</div>
+</body>
+<?php require_once($D_R."/_footer.htm"); ?>

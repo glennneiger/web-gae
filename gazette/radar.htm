@@ -1,0 +1,223 @@
+<?php
+global $D_R;
+include_once("$D_R/lib/_news.php");
+include_once("$D_R/_authenticate.htm");
+$SECTION="gazette";
+$PAGE="tradingradar";
+$homepage=1;
+$HEADER="$IMG_SERVER/assets/header-newsandviews.jpg";
+$LOGO="$IMG_SERVER/assets/gaz-main-logo.gif";
+$HEADERBGCLASS="gazheader";
+$CENTERBGCLASS="gazcenter";
+
+$data=array();
+$category_id=get_category_id("tradingradar");
+$pagedata=get_full_thisweeks_articles($category_id,1);
+
+
+//--coerce into days
+$tmp=array();
+foreach($pagedata as $i=>$row){
+	$days[lc(date("D",$row[udate]))][]=&$pagedata[$i];
+}
+
+
+$printlink=$PHP_SELF.qsa(array(PHPSESSID=>$PHPSESSID,mvpopup=>1,id=>$data[0][article_id]));
+list($m,$d,$y)=explode("|",date("n|j|Y",$pagedata[0][udate]));
+$archivelink=urlqsa("/library/search.htm",array(category_id=>$category_id,qparams=>"all"),"*")."&q=";
+$title="Minyanville : Gazette : Collin's Trading Radar";
+
+include("$D_R/_header.htm");
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/layout_functions.php");?>
+<style>
+<?if(!$mvpopup){?>body{background-color:#6F4226}<?}?>
+#banneradholder{
+	top:5px;
+	background-color:#673301;
+	left:250px;
+
+}
+#banneradcontent{
+	top:7px;
+}
+</style>
+<?if(!$mvpopup){?>
+	<table cellspacing=0 border=0 cellpadding=0 width=676>
+	<TR>
+	<TD><img src="<?=$IMG_SERVER?>/assets/trading_radar_top.gif" border=0></TD>
+	</TR>
+	<TR>
+	<TD style="background:url('<?=$IMG_SERVER?>/assets/gaz-paperslice.gif');background-repeat:repeat-y">
+	<div style="width:545;margin:15px 0px 0px 49px">
+<?}else{?>
+	<div class="journalday">Trading Radar</div><br>
+	&nbsp;
+<?}?>
+<table width=100% cellpadding=0 cellspacing=0 border=0 style="margin-bottom:20px">
+<TR>
+<TD style="font:bold 16px times;text-decoration:underline;">
+For the Week Of <?=date("F dS, Y",$pagedata[0][udate])?>
+</TD>
+<TD align="right"><span class=journalbuttons" style="padding:0px">
+<?mOver("button-archive.gif","button-archive-over.gif",$archivelink)?></span></TD>
+</TR>
+</table>
+
+<!-- begin content -->		
+
+<?if(!$mvpopup){?>
+<!-- author and character. what a pain -->
+<table cellpadding=3 cellspacing=0 border=0>
+		<TR>
+		<TD width=50% nowrap>
+			<table cellpadding=0 border=0 cellspacing=0><TR><TD align=center>
+			<?if(is_file("$D_R{$pagedata[0][bio_asset]}")){?>
+			<img src="<?=$pagedata[0][bio_asset]?>" border=0><br>
+			<?}?>
+			<a href="/gazette/bios.htm?id=<?=$pagedata[0][contrib_id]?>"><?=$pagedata[0][contributor]?> Bio</a>
+			</TD></TR></table>
+		</TD>
+		<TD>
+
+<!-- character -->			
+<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<TR valign=top>
+<?if(trim($pagedata[0][character_text])){?>
+<!-- character talk bubble -->
+	<TD width=1% nowrap valign=middle>
+		<table width="160"  border="0" cellspacing="0" cellpadding="0">
+		<tr>
+		<td colspan="3" valign="bottom"><img src="<?=$IMG_SERVER?>/assets/dlg-top.gif" width="140" height="9"></td>
+		<td>&nbsp;</td>
+		</tr>
+		<tr>
+		<td width="2" height="10" bgcolor="#000000"><?=spacer(2,10)?></td>
+		<td width="140" rowspan="2" bgcolor="#F0C870">
+		<div style="padding:5px"><?=$pagedata[0][character_text]?></div>
+		</td>
+		<td width="2" height="10" bgcolor="#000000"><?=spacer(2,10)?></td>
+		<td>&nbsp;</td>
+		</tr>
+		<tr>
+		<td bgcolor="#000000"><?=spacer(2,10)?></td>
+		<td width="2" bgcolor="#000000"><span style="background-color:#F0C870"><?=spacer(2,8)?></span></td>
+		<td><img src="<?=$IMG_SERVER?>/assets/dlg-otherside.gif" width="20" height="12"></td>
+		</tr>
+		<tr>
+		<td colspan="3" valign="top"><img src="<?=$IMG_SERVER?>/assets/dlg-bottom.gif" width="140" height="10"></td>
+		<td>&nbsp;</td>
+		</tr>
+		</table>
+	</TD>
+<!-- /end character talk bubble -->
+<?}?>
+<TD align=center width=50% nowrap>
+	<?if($pagedata[0][character_id]){?>
+		<img src="<?=$pagedata[0][character_asset]?>" border=0><br>
+			<a href="/townhall/characterbios.htm#<?=lc($pagedata[0][character])?>"><?=$pagedata[0][character]?></a>
+	<?}else{?>
+			 <img src="<?=$IMG_SERVER?>/assets/characters/noopinion_01.jpg" border=0>
+	<?}?>
+</TD>
+<TD width=1%><?=spacer(20)?></TD>
+</TR>
+</table>			
+<!-- / end character -->
+</TD>
+</TR>
+</table>
+<!-- end author and character -->
+<br>&nbsp;
+<?}?>
+
+
+<?foreach($days as $day=>$articles){?>
+<?if(!$day=="mon"){?>
+	<table width=100% cellpadding=0 cellspacing=0 border=0>
+	<TR>
+	<TD class=journalday><?=date("F j, Y",$data[udate])?></TD>
+	<TD align=right><span class=journalbuttons" style="padding:0px">
+	<?mOver("button-archive.gif","button-archive-over.gif",$archivelink)?></span></TD>
+	</TR>
+	</table>
+	<br>
+	<a href="<?=$MANAGE_URL?>" style="font:bold 14px">Get premium services for access to Buzz & Banter</a>
+	<br>&nbsp;
+<?}?>
+
+<!-- weekday name graphic -->
+<div style="margin-right:-3px;margin-bottom:5px"><img src="/assets/TR_<?=$day?>.gif" alt="<?=ucwords($day)?>" border="0"/></div>
+
+
+<?foreach($articles as $i=>$data){if($data[disclaimer]){$disclaimer=$data[disclaimer];}?><!-- begin carticles for the day -->
+	<div class=gazseparator style="margin-bottom:10px">
+		<div class=slimpadding>
+			<table cellpadding=0 cellspacing=0 border=0 width=95%>
+			<TR>
+			<TD class=journalheadingtime><?=ampmtime($data[udate])?></TD>
+			<TD align=right><?printPage()?>&nbsp;&nbsp;</TD>
+			</TR>
+			</table>
+		</div>
+	</div>
+	<div style="padding:10px;margin:3px;border:1px #D5A1A5 solid;">
+	<!-- title and blurb -->
+	<!-- <div class=bigtitle><?=$data[title]?></div> 
+	<div class=journalblurb><?=$data[blurb]?></div>
+	-->
+	<br>
+	<!-- /end title and blurb -->
+	
+	<br>&nbsp;
+	<!-- body and disclaimer -->
+	<div class="journalbody"">
+	<?=$data[body]?>
+	<br><br>
+	<div class="error"><?=$data[position]?></div>
+	
+	</div>
+	<!-- /end body and disclaimer -->
+	
+	</div>
+<?}//end foreach($data)?>
+
+<?}//end foreach($days)?>
+<div class="journaldisclaimer" style="margin-top:10px"><?=$disclaimer?></div>
+<div class="gazseparator slimpadding" style="margin-top:10px">
+	<table width=95% cellpadding=0 cellspacing=0 border=0 align=center>
+	<TR>
+	<TD><?mOver("button-top.gif","button-top-over.gif","#");?></TD>
+	<TD align=right><?printPage()?></TD>
+	</TR>
+	</table>
+</div>
+
+
+
+	<?if($TOPBANNER){?><br>
+				<center><?=$TOPBANNER?></center>
+	<?}?>
+		
+</div><!-- end 3px margin -->
+<!-- end content -->
+		
+		
+		
+		
+		
+		
+		
+<?if(!$mvpopup){?>		
+	</div>
+	</TD>
+	</TR>
+	<TR>
+	<TD><img src="<?=$IMG_SERVER?>/assets/gaz-paperbottom.gif" border=0></TD>
+	</TR>
+	</table>
+<?}?>
+
+
+<div class="signpost"><?readfile("./signpost.html")?></div>
+<?include("$D_R/_footer.htm");?>

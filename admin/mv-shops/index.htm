@@ -1,0 +1,17 @@
+<? 
+global $HTPFX,$HTHOST,$IMG_SERVER,$HTADMINHOST;
+include("$ADMIN_PATH/_header.htm"); ?>
+
+	<div class=adminheader>MV. Shops Pages</div>
+	<div style="padding:10px;width:400px">
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/editpage.htm?filename=/assets/data/order_confirmation.html&page=shops&title=Shops%3A%20Order%20Confirmation%20Email">Edit Emails</a><br>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/editpage.htm?filename=/assets/data/order_thanks.html&page=shops&title=Shops%3A%20Order%20Confirmation%20Thanks%20Page">Edit Thank You Page</a><br>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/editpage.htm?filename=/assets/data/shipping_info.html&page=shops&title=Shops Shipping Info">Edit Shipping Info</a> (appears on all shops pages)<br>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/store/categories.php">Edit Categories</a><br>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/store/products.php">Edit Products</a><br>
+		<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/store/orders.php">Manage Orders</a><br>
+
+		<br />
+	</div>	
+	
+<? include("$ADMIN_PATH/_footer.htm");?>

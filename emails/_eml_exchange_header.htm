@@ -1,0 +1,14 @@
+<?
+global $IMG_SERVER;
+$currDate=date('M d, Y');
+$currDate=strtoupper($currDate);
+?>
+<tr>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="125" background="<?=$IMG_SERVER?>/images/top_repeat.jpg"><span style="padding-left:15px;"><font color="#adb1ba" face="Arial, Helvetica, sans-serif" size="2px"><b><!--put date code here--><?php echo $currDate;?></b></font></span></td>			
+            <td width="330"><img src="<?=$IMG_SERVER?>/images/top_img.jpg" width="330" height="71" /></td>
+            <td align="center" background="<?=$IMG_SERVER?>/images/top_repeat2.jpg"><!-- image can be changed--><div align="right" style="padding-right:18px;"><img src="<?=$IMG_SERVER?>/images/weather_img.jpg" width="73" height="52"/></div></td>
+          </tr>
+        </table></td>
+      </tr>

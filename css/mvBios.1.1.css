@@ -1,0 +1,266 @@
+@charset "utf-8"
+/*CSS Document*/
+/*#grid.biographies div,#grid.biographies img{border:none;outline:none;background-color:transparent;margin:0;padding:0;}
+#grid.biographies ol,#grid.biographies ul{list-style-type:none;margin:0;padding:0;}*/
+/*///// ABSOLUTE RESET END /////*/
+
+.grid biographies div,.grid biographies img{border:none;outline:none;background-color:transparent;margin:0;padding:0;} 
+
+.grid a {color:#01509D; text-decoration:none;}
+.grid a:hover {color:#01509D; text-decoration:underline;}
+.grid-container{ width:620px; margin:0; overflow:none;padding-left:45px; padding-bottom:15px;}
+.bioHeader{
+margin-top:10px;
+*margin-top:5px;
+}
+
+
+.bioHeader h1 {
+clear:both;
+color:#000000;
+font-family:arial,helvetica,sans-serif,verdana;
+font-size:24px;
+font-weight:bold;
+line-height:37px;
+margin:0;
+padding:0;
+text-align:left;
+}
+.introduction
+{
+	/*padding-top:7px; 
+	padding-left:15px; */
+	width:620px; 
+	margin:10px 0 10px 30px;
+}
+
+.hNbImg{float:right;}
+.wwa-desc {
+	width:518px; font-size:14px; line-height:18px;
+	text-align:left;
+	padding-right:3px;
+	font-family:arial,helvetica,sans-serif,verdana;
+	padding-bottom:9px;
+}
+.bioCategory{
+font-size:12px;
+font-weight:normal;
+text-align:left;
+width:260px;
+margin:0px 10px 10px 0px;
+float:left;
+}
+.professorBox{
+padding:0px 15px 10px 0px;
+float:left;
+width:10px;
+text-align:top;
+background-color:#c5a231;
+font-size:18px;
+font-weight:bold;
+color:#FFFFFF;
+margin:0px 6px 10px 0px;
+line-height:14px;
+}
+.contributorBox{
+padding:0px 15px 10px 0px;
+float:left;
+width:10px;
+text-align:top;
+background-color:#4e7ead;
+font-size:18px;
+font-weight:bold;
+color:#FFFFFF;
+margin:0px 6px 10px 0px;
+line-height:14px;
+}
+.groupDesc{
+padding:2px 0px 0px 4px;
+}
+.buzzBox{
+padding:0px 15px 10px 0px;
+float:left;
+width:10px;
+text-align:top;
+background-color:#002e5a;
+font-size:18px;
+font-weight:bold;
+color:#FFFFFF;
+margin:0px 6px 10px 0px;
+line-height:14px;
+}
+
+.staffBox{
+padding:0px 15px 10px 0px;
+float:left;
+width:10px;
+text-align:top;
+background-color:#c56131;
+font-size:18px;
+font-weight:bold;
+color:#FFFFFF;
+margin:0px 6px 10px 0px;
+line-height:14px;
+}
+
+.categoryHeading{
+
+}
+
+#bioFlags{margin:0 20px 20px 20px; padding:0;}
+.icon-desc{list-style:none; margin:0; padding:0;}
+.desc{width:270px; height:90px; float:left; display:inline; margin:10px 10px 10px 10px;  font-size:14px; line-height:15px; padding:20px 0 0 30px; background:url(http://storage.googleapis.com/mvassets/images/iconHdr.png) top left no-repeat;}
+.dec-no-m-lt {margin-left:0;}
+.dec-no-m-rt {margin-right:0;}
+.desc-prof{background-position:0px 0px;}
+.desc-cont{background-position:-300px 0px;}
+.desc-buzz{background-position:-600px 0px;}
+.desc-staff{background-position:-900px 0px;}
+.smName{font-size:10px; line-height:11px;}
+/*///// STATIONARY ATTRIBUTE STYLING END /////*/
+
+
+.biographies{
+width:620px;
+}
+
+
+/*///// BIOGRAPHY THUMBNAILS /////*/
+
+.biographies .thmb{display:block; background-color: #ffffff; border: 1px solid #D6D6D6; float:left; vertical-align:top;width:60px;min-height:60px; }
+/*.biographies .thmb{display:block; width:60px; height:60px; overflow:hidden; background-color: #ffffff; border: 1px solid #D6D6D6; float:left; }*/
+.biographies .bio{display:inline; float:left; width:80px; height:auto;}
+.biographies .bionmLt{margin-left:5px;}
+.biographies .bionmRt{margin-right:15px;}
+.biographies .xtr-marg-top {margin-top:20px;}
+
+/*.biographies .thmb a, .biographies .thmb a:link, biographies .thmb a:visited, .biographies .thmb a:hover, .biographies .thmb a:active {display:block; margin:5px 0 0 5px; background-color: transparent; background-position: 0 0; background-repeat: no-repeat; border: 0;}*/
+
+.biographies .thmb a, .biographies .thmb a:link, biographies .thmb a:visited, .biographies .thmb a:hover, .biographies .thmb a:active {
+background-color:transparent;
+background-position:0 0;
+background-repeat:no-repeat;
+border:0 none;
+display:block;
+margin:5px 0 5px 5px;
+} 
+
+/*.biographies .thmb a, .biographies .thmb a:link, biographies .thmb a:visited, .biographies .thmb a:hover, .biographies .thmb a:active {display:block; width:50px; height:50px; margin:5px 0 0 5px; background-color: transparent; background-position: 0 0; background-repeat: no-repeat; border: 0; text-indent: -500px;}*/
+.biographies .bioFlags {width:14px; margin: 0 0 0 2px; padding: 0; float:left;}
+/*#grid.biographies .active .bioFlags {visibility: visible;}*/
+.biographies .bioFlags li {/*display: inline;*/ width: 16px; height: 13px; margin: 2px 0 2px 0; padding: 0; font-size: 0.1em; text-indent: -8000px;}
+.biographies .liNoMbtm {margin-bottom:0;}
+
+/* BIO FLAGS COLORING*/
+ a.buzzNbanter, a.buzzNbanter:link, a.buzzNbanter:visited { background-color: #002e5a; }
+a.buzzNbanter:hover, a.buzzNbanter:active, a.buzzNbanter.active { background-color: #002e5a!important; }
+
+a.mvContributors, a.mvContributors, a.mvContributors:visited { background-color: #4E7EAD; }
+a.mvContributors:hover, a.mvContributors:active, a.mvContributors.active { background-color: #4E7EAD !important; }
+
+.mvProfessors
+{
+	background-color: #c5a231;
+	width:16px;
+	height:13px;
+	margin:2px 0;
+}
+
+.mvContributors
+{
+	background-color: #4E7EAD;
+	width:16px;
+	height:13px;
+	margin:2px 0;
+}
+.buzzNbanter{
+	background-color: #002e5a;
+	width:16px;
+	height:13px;
+	margin:2px 0;
+}
+.mvStaff{
+	background-color: #c56131;
+	width:16px;
+	height:13px;
+	margin:2px 0;
+}
+
+.bio-homepage-content {
+	background:#ffffff;
+	border: solid #000000;
+	border-width: 0px 1px 1px 1px;
+	padding:5px 0px 0px 0px;
+	width:984px;
+	float:left;
+}
+
+.bio-shadow {
+	background-color:#999999;
+	padding:0px 2px 3px 0px;
+	width:984px;
+	float:left;
+}
+.bottomSpace
+{
+	padding-bottom:60px;
+}
+
+a.mvProfessors, a.mvProfessors, a.mvProfessors:visited { background-color: #c5a231; }
+a.mvProfessors:hover, a.mvProfessors:active, a.mvProfessors.active { background-color: #c5a231 !important; }
+
+a.mvStaff, a.mvStaff:link, a.mvStaff:visited { background-color: #c56131; }
+a.mvStaff:hover, a.mvStaff:active, a.mvStaff.active { background-color: #c56131 !important; }
+/* END BIO FLAGS COLORING*/
+
+/* NAMING */
+.name-tag h3 { font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#00509E; font-weight:normal; width:80px; margin:1px; padding:2px; line-height:13px; float:left;text-transform:none; margin-bottom:2px;word-wrap: break-word;min-height:60px;}
+.name-tag a, .name-tag a:visited{
+text-decoration:none;
+}
+.name-tag a:hover{
+	text-decoration:underline;
+}
+
+ .breadcrum{
+ text-align:left;
+ padding-left:20px;
+ margin-top:6px;
+ margin-bottom:12px;
+ color:#0E2746;
+ font-family:Arial,Helvetica,sans-serif;
+ font-size:11px;
+ font-weight:normal;
+ text-transform:none;
+}
+ .breadcrumLanding{
+	text-align:left;
+	margin-left:30px;
+	margin-top:6px;
+	color:#0E2746;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	text-transform:none;
+ }
+
+ .breadcrum a,.breadcrum a:visited,.breadcrumLanding a, .breadcrumLanding a:visited {
+	text-decoration:underline;
+	color:#002E5A;
+	margin-bottom:10px;
+ }
+/* END NAMING */
+/*///// BIOGRAPHY THUMBNAILS END /////*/
+
+.buzzLink{
+	color:#002E5A;
+	text-align:left;
+	text-decoration:none;
+}
+.buzzLink a:hover{
+	text-decoration:underline;
+}
+.anchorLink
+{
+cursor:pointer;
+}

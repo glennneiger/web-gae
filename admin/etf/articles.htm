@@ -1,0 +1,236 @@
+<?
+$contributor_id=$_GET['contributor_id'];
+$id=$_GET['id'];
+$page="gazette";
+global $D_R;
+include_once("$D_R/lib/_news.php");
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/etf/_etf_lib.php");
+$articles[title]=mswordReplaceSpecialChars($articles[title]);
+$articles[position]=mswordReplaceSpecialChars($articles[position]);
+$articles[blurb]=mswordReplaceSpecialChars($articles[blurb]);
+
+
+$objetf= new Etftrader();
+$getresult = getContribuotrDetails('Ron Coby & Denny Lamson'); //_news.php in lib
+$cid =$getresult['id'];
+$cancreate=$AD->getPerm("etf_articles");
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+// $contrib_query="select id,name,bio_asset from contributors where id=".$cid;
+// $contribdata=exec_query($contrib_query,1);
+if (isset($contributor_id))
+{
+	$articlelist = "SELECT DATE_FORMAT(CA.date,'%m/%d/%Y %r')date,CA.id,CA.title,CC.name,CA.contrib_id,CA.note,CA.body,CA.contributor FROM etf_articles CA,contributors CC WHERE CA.contrib_id=CC.id and CC.id='".$contributor_id."'";
+	$articlelist.=" ORDER BY CA.date DESC limit 0,50";
+}
+/*===========set up data for displaying article edit page=============*/
+	if($contributor_id)
+	{
+		$pagedata = $objetf->get_full_etf_article($id,0); // lib\_news.php
+		$pagedata[keyword]=eregi_replace("-",",",$pagedata[keyword]);
+	}
+	$handler = "./articles_mod.htm";
+
+	if(!$id || !count($pagedata) ){
+		$pagedata[body]="";
+		$pagedata[contributor]=$AD->userInfo[name];
+		$pagedata[contrib_id]=$AD->userInfo[contrib_id];
+		$pagedata[date]=mysqlNow();
+		$pagedata[udate]=time();
+		$pagedata[datefmt]=date($DATE_STR);
+		$pagedata[character_id]=0;
+		$pagedata[position]=$DEFAULT_NO_POS;
+		$pagedata[title]="";
+		$pagedata[position]="";
+		$pagedata[blurb]="";
+		$pagedata[keyword]="";
+		$pagedata[note]="";
+		$pagedata[character_asset]="/space.gif";
+		$ctrlstatus="disabled";
+	}
+	$pagedata[sent]=($pagedata[sent]?1:0);
+	$breakDateStr="n|j|Y|G|i";
+	list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,$pagedata[udate]));
+	if($y=="2000" || $y=="1969"){//invalid date
+		$datefield=array();
+	}else{
+		$datefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+	}
+?>
+<script>
+
+function Save(){
+	var err="";
+	var frm=document["articleForm"];
+	var oEditor = FCKeditorAPI.GetInstance('articles[body]');
+	var feditor=oEditor.GetHTML();
+	if(!trim(getValByName("articles[title]"))){
+		err+="Please enter title for this article\n";
+	}
+	if(document.getElementById("articlecontribid").selectedIndex<1){
+		err+="Please select author for this article\n";
+	}
+	if(feditor.substr(0,feditor.length-4)<1){
+		err+="Please enter body for this article\n";
+	}
+	if(err.length){
+		alert(err);
+		return;
+	}
+	findObj("articleForm").submit();
+}
+
+function setFormSubmitMarker(frm,value)
+{
+    frm.submitname.value=value;
+}
+
+function setAutorName(frm,frmobj)
+{
+
+    if (frmobj.selectedIndex>0)
+    {
+        frm["articles[contributor]"].value=frmobj[frmobj.selectedIndex].text;
+    }
+    else
+    {
+        frm["articles[contributor]"].value="";
+    }
+}
+
+</script>
+<div class=adminheader>Grail ETF & Equity Investor - Create/ Edit Articles</div><br />
+<?if($AD->getPerm(array("etf_approve"))){?>
+	<a href="/admin/etf/approve.htm">Approve Articles</a><br>
+<?}?>
+<?if($AD->getPerm("etf_performance")){?>
+	<a href="performance.htm">Upload Performance</a><br>
+<?}?>
+<br><br>
+<form method=get action="<?=$PHP_SELF?>">
+	<table align=center width=600 border=0>
+	<TR>
+		<TD>Select a contributor to view article:
+		<select name="contributor_id" onchange="setFormSubmitMarker(this.form,'contributor');this.form.submit();">
+		<option value="">--select contributor--</option>
+			<?
+				$sel=($contributor_id==$getresult[id]?" selected":"");
+				$disp=$getresult[name];
+				$style=" style='background:#".($getresult[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+			?>
+				<option value="<?=$getresult[id]?>"<?=$sel.$style?>><?=$disp?></option>
+		</select>
+		</TD>
+	<TR>
+	<TR>
+		<TD>Select an article to Edit:
+			<select name="id" onchange="this.form.submit()">
+			<?if($cancreate){?><option value="">--New Article--</option><?}?>
+			<?
+			if (strlen($contributor_id)<>0)
+			{
+				foreach(exec_query($articlelist) as $row){
+					$sel=($id==$row[id]?" selected":"");
+					$disp=$row[name]." - ".$row[title]." (${row[date]})";
+					$style=" style='background:#".($row[contrib_id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+				?>
+					<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+				<?}
+			}?>
+			</select>
+		</TD>
+	</TR>
+	</table>
+	<input type="hidden" name="submitname" value="">
+</form>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<form method="post" action="<?=$handler?>" name="articleForm">
+	<?input_hidden("id")?>
+	<?input_hidden("articles[sent]",$pagedata[sent])?>
+	<?input_hidden("deletearticle",0)?>
+	<?input_hidden("emailsend",0)?>
+	<table align=center width=600 border=0>
+		<TR>
+			<TD width=1% align=right><label for="articles[title]"><b>Title1</b>:</label></TD>
+			<TD width=99%><?input_text("articles[title]",$pagedata[title],0,255," style='width:100%'")?></TD>
+		</TR>
+		<TR>
+			<TD align=right><label for="articles[contrib_id]"><b>Author</b>:</label></TD>
+			<TD width=99%>
+
+			<select id="articlecontribid" name="articles[contrib_id]" onchange="setAutorName(this.form,this)">
+			<option value="">--select author--</option>
+			<?
+					$sel=(trim($pagedata[contributor])==trim($getresult[name])?" selected":"");
+					$disp=$getresult[name];
+					$style=" style='background:#".($getresult[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+				?>
+					<option value="<?=$getresult[id]?>"<?=$sel.$style?>><?=$disp?></option>
+			</select>
+			<?input_hidden("articles[contributor]",$pagedata[contributor])?>
+			<?input_hidden("articles[contrib_id]",$cid)?>
+			</TD>
+		</TR>
+		<TR>
+			<TD align=right><b>Date</b>:</TD>
+			<TD>
+				<?if($edit_date){?>
+					<table cellpadding=0 cellspacing=0 border=0>
+					<TR>
+					<TD><?month_options("datefield[mo]",$datefield[mo])?></TD>
+					<TD><?day_options("datefield[day]",$datefield[day])?></TD>
+					<TD><?year_options("datefield[year]",$datefield[year],"",2002,date("Y")+3)?></TD>
+					<TD><?hour_options("datefield[hour]",$datefield[hour])?></TD>
+					<TD><?minute_options("datefield[min]",$datefield["min"])?></TD>
+					</TR>
+					</table>
+				<?}else{?>
+					<?=$pagedata[datefmt]?>
+				<?}?>
+				<?input_hidden("articles[date]",$pagedata["date"] );?>
+			</TD>
+		</TR>
+		<TR>
+			<TD valign=top align=right><label for="articles[blurb]"><b>Headline</b>:</TD>
+			<TD><textarea name="articles[blurb]" id="articles[blurb]" cols=50 rows=5 style="width:100%"><?=$pagedata[blurb]?></textarea></TD>
+		</TR>
+
+		<TR>
+			<TD width=1% align=right><label for="articles[keyword]"><b>Keyword</b>:</label></TD>
+			<TD width=99%><?input_text("articles[keyword]",$pagedata[keyword],0,255," style='width:100%'")?></TD>
+		</TR>
+		<TR valign=top>
+			<TD align=right><b>Entry</b>:</TD>
+			<TD align=left>
+			<?
+				rich_editor("articles[body]", $pagedata[body],500,300,array(img_dir=>"/assets/articles"))
+			?>
+			</TD>
+		</TR>
+		<TR>
+			<TD><label for="articles[position]"><b>Position:</b></label></TD>
+			<TD><?input_text("articles[position]",$pagedata[position],0,255," style='width:100%'")?></TD>
+		</TR>
+		<tr>
+			<TD><label for="articles[note]"><b>Note:</b></label></TD>
+			<TD><?input_text("articles[note]",$pagedata[note],0,255," style='width:100%'")?></TD>
+		</tr>
+
+<?
+	if($contributor_id)
+	{
+	 $pagedata[character_asset]=$getresult['bio_asset'];
+	}
+	$chardata[0]=$getresult;
+?>
+			<TD colspan=2 align=center>
+				<hr width=100% size=1 color="#000000"><br>
+				<input type="button" value="Save" onclick="Save()">&nbsp;&nbsp;
+				<input type="button" value="Cancel" onclick="void(location.replace(location.href))">&nbsp;&nbsp;
+			</TD>
+		</TR>
+	</TABLE>
+</form>
+<? include("$ADMIN_PATH/_footer.htm")?>

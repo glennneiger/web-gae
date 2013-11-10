@@ -1,0 +1,10 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<?
+global $D_R;
+session_start();
+include_once($D_R.'/lib/feed/_googlenews_design_lib.php');
+$obj= new googleFeedViewer('daily_feed');
+//$obj= new googleFeedViewer('articles');
+$ret = $obj->displaySitemap(10);
+//print_r($ret);
+?>

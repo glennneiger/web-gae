@@ -1,0 +1,93 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once($D_R."/lib/_content_data_lib.php");
+
+$obContent = new Content('slideshow');
+
+$bounceback="./approve_slideshow.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+
+$viewapproved = $_POST['viewapproved'];
+$approve = $_POST['approve'];
+$delarticle = $_POST['delarticle'];
+$publishdatefield = $_POST['publishdatefield'];
+
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="DELETE FROM slideshow WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	$qry_content="DELETE FROM slideshow_content WHERE find_in_set(slideshow_id,'$keys') ";
+	exec_query_nores($qry_content);
+        $obContent->removeUnapprovedItems($keys,'slideshow');
+}
+
+
+if(is_array($approve)){
+	$keys = implode(",",array_keys($approve));
+	$qry="SELECT * FROM slideshow WHERE id='".$keys."'";
+	$slideshowArr = exec_query($qry);
+	$publish_date = $slideshowArr[0]['publish_date'];
+
+	if($publish_date=="" || $publish_date=="0000-00-00 00:00:00")
+	{
+		$qry = "UPDATE slideshow SET approved='".($viewapproved?0:1)."' , publish_date='".mysqlNow()."' ";
+	}
+	else
+	{
+		$qry = "UPDATE slideshow SET approved='".($viewapproved?0:1)."'";
+	}
+
+	if(!$viewapproved)
+		$qry.=", date='".mysqlNow()."'";
+	$qry.="WHERE find_in_set(id,'$keys')
+		   AND approved='".($viewapproved?1:0)."'
+		  LIMIT ".count($approve);
+	exec_query_nores($qry);
+
+//final step in publishing process, flatten out article and marc as sent
+	if(!$viewapproved){//don't want to resend articles
+
+		foreach(array_keys($approve) as $slide_id){
+			$qry="SELECT id FROM slideshow WHERE id='$slide_id' AND sent='0'";
+			if(num_rows($qry)){//article hasn't been spammed yet
+				update_query($slideshow,array(sent=>1),array(id=>$slide_id));
+				wgetArticle($slide_id);
+				spamJournalToUsers($slide_id);
+			}
+                        $obContent = new Content('slideshow',$slide_id);
+                        $obContent->setSlideshowMeta($slide_id);
+		}
+	}else{
+           foreach(array_keys($approve) as $slide_id){
+            $obContent->removeUnapprovedItems($slide_id,'slideshow');
+           } 
+        }
+}
+
+
+//Change error message for deleted Slideshows.
+if (count($delarticle))
+{
+
+location($bounceback.urlencode("The Slideshow was deleted."));
+
+exit;
+}
+if(!$viewapproved)
+{
+location($bounceback.urlencode("The Slideshow was approved."));
+
+}
+else
+{
+location($bounceback.urlencode("The Slideshow was disapproved."));
+
+}
+exit;
+?>
+
+

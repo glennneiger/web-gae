@@ -1,0 +1,86 @@
+<?
+global $IMG_SERVER;
+//phpAdServe zone ID
+$zoneIDSky = $SEC_TO_ZONE['dictstop'];
+$zoneIDFooter = $SEC_TO_ZONE['dictfooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['dictfooter2'];
+/* Operative Configuration *****/
+$zone_name="shops";
+$tile728x90=1;
+$tile160x600top=2;
+$tile160x600bottom=3;
+$tile125x125=4;
+/* End Operative Configuration *****/
+//cache_client_wholepage();
+$SECTION="library";
+$PAGE="dictionary";
+$pageName		= "dictionary";
+$pageJS=array("config","registration","iboxregistration","nav");
+$pageCSS=array("global","rightColumn","nav","minyanville");
+$HEADER="/assets/dict_banner.jpg";
+$contrib_id=1;
+
+$abc=qw(uc("a b c d e f g h i j k l m n o p q r s t u v w x y z"));
+$seenletters=array();
+include("../_header.htm");
+if($mvpopup)
+{?>
+<script>
+window.resizeTo(550,400);
+</script>
+<?}?>
+
+<!-- <tr><td class="underheader">  -->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+	<div class="dictionary_main_container">
+
+		<table cellpadding="0" cellspacing="0" border="0" >
+		 <tr><td colspan="2"><div  class="sub_common_title">MINYANVILLE DICTIONARY</div></td></tr>
+		<tr>
+		<td id="fixed-center-area-main">
+		  <div id="fixed-center-area-main">
+		    <div id="fixed-center-area-content">
+			    <div class="dictionary_nav_bar">
+			   	<?foreach($abc as $i=>$let)
+				{?>
+					<a href="#<?=$let?>"<?if(!$i){?><?}?>><?=$let?></a>&nbsp;
+		<?}?>
+				</div>
+
+				<div class="indent10">
+
+				<?foreach(get_dictionary() as $i=>$row)
+				{
+					//echo $i."=>".$row."<br>";
+			$l=uc($row[name][0]);
+			if(!in_array($l,$seenletters)){?>
+
+			<?if($l<>'A'){?><span style="float:right;"><?mOver("topup.gif","topover.gif","#")?></span><br><br><?}?>
+
+					<? if($i!=0) {?>
+					<div class="dictionary_divider"></div>
+					<?}?>
+					<div class="DictionaryModuleHeaders"><a name="<?=$l?>"><?=$l?></a></div>
+			<a name="<?=$l?>"></a>
+			<?$seenletters[]=$l?>
+				<?}?><div class="dictionary_text"><a name="<?=lc($row[name])?>"></a><div class="dictionary_head"><?=$row[name]?>:&nbsp;</div><?=$row[value]?></div>
+
+			<?  }?>
+
+                     </div>
+			</div>
+		  </div>
+		</td>
+		</tr>
+		<tr>
+		</table>
+	</div>
+</div>
+<?php
+$arrRightCols	=	array('show_video','show_industrybrains','show_mostpopular','email_alert','show_rss_emailalert','show_localguides');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

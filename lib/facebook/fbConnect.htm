@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>New Graph api & Javascript Base FBConnect Tutorial | Thinkdiff.net</title>
+    </head>
+    <body>
+        <div id="fb-root"></div>
+        <script type="text/javascript">
+            window.fbAsyncInit = function() {
+                FB.init({appId: '161531087208968', status: true, cookie: true, xfbml: true});
+
+                /* All the events registered */
+                FB.Event.subscribe('auth.login', function(response) {
+                    // do something with response
+                    login();
+                });
+                FB.Event.subscribe('auth.logout', function(response) {
+                    // do something with response
+                    logout();
+                });
+
+                FB.getLoginStatus(function(response) {
+                    if (response.session) {
+                        // logged in and connected user, someone you know
+                        login();
+                    }
+                });
+            };
+            (function() {
+                var e = document.createElement('script');
+                e.type = 'text/javascript';
+                e.src = document.location.protocol +
+                    '//connect.facebook.net/en_US/all.js';
+                e.async = true;
+                document.getElementById('fb-root').appendChild(e);
+            }());
+
+            function login(){
+                FB.api('/me', function(response) {
+                    document.getElementById('login').style.display = "block";
+                    document.getElementById('login').innerHTML = response.name + " succsessfully logged in!";
+                });
+            }
+            function logout(){
+                document.getElementById('login').style.display = "none";
+            }
+
+            //stream publish method
+            function streamPublish(name, description, hrefTitle, hrefLink, userPrompt){
+                FB.ui(
+                {
+                    method: 'stream.publish',
+                    message: '',
+                    attachment: {
+                        name: name,
+                        caption: '',
+                        description: (description),
+                        href: hrefLink
+                    },
+                    action_links: [
+                        { text: hrefTitle, href: hrefLink }
+                    ],
+                    user_prompt_message: userPrompt
+                },
+                function(response) {
+
+                });
+
+            }
+            function showStream(){
+                FB.api('/me', function(response) {
+                    //console.log(response.id);
+                    streamPublish(response.name, '', 'hrefTitle', 'http://qa.minyanville.com', "Share Post");
+                });
+            }
+
+            function share(){
+                var share = {
+                    method: 'stream.share',
+                    u: 'http://qa.minyanville.com'
+                };
+
+                FB.ui(share, function(response) { console.log(response); });
+            }
+
+            function graphStreamPublish(){
+                var body = 'Reading New Graph api & Javascript Base FBConnect Tutorial';
+                FB.api('/me/feed', 'post', { message: body }, function(response) {
+                    if (!response || response.error) {
+                        alert('Error occured');
+                    } else {
+                        alert('Post ID: ' + response.id);
+                    }
+                });
+            }
+
+            function fqlQuery(){
+                FB.api('/me', function(response) {
+                     var query = FB.Data.query('select first_name,uid,middle_name,last_name,email,sex,birthday_date,locale,name,pic_square,current_location from user where uid={0}', response.id);
+                     query.wait(function(rows) {
+						var postvalue = "type=facebooklogin&first_name="+rows[0].first_name+" "+rows[0].middle_name+"&last_name="+rows[0].last_name+"&email="+rows[0].email+"&gender="+rows[0].sex+"&birthdate="+rows[0].birthday_date+"&location="+rows[0].current_location+"&uid="+rows[0].uid;
+							 $.ajax({
+							type:"POST",
+							url:host+"controller/registration.php",
+							data:postvalue,
+							error:function(){
+								$('#errorMessage').html('Under Construction');
+							},
+							success:function(response){
+								var data = eval('('+response+')');
+								if(data.status==true)
+								{
+									window.location=host+"?module=edit_user";
+								}
+								else
+								{
+								$('#registrationError').html("");
+								}								
+							}
+						});
+                     });
+				});
+            }
+
+            function setStatus(){
+                status1 = document.getElementById('status').value;
+                FB.api(
+                  {
+                    method: 'status.set',
+                    status: status1
+                  },
+                  function(response) {
+                    if (response == 0){
+                        alert('Your facebook status not updated. Give Status Update Permission.');
+                    }
+                    else{
+                        alert('Your facebook status updated');
+                    }
+                  }
+                );
+            }
+        </script>
+
+               <p><fb:login-button length="long" size="large" onlogin="showStream();"></fb:login-button></p>
+			   <div id="message"></div>
+			   
+    </body>
+</html>

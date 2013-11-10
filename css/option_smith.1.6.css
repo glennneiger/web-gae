@@ -1,0 +1,724 @@
+@charset "utf-8";
+/* CSS Document */
+/*option smith style start from here*/
+.option_container_home{
+clear:both;
+padding-left:15px;
+border:solid 0px red;
+width:95%;
+float:left;
+}
+ .option_smith {
+  padding:0px;
+  float:left;
+  border:0px solid #222;
+  background-color:#3c546c;
+  margin: 5px 0px 0px 0px;
+  width:100%;
+}
+
+.option_smith li{list-style:none; float:left; margin-right:20px;}
+.option_smith ul{
+margin:0px;
+}
+.option_smith ul li{
+  display:block;
+  padding-top:2px;
+  padding-left:16px;
+  padding-right:16px;
+  text-align:center;
+  margin-left:10px;
+  margin-top:2px;
+  text-decoration:none!important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:10px;
+  font-weight:normal;
+  text-transform:uppercase;
+  color:#FFF;
+  
+}
+.option_smith ul li a {
+  display:block;
+  text-decoration:none!important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:10px;
+  font-weight:normal;
+  text-transform:uppercase;
+  color:#FFF;
+  
+}
+
+
+.option_smith ul a:hover {
+  /*color:#FFF;
+  background:#111;*/
+  }
+.option_smith ul li a.selected {
+  display:block;
+  padding-top:2px;
+  padding-left:16px;
+  padding-right:16px;
+  text-align:center;
+  background-color:#FFFFFF;
+  text-decoration:none!important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:10px;
+  font-weight:normal;
+  text-transform:uppercase;
+  color:#052c55;
+  }
+.option_main_content {
+  padding-top:2px;
+  clear:both;
+  float:left;
+  width:652px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:13px;
+  font-weight:normal;
+  padding-bottom:15px;
+  background-image: url(http://storage.googleapis.com/mvassets/images/redesign/option_main_bg.jpg);
+  background-position:top;
+  background-repeat:repeat-x;
+  line-height:25px;
+  text-align:left;
+  background-color:#bbc5cf;
+ }
+ .option_main_content table{
+ font-size:12px;
+ }
+ .option_views_header{
+background-color:#3C546C;
+float:left;
+width:652px;
+vertical-align:middle;
+clear:both;
+text-align:center;
+}
+.option_views_header h2{
+line-height:25px;
+}
+ 
+.option_add_to_cart_box{
+width:150px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:30px;
+color:#FFFFFF;
+background-color:#3c546c;
+font-weight:bold;
+text-align:center;
+line-height:20px;
+margin-top:10px;
+}
+.option_add_to_cart_box td{
+padding:2px;
+}
+.option_add_to_cart_box img{
+padding-top:2px;
+}
+.option_add_to_cart_box_coming{
+width:260px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:30px;
+color:#FFFFFF;
+background-color:#3c546c;
+font-weight:bold;
+text-align:center;
+line-height:20px;
+margin-top:10px;
+}
+.option_add_to_cart_box_coming td{
+padding:3px;
+}
+.option_add_to_cart_box_coming img{
+padding-top:2px;
+}
+.option_sub_title{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:24px;
+color:#3c546c;
+vertical-align:top;
+font-weight:normal;
+text-align:left;
+text-transform:none;
+padding-bottom:15px;
+}
+.option_sub_title_dis{
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+line-height:18px;
+}
+.option_views_container{
+font-family: Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+margin-top:6px;
+float:left;
+clear:both;
+text-align:left;
+color:#000100;
+}
+.smith_subs_container{
+border:solid 1px #000;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+margin-bottom:30px;
+height:200px;
+line-height:15px;
+color:#000;
+font-weight:bold;
+text-align:left;
+background-image: url(http://storage.googleapis.com/mvassets/images/redesign/smith_subs_cont_bg.jpg);
+}
+.smith_subs_container td{
+padding-left:10px;
+}
+
+.smith_subs_container ul{
+padding-left:15px;
+}
+.smith_cart{
+padding-right:10px;
+
+}
+.smith_cart td{
+padding-left:0px;
+padding-left:2px;
+
+}
+.smith_title{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+text-align:left;
+line-height:30px;
+font-size:28px;
+vertical-align:top;
+text-transform:none;
+color:#072e55;
+}
+.option_smith_title{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:18px;
+color:#323230;
+width:150px;s
+clear:both;
+padding-bottom:10px;
+background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_title_bg.jpg);
+background-position:bottom;
+background-repeat:repeat-x;
+padding-top:10px;
+font-weight:normal;
+float:left;
+text-align:left;
+margin-bottom:10px;
+text-transform:uppercase;
+}
+.option_container{
+width:650px;
+border:solid 0px red;
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#2f2f2f;
+float:left;
+clear:both;
+padding-left:15px;
+margin-bottom:10px;
+text-align:left;
+}
+.option_container a{
+padding:0px;
+font-weight:normal;
+color:#2f2f2f;
+/*text-decoration: none;*/
+}
+.option_container b{
+color:#323232;
+}
+.option_container_coming{
+width:96%;
+border:solid 0px red;
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+color:#2f2f2f;
+float:left;
+clear:both;
+padding-left:15px;
+text-align:left;
+}
+.option_container_coming a{
+padding:0px;
+font-weight:normal;
+color:#2f2f2f;
+text-decoration: none;
+}
+.option_container_coming b{
+color:#323232;
+}
+.option_head{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight: bold;
+color:#000;
+text-transform:none;
+}
+.option_head_right{
+font-family:Arial, Helvetica, sans-serif;
+font-size:14px;
+font-weight:bold;
+color:#000;
+text-transform:none;
+}
+.option_links{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight: normal;
+color:#083d70;
+text-transform:none;
+}
+.option_links a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:normal;
+text-decoration:none;
+color:#083d70;
+text-transform:none;
+}
+.option_mail_links{
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+font-weight: bold;
+color:#083d70;
+text-transform:none;
+}
+.option_mail_links a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+font-weight:bold;
+text-decoration:none;
+color:#083d70;
+text-transform:none;
+}
+.comming_soon_box{
+font-family:Arial, Helvetica, sans-serif;
+font-size:13px;
+clear:both;
+float:left;
+width:99%;
+padding-left:20px;
+padding-top:20px;
+padding-bottom:20px;
+margin-bottom:10px;
+color:#323232;
+text-align:left;
+line-height:20px;
+background-color:#f9be45;
+font-weight:bold;
+}
+.comming_soon_box div{
+font-size:16px;
+font-weight:bold;
+letter-spacing:1px;
+clear:both;
+width:auto;
+}
+.comming_soon_box a{
+color:#323232;
+font-weight:bold;
+text-decoration:underline;
+}
+.option_smith_title_coming{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:18px;
+color:#323230;
+width:450px;s
+clear:both;
+padding-top:10px;
+font-weight:normal;
+float:left;
+text-align:left;
+text-transform:uppercase;
+}
+.option_heading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+text-align:center;
+color:#FFFFFF;
+text-transform:none;
+}
+.option_heading a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+text-decoration:none;
+color:#FFFFFF;
+text-transform:none;
+}
+.right_soon_container{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+padding-top:15px;
+clear:both;
+padding-left:10px;
+padding-bottom:10px;
+padding-right:10px;
+text-align:left;
+}
+.option_register_box{
+font-family:Arial, Helvetica, sans-serif;
+text-align:center;
+clear:both;
+width:100%;
+float:left;
+padding-top:15px;
+margin-bottom:20px;
+}
+
+.option_register_box img{
+border:0px;
+}
+.option_register_head{
+font-family:Arial, Helvetica, sans-serif;
+text-decoration:none;
+font-weight:bold;
+font-size:15px;
+color:#0b0c0b;
+}
+
+.option_register_head a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:15px;
+text-decoration:none;
+font-weight:bold;
+color:#0b0c0b;
+}
+.option_small_date{
+font-family: Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#777775;
+line-height:15px;
+padding-bottom:15px;
+font-weight:normal;
+text-align:left;
+}
+.option_recent_heading{
+font-family: Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#062f56;
+line-height:18px;
+font-weight: bold;
+text-align:left;
+}
+.option_recent_heading a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#062f56;
+line-height:18px;
+font-weight: bold;
+text-decoration:none;
+text-align:left;
+}
+.option_article_box{
+background-image:url(http://storage.googleapis.com/mvassets/images/redesign/quint_article_bg.gif);
+background-position:top;
+background-repeat:repeat-x;
+padding-top:15px;
+width:285px;
+padding-left:15px;
+padding-right:15px;
+margin-left:10px;
+font-weight:bold;
+line-height:25px;
+color:#323232;
+float:left;
+padding-bottom:15px;
+background-color:#e0e0e0;
+}
+.option_article_box ul{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+color:#323232;
+text-transform:none;
+}
+.option_article_box li{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+color:#323232;
+line-height:15px;
+padding-bottom:15px;
+margin-left:16px;
+text-transform:none;
+}
+.option_article_main{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+margin-top:15px;
+float:left;
+clear:both;
+width:100%;
+line-height:20px;
+}
+.option_article_main img{
+border:none;
+}
+.control_panel_option{
+height: 400px;
+width:975px;
+clear:both;
+margin-left:3px;
+#margin-left:2px;
+background-image: url(http://storage.googleapis.com/mvassets/images/redesign/control_panel_bg_option.jpg);
+background-repeat: repeat-x;
+padding-left:10px;
+border-right:solid 0px #000;
+}
+.common_panel_inner_option{
+width:313px;
+height:310px;
+float:left;
+}
+
+
+.option_recent_top_content{
+padding-top:15px;
+float:left;
+width:620px;
+border: solid 0px red;
+padding-left:15px;
+clear:both;
+}
+.option_part_container{
+padding-left:15px;
+float:left;
+width:620px;
+clear:both;
+background-image:url(http://storage.googleapis.com/mvassets/images/redesign/recent_part_bg.jpg);
+background-position:center;
+background-repeat:repeat-y;
+margin-top:15px;
+}
+.option_recent_left_block{
+width:250px;
+float:left;
+clear:both;
+}
+.option_recent_right_block{
+width:250px;
+float:right;
+}
+.recent_option_alert_main {
+float:left;
+padding-bottom:10px;
+padding-left:18px;
+padding-top:15px;
+width:260px;
+}
+
+.right_common_container_smith
+{
+border:1px solid #A5A5A5;
+clear:both;
+float:left;
+margin-top:10px;
+width:100%;
+}
+.right_common_container_smith .template7_main_container .template7_body span
+{
+        float:left;
+		width:260px;
+		
+}
+
+/* CSS for new Landing page */
+
+.smithContainer{
+	width:940px;
+	float:left;
+	margin:10px 25px;
+}
+
+.smithBanner{
+	float:left;
+	width:940px;
+	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith-banner.jpg);
+	background-repeat:no-repeat;
+	height:259px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.smithBannerContentYlw{
+	width:430px;
+	float:left;
+	color:#febc32;
+	font-weight:bold;
+	font-size:12px;
+	position:relative;
+	top:96px;
+	left:481px;
+}
+
+.smithBanneContentWhite{
+	width:430px;
+	float:left;
+	color:#FFFFFF;
+	font-weight:normal;
+	font-size:14px;
+	position:relative;
+	top:138px;
+	left:50px;
+}
+
+.smith14Day{
+	width:940px;
+	float:left;
+	margin:7px 0px;
+}
+
+.smithSubscription{
+	width:940px;
+	float:left;
+	margin:7px 0px;
+}
+
+.smithSubscriptionContainer{
+	width:300px;
+	float:left;
+}
+
+.smithSubscriptionGreen{
+	width:300px;
+	float:left;
+	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_heading_bg.jpg);
+	padding:7px 0px 0px 0px;
+	background-repeat:no-repeat;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:18px;
+	min-height:31px;
+	text-align:center;
+	color:#FFFFFF;
+}
+
+.smithSubscriptionMiddle{
+	width:300px;
+	float:left;
+	margin:0px 20px;
+}
+
+.smithSubscriptionBottom{
+	width:300px;
+	float:left;
+}
+
+.smithSubscriptionContent{
+	width:300px;
+	float:left;
+	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_box_mid.jpg);
+	background-repeat:repeat-y;
+}
+
+.smithFeatures{
+	width:620px;
+	float:left;
+	margin:0px 20px 0px 0px;
+}
+
+.smithFeaturesContent{
+	width:930px;
+	float:left;
+	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_bigbox_mid_940.png);
+	background-repeat:repeat-y;
+	padding:10px;
+	padding-left:15px;
+	min-height:164px;
+}
+
+.smithFeaturesContent h1{
+	font-size:20px;
+	font-family:Arial, Helvetica, sans-serif;
+	padding:0px 0px 7px 0px;
+}
+
+.featuresContent{
+	width:412px;
+	float:left;
+	padding:15px 20px 0px 25px;
+}
+
+.featuresContent li{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	padding:0px 10px 0px 10px;
+	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_yellowbullet.gif);
+	background-repeat:no-repeat;
+	background-position:0px 8px;
+	list-style-type:none;
+}
+
+.smithoffers{
+	width:940px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:normal;
+}
+
+.smithStarNotes{
+	width:940px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	color:#808080;
+	margin:15px 0px;
+}
+
+.perfBold{
+	width:192px;
+	float:left;
+	text-align:left;
+	font-weight:bold;
+	border-right:#909090 1px solid;
+	border-bottom:#909090 1px solid;
+	padding:6px 3px 6px 5px;
+}
+
+.perfCount{
+	width:89px;
+	float:left;
+	text-align:right;
+	border-bottom:#909090 1px solid;
+	color:#0171b0;
+	padding:6px 10px 6px 0px;
+}
+
+.perfContent{
+	width:300px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	height:27px;
+}
+
+.perfContentDate{
+	width:300px;
+	float:left;
+	text-align:center;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-style:italic;
+	min-height:19px;
+	padding:10px 0px 10px 0px;
+}
+
+.priceImage{
+	width:300px;
+	float:left;
+	height:100px;
+}
+
+.cartImage{
+	width:300px;
+	float:left;
+	height:54px;
+}

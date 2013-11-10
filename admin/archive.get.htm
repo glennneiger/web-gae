@@ -1,0 +1,217 @@
+<?
+ini_set("max_execution_time",300);
+$page="admintools";
+$htpfx="http://ntonic:adminuser@$HTTP_HOST";
+
+$cdname=date("m-d-y")."_archive";
+$archname=($is_dev?"dev":"web");
+$archivehome="$SITEHOME/archive/$archname/$cdname";
+$archivetmpl="$SITEHOME/archive/$archname/cdtemplate";
+$baseurls=array(
+	dj=>"$htpfx/gazette/journal/?ARCHIVER=fishypop()&id=",
+	nv=>"$htpfx/gazette/newsviews/?ARCHIVER=fishypop()&id="
+);
+$basedirs=array(
+	dj=>"$archivehome/journal",
+	nv=>"$archivehome/newsviews"
+);
+$sourcedirs=array(
+	dj=>"$archivetmpl/journal",
+	nv=>"$archivetmpl/newsviews"
+);
+$homepage=array();
+
+
+
+if($file){
+	if(is_file($file)){
+		header("Content-type: application/zip");
+		header("Content-Disposition: file; filename=\"".basename($file)."ip\"");
+		readfile($file);
+		parseCmd("rm -rf ".dirname($file));
+	}else{
+		echo "There was a problem getting the file. ";
+	}
+	location("archive.htm");
+	exit();
+}
+
+
+if(!is_array($contrib_ids) || !$author_on)$contrib_ids=array();
+$contrib_ids=array_unique($contrib_ids);
+
+if($range_on){
+	$params=array();
+	$f=trim_arr($f,1);
+	$t=trim_arr($t,1);
+	if(count($f)){
+		$fromdate=strtotime($f[year]."-".$f[mo]."-".$f[day]." 0:0:0");
+
+		$params[]="UNIX_TIMESTAMP(date)>=FROM_UNIXTIME('$fromdate')";
+	}
+	if(count($t)){
+		$todate=strtotime($f[year]."-".$f[mo]."-".$f[day]." 0:0:0"); 
+		$params[]="UNIX_TIMESTAMP(date)<=FROM_UNIXTIME('$todate')";
+	}
+	$params=" AND ".implode(" AND ",$params);
+}
+
+
+
+
+
+include("$ADMIN_PATH/_header.htm");
+flush();
+setupDirs();
+$anyarticles=0;
+foreach(getSelectedContributors() as $row){
+	$author = $row[name];
+	$cid    = $row[contrib_id];
+	$hasarticles=0;
+	echo "<br>\nGetting articles for <b>$author</b>...\n";
+		flush();
+	foreach(exec_query(articleListQry($cid)) as $row){
+		$homepage[$author][]=$row;
+		$id=$row[id];
+		wgetArticleWeb($id,$cid);
+		$hasarticles++;
+		$anyarticles=1;
+	}
+	echo ($hasarticles?"done ($hasarticles articles)":"no articles found\n");
+}
+if(!$anyarticles){
+	location("archive.htm?error=".urlencode("Your search didn't yield any results") );
+	exit();
+}
+createIndex($homepage);
+createZip();
+
+
+function progress(){
+	echo "&rarr; ";
+	flush();
+}
+function getSelectedContributors(){
+	global $author_on,$contrib_ids;
+	$ret=get_all_contributors();
+	if(!$author_on || !count($contrib_ids)){
+		return $ret;
+	}
+	foreach($ret as $i=>$row){
+		if(!in_array($row[contrib_id], $contrib_ids)){
+			unset($ret[$i]);
+		}
+	}
+	return $ret;
+}
+
+function articleListQry($contrib_id){
+	global $params,$ARTICLE_TABLE;
+	return "SELECT title,id,date,contrib_id FROM $ARTICLE_TABLE 
+		  WHERE contrib_id='$contrib_id' $params 
+		  ORDER BY `date` ASC";
+}
+
+function getArticleWeb($id,$contrib_id){
+	global $TODD_CONTRIB_ID,$baseurls;
+	$key=($contrib_id==$TODD_CONTRIB_ID?"dj":"nv");
+	return inc_web($baseurls[$key].$id);
+}
+function wgetArticleWeb($id,$contrib_id){
+	global $TODD_CONTRIB_ID,$baseurls,$basedirs,$sourcedirs;
+	$wget="wget --http-user=ntonic --http-pass=adminuser";	
+	$key=($contrib_id==$TODD_CONTRIB_ID?"dj":"nv");
+	$outfile="${basedirs[$key]}/${id}.html";
+	$srcfile="${sourcedirs[$key]}/${id}.html";
+	if(!is_file($outfile)){
+		if(!is_file($srcfile)){
+			`$wget "${baseurls[$key]}$id" -O "$outfile"`;
+			copy($outfile,$srcfile);//copy to main archive
+		}else{
+			copy($srcfile,$outfile);
+		}
+	}
+}
+
+function setUpDirs(){
+	global $archivehome,$HTDOMAIN,$D_R,$archivetmpl;
+	flush();
+	echo "creating directories\n";
+	flush();
+	parseCmd("mkdir -p $archivehome");
+		progress();
+	parseCmd("mkdir -p $archivehome/newsviews");
+		progress();
+	parseCmd("mkdir -p $archivehome/journal");
+		progress();
+	if(!file_exists("$archivehome/assets")){
+		parseCmd("ln -s $D_R/assets $archivehome/assets");
+		progress();
+	}
+	parseCmd("cp $archivetmpl/*.* $archivehome/");
+		progress();
+	
+		echo "done<br>";
+}
+
+function createIndex($article_list){
+	global $htpfx,$TODD_CONTRIB_ID,$archivehome,$fromdate,$todate;
+
+	$cont=inc_web("$htpfx/_header.htm?HEADER=/assets/gazbanner.jpg");
+	$cont.="<b>";
+	if($fromdate){
+		$cont.="Archive Covering ".date("m/d/Y",$fromdate);
+	}
+	if($todate){
+		$cont.=" - to - ".date("m/d/Y",$todate);
+	}
+	$cont.="</b>";
+	$cont.="<table>";
+	$i=0;
+	$cols=3;
+	foreach($article_list as $author=>$articles){
+		$cont.=openTR($i,$cols,"valign=top");
+		$cont.="<TD><b>$author</b><ul>\n";
+		$date="";
+		foreach($articles as $row){
+			if(date("M d, Y",$row["date"])!=$date){
+				$date=date("M d, Y",$row["date"]);
+				$cont.="<br><br><b>$date</b>";
+			}
+			$dir=($row[contrib_id]==$TODD_CONTRIB_ID?"journal":"newsviews");
+			$cont.="<li>"
+				  ."<a href=$dir/${row[id]}.html type=mlink>${row[title]}</a>"
+				  ."</li>\n";
+		}
+		$cont.= "</ul></TD>";
+		$cont.=closeTR($i,$cols,count($article_list));
+		$i++;
+	}
+	$cont.="</table>";
+	$cont.=inc_web("$htpfx/_footer.htm");
+	write_file("$archivehome/index.html",$cont);
+}
+
+function createZip(){
+	global $archivehome,$ADMIN_PATH;
+	chdir($archivehome);
+	echo "<br>Zipping...";
+	flush();
+	$cmd='zip -9 -r archive.z ./ -x \\*.swf -x "\\*assets/data/\\*" -x "\\*\assets/reg/\\*" -x "\\*assets/products\\* -x "\\*assets/swf/\\*""';
+	parseCmd($cmd);
+	echo "done<br>";
+	flush();
+	echo "<br><br>".href("archive.htm","go back");
+	include("$ADMIN_PATH/_footer.htm");
+	flush();
+	location("archive.get.htm?file=$archivehome/archive.z");
+	flush();
+}
+
+
+
+
+
+
+
+?>

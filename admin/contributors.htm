@@ -1,0 +1,223 @@
+<?
+global $D_R,$ADMIN_PATH,$cloudStorageTool,$IMG_SERVER;
+include_once($D_R."/admin/lib/_contributor_class.php");
+$page = $_GET['page'];
+if(!$page)$page="admintools";
+$handler="contributors_mod.htm";
+$allperms=array("contrib_self","contrib_all");
+include($ADMIN_PATH."/_header.htm");
+
+$handler = $HTPFX.$HTHOST."/admin/contributors_mod.htm";
+
+$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$frm_url = $cloudStorageTool->createUploadUrl($handler, $options);
+$error = $_GET['error'];
+?>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+<?
+$id = $_GET['id'];
+
+//page authentication
+if(!$AD->getPerm($allperms)){
+	admin_error();
+}
+
+if(!$AD->getPerm("contrib_all")){//person can just edit
+	 $cant_add=1;
+	if(!$id){
+		location("$PHP_SELF?id=".$AD->userInfo[contrib_id]);
+		exit();
+	}elseif($id && $id!=$AD->userInfo[contrib_id]){
+		admin_error("You're only allowed to edit your own info");
+	}
+}
+// end-page authentication
+
+
+$contrib_list=$pagedata=array();
+ $contrib_qry="SELECT c.id contrib_id, c.user_id, c.bio_asset, c.logo_asset, c.description, c.disclaimer,
+			  c.name, c.email,c.suspended, c.has_bio,c.small_bio_asset,c.twitter_username,c.intro,c.postcopy,c.editor_note
+			  FROM contributors c ORDER BY c.name asc ";
+if($cant_add){
+	$contrib_qry.=" AND c.id='".$AD->userInfo[contrib_id]."'";
+}
+
+foreach(exec_query($contrib_qry) as $row){
+	$contrib_list[]=$row;
+	if($id==$row[contrib_id]){
+		$pagedata=$row;
+		$user_id=$row[user_id];
+	}
+}
+
+$objContributor=new contributor();
+$allGroupsList=$objContributor->getAllGroupsList();
+
+if($pagedata['contrib_id']){
+	$meta=$objContributor->getContributorMeta($pagedata['contrib_id']);
+	$contributorGroupsList=$objContributor->getContributorGroupsList($pagedata['contrib_id']);
+	foreach($contributorGroupsList as $group)
+		$contributorGroups[]=$group['group_id'];
+}
+
+?>
+<br>
+<div class="adminheader">Manage Contributors</div>
+<br><br>
+<?if($error){?><div class="error"><?=strip($error)?></div><?}?>
+<table width="400px" align=center>
+<form method=get action="<?=$PHP_SELF?>">
+<?input_hidden("page")?>
+<TR>
+<td>Select contributor to edit:</td>
+<TD align=center><select name="id" onchange="this.form.submit()">
+	<?if(!$cant_add){?><option value="">--New Contributor--</option><?}?>
+	<?foreach($contrib_list as $row){
+		$sel=($id==$row[contrib_id]?" selected":"");
+	?><option value="<?=$row[contrib_id]?>"<?=$sel?>><?=$row[name]?></option>
+
+	<?}?>
+</select></TD>
+</TR>
+</form>
+</table>
+<table width=600 border=0 align=center>
+<form method="post" action="<?=$frm_url?>" name="theform" enctype="multipart/form-data">
+<? if($_GET[id]!=""){   ?>
+<input type="hidden" name="id" value="<?=$_GET[id]?>" >
+<? }
+if($cant_add !=""){   ?>
+<input type="hidden" name="cant_add" value="<?=$cant_add?>" >
+<? } 
+if($user_id !=""){   ?>
+<input type="hidden" name="user_id" value="<?=$user_id?>" >
+<? } 
+if($page !=""){   ?>
+<input type="hidden" name="page" value="<?=$page?>" >
+<? } ?>
+<TR>
+<TD width=1% nowrap>Full Name:</TD>
+<TD><?input_text("cont[name]",$pagedata[name],"40")?></TD>
+</tr>
+<TR>
+<TD>Email</TD>
+<TD><?input_text("cont[email]",$pagedata[email],"40")?></TD>
+</tr>
+<tr>
+<td>Select Associated Groups:</td>
+<td><select name="group_ids[]" multiple size="4" align=absmiddle style="width:160px;"><?selectHashArr($allGroupsList,"id","group_name",$contributorGroups)?></select></td>
+</tr>
+<TR>
+<TD>Bio:</TD>
+<TD><?php
+input_textarea("cont[description]",$pagedata[description],"600");
+?>
+<script language="javascript">showEditor('cont[description]',600,100)</script>
+</TD>
+</TR>
+<TR>
+<TD>Disclaimer:</TD>
+<TD><?php input_textarea("cont[disclaimer]",$pagedata[disclaimer],"600"); ?>
+<script language="javascript">showEditor('cont[disclaimer]',600,100)</script>
+</TD>
+</TR>
+
+
+<TR>
+<TD>Intro Text:</TD>
+<TD><?php input_textarea("cont[intro]",$pagedata[intro],"600"); ?>
+<script language="javascript">showEditor('cont[intro]',600,100)</script>
+</TD>
+</TR>
+
+
+<TR>
+<TD>Post Story Text:</TD>
+<TD><?php input_textarea("cont[postcopy]",$pagedata[postcopy],"600"); ?>
+<script language="javascript">showEditor('cont[postcopy]',600,100)</script>
+</TD>
+</TR>
+
+<TR>
+<TD>Editor Note:</TD>
+<TD><?php input_textarea("cont[editor_note]",$pagedata[editor_note],"600"); ?>
+<script language="javascript">showEditor('cont[editor_note]',600,100)</script>
+</TD>
+</TR>
+<br>
+<TR>
+<TD width=1% nowrap>Google Plus Profile Link</TD>
+<TD><?input_text("cont[g_plus_link]",$pagedata[g_plus_link],"100")?><b> {Example:https://plus.google.com/107523992304052641446}</b></TD>
+</tr>
+<TR>
+<TD width=1% nowrap>SEO Title</TD>
+<TD><?input_text("meta[title]",$meta[title],"70")?></TD>
+</tr>
+<TR>
+<TR>
+<TD width=1% nowrap>SEO Description</TD>
+<TD><?input_text("meta[description]",$meta[description],"70")?></TD>
+</tr>
+<tr>
+<td>Twitter UserName</td>
+<td><?input_text("cont[twitter_username]",$pagedata[twitter_username],"70")?></td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+[Upload Thumb Image of size 50x50 px]
+</td>
+</tr>
+<TR>
+<TD>Small Bio Graphic</TD>
+<TD>
+<?if($pagedata[small_bio_asset]!=""){?>
+<img align=absmiddle src="<?=$IMG_SERVER.$pagedata[small_bio_asset]?>" border=0> <input type="checkbox" name="del[<?="$D_R${pagedata[small_bio_asset]}".":small_bio_asset"?>]" id="delthumb"> <label for="delthumb">Remove this thumb image</label>
+<?}else{?>
+<input type="file" accept="image/jpeg" style="float:left;" name="small_bio_asset">
+<div class="bio_asset_img" id="small_bio_asset_img"><? echo $pagedata[small_bio_asset]; ?></div>
+<?}?>
+</TD>
+</TR>
+<TR>
+<TD>Bio Graphic</TD>
+<TD>
+<?if($pagedata[bio_asset]!=""){?>
+<img align=absmiddle src="<?=$IMG_SERVER.$pagedata[bio_asset]?>" border=0> <input type="checkbox" name="del[<?="$D_R${pagedata[bio_asset]}".":bio_asset"?>]" id="delass">
+<label for="delass">Remove this bio image</label>
+<?}else{?>
+<input type="file" accept="image/jpeg" style="float:left;" name="bio_img">
+<div  class="bio_asset_img"  id="bio_img_asset"><? echo $pagedata[bio_asset]; ?></div>
+<?}?>
+</TD>
+</TR>
+<TR>
+<TD>Logo Graphic</TD>
+<TD>
+<?if($pagedata[logo_asset]!=""){?>
+<img align=absmiddle src="<?=$IMG_SERVER.$pagedata[logo_asset]?>" border=0> <input type="checkbox" name="del[<?="$D_R${pagedata[logo_asset]}".":logo_asset"?>]" id="dellogo"> <label for="dellogo">Remove this logo</label>
+<?}else{?>
+<input type="file" accept="image/jpeg" style="float:left;" name="logo_img">
+<div  class="bio_asset_img"  id="logo_img_asset"><? echo $pagedata[logo_asset]; ?></div>
+<?}?>
+</TD>
+</TR>
+<tr>
+<td>Show Bio</td>
+<td>
+<? input_check("cont[has_bio]",$pagedata[has_bio]); ?>
+</td>
+</tr>
+<tr>
+<td>Suspended</td>
+<td> <? input_check("cont[suspended]",$pagedata[suspended]); ?></td>
+</tr>
+<TR><TD colspan=2><hr></TD></TR>
+<TR><TD colspan=2 align=center><input type="submit" value="Save" class=inbtn>
+&nbsp;&nbsp;
+<input type="button" value="cancel" onclick="location.replace(location.href)"></TD></TR>
+</form>
+</table>
+<? googleanalytics(); ?>

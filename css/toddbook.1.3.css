@@ -1,0 +1,219 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{
+margin:0px;
+padding:0px;
+}
+
+body{
+color:#000000;
+font-size:12px;
+font-family:Arial, Helvetica, sans-serif;
+}
+.clr{
+clear:both;
+}
+.widget
+{
+float:left;
+margin-top:10px;
+}
+/*Middle part Start*/
+.productdetails-area{
+float:left;
+width:960px;
+margin:0px 0px 20px 24px;
+}
+.box-prdct{
+float:left;
+width:600px;
+margin:0px 0px 0px 0px;
+}
+.box-shrbuks{
+float:left;
+color:#105c1d;
+}
+.right-box{
+float:left;
+width:300px;
+margin:20px 0px 0px 20px;
+padding:0px 10px 20px 15px;
+}
+.pricebtn
+{
+float:left;
+margin-left:20px;
+margin-top:20px;
+}
+.pricebtn a
+{
+margin-left:20px;
+float:left;
+}
+.box-shrbuks a{
+color:#075ea4;
+text-decoration:underline;
+}
+.box-shrbuks a:hover{
+color:#075ea4;
+text-decoration:underline;
+}
+.box-shrbuks h2{
+color:#105c1d;
+font-size:19px;
+font-weight:normal;
+margin:10px 0px 20px 0px;
+}
+.featuredarea{
+float:left;
+clear:both;
+width:100%;
+}
+.featuredarea h2{
+color:#105c1d;
+font-size:17px;
+font-weight:bold;
+text-transform:none;
+line-height:none;
+letter-spacing:-0.01em;
+margin:18px 0px 10px 0px;
+width:100%;
+font-size /*\**/: 15px\9
+}
+.authrarea{
+color:#105c1d;
+font-size:12px;
+letter-spacing:-0.1px;
+}
+.athrsnap{
+float:left; 
+width:100px;
+margin:0px 30px 0px 0px;
+clear:both;
+padding-top:2px;
+}
+.athrtxt{
+font-size:16px;
+margin-top:16px;
+font-weight:bold;
+margin-bottom:10px;
+}
+.shrngicons{
+float:left; 
+margin:5px 0px 0px 0px;
+width:100%;
+clear:both;
+}
+.nametxt{
+font-size:12px;
+}
+.readmor{
+float:left;
+color:#105c1d;
+font-size:16px;
+letter-spacing:-0.5px;
+font-weight:bold;
+width:100%;
+}
+.readmor a{
+color:#075ea4;
+font-size:14px;
+font-weight:bold;
+text-decoration:underline;
+}
+.bookstore-area{
+float:left;
+width:900px;
+background-color:#f2f2f2;
+margin:0px 20px 20px 24px;
+padding:20px 20px 20px 20px;
+}
+.bookstore-area h1{
+color:#105c1d;
+font-size:20px;
+font-weight:bold;
+letter-spacing:0.5px;
+padding:0px 0px 20px 0px;
+font-family:Arial, Helvetica, sans-serif;
+}
+.reading-area{
+float:left;
+width:900px;
+background-color:#f2f2f2;
+margin:0px 20px 20px 24px;
+padding:20px 20px 20px 20px;
+}
+.reading-area h1{
+color:#105c1d;
+font-size:20px;
+font-weight:bold;
+letter-spacing:0.5px;
+padding:0px 0px 20px 0px;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.thumb_01{
+float:left; 
+margin:0px 18px 0px 0px;
+}
+.thumb_02{
+float:left; 
+margin-right:20px;
+}
+.iconalgn{
+float:left;
+margin:0px 0px 0px 1.5px;
+}
+.videobox{
+float:left;
+margin:0px 0px 0px 0px;
+}
+.more-book
+{
+width:612px;
+float:left;
+margin-left:-20px;
+margin-top:-20px;
+}
+#share_email, #share_tweet,#share_fb, #share_this
+{
+float:left;
+margin-right:8px;
+}
+.author_area
+{
+float:left;
+width:100%;
+margin-top:8px;
+margin-bottom:10px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+.featuredarea h2{
+color:#105c1d;
+font-size:15px;
+font-weight:bold;
+text-transform:none;
+line-height:none;
+letter-spacing:-0.01em;
+margin:18px 0px 10px 0px;
+}
+.readmor{
+float:left;
+color:#105c1d;
+font-size:15px;
+letter-spacing:-0.5px;
+font-weight:bold;
+}
+.readmor a{
+color:#075ea4;
+font-size:13px;
+font-weight:bold;
+text-decoration:underline;
+}
+}
+
+
+

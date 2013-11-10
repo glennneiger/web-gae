@@ -1,0 +1,71 @@
+<?php
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+$qry="select SCO.subscription_id,SCO.typeSpecificId,SCO.startDate,SCO.expireDate,SCO.billdate,SCO.description,SCO.orderStatus
+,SCO.paymentStatus,SCO.recurly_plan_code,SCO.recurly_plan_name,SCO.recurly_state,
+SCO.recurly_activated_at,SCO.recurly_canceled_at,SCO.recurly_expires_at,SCO.recurly_current_period_started_at,
+SCO.recurly_current_period_ends_at,SCO.recurly_trial_started_at,SCO.recurly_trial_ends_at 
+from subscription_cust_order SCO
+where 
+(SCO.startDate >= DATE_FORMAT('2012-06-01','%Y-%m-%d') and SCO.startDate <= DATE_FORMAT('2012-06-30','%Y-%m-%d'))
+or (SCO.recurly_activated_at >= DATE_FORMAT('2012-06-01','%Y-%m-%d') and SCO.recurly_activated_at <= DATE_FORMAT('2012-06-30','%Y-%m-%d'))";
+
+
+$getResult=exec_query($qry);
+
+ // htmlprint_r($getResult);
+
+foreach($getResult as $key=>$row){
+    $sql="select email from subscription where id='".$row['subscription_id']."'"; 
+    $getEmail=exec_query($sql,1);
+    
+    $sqlProd="select subGroup,subType,recurly_plan_period  from product where subscription_def_id='".$row['typeSpecificId']."' or recurly_plan_code='".$row['recurly_plan_code']."'";
+    //echo "<br>".$sqlProd;
+    $getProdDetail=exec_query($sqlProd,1);
+         
+    $arr[$key]['recurlyId']=$row['subscription_id'];
+    $arr[$key]['email']=$getEmail['email'];
+    $arr[$key]['product']=$getProdDetail['subGroup'];
+    if($getProdDetail['subType']==""){
+        $term=$getProdDetail['recurly_plan_period'];
+    }else{
+        $term=$getProdDetail['subType'];
+    }
+    $arr[$key]['term']=$term;
+    
+    if($getProdDetail['subType']=="Complimentary"){
+        $type='Complimentary';
+    }elseif($getProdDetail['subType']=="Soft Trial"){
+        $type='Soft Trial';
+    }else{
+        $type="Standard";
+    }
+    
+    $arr[$key]['type']=$type;
+    
+    $arr[$key]['new']=""; // (Did they user have their first subscription in the month of June, yes or no. Ie. IS THIS A NEW USER?)
+    
+    $arr[$key]['Renewal ']="";
+    
+    if($row['recurly_state']=='canceled'){
+       $subState='canceled';
+    }elseif($row['recurly_state']=='expired'){
+        $subState='expired';
+    }else{
+        $subState='';
+    }
+    $arr[$key]['Expired  ']=$subState;
+    
+    $arr[$key]['Date they Renewed']="";
+    $arr[$key]['Date they Expired']=$row['recurly_expires_at'];
+    
+    
+}
+
+
+
+
+csv_header("subscription.csv");
+$datestr="%m/%d/%Y";
+data2csv($arr);
+
+?>

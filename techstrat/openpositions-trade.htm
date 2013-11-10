@@ -1,0 +1,56 @@
+<?php
+global $D_R,$HTHOST,$HTPFX;
+session_start();
+include_once($D_R."/lib/techstrat/_techstratDesign.php");
+include_once($D_R."/lib/techstrat/_techstratData.php");
+include_once($D_R."/lib/config/_techstrat_config.php");
+
+$objTechStartData= new techstartData();
+$objTechStartData->redirectLandingPage();
+
+$pageName = "techstrat_openposition";
+$zone_name="openpositions";
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav","redesign");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","tsp","techstrat");
+
+include("../_header.htm");
+include_once($D_R."/admin/techstrat/techstrat_classes/class_transaction.php");
+include_once($D_R."/admin/techstrat/techstrat_classes/class_ytdreturn.php");
+include($D_R."/admin/techstrat/techstrat_classes/class_Performance.php");
+
+$objTechStartDesign= new techstartDesign();
+$transObj=new techstratTransaction('1');
+$ytObj=new techstratYTDRET();
+$performanceobj=new Performance();
+$categoryName="Open Position";
+global $ytObj, $transObj, $performanceobj;
+?>
+<script language="javascript">
+	function redirectpage(i){
+		var passid=i;
+		if(passid==1){
+			window.location.href="<?=$HTPFX.$HTHOST?>/techstrat/open-positions";
+		}else if(passid==2){
+			window.location.href="<?=$HTPFX.$HTHOST?>/techstrat/open-positions-trade";
+		}
+	}
+</script>
+
+<div id="content-container">
+	<?=showBreadCrum($breadcrum); ?>
+    <div id="techPortfolioPosition">
+		<!-- Body content will display here -->
+        <div id="product_contr">
+	    	<? $objTechStartDesign->displayTechStartHeader($categoryName); ?>
+			<div class="techPortfolioBox"><?=$transObj->displayOpenPositionTrade(); ?></div>
+			<div class="techValPerformanceBox">
+				<div class="techCurrentValBox"><?=$performanceobj->displayTechCurrentValueBox();?></div>
+				<div class="techPerformanceBox"><?=$performanceobj->displayTechPositionPerformance();?></div>
+			</div>
+		</div>
+	</div><!-- Left side End -->
+</div>
+
+
+<div style="clear:both;"></div>
+<? include("$D_R/_footer.htm"); ?>

@@ -1,0 +1,75 @@
+<?
+global $is_ssl,$IMG_SERVER,$HTHOST;
+$pageName="mvalert";
+$log_id=$_GET['log_id'];
+$qry="SELECT * from transaction_logs where id=".$log_id;
+$result = exec_query_logs($qry,1);
+if(isset($result)&&(is_array($result))){
+$request=htmlentities($result['request']);
+$response=htmlentities($result['response']);
+$transaction_date=date("F j, Y, g:i a", strtotime($result['transaction_date']));
+$custommsg=$result['error_msg'];
+$fromurl=$result['from_url'];
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Minaynville - <?=$mailbody['title']?></title>
+<style type="text/css">
+body{margin:0px;}
+</style>
+<? show_adds_checkmate($pageName); ?>
+<SCRIPT language="JavaScript" src="http://<?=$cm8Server;?>/adam/cm8adam_1_call.js"></SCRIPT>
+</head>
+<body>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td>
+	<table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+    <tr>
+
+		<td background="<?=$IMG_SERVER;?>/images/email_alert/backrd_img.jpg">
+		  <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+			  <tr><td width="23%" rowspan="2"><a href="<?=$HTPFX.$HTHOST;?>"><img src="<?=$IMG_SERVER;?>/images/email_alert/mv_logo.jpg" width="165" height="83" border="0"/></a></td></tr>
+			  <tr>
+			   <td align="right" style="vertical-align:bottom; padding-bottom:5px;padding-right:5px;">
+				<table border="0" cellspacing="8" cellpadding="2" >
+				<tr><td colspan="5" align="right"><a href="<?=$HTNOSSLDOMAIN?>/library/search.htm" style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;"><span style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;">Search Minyanville</span></a></td></tr>
+				<tr><td ><a href="<?=$HTNOSSLDOMAIN?>/section/businessmarket/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Business & Markets</span></a>&nbsp;</td><td ><a href="<?=$HTNOSSLDOMAIN?>/section/lifemoney/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Life & Money</span></a>&nbsp;</td><td ><a href="<?=$HTNOSSLDOMAIN?>/subscription/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Subscription Products - Free Trial</span></a>&nbsp;</td><td align="right"><a href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Free Email Newsletters</span></a></td></tr>
+				</table>
+			 </td>
+			</tr>
+		  </table>
+		</td>
+
+   </tr>
+   <tr>
+   <td style="padding-left:15px;">
+<table border="0" cellspacing="0" cellpadding="5" style="margin-top:10px;">
+<tr><td style="vertical-align:top;" width="20%"><b>Date Time:</b></td><td style="vertical-align:top;"><?=$transaction_date;?></td></tr>
+<tr><td style="vertical-align:top;" width="20%"><b>URL:</b></td><td style="vertical-align:top;"><?=$fromurl;?></td></tr>
+<tr><td style="vertical-align:top;"><b>Custom Message:</b></td><td style="vertical-align:top;"><?=$custommsg;?></td></tr>
+<tr><td style="vertical-align:top;"><b>Request:</b></td><td style="vertical-align:top;"><?=$request;?></td></tr>
+<tr><td colspan="2"></td></tr>
+<tr><td style="vertical-align:top;"><b>Response:</b></td><td style="vertical-align:top;"><?=$response;?></td></tr>
+<tr></tr></table></td>
+   </tr>
+	<tr>
+	<td style="height:5px;"></td>
+	</tr>
+	<tr>
+	<td colspan="4" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;"> Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+    <br />
+	<a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise With Us</a></p>
+	</div></center></td>
+	</tr>
+	<tr>
+	<td >&nbsp;</td>
+	</tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

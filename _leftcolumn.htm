@@ -1,0 +1,459 @@
+<div id="article-left-right" class="konafilter">
+			<?php
+			global $_SESSION;
+			if(empty($objCache)){
+				$objCache = new Cache();
+			}
+			foreach($arrRightCols as $cols)
+			{
+				switch($cols)
+				{
+					case 'show_modules':
+				?>
+				<div class="article-right-module-header">
+        			<?=renderPageModules($pageDetail['id'],'Top Right Module');?>
+        		</div>
+				<?php
+					case 'show_300x250':
+						if($_SESSION['AdsFree']!="1")
+						{
+					?>
+					<div class="article-right-module" id="lr_comp_MR" style="display:none;"></div>
+					<div class="article-right-module" id="lr_comp_default_MR">
+									<? CM8_ShowAd("MediumRectangle_300x250_300x600") ?>
+					</div>
+				<?php
+						}
+				break;
+					case 'show_markets' :
+					?>
+	<div class="article-right-module">
+		<div class="article-right-module-header pad10">
+			<h3 class="new-head-right">MARKETS</h3>
+		</div>
+
+			<? renderFinancialContentFinanaceMvil() ?>
+	</div>
+					<?
+					break;
+		case 'daily_recap_module': ?>
+				<div id="daily_recap_module_left_col">	
+		        <?php showDailyRecap();?>
+				</div>
+		<?php break;
+		
+		case 'show_MediumRectangle_300x250':
+		?>
+			<div class="article-right-module">
+				<? CM8_ShowAd("MediumRectangle_300x250") ?>	
+		        </div>
+                <?
+		break;
+			case 'show_MediumRectangle_300x250_inContent':
+		?>
+			<div class="article-right-module">
+				<? CM8_ShowAd("MediumRectangle_300x250_inContent") ?>	
+		        </div>
+                <?
+		break;
+
+                case 'show_mostpopular': ?>
+		<div class="article-right-module">
+			<div class="article-right-module-header pad10">
+				<h3 class="new-head-right">WHAT'S POPULAR IN THE VILLE</h3>
+		</div>
+
+			<div class="mostPopularContainer" >
+			<?
+
+			showMostViewed();
+			daily_article_index();
+
+			?>
+			</div>
+	</div> <!-- end most emailed/viewed/latest module -->
+			<?
+			break;
+			case 'twitterWidget':
+			?>
+			<?php
+				showTwitterWidget();
+			?>
+			<?php
+			break;
+			case 'email_alert':
+            ?>
+            <div class="article-right-module" align="right">
+            <?
+            $isloggedin=$_SESSION['LoggedIn'];
+            $userEmail = $_SESSION['email'];
+            $userid = $_SESSION['SID'];
+            if(isset($userid))
+            {
+                $isloggedin=1;
+            }
+            else
+            {
+                $isloggedin=0;
+            }
+            $targeturl='/subscription/register/controlPanel.htm';	// specify the targetUrl
+            echo emailAlert($isloggedin,$userEmail,$targeturl); // defined in _module_design_lib.phpfile
+            ?>
+            </div>
+            <?
+            break;
+            case 'financial_product_guide':?>
+			<div class="article-right-module">
+				<h3 class="fp-head-right">Financial Product Guide</h3>
+				<div class="fp-right-content">
+					<div class="fp_content">
+						<div class="fp_name_left">
+							<a href="http://online-trading.minyanville.com/" style="text-decoration:none;color:#113B61" target="_blank">Online Trading</a>
+						</div>
+						<div class="fp_name_right">
+							<a href="http://financial-advisors.minyanville.com/" style="text-decoration:none;color:#113B61" target="_blank">Financial Advisors</a>
+						</div>
+					</div>
+					<div class="fp_content">
+						<div class="fp_name_left">
+							<a href="http://401-k-plans.minyanville.com/" style="text-decoration:none;color:#113B61" target="_blank">401k Plans</a>
+						</div>
+						<div class="fp_name_right">
+							<a href="http://investment-banks.minyanville.com/" style="text-decoration:none;color:#113B61" target="_blank">Investment Banks</a>
+						</div>
+					</div>
+					<div class="fp_content">
+						<div class="fp_name_left">
+							<a href="http://investment-advisors.minyanville.com/" style="text-decoration:none;color:#113B61" target="_blank">Investment Advisors</a>
+						</div>
+						<div class="fp_name_right">
+							<a href="http://broker-dealers.minyanville.com/" style="text-decoration:none;color:#113B61" target="_blank" >Broker Dealers</a>
+						</div>
+					</div>
+					<div class="fp_content">
+						<div class="fp_name_left">
+							<a href="http://finance-jobs.minyanville.com/" style="text-decoration:none;color:#113B61" target="_blank">Finance Jobs</a>
+						</div>
+					</div>
+				</div>
+			</div>
+            <?
+            break;
+            case 'show_newslettersignup':?>
+	<!-- free article alerts signup box -->
+	<div class="article-right-module">
+		<div class="article-right-module-header">
+			<img src="<?=$IMG_SERVER?>/images/hdr-free-alerts-white.gif"><br>
+		</div>
+		<form id="free-article-alerts">
+			<input type="text" name="lastname" id="faa-email" value="Enter email address" onfocus="javascript:if(this.value=='Enter email address') this.value=''; return false;" />
+			<a href="/subscription/register/controlPanel.htm"><img src="<?=$IMG_SERVER?>/images/faa-go-white.gif" style="margin-left:10px;" value="submit"></a>
+		</form>
+	</div>
+	<div style="clear:both"></div>
+	<!-- end free article alerts -->
+			<?
+			break;
+			case 'show_ads':
+			?>
+            <div class="article-right-module" ><? CM8_ShowAd($bannernameMR) ;?></div>
+			<?
+			break;
+
+            case 'show_rss_emailalert': ?>
+            <div class="article-right-module">
+            <?displayRssEmailAlertbox();?>
+            </div>
+			<?
+			break;
+
+            case 'show_td_ad':
+            if(!$_SESSION['AdsFree']) {
+            ?>
+            <div id="TD_ad_container">
+            <div id="symbol-form-ad">
+                <script language="javascript">CM8ShowAd("Button_160x30");</script>
+
+            </div>
+            </div>
+			<?
+            }
+			break;
+			case 'most_commented':
+			break;
+			case 'most_read':
+			?>
+	    <div class="article-right-module">
+		   <div class="article-right-module-header pad10">
+			  <h3 class="new-head-right">MOST READ</h3>
+		  </div>
+
+		<div class="article-right-module-shadow">
+			 <div class="most-commented">
+			   <div class="most_readComment">
+			     <?php
+				 if(empty($itemType)){
+					$itemType=1;
+				}
+				 echo showMostRead($itemType);?>
+			   </div>
+			</div>
+	   </div>
+	   </div>
+			<?php
+			break;
+			case 'most_tickers':
+				mostPopularTickers($itemType,$sectionId);
+			break;
+
+			 case 'most_contributor':
+			 	include_once($D_R."/admin/lib/_contributor_class.php");
+			?>
+
+				<!-- most emailed/viewed/latest module -->
+			<div class="article-right-module">
+		    <div class="article-right-module-header pad10">
+
+				<h3 class="new-head-right">MINYANVILLE <?=$subSectionName;?> CONTRIBUTORS</h3>
+
+		    </div>
+			<div class="article-right-module-shadow">
+			    <div class="most-commented">
+					 <div class="most_contributor">
+				<?php
+				$contributorsResults=$objCache->getSectionContributors($sectionId);
+				foreach ($contributorsResults as $rowC )
+			    {
+				   ?>
+					  <div class="most_contributor_in">
+				            <a href="/gazette/bios.htm?bio=<?php echo $rowC['id'];?>" target="_blank" class="most_contributor_in_a">
+					  <?php echo ucfirst($rowC['name']);?>
+					  </a><br>
+					         <span class="most_contributor_in_s" ><?php echo $rowC['group_name'];  ?></span> <br>
+							 <?php
+
+							 if(!empty($rowC['twitter_username']))
+							   {
+							   ?>
+							 <span class="most_contributor_in_e"><a href="http://twitter.com/#!/<?php echo $rowC['twitter_username'];?>" class="most_contributor_in_e"><?php echo "@".$rowC['twitter_username'];?></a></span>
+							   <?php
+							   }
+							   elseif(!empty($rowC['email'])){
+							   	?>
+							   	<span class="most_contributor_in_e"><a href="mailto:<?php echo $rowC['email'];?>" class="most_contributor_in_e">Email</a></span>
+							   	<?php
+							   }
+
+							   ?>
+							 </span>
+                    </div>
+
+				   <?php
+				      }
+					  ?>
+					<div class="dis_clear"></div>
+			</div>
+		</div>
+			</div>
+	</div> <!-- end most emailed/viewed/latest module -->
+			<?php
+			break;
+			case 'most_article_contributor':
+			 	include_once($D_R."/admin/lib/_contributor_class.php");
+			?>
+
+				<!-- most emailed/viewed/latest module -->
+			<div class="article-right-module">
+		    <div class="article-right-module-header pad10">
+
+				<h3 class="new-head-right">MINYANVILLE <?=$subSectionName;?> CONTRIBUTORS</h3>
+
+		    </div>
+			<div class="article-right-module-shadow">
+			    <div class="most-commented">
+					 <div class="most_contributor">
+				<?php
+				$articleContributorsResults=$objCache->getArticleContributors();
+				$c="0";
+				$contrib_id = array();
+				foreach ($articleContributorsResults as $rowC )
+			    {
+			    	if(!in_array($rowC['contrib_id'],$contrib_id) && $c<8)
+			    	{
+			    		$contrib_id[] = $rowC['contrib_id'];
+				   ?>
+					  <div class="most_contributor_in" style=" min-height: 40px;">
+				            <a href="/gazette/bios.htm?bio=<?php echo $rowC['id'];?>" target="_blank" class="most_contributor_in_a">
+					  <?php echo ucfirst($rowC['name']);?>
+					  </a><br>
+							 <?php
+
+							 if(!empty($rowC['twitter_username']))
+							   {
+							   ?>
+							 <span class="most_contributor_in_e"><a href="http://twitter.com/#!/<?php echo $rowC['twitter_username'];?>" class="most_contributor_in_e"><?php echo "@".$rowC['twitter_username'];?></a></span>
+							   <?php
+							   }
+							   elseif(!empty($rowC['email'])){
+							   	?>
+							   	<span class="most_contributor_in_e"><a href="mailto:<?php echo $rowC['email'];?>" class="most_contributor_in_e">Email</a></span>
+							   	<?php
+							   }
+
+							   ?>
+							 </span>
+                    </div>
+
+				   <?php
+				   		$c++;
+			    	}
+
+				      }
+					  ?>
+					<div class="dis_clear"></div>
+			</div>
+		</div>
+			</div>
+	</div> <!-- end most emailed/viewed/latest module -->
+			<?php
+			break;
+
+			case 'dailyfeed_contributors':
+			   $objCache= new Cache();
+			   echo $objCache->getPageModules($pageId,'MVPremium Contributors');
+
+			break;
+
+			case 'section_contributors':
+			   $objCache= new Cache();
+			   echo $objCache->getPageModules($pageId,'Section Contributors Place Holder');
+
+			break;
+			case 'article_contributors':
+			  $objCache= new Cache();
+			   echo $objCache->getPageModules($pageId,'Article Contributors Place Holder');
+			break;
+			case 'show_archive':
+			?>
+			<div class="article-right-module">
+
+			<div class="arch_box_container">
+			<div id="drop-nav">
+			<ul id="nav">
+			<li>
+			<div class="arch_box">Archive</div>
+					<ul >
+					<?php
+					for($i=1;$i<=12;$i=$i+1)
+					{
+						$month=date("m", strtotime("-$i month") );
+						$year=date("Y", strtotime("-$i month") );
+
+						$objCache=new Cache();
+						$cResultsA=$objCache->getArchiveCache('articles',$month,$year);
+
+
+						foreach ($cResultsA as $rowC )
+						{
+							$countArchieve=$rowC['numCount'];
+						}
+
+					 ?>
+					<li ><a href="<?php echo $HTPFX.$HTHOST.$_SERVER['REQUEST_URI'];?>?m=<?php echo $month;?>&y=<?php echo $year;?>"><?php echo date("F, Y", strtotime("-$i month") );?> (<?php echo $countArchieve;?>)</a></li>
+					 <?php
+					 }
+					 ?>
+				   </ul>
+				</li>
+			</ul>
+			</div>
+		   </div>
+		   </div>
+
+			<?php
+
+
+            break;
+
+
+			case 'show_section_archive':
+			?>
+			<div class="article-right-module">
+
+<div class="arch_box_container">
+<div id="drop-nav">
+<ul id="nav">
+<li>
+<div class="arch_box">Archive</div>
+ 		<ul >
+		<?php
+		for($i=1;$i<=12;$i=$i+1)
+		{
+		 	$month=date("m", strtotime("-$i month") );
+			$year=date("Y", strtotime("-$i month") );
+		?>
+		<li><a href="<?php echo $HTPFX.$HTHOST.$_SERVER['REQUEST_URI'];?>?m=<?php echo $month;?>&y=<?php echo $year;?>"><?php echo date("F, Y", strtotime("-$i month") );?></a></li>
+	     <?php
+		 }
+		 ?>
+	   </ul>
+	</li>
+</ul>
+</div>
+		   </div>
+		   </div>
+			<?php
+            break;
+            case 'charitybuzz_widget':
+            ?>
+          	<div class="article-right-module">
+            <iframe src="http://www.charitybuzz.com/catalog_items/290200/widget"; width="310px" height="480px" frameborder="0"></iframe>
+            </div>
+            <?php
+            break;
+            case 'show_recommendations':?>
+	<!-- free article alerts signup box -->
+	<div class="article-right-module">
+		<div class="article-right-module-header">
+			<img src="<?=$IMG_SERVER?>/images/hdr-markets-white.gif"><br>
+		</div>
+		RECOMMENDATIONS
+	</div>
+	<?php
+		break;
+		case 'show_related_article':
+?>
+			<div class="article-right-module">
+				<div id="related-links-module">
+					<ul id="related-article-list">
+					<? if (!empty($article->showRelArticle)) { ?>
+						<li class="more-on-related">Related Articles</li>
+						<? echo $article->showRelArticle; ?>
+					<? } if($article->showBioLink){	?>
+						<li class="more-on more-author"><a href="/gazette/bios.htm?bio=<? echo $article->authorid?>"> More by <? echo $article->author?></a></li>
+						<?
+						echo $article->showAlso;
+						} ?>
+					</ul>
+					<div id="related-buzz-ad">
+						<b><a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/">What's the Buzz?</a></b><br><a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/">30 top traders on these stocks and more</a>
+					</div>
+					<div id="related-stocks"></div>
+					<div style="clear:both"></div>
+					<div id="symbol-form">
+						<table cellpadding="0" cellaspacing="0"><tr><td width="110px">
+						<input id="stock-symbol" type="text" value="Symbols" onfocus="javascript:if(this.value=='Symbols') this.value=''; return false;"/>
+						<img id="stock-submit" src="<?=$IMG_SERVER;?>/images/articles/stock-go-button.gif"/></td><td>
+						<div id="symbol-form-ad">
+                            <?php CM8_ShowAd($cm8_ads_Button_160x30);  ?>
+						</div>
+						</td></tr></table>
+					</div>
+				</div>
+			</div>
+<?php break;
+			}
+		} //-- For each ends here -------------
+		?>
+<div style="clear:both;"></div>
+</div>

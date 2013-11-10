@@ -1,0 +1,295 @@
+<?
+/*--page  authentication----------------------------*/
+global $D_R;
+include_once("$D_R/lib/_news.php");
+$page="gazette";
+global $D_R;
+include_once("$D_R/lib/_news.php");
+include("$ADMIN_PATH/_header.htm");
+/*============set up permissions=================*/
+$editanyuser=$AD->getPerm("articles_all");//can't create anything
+$onlyself=$AD->getPerm("articles_own");
+$candelete=$AD->getPerm("articles_delete");
+$canapprove=($AD->getPerm("approve_gazette")||$AD->getPerm("approve_schoolhouse"));
+$edit_sch=$AD->getPerm("create_schoolhouse");
+$edit_gaz=$AD->getPerm("create_gazette");
+$edit_radar=$AD->getPerm("create_radar");
+
+
+$cancreate=($edit_gaz||$edit_sch||$edit_radar);//they can create articles
+$edit_date=$AD->getPerm("articles_date");
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$cancreate && !$editanyuser && !$onlyself){
+	admin_error("You're not allowed to use this page.");
+}
+/*========available categories to this user===============*/
+$avail_categories=array();
+if($edit_gaz)$avail_categories[]="gazette";
+if($edit_sch)$avail_categories[]="schoolhouse";
+if($edit_radar)$avail_categories[]="tradingradar";
+$category_ids=getAreaPerms($avail_categories);
+$category_str=implode('(,|$)|',$category_ids).'(,|$)';//use in SQL REGEXP ending w/ , or $
+
+/*==============redirect users who aren't allowed to create articles=====*/
+if(!$cancreate && !$id){
+	$qry="SELECT id FROM $ARTICLE_TABLE
+	      WHERE category_ids REGEXP '$category_str'
+		  ORDER BY date DESC";
+	$id=exec_query($qry,1,"id");
+	location("$PHP_SELF?id=$id");
+	exit();
+}
+
+/*==========list of articles==================*/
+//if($editanyuser || $onlyself) {
+$articlelist = "SELECT a.category_ids,DATE_FORMAT(a.date,'%m/%d/%Y %r')date,
+	a.id,a.title,c.name,a.contrib_id,a.note,a.body,a.contributor
+	FROM $ARTICLE_TABLE a,contributors c
+	WHERE a.contrib_id=c.id ";
+if($onlyself)//only edit their own articles
+$articlelist.=" AND contrib_id='".$AD->userInfo[contrib_id]."'";
+$articlelist.=" AND category_ids REGEXP '$category_str' ";
+$articlelist.=" ORDER BY a.date DESC";
+//}
+/*===========set up data for displaying article edit page=============*/
+$pagedata = get_full_article($id,0);
+
+$handler = "./articles_mod.htm";
+
+if(!$id || !count($pagedata)){
+	if(lc($AD->userInfo[username])=="todd"){
+		$pagedata[body]="<br><br>R.P.";
+	}elseif(lc($AD->userInfo[username])=="herb"){
+		$pagedata[body]='<br><br><a href="http://www.marketwatch.com/commerce/RealityCheck.asp?siteid=mktw&dist=LAtabstore" onclick="urchinTracker(\'/authors/greenberg\');"><img src="'.$IMG_SERVER.'/assets/sig-greenberg.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="schaeffer"){
+		$pagedata[body]='<br><br><a href="http://www.schaeffersresearch.com/" onclick="urchinTracker(\'/authors/schaeffer\');"><img src="'.$IMG_SERVER.'/assets/sig-schaeffer.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="fari"){
+		$pagedata[body]='<br><br><a href="http://www.hamzeianalytics.com/" onclick="urchinTracker(\'/authors/hamzei\');"><img src="'.$IMG_SERVER.'/assets/sig-hamzei.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="jason"){
+		$pagedata[body]='<br><br><a href="http://www.sentimentrader.com/" onclick="urchinTracker(\'/authors/goepfert\');"><img src="'.$IMG_SERVER.'/assets/sig-goepfert.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="jon"){
+		$pagedata[body]='<br><br><a href="http://www.insideoptions.com/" onclick="urchinTracker(\'/authors/najarian\');"><img src="'.$IMG_SERVER.'/assets/sig-najarian.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="erlanger"){
+		$pagedata[body]='<br><br><a href="http://www.erlanger.com/" onclick="urchinTracker(\'/authors/erlanger\');"><img src="'.$IMG_SERVER.'/assets/sig-erlanger.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="sanjay"){
+	 	$pagedata[body]='<br><br><a href="http://www.globaltechstocks.com/" onclick="urchinTracker(\'/authors/sanjay\');"><img src="'.$IMG_SERVER.'/assets/sig-sanjay.jpg" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="agwarner"){
+		$pagedata[body]='<br><br><a href="http://www.globaltechstocks.com/" onclick="urchinTracker(\'/authors/adam\');"><img src="'.$IMG_SERVER.'/assets/sig-sanjay.jpg" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="david"){
+		$pagedata[body]='<br><br><a href="http://www.biotechmonthly.com/" onclick="urchinTracker(\'/authors/david\');"><img src="'.$IMG_SERVER.'/assets/sig-miller.jpg" border="0" /></a><br>';
+	}
+
+	$pagedata[contributor]=$AD->userInfo[name];
+	$pagedata[contrib_id]=$AD->userInfo[contrib_id];
+	$pagedata[date]=mysqlNow();
+	$pagedata[udate]=time();
+	$pagedata[datefmt]=date($DATE_STR);
+	$pagedata[character_id]=0;
+	$pagedata[position]=$DEFAULT_NO_POS;
+	$pagedata[category_ids]=array();
+  $pagedata[is_public]=1;
+}else{
+	$pagedata[category_ids]=explode(",",$pagedata[category_ids]);
+	$pagedata[category_ids]=array_unique($pagedata[category_ids]);
+}
+
+$pagedata[sent]=($pagedata[sent]?1:0);
+
+//remove categories user's not allowed in. $editanyuser sees all
+$category_list=get_all_categories();
+
+foreach($category_list as $i=>$row){//remove categories user's not allowed in
+	if(in_array($row[id],$pagedata[category_ids]))
+		continue;//if the article's already assigned keep this in the list
+	if(!in_array($row[id],$category_ids))
+		unset($category_list[$i]);
+}
+
+//-----------------make the date editable
+$breakDateStr="n|j|Y|G|i";
+list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,$pagedata[udate]));
+
+if($y=="2000" || $y=="1969"){//invalid date
+	$datefield=array();
+}else{
+	$datefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+}
+
+?>
+<script>
+function deleteIt(){
+	if(confirm("Are you sure you want to delete this article?")){
+		var frm=document["articleForm"];
+		frm["deletearticle"].value=1;
+		frm.submit();
+	}
+}
+function Save(){
+	var err="";
+	if(!trim(getValByName("articles[title]"))){
+		err+="Please give this article a title\n";
+	}
+	if(findObj("articles[category_ids][]").selectedIndex<0){
+		err+="Please associate this article with at least one category\n";
+	}
+	if(err.length){
+		alert(err);
+		return;
+	}
+	findObj("articleForm").submit();
+}
+</script>
+<br><br>
+<?if($canapprove){?>
+<a href="approve.htm">Approve Articles</a>
+<?}?>
+<form method=get action="<?=$PHP_SELF?>">
+<table align=center width=600 border=0>
+<TR>
+<TD>Select an article to Edit:
+	<select name="id" onchange="this.form.submit()">
+	<?if($cancreate){?><option value="">--New Article--</option><?}?>
+	<?foreach(exec_query($articlelist) as $row){
+		$sel=($id==$row[id]?" selected":"");
+		$disp=$row[name]." - ".$row[title]." (${row[date]})";
+		$style=" style='background:#".($row[contrib_id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+	?>
+		<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+	<?}?>
+	</select>
+</TD></TR>
+</table>
+</form>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<form method="post" action="<?=$handler?>" name="articleForm">
+<?input_hidden("id")?>
+<?input_hidden("articles[sent]",$pagedata[sent])?>
+<?input_hidden("deletearticle",0)?>
+<table align=center width=600 border=0>
+<TR>
+<TD width=1% align=right><label for="articles[title]"><b>Title</b>:</label></TD>
+<TD width=99%><?input_text("articles[title]",$pagedata[title],0,255," style='width:100%'")?></TD>
+</TR>
+<TR>
+<TD align=right><b>Categories:</b></TD>
+<TD><select name="articles[category_ids][]" multiple align=absmiddle size="8">
+	<?selectHashArr($category_list,"id","title",$pagedata[category_ids])?>
+	</select> [ctrl]+[click] to select multiple
+</select></TD>
+</TR>
+<TR>
+<TD align=right><label for="articles[contrib_id]"><b>Author</b>:</label></TD>
+<TD width=99%>
+<?
+input_text("articles[contributor]",$pagedata[contributor],0,255," style='width:100%'");
+//=$pagedata[contributor];
+?>
+<?
+input_hidden("articles[contrib_id]",$pagedata[contrib_id])
+//input_text("articles[contrib_id]",$pagedata[contrib_id],0,255," style='width:100%'")
+?>
+</TD>
+</TR>
+<TR>
+<TD align=right><b>Date</b>:</TD>
+<TD>
+	<?if($edit_date){?>
+		<table cellpadding=0 cellspacing=0 border=0>
+		<TR>
+		<TD><?month_options("datefield[mo]",$datefield[mo])?></TD>
+		<TD><?day_options("datefield[day]",$datefield[day])?></TD>
+		<TD><?year_options("datefield[year]",$datefield[year],"",2002,date("Y")+3)?></TD>
+		<TD><?hour_options("datefield[hour]",$datefield[hour])?></TD>
+		<TD><?minute_options("datefield[min]",$datefield["min"])?></TD>
+		</TR>
+		</table>
+	<?}else{?>
+		<?=$pagedata[datefmt]?>
+	<?}?>
+	<?input_hidden("articles[date]",$pagedata["date"] );?>
+</TD>
+</TR>
+<TR>
+<TD valign=top align=right><label for="articles[blurb]"><b>Headline</b>:</TD>
+<TD><textarea name="articles[blurb]" id="articles[blurb]" cols=50 rows=5 style="width:100%"><?=$pagedata[blurb]?></textarea></TD>
+</TR>
+<TR valign=top>
+<TD align=right><b>Entry</b>:</TD>
+<TD align=left>
+<?
+//------Arvindan modified
+rich_editor("articles[body]", $pagedata[body],500,300,array(img_dir=>"/assets/articles"))
+?>
+</TD>
+</TR>
+<TR>
+<TD><label for="articles[position]"><b>Position:</b></label></TD>
+<TD><?input_text("articles[position]",$pagedata[position],0,255," style='width:100%'")?></TD>
+</TR>
+<tr>
+<TD><label for="articles[note]"><b>Note:</b></label></TD>
+<TD><?input_text("articles[note]",$pagedata[note],0,255," style='width:100%'")?></TD>
+</tr>
+<tr>
+<td colspan="2">
+<b>Allow this article to be viewed for free</b>
+<table cellpadding="0" cellspacing="0">
+<tr>
+<td><?input_radio("articles[is_public]",1,$pagedata[is_public])?></td>
+<td><label for="articles[is_public]1">Yes</label></td>
+<td><?input_radio("articles[is_public]",0,$pagedata[is_public])?></td>
+<td><label for="articles[is_public]0">No</label></td>
+</tr>
+</table>
+</td>
+</tr>
+
+<?
+	$chardata=exec_query("SELECT chi.id,concat(ch.name,' - ',chi.name)name,chi.asset
+					FROM characters ch, character_images chi
+					WHERE ch.id=chi.character_id");
+?>
+<script>
+chars=new Array()
+<?foreach($chardata as $row){?>
+	chars["<?=$row[id]?>"]="<?=$row[asset]?>";
+<?}?>
+
+function changeChar(frmObj){
+	var selid=frmObj[frmObj.selectedIndex].value;
+	if(!selid)return;
+	rollOver("swapper",chars[selid])
+}
+</script>
+<TR><TD colspan=2><hr size=1 width=100% color=black>
+<b>Character</b>:
+</TD></TR>
+<TR>
+<TD nowrap><label for="articles[character_text]"><b>Talk Bubble:</b></label></TD>
+<TD><?input_text("articles[character_text]",$pagedata[character_text],0,255," style='width:100%'")?></TD>
+</TR>
+
+	<TR>
+	<TD colspan=2 align=center>
+	<select name="articles[character_img_id]" onchange="changeChar(this)">
+			<option value="">--Select a character--
+			<?selectHashArr($chardata,"id","name",$pagedata[character_img_id])?>
+		</select><br>
+		<div class=border><img src="<?=$pagedata[character_asset]?$pagedata[character_asset]:"/space.gif"?>" border=0 name="swapper" width=126 height=140></div>
+
+<TR>
+<TD colspan=2 align=center>
+	<hr width=100% size=1 color="#000000"><br>
+	<input type="button" value="Save" onclick="Save()">&nbsp;&nbsp;
+	<input type="button" value="Cancel" onclick="void(location.replace(location.href))">&nbsp;&nbsp;
+	<?if($candelete && $id){?><input type="button" value="Delete This Article" onclick="deleteIt()"><?}?>
+
+</TD>
+</TR>
+</table>
+</form>
+<br>
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

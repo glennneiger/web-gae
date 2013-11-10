@@ -1,0 +1,259 @@
+<?
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-cache");
+header("Cache-Control: post-check=0,pre-check=0");
+header("Cache-Control: max-age=0");
+header("Pragma: no-cache");
+$page="selltransaction";
+include_once("$ADMIN_PATH/_header.htm");
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+include_once("$D_R/lib/layout_functions.php");
+
+/*============set up permissions=================*/
+$performtransaction=$AD->getPerm("ss_own_transaction");//can't create anything
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+	admin_error("You're not allowed to use this page.");
+}
+
+$transobj=new Qtransaction();
+$objPortfolio = new optionPortfolio();
+// Newly added
+$HTHOST=$HTADMINHOST;
+$STOCKACTBJSSCRIPT=$HTPFX.$HTHOST."/js/stock_actb.js";
+$ACTB_COMMONJSSCRIPT=$HTPFX.$HTHOST."/js/actb_common.js";
+// Newly added
+?>
+    <script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/datetimepicker.js" type="text/javascript"></script>
+	<script src="<?php echo $STOCKACTBJSSCRIPT; ?>" language="javascript" type="text/javascript"></script>
+	<script src="<?php echo $ACTB_COMMONJSSCRIPT; ?>" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/sstransaction.js" type="text/javascript"></script>
+	<script src="/__utm.js" languge="JavaScript" type="text/javascript"></script>
+<?php
+$updatemode=$_POST['mode'];
+$serchexchgname=$_POST['exchangename'];
+$serchsymname=$_POST['serchsymname'];
+$quoteidserched=$_POST['quoteidserched'];
+
+if(!isset($updatemode))
+{
+	$updatemode='';
+}
+else{
+
+	switch($updatemode)
+	{
+		case 'save':
+		{
+			$stockid_get_all_get="\$stockid_get_all1=&\$stockid_get_all1;";
+			eval($stockid_get_all_get);
+
+			$updatedidsarr=explode(',',$stockid_get_all1);
+			$cntLT1=count($updatedidsarr);
+
+			// process items
+			if($cntLT1>0){
+				for($x=0;$x<$cntLT1;$x++){
+									$allids[]=$updatedidsarr[$x];
+								}
+							}
+					$noofrecords = $totrecords-1;
+					for($i = 0; $i <= $noofrecords; $i++){
+					$autoids=$allids[$i];
+					$status=0;
+					$selectedchk="\$isselected=&\$sellchk_".$autoids.";";
+					eval($selectedchk);
+					if((isset($isselected)) && ($isselected!='')){$status=0;}else{$status=1;}
+					if($status==0){
+								$sharesval="\$updatedshares=&\$sellqty_".$autoids.";";
+								eval($sharesval);
+								$pershare="\$unitsellprice=&\$sellprice_".$autoids.";";
+								eval($pershare);
+								$selldate="\$selldateentered=&\$selldate_".$autoids.";";
+								eval($selldate);
+								$selldateentered=$transobj->formatdate2dbSTD($selldateentered);
+								$selldateconv=$selldateentered." ".date('H:i:s');
+								$descriptions="\$description=&\$sellnote_".$autoids.";";
+								eval($descriptions);
+								$stockauto=$isselected;
+								$datetime = date('Y-m-d h:i:s');
+
+								$transactiondata=array(
+													   'quote_id'=>$quoteidserched,
+													   'transaction_type'=>1,
+													   'creation_date'=>$selldateconv,
+													   'unit_price'=>$unitsellprice,
+													   'quantity'=>$updatedshares,
+													   'description'=>$description
+													   );
+								$insertid=insert_query("ss_transaction",$transactiondata);
+								//***echo "New id entered : ".$insertid."<br>";
+
+								if(isset($insertid)){
+										$memCacheDelete = new memCacheObj();
+										$key="ssOpenPositiontrade";
+										$memCacheDelete->deleteKey($key);
+										$key="ssOpenPosition";
+										$memCacheDelete->deleteKey($key);
+										$key="ssDisplayPerformance";
+										$memCacheDelete->deleteKey($key);
+										$objPortfolio->updateOpenPositionRecords();
+										# after sell entries saved in ss_transaction table
+										# update the stock amount in ss_user_portfolio table by $quoteidserched
+										if(isset($avgsharearr)) unset($avgsharearr);
+										$avg_unit_price=$transobj->avgunitpriceofstockinhand($quoteidserched);
+										//*** $avg_unit_price=$avgsharearr['up'];
+										//***$totbuyqty=$avgsharearr['qty'];
+										# stocks in hand
+										$getstockbuyarr=$transobj->getallbuystocks();
+										//htmlprint_r($getstockbuyarr);
+										$totbuyqty=0;
+										$totbuyqty=$getstockbuyarr[$quoteidserched];
+										$sql_chk="select id from ss_user_portfolio where quote_id='$quoteidserched'";
+													unset($searchfound);
+													$searchfound=exec_query($sql_chk);
+													if(count($searchfound)>0)
+													{
+														# Update except avg price
+														$transactiondata_up=array('quantity'=>$totbuyqty,'recent_trade_date'=>$selldateconv);
+														update_query("ss_user_portfolio",$transactiondata_up,array(quote_id=>$quoteidserched));
+														$memCacheDelete = new memCacheObj();
+														$key="ssOpenPositiontrade";
+														$memCacheDelete->deleteKey($key);
+														$key="ssOpenPosition";
+														$memCacheDelete->deleteKey($key);
+														$key="ssDisplayPerformance";
+														$memCacheDelete->deleteKey($key);
+														$objPortfolio->updateOpenPositionRecords();
+													}else if((count($searchfound))==0)
+													{
+														#insert
+														//**** purchase_date=>$datetime to be changed
+														$transactiondata_ins=array('quote_id'=>$quoteidserched,'quantity'=>$totbuyqty,'purchase_date'=>$selldateconv,'recent_trade_date'=>$selldateconv);
+														insert_query("ss_user_portfolio",$transactiondata_ins);
+														$memCacheDelete = new memCacheObj();
+														$key="ssOpenPositiontrade";
+														$memCacheDelete->deleteKey($key);
+														$key="ssOpenPosition";
+														$memCacheDelete->deleteKey($key);
+														$key="ssDisplayPerformance";
+														$memCacheDelete->deleteKey($key);
+														$objPortfolio->updateOpenPositionRecords();
+													}
+
+													# insert the sells reference in ss_sell_transaction
+													$transactiondata_sell=array('sell_trans_id'=>$insertid,'buy_trans_id'=>$autoids,'creation_date'=>$selldateconv);
+													$insertsellid=insert_query("ss_sell_transaction",$transactiondata_sell);
+														$memCacheDelete = new memCacheObj();
+														$key="ssOpenPositiontrade";
+														$memCacheDelete->deleteKey($key);
+														$key="ssOpenPosition";
+														$memCacheDelete->deleteKey($key);
+														$key="ssDisplayPerformance";
+														$memCacheDelete->deleteKey($key);
+														$objPortfolio->updateOpenPositionRecords();
+													# After storing in sell table we are updating the avg. price of lot table
+													if(isset($insertsellid)){
+														$avg_unit_price=0;
+														$avg_unit_price=$transobj->avgunitpriceofstockinhand($quoteidserched);
+														# Update avg unit price
+														unset($transactiondata_up);
+														$transactiondata_up=array('avg_unit_price'=>$avg_unit_price);
+														update_query('ss_user_portfolio',$transactiondata_up,array('quote_id'=>$quoteidserched));
+														$memCacheDelete = new memCacheObj();
+														$key="ssOpenPositiontrade";
+														$memCacheDelete->deleteKey($key);
+														$key="ssOpenPosition";
+														$memCacheDelete->deleteKey($key);
+														$key="ssDisplayPerformance";
+														$memCacheDelete->deleteKey($key);
+														$objPortfolio->updateOpenPositionRecords();
+													}
+												}// end of if(isset($retstatus)){
+					}
+					}//	for($i = 0; $i <= $noofrecords; $i++){
+		}
+} // end of switch($updatemode)
+}
+?>
+
+   <table border=0 style="border-left:0px solid #cccccc; padding:0px;margin:0px; border-top:0px solid #cccccc; border-bottom:0px solid #cccccc;  border-right:0px solid #cccccc; padding:0px;margin:0px;" align="left" cellpadding="2" cellspacing="0" width="900px">
+	<tr><td>
+	<div id="linksdiv" name="linksdiv">
+	<table border=0 style="border-left:0px solid #cccccc; padding:0px;margin:0px; border-top:0px solid #cccccc; border-bottom:0px solid #cccccc;  border-right:0px solid #cccccc; padding:0px;margin:0px;" align="left" cellpadding="0" cellspacing="0" width="900px">
+	<tr><td colspan="3">
+	<input type="radio" name="stockoption" value="stock" style="border:0px;" checked>Stock Sell&nbsp;<input type="radio" name="stockoption" value="option"  style="border:0px;" onclick="javascript:window.location='option_sell.htm'" >Options Sell</td>
+	<td align="right"><a href="transaction.htm" style="text-decoration:none;">Add / View Transactions</a></td>
+	</tr>
+	<!--<tr><td colspan="3">&nbsp;</td></tr>
+	<tr><td width="100%" colspan="3"></td></tr>-->
+	</table>
+	</div>
+	</td></tr>
+    <!--<tr>
+	<td width="646" class="steveoptiontd"><a href="transaction.htm">Add/View Transactions</a></td>
+	</tr>-->
+	<tr>
+	<td colspan="3"><!--<b><font color="red">Sell Transaction</font></b>-->&nbsp;</td>
+	</tr>
+	<tr><td width="100%" colspan="3">
+				<form name="stockserch">
+				<table width="30%" style="border-left:1px solid #cccccc; padding:0px;margin:0px; border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc; padding:0px;margin:0px;" cellspacing="0" cellpadding="5" border=0 bordercolor="black" class="quintportfolio">
+				<tr  bgcolor=#EFEFEF>
+				<td class="quintportfolio">Exchange</td>
+				<td class="quintportfolio" colspan="2">Symbol</td>
+				</tr>
+				<tr>
+<?php
+$qry_all_exchange="select exchange_name from ex_stock_exchange";
+$searchfoundarr=exec_query($qry_all_exchange);
+?>
+			<td>
+			<select id="exchangecmb" name="exchangecmb">
+			<? if($serchexchgname==''){?><option value="">-Exchange-</option><?}?>
+			<?
+			if(count($searchfoundarr)>0){
+			foreach($searchfoundarr as $allresultexchg){
+			$exchngname=$allresultexchg['exchange_name'];
+			if(trim($serchexchgname)==trim($exchngname)){
+			$selected='true';
+			}else{
+			$selected='';
+			}
+			?>
+			<option value="<?=$exchngname;?>" <?=$selected;?>><?=$exchngname;?></option>
+			<?
+			}
+			}
+			?>
+					<!--<option value="NYSE" <? if($serchexchgname=='NYSE'){ echo "selected";}?>>NYSE</option><option value="NASDAQ" <? if($serchexchgname=='NASDAQ'){ echo "selected";}?>>NASDAQ</option><option value="AMEX" <? if($serchexchgname=='AMEX'){ echo "selected";}?>>AMEX</option>
+				--></select></td>
+				<td><input name="symbolsearch" id="symbolsearch" type="text" value="<? echo $serchsymname;?>" size="8" maxlength="25" onkeydown="Javascript: if (event.keyCode==13) serachgetsymboldetail();"> &nbsp; <input type="button" name="go" Value="Go" onClick="javascript:serachgetsymboldetail();" onkeydown="Javascript: if (event.keyCode==13) serachgetsymboldetail();"></td>
+				<?
+				if($updatemode=='save'){
+				echo "<script language='javascript'>";
+				echo "serachgetsymboldetail()";
+				echo "</script>";
+				unset($updatemode);
+				}
+				?></table>
+				</form>
+				<?
+				?>
+				<br />
+				<div id="serchstockdetail"></div>
+	</td></tr>
+</table>
+<?
+$profileid=1;
+$tracking_name=$page;
+//googleanalytics($profileid,$tracking_name);
+googleanalytics();
+universalGoogleAnalytics();
+?>
+</body>
+</html>

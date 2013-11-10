@@ -1,0 +1,77 @@
+<?
+global $D_R;
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/_includes.php");
+include_once($D_R.'/lib/_exchange_lib.php');
+include_once("$D_R/lib/_content_data_lib.php");
+$bounceback = "./alerts.htm";
+$alert_TABLE = "ss_alerts";
+$alerts[title]=addslashes(mswordReplaceSpecialChars(stripslashes($alerts[title])));
+
+/*============set up permissions=================*/
+$editanyuser=$AD->getPerm("ss_alerts_all");
+$candelete=$AD->getPerm("ss_alerts_manage");
+$edit_date=$AD->getPerm("alerts_date");
+
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$editanyuser && !$candelete && !$edit_date){
+	admin_error("You're not allowed to use this page.");
+}
+$datefield = $_POST['datefield'];
+$id = $_POST['id'];
+$alerts = $_POST['alerts'];
+$deletealert = $_POST['deletealert'];
+
+$alerts[sent]=($alerts[sent]?1:0);
+$alerts[type] = "alert";
+
+if(is_array($datefield) && $datefield[year])
+{
+	$date = strtotime($datefield[year]."-".$datefield[mo]."-".$datefield[day]." ".$datefield[hour].":".$datefield["min"].":0");
+	if($date==-1)
+	{
+		$date=$alerts["date"];
+	}
+	else
+	{
+		$date=mysqlNow($date);
+	}
+	$alerts["date"]=$date;
+}
+
+if ($approvealerts)
+{
+	$alerts["approved"]=1;
+}
+$objThread = new Thread();
+
+if($id)
+{
+	if($deletealert)
+	{
+		del_query($alert_TABLE,"id",$id);
+		location( "$bounceback".qsa(array(error=>"The alert was deleted")) );
+		exit();
+	}
+	else
+	{
+		update_query($alert_TABLE,$alerts,array(id=>$id));
+		$obContent = new Content(15,$id);
+		$obContent->setOptionSmithMeta($id);		
+
+		$msg="The alert was updated";
+	}
+}
+else
+{
+	$id=insert_query($alert_TABLE,$alerts);
+	if($id){
+		$obContent = new Content(15,$id);
+		$obContent->setOptionSmithMeta($id);		
+	}
+	$msg="The alert was created";
+}
+
+location($bounceback.qsa(array(id=>$id,error=>$msg)));
+?>

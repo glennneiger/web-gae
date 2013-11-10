@@ -1,0 +1,37 @@
+<?php
+global $D_R,$HTPFX,$HTHOST,$IMG_SERVER,$productOrder;
+include_once("$D_R/lib/_via_data_lib.php");
+include_once("$D_R/lib/config/_via_config.php");
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/_state.php");
+
+if(!$AD->getPerm("download_product_subscriber_report")){
+	admin_error("You're not allowed to use this page.");
+}
+?>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/jquery-1.9.1.min.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/admin.1.8.js" ></script>
+
+
+<div class=adminheader>
+	Download Subscription Reports
+</div>
+<div style="color:red; padding:10px 0px 10px 0px;">It's a very heavy request dont' do it during the day time.</div>
+<div style="padding:20px 0px 0px 0px;">
+    <div style="float:left;">Select subscription product:</div>
+    <div style="float:left; padding:0px 0px 0px 10px;">
+    <select name="productid" id="productid" style="width:auto;">
+	<option value="">--Select Product--</option>
+	<?php
+		if(is_array($productOrder)) {
+			foreach($productOrder as $key=>$row){
+		?>
+			<option value="<?=$row;?>"><?=trim(ucfirst(strtolower($key)));?></option>
+		<?} }?>
+	</select>
+    </div>
+</div>
+<div style="padding:40px 0px 0px 0px; cursor:pointer; width:100px;"> <img src="<?=$IMG_SERVER;?>/images/subscription/download.png" onclick="downloadSubscrptionReport();" ></div>
+
+

@@ -1,0 +1,294 @@
+<?
+global $DATE_STR,$HTPFX,$HTHOST, $D_R;
+include_once($D_R."/lib/_robots.php");
+$page = "gazette";
+
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+$viewapproved=$_GET[viewapproved];
+$viewapproved=intval($viewapproved);
+$p=$_GET['p'];
+$s=$_GET['s'];
+$d=$_GET['d'];
+include("$ADMIN_PATH/_header.htm");
+?>
+<script type="text/javascript">
+function deleteArticle(){
+	var delchk  = document.frmapprove.delarticle.length;
+	var delcount = "";
+	if(delchk==undefined){
+		 if(document.frmapprove.delarticle.checked){
+			delcount=1;
+		 }
+	}else{
+		for (i = 0; i < delchk; i++) {
+			if (document.frmapprove.delarticle[i].checked) {
+					delcount = 1;
+			}
+		}
+	}
+	var appchk  = document.frmapprove.approvearticle.length;
+	var appcount = "";
+	if(appchk==undefined){
+		if(document.frmapprove.approvearticle.checked){
+			appcount=1;
+		 }
+	}else{
+		for (i = 0; i < appchk; i++) {
+			if (document.frmapprove.approvearticle[i].checked) {
+					appcount =1;
+			}
+		}
+	}
+	
+	if(delcount=="1"){
+	  if (confirm("Are you sure you want to delete article(s).")) {
+		 frmapprove.submit();
+	  }
+	}else if(appcount=="1"){
+	   frmapprove.submit();
+	}else{
+	  alert("Please select an article.");
+	}
+}
+
+</script>
+<?
+$editarticlesall=$AD->getPerm("articles_all");
+$editarticlesown=$AD->getPerm("articles_own");
+
+$appr_gazette=$AD->getPerm("approve_gazette");
+
+if(!$appr_gazette){
+	admin_error();
+}
+$candelete=$AD->getPerm("articles_delete");
+$handler="approve_mod.htm";
+
+$pagesize=10;
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+
+//Redirect articles to edit page.
+
+$link_info= makeArticleslink_sql($_GET['id']);
+$linkurl=makeArticleslink($_GET['id'],$link_info['keyword'],$link_info['blurb']);
+if (isset($_GET['txtArticleAuthor']) && trim($_GET['txtArticleAuthor'])!='' ){
+	$_POST['txtArticleAuthor']=$_GET['txtArticleAuthor'];
+}
+if (isset($_GET['txtArticleTitle']) && trim($_GET['txtArticleTitle'])!='' ){
+	$_POST['txtArticleTitle']=$_GET['txtArticleTitle'];
+}
+
+if (isset($_POST['txtArticleAuthor']) && trim($_POST['txtArticleAuthor'])!='' ){
+	
+	
+	$whrFlag=" and a.contributor like '%".trim($_POST['txtArticleAuthor'])."%' ";
+}
+
+if (isset($_POST['txtArticleTitle']) && trim($_POST['txtArticleTitle'])!='' ){
+
+	$whrFlag.=" and a.title like '%".trim($_POST['txtArticleTitle'])."%' ";
+}
+
+$qry="SELECT a.id,a.subsection_ids,a.email_category_ids,a.date date,a.title,a.approved,a.contributor name,a.contrib_id ,a.note, a.publish_date,keyword,concat( 'articles.htm?id=', a.id ) arturl,concat( '".$linkurl."', a.id ) arturl1 FROM articles a WHERE a.approved='$viewapproved'  $q $whrFlag";
+
+// change end
+
+if($viewapproved)$qry.=" AND a.date >= ('".mysqlNow()."' - INTERVAL 30 DAY) ";
+$qry.=" GROUP BY a.id";
+if($s)$qry.=" ORDER BY $s $d ";
+
+
+/*--- end query params --*/
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+
+
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($_SERVER['PHP_SELF'].qsa(array(p=>$i,txtArticleAuthor=>$_POST['txtArticleAuthor'],txtArticleTitle=>$_POST['txtArticleTitle'])),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+/*-- end paging  ---*/
+$pagedata = exec_query($qry);
+?>
+<br>
+<?if($AD->getPerm("banter_all")||$AD->getPerm("banter_own")||$AD->getPerm("create_banter")){?>
+	<a href="banter.htm">Create/ Edit Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("banter_approve")){?>
+	<a href="approvebanter.htm">Approve Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("create_schoolhouse")||$AD->getPerm("create_gazette")||$AD->getPerm("create_radar")||$AD->getPerm("articles_all")||$AD->getPerm("articles_own")){?>
+	<a href="articles.htm">Create/ Edit Articles</a><br>
+<?}?>
+<br/>
+
+<script src='<?php echo $HTPFX.$HTHOST;?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script> 
+<script language="javascript">
+function searchArticles(){
+	$('#errMsg').text('');
+	var strAuthorName= $('#txtArticleAuthor').val();
+	strAuthorName= $.trim(strAuthorName);
+	var strTitle= $('#txtArticleTitle').val();
+	strTitle= $.trim(strTitle);
+	
+	if (strAuthorName=="" && strTitle==""){
+		$('#errMsg').text('Please enter title or author name to filter');
+		return false;
+	}
+	document.frmSearchArticles.submit();
+}
+function clearForm(){
+	
+	window.location.href='/admin/approve.htm';
+}
+</script>
+
+<div style='float:left;width:100%'><form action="/admin/approve.htm" method="post" name="frmSearchArticles" >
+<div style='float:left;width:100%;'></div>
+<table style="border:1px solid black;">
+<tr><td colspan='6' style='font-size:12px;font-weight:bold;background-color:#8DA9E6;'><div style="float:left;width:150px;font-weight:bold;">Filter Approval Queue</div><div style="color:FFFFFF;float:left;width:300px;font-weight:bold;" id="errMsg"></div></td></tr>
+<tr><td><b>Author:</b>&nbsp;</td><td><input type="text" size="30" name="txtArticleAuthor" id="txtArticleAuthor" value="<?php echo trim($_POST['txtArticleAuthor']);?>" onkeydown="if (event.keyCode == 13)searchArticles();" /> </td><td><b>Title:</b>&nbsp;</td><td><input type="text" size="65" id="txtArticleTitle" name="txtArticleTitle" value="<?php echo trim($_POST['txtArticleTitle']);?>" onkeydown="if (event.keyCode == 13)searchArticles();" /></td><td> <input onClick="Javascript:searchArticles();" type="button" value="Search">&nbsp; <input onClick="Javascript:clearForm();" type="button" value="Cancel"></td></tr>
+
+</table>
+</form></div>
+<div style='float:left;width:100%'>
+<?if($_GET['error']){?><div class=error><?=strip($_GET['error'])?></div><?}?>
+<center>
+<table  style="width:100%;align:center;">
+<?if(!$viewapproved){?>
+<tr><td >These are the articles that are awaiting approval. <br/>Check the articles you've approved, click save and they will be posted live to the site.<br>&nbsp;</td></tr>
+<?}else{?>
+<tr><td >These are the articles that are approved. <br/>Check the articles you've disapproved, click save and they will be disapproved.<br>&nbsp;</td></tr>
+<?}?>
+</table>
+</center>
+</div>
+<div style='float:left;width:100%'>
+<table width=300 align=center style="border:1px black solid">
+<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>1,txtArticleAuthor=>$_POST['txtArticleAuthor'],txtArticleTitle=>$_POST['txtArticleTitle']),"p"),"View Approved Articles","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>0,txtArticleAuthor=>$_POST['txtArticleAuthor'],txtArticleTitle=>$_POST['txtArticleTitle']),"p"),"View Unapproved Articles","class=small",(!$viewapproved))?></TD>
+<TD colspan=3>&nbsp;</TD>
+</TR>
+<form name="frmapprove" method="post" action="<?=$handler?>">
+<?input_hidden("viewapproved")?>
+<TR bgcolor=#cccccc align=center>
+	<TD<?colclass("date")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"date",d=>togD($d)))?>">Article Date</a></TD>
+	<TD<?colclass("title")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+	<TD<?colclass("note")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"note",d=>togD($d)))?>">Note</a></TD>
+	<TD<?colclass("name")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"name",d=>togD($d)))?>">Author</a></TD>
+<TD nowrap>Publish date</td>
+<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>
+<?if($candelete){?>
+<TD>Delete</TD>
+<TD>Preview</td>
+<?}?>
+</TR>
+<?if(count($pagedata)){?>
+	<?foreach($pagedata as $i=>$row){
+
+	$breakDateStr="n|j|Y|G|i";
+	// list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,convert_date_to_unix($row[publish_date])));
+	$rowPublishDate=strtotime($row['publish_date']);
+	$m=date("n",$rowPublishDate);
+	$d=date("d",$rowPublishDate);
+	$y=date("Y",$rowPublishDate);
+	$h=date("g",$rowPublishDate);
+	$min=date("i",$rowPublishDate);
+	
+	if($y=="2000" || $y=="1969"){//invalid date
+		$publishdatefield=array();
+	}else{
+		$publishdatefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+	}
+	if($row[publish_date] == "0000-00-00 00:00:00")
+	{
+		$publishdatefield="";
+		$row[publish_date]="";
+
+	}
+		$color=$i%2?"dddddd":"eeeeee";
+		$link=urlqsa($row[arturl],array(AMADMIN=>1,contributor_id=>$row[contrib_id]),"*");
+		//$link1=$row[arturl1];
+		$link1=makeArticleslink($row['id']);
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?>><?=date($DATE_STR,strtotime($row['date']))?></TD>
+	<TD nowrap <?colclass("title")?>>
+	<!-- Add script to make link to titles according to authorizations to edit-->
+	<?if(!$editarticlesall && !$editarticlesown){?>
+			<?=($row[title]?$row[title]:"(legacy data w/out title)")?>
+		</TD>
+	<?}elseif($editarticlesall){?>
+			<a href="<?=$link?>" target="_blank"><?=($row[title]?$row[title]:"(legacy data w/out title)")?></a>
+		</TD>
+	<?}elseif($AD->userInfo[name]==$row[name] && $editarticlesown){?>
+			<a href="<?=$link?>" target="_blank"><?=($row[title]?$row[title]:"(legacy data w/out title)")?></a>
+		</TD>
+	<?}else{?>
+			<?=($row[title]?$row[title]:"(legacy data w/out title)")?>
+		</TD>
+	<?}?>
+	<TD nowrap<?colclass("note")?>><?=$row[note]?></TD>
+	<TD nowrap<?colclass("name")?>><?=$row[name]?></TD>
+	<?if(!$viewapproved){?>
+		<TD nowrap>
+			<?month_options_articles("publishdatefield[mo][$row[id]]",$publishdatefield[mo],$ctrlstatus)?>
+		<?day_options_articles("publishdatefield[day][$row[id]]",$publishdatefield[day],$ctrlstatus)?>
+		<?year_options_articles("publishdatefield[year][$row[id]]",$publishdatefield[year],$ctrlstatus,date("Y"),date("Y")+3)?>
+		<?hour_options_articles("publishdatefield[hour][$row[id]]",$publishdatefield[hour],$ctrlstatus)?>
+			<?minute_options_articles("publishdatefield[min][$row[id]]",$publishdatefield["min"],$ctrlstatus)?>
+		</td>
+	<?}else{?>
+	<TD nowrap><?=$row['publish_date']?></TD>
+	<?}?>
+	<TD align=center><input id="approvearticle" type="checkbox" name="approve[<?=$row[id]?>]" title="Check this to approve the article then submit the page"></TD>
+
+		<TD>
+			<?if($candelete){?>
+	<input type="checkbox" id="delarticle" name="delarticle[<?=$row[id]?>]" title="Check to remove have this article removed">
+	</TD>
+	<td>
+	<a href="http://minyanville-buzz.appspot.com<?=$link1?>" target="_blank">Preview</a></TD>
+	<?}?>
+	</TR>
+	<?}?>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There are no articles awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<!-- <input type="submit" value="Save Changes"> -->
+<input type="button" value="Save Changes" onclick="javascript:deleteArticle();">
+</TD>
+</TR>
+</form>
+</table>
+</div>
+<?include("$ADMIN_PATH/_footer.htm")?>

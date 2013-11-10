@@ -1,0 +1,86 @@
+<?
+global $ADMIN_PATH,$D_R,$HTADMINHOST,$HTPFX,$HTHOST;
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-cache");
+header("Cache-Control: post-check=0,pre-check=0");
+header("Cache-Control: max-age=0");
+header("Pragma: no-cache");
+$page="techstratCashEntry";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/admin/techstrat/techstrat_classes/class_transaction.php");
+include_once("$D_R/lib/layout_functions.php");
+include_once("$D_R/lib/config/_techstrat_config.php");
+
+$performtransaction=$AD->getPerm("techstrat_initial_cash_entry"); //set permission
+if(!$performtransaction){	// Check Permission
+	admin_error("You're not allowed to use this page.");
+}
+
+$transobj=new techstratTransaction();
+
+$sqlCash="select cash_amt as tot,id from techstrat_cash where status='1'";
+$searchfound=exec_query($sqlCash);
+if($searchfound['0']['tot']==''){
+	$cashget='0.00';
+	$idget=0;
+}else{
+	if(count($searchfound)>0){
+		foreach($searchfound as $res){
+			$cashget=$res['tot'];
+			$idget=$res['id'];
+		}
+	}
+}
+
+/*$sqlDiv="select cash_amt as tot,id from techstrat_cash where status='2'";
+$searchfoundDiv=exec_query($sqlDiv);
+if($searchfoundDiv[0]['tot']==''){
+	$divintget='0.00';
+	$divinterest_idget=0;
+}else{
+	if(count($searchfoundDiv)>0){
+		foreach($searchfoundDiv as $res){
+			$divintget=$res['tot'];
+			$divinterest_idget=$res['id'];
+		}
+	}
+}*/
+?>
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/techstrat-admin.css">
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_actb.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/actb_common.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript" ></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/techstratPortfolio.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/transaction.js" type="text/javascript"></script>
+
+	<div class=adminheader>TechStrat Portfolio - Initial Cash Entry</div><br>
+	<div class="techPortMoreOptions">
+		<?php if($AD->getPerm("techstrat_add_transaction")){?>
+			<div class="techPortOption"><a href="transaction.htm">Add Transaction</a></div>
+		<? } ?>
+		<?php if($AD->getPerm("techstrat_edit_transaction")){?>
+			<div class="techPortOption"><a href="edittransaction.htm" >Edit Transactions</a></div>
+		<? } ?>
+		<?php if($AD->getPerm("techstrat_sell_transaction")){?>
+			<div class="techPortOption"><a href="selltransaction.htm" style="left-padding:15px;">Sell Transaction</a></div>
+		<? } ?>
+	</div>
+
+	<div class="techPortCashMain">
+		<div id="techErrorMsg" class="techErrorMsg">
+			<? if($errormsgs!='') echo "<b>".ucwords($errormsgs)."</b>";?>
+		</div>
+		<div style="clear:left;">&nbsp;</div>
+		<form name="techCashEntry" id="techCashEntry">
+		<div class="techstratCashDiv">
+			<p>Initial Cash :</p>
+			<input type="hidden" name="idget" id="techstratIdget" value="<?=$idget;?>">
+			<input type="text" maxlength="12" size="20" name="techstrat_cash" id="techstratCash" value="<?=$cashget;?>" onKeyup="javascript:chknosvalidation('techCashEntry',this);">&nbsp;
+			<input type="button" value="Save" class="techPortCashSaveBttn"  onClick="javascript:submitTechCashForm('techErrorMsg');"/>
+		</div>
+		</form>
+	</div>
+</body>
+</html>

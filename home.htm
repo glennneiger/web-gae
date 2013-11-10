@@ -1,0 +1,174 @@
+<?
+$pageName='home';
+$page_code = 'index.htm';
+$preview=$_GET['preview'];
+global $is_ssl;
+$pageno=$_GET['p'];
+if($pageno==""){
+$pageno=1;
+}else{
+$pageno=$pageno+1;
+}
+/* Operative Configuration *****/
+$zone_name=$pageName;
+$tile728x90=1;
+$tile300x250=2;
+/* End Operative Configuration *****/
+include("$D_R/_minyanville_header.htm");
+require_once($D_R.'/lib/ap/_view.php');
+global $cm8_ads_1x1_Text,$cm8_ads_MicroBar;
+
+$bannername=$cm8_ads_1x1_Text;
+$bannermicro=$cm8_ads_MicroBar;
+?>
+<div class="left_contant">
+<!--<div class="featureBottomtitle">
+<table width="100%" align=center cellpadding="0" cellspacing="0" border="0">
+<tr><td width="20%" align="right"><? CM8_ShowAd($bannermicro);?></td><td width="60%"align="center"class="text_ad"><? CM8_ShowAd($bannername);?></td><td width="20%" align="left"><? CM8_ShowAd($bannermicro);?></td></tr>
+</table>
+</div>-->
+<div class="home_innerleft">
+<table cellpadding="0" cellspacing="0" border="0" align="left">
+<tr><td valign="top">
+
+<div id="home_bigtopic" class="home_big_topic_module">
+	<div class="hdr-home">
+		<? // CM8_ShowAd("AllArticlesSponsorship_215x41");?>
+		<img src="<?=$IMG_SERVER;?>/images/redesign/allarticles_reg.jpg" border="0" alt="all articles" />
+	</div>
+	<ul id="all-articles">
+        <? getAllArticles(0, 9); ?>
+        <li><a href="/articles/articlelisting.htm">More &raquo;</a></li>
+	</ul>
+        <div class="hdr-home">
+                <img src="/images/hdr-breakingnews.gif" border="0">
+        </div>
+        <ul id="all-articles">
+<!-- ap articles -->
+	<?$objapNewsView->showArticlesHome(5);?>
+        <!--? getAllArticles(0, 5); ?-->
+	<li><a href="/articles/articlelisting.htm">More &raquo;</a></li>
+        </ul>
+
+	<!--?= renderPageModules($pageDetail['id'],'Home Big Topic Big Answers') ?-->
+</div>
+</td><td valign="top">
+<div id="home_dailyfeed" class="home_daily_feed">
+<?= renderPageModules($pageDetail['id'],'Home Daily Feed') ?>
+</div></td>
+<td rowspan="2" valign="top"><div class="home_tickertalk">
+<?
+global $setTickerTalk,$D_R;
+$setTickerTalk = 1;
+include($D_R."/tickertalk/index.htm"); ?>
+</div>
+<script>
+// Code for setting Ticker talk height
+var daily_feed_height = jQuery('#home_dailyfeed').height();
+var big_topic_height = jQuery('#home_bigtopic').height();
+var left_module_height = (daily_feed_height > big_topic_height)?daily_feed_height:big_topic_height;
+var total_module_height = left_module_height+55; // 55 is the height of fixed module below daily feed
+var ticker_post_listing_height = total_module_height-255; // 255 is the height of fix part of Ticker talk
+jQuery('#tickerPostBody').height(ticker_post_listing_height);
+</script>
+</td>
+</tr>
+<tr><td valign="top"><?= renderPageModules($pageDetail['id'],'Home Big Topic Bottom') ?></td>
+<?
+if(isset($userid) && $userid !="") {
+	$show_df_news_signup = checkuser_dfemail_subscribed($userid);
+}
+else {
+	$show_df_news_signup = 0;
+}
+?>
+<td valign="top">
+<? if($show_df_news_signup != '1') { ?>
+<div class="feednewsmain">
+	<? daily_feed_newsletter_alert_home();?>
+</div>
+<? }
+else{
+?>
+<div ><a href="<?=$HTPFX.$HTHOST?>/mvpremium/"><img src="<?=$HTPFX.$HTHOST?>/images/home_redesign/seeFullPremiumBox.jpg"></a></div>
+<? } ?>
+</td>
+</tr></table></div>
+
+<div class="home_middle_main_container">
+
+	<div class="ReacentInvillemain">
+
+	<? include($D_R."/recentinvill.php") ?>
+
+
+</div>
+	<div class="home_section_module">
+	<div class="home_section_module_left">
+	<?= renderPageModules($pageDetail['id'],'Home Section1 Left') ?>
+</div>
+	<div class="home_section_module_right">
+	<?= renderPageModules($pageDetail['id'],'Home Section1 Right') ?>
+	</div>
+	</div>
+
+	<div class="home_section_module">
+	<div class="home_section_module_left">
+	<?= renderPageModules($pageDetail['id'],'Home Section2 Left') ?>
+	</div>
+	<div class="home_section_module_right">
+	<?= renderPageModules($pageDetail['id'],'Home Section2 Right') ?>
+	</div>
+	</div>
+
+	<script>
+	arObj =	jQuery('div.template10_article_list1');
+	for(i=0;i<arObj.length;i++)
+	{
+	arObj[i].firstChild.lastChild.style.border = "0";
+	arObj[i].firstChild.lastChild.style.margin = "0";
+	}
+	arObj =	jQuery('div.template10_article_list2');
+	for(i=0;i<arObj.length;i++)
+	{
+	arObj[i].firstChild.lastChild.style.border = "0";
+	}
+	arObj =	jQuery('div.template13_article_list');
+	for(i=0;i<arObj.length;i++)
+	{
+	arObj[i].firstChild.lastChild.style.border = "0";
+	}
+	</script>
+
+	<div class="template_our_partners_container">
+	<div class="template_our_partners_main">
+	<div class="template_our_partners_header">
+	<img src="<?=$HTPFX.$HTHOST?>/images/home_redesign/our_partners.jpg" border="0" align="left" alt="Our Partners" />
+	</div>
+	<? echo showPartnerCenterHome()?>
+	</div>
+
+	<div class="template_Sites_main">
+	<?=renderPageModules($pageDetail['id'],'Home Section3 Right');?>
+	</div>
+
+	</div>
+
+</div>
+
+
+
+</div>
+
+<?
+$Right_panel_featuredprof='true';
+$Right_panel_right_ads=='true';
+$Right_panel_partnercenter=TRUE;
+$ib_tracking_zone="home";
+$Right_panel_gpom = 'true';
+include($D_R."/_minyanville_right.htm");
+?>
+
+ </div>
+
+<?include_once($D_R.'/_minyanville_footer.htm');?>

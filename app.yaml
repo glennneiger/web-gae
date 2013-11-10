@@ -1,0 +1,277 @@
+application: minyanville-buzz
+version: 8-nidhi
+runtime: php
+api_version: 1
+
+default_expiration: "30d"
+
+handlers:
+- url: /(.*\.(css$|js$|swf$|ico$|jpg$|png$|gif$|xls$|$p12|svg$|eot$|ttf$|woff$|flv$|mwv$))
+  static_files: \1
+  upload: (.*\.(css$|js$|swf$|ico$|jpg$|png$|gif$|xls$|$p12|svg$|eot$|ttf$|woff$|flv$|mwv$))
+  
+- url: /admin/?$
+  script: admin/index.htm
+  
+- url: /lib/(.+)
+  script: lib/\1
+
+- url: /(trading-and-investing|sectors|special-features|business-news)/?$
+  script: category/index.htm
+
+- url: /(trading-and-investing|sectors|special-features|businessmarkets|business-news)/((([a-zA-z0-9]+)(-|--)?){1,4})/?$
+  script: topic/index.htm
+  
+- url: /(.*)/articles/(.*)/id/([0-9]+)
+  script: articles/index.htm
+  
+- url: /articles/(.*)index/a/(.*)/from/(.*)
+  script: articles/index.htm
+   
+- url: /subscription/(ft|st)/(.*)$
+  script: subscription/softtrials/\1/index.htm
+  
+- url: /subscription/register/login.htm
+  script: subscription/register/login.htm
+  secure: always   
+    
+- url: /laveryinsight/articles/index/a/(.*)$
+  script: index.htm
+      
+- url: /cooper/articles/(.*)index/a/(.*)/(p|from)/(.*)
+  script: cooper/articles/index.php
+  
+- url: /cooper/articles/(.*)index/a/(.*)
+  script: cooper/articles/index.php
+  
+- url: /articles/(.*)index/a/(.*)/p/(.*)
+  script: articles/index.htm
+  
+- url: /community/(.*)/discussion/(.*)$
+  script: community/Discussion.htm
+ 
+- url: /community/(.*)/blog/(.*)$ 
+  script: community/blog_comments.htm
+      
+- url: /community/search/(.*)$ 
+  script: community/search.htm
+      
+- url: /community/sendmessage/(.*)/(.*)$
+  script: community/compose.htm
+  
+- url: /community/profile/userid/(.*)$ 
+  script: community/profile/index.htm
+  
+- url: /mvpremium/([0-9]){4}/?([0-9]){2}/?([0-9]){2}/?(([a-zA-z0-9]+)(-|--)?){2,8}/?$       
+  script: mvpremium/dailyfeed.htm
+  
+- url: /mvpremium/(tid|tag|source|cid|category)/(.*)/p/(.*)
+  script: mvpremium/index.htm
+  
+- url: /investing/lloyds-wall-of-worry/([0-9]){2}/?([0-9]){2}/?([0-9]){4}/?
+  script: investing/lloyds-wall-of-worry/index.htm
+  
+- url: /mvpremium/(p|id|tag|source|cid|tid|category)/(.*)
+  script: mvpremium/index.htm 
+  
+- url: /(the-stock-playbook|the-stock-play-book)/?$
+  script: thestockplaybook/index.htm
+  
+- url: /techstrat/ticker/(.*)
+  script: techstrat/search.htm
+
+- url: /techstrat/(.*)/(([a-zA-z0-9]+)(-|--)?){2,8}/?$
+  script: techstrat/post.htm
+    
+- url: /techstrat/all-posts/p/(.*)
+  script: techstrat/allpost.htm  
+  
+- url: /techstrat/all-posts/?$
+  script: techstrat/allpost.htm
+
+- url: /techstrat/trades-ideas/p/(.*)
+  script: techstrat/tradeideas.htm
+  
+- url: /techstrat/mailbag/p/(.*)
+  script: techstrat/mailbag.htm
+  
+- url: /techstrat/research-tank/p/(.*)
+  script: techstrat/researchtank.htm
+  
+- url: /techstrat/trades-ideas/?$
+  script: techstrat/tradeideas.htm
+  
+- url: /techstrat/mailbag/?$
+  script: techstrat/mailbag.htm
+  
+- url: /techstrat/research-tank/?$
+  script: techstrat/researchtank.htm
+  
+- url: /techstrat/positions-performance/?$
+  script: techstrat/performance.htm
+  
+- url: /techstrat/open-positions-trade/?$
+  script: techstrat/openpositions-trade.htm
+  
+- url: /techstrat/open-positions/?$
+  script: techstrat/openpositions.htm
+  
+- url : /techstrat/closed-positions/?$
+  script: techstrat/closepositions.htm
+
+- url: /techstrat/tag/(.*)/p/(.*)
+  script: techstrat/search.htm
+      
+- url: /techstrat/(tag|ticker)/(.*)
+  script: techstrat/search.htm
+      
+- url: /tchir-fixed-income/p/(.*)
+  script: tchir-fixed-income/index.htm
+  
+- url: /tchir-fixed-income/search.htm/p/(.*)/q/(.*)
+  script: tchir-fixed-income/search.htm
+  
+- url: /tchir-fixed-income/search.htm/q/(.*)
+  script: tchir-fixed-income/search.htm
+  
+- url: /tchir-fixed-income/weekly-report/p/(.*)
+  script: tchir-fixed-income/weekly-report.htm
+  
+- url: /tchir-fixed-income/intra-week-updates/p/(.*)
+  script: tchir-fixed-income/intra-week-updates.htm
+  
+- url: /tchir-fixed-income/(.*)/(([a-zA-z0-9]+)(-|--)?){2,8}/?$
+  script: tchir-fixed-income/alert.htm
+  
+- url: /tchir-fixed-income/bio/?$
+  script: tchir-fixed-income/bio.htm
+  
+- url: /tchir-fixed-income/weekly-report/?$
+  script: tchir-fixed-income/weekly-report.htm
+     
+- url: /tchir-fixed-income/intra-week-updates/?$
+  script: tchir-fixed-income/intra-week-updates.htm
+
+- url: /ewi/analyst/(.*)/p/(.*)
+  script: ewi/search.htm
+  
+- url: /ewi/category/(.*)/p/(.*)
+  script: ewi/search.htm
+  
+- url: /ewi/mo/(.*)/yr/(.*)/p/(.*)
+  script: ewi/search.htm
+  
+- url: /ewi/(analyst|category)/(.*)
+  script: ewi/search.htm
+  
+- url: /ewi/mo/(.*)/yr/(.*)
+  script: ewi/search.htm
+  
+- url: /ewi/p/(.*)
+  script: ewi/index.htm
+  
+- url: /ewi/extras/p/(.*)
+  script: ewi/more.htm
+  
+- url: /ewi/analysts/p/(.*)
+  script: ewi/allAnalysts.htm
+  
+- url: /ewi/(.*)/(([a-zA-z0-9]+)(|-)?){2,8}/?$
+  script: ewi/alert.htm
+  
+- url: /ewi/(category|analyst)/(.*)/p/(.*)
+  script: ewi/search.htm
+  
+- url: /ewi/extras/?$
+  script: ewi/more.htm
+  
+- url: /ewi/analysts/?$
+  script: ewi/allAnalysts.htm
+  
+- url: /keene/?$
+  script: keene/category.htm
+  
+- url: /keene-options/?$
+  script: keene/category.htm
+  
+- url: /keene-on-options/?$
+  script: keene/category.htm
+  
+- url: /keene/andrew-keene/?$
+  script: keene/bio.htm
+  
+- url: /keene/([a-zA-z-]+)/?$
+  script: keene/category.htm
+
+- url: /keene/([a-zA-z-]+)/p/(.*?)$
+  script: keene/category.htm
+  
+- url: /keene/(.*)/(([a-zA-z0-9]+)(|-)?){2,8}/?$
+  script: keene/alert.htm
+  
+- url: /investing/etf/limit/(.*)
+  script: articles/topic.htm
+  
+- url: /investing/etf
+  script: articles/topic.htm
+  
+- url: /(.*)/buzzalert/(.*)/id/([0-9]+)
+  script: buzz/buzzalert.htm
+  
+- url: /optionsmith/post/id/([0-9]*)$
+  script: optionsmith/home.htm
+ 
+- url: /(mvtv|video)/(t3live|hoofyandboo|toddharrisontv|popbiz|specials)/?$
+  script: mvtv/category.htm
+
+- url: /(mvtv|video)/?$
+  script: mvtv/index.htm
+  
+- url: /video/(.*)
+  script: mvtv/index.htm
+  
+- url: /audiovideo/(.*?)/?(.*?)
+  script: /mvtv/index.htm
+  
+- url: /audiovideo$
+  script: mvtv/index.htm
+  
+- url: /tradingcalendar/(.*)/$
+  script: trading_calen_info.php
+
+- url: /slideshow/?$
+  script: slideshow/index.htm
+  
+- url: /slideshow/(.*)/(.*)
+  script: slideshow/index.htm
+  
+- url: /register/?(.*?)$
+  script: subscription/register/index.htm
+  
+- url: /buzzlanding/?(.*?)$ 
+  script: buzzbanter/
+
+- url: /(mvpremium|buzz|dailyfeed)?(_?)news_sitemap.xml$
+  script: sitemap/gsitemap.xml
+  
+- url: /rss/(podCastFeed|articlerss)\.(xml|rss)/(cat_id|sec_id)/([0-9]*)/
+  script: lib/redirect.php
+  
+- url: /edu/(how-to-trade|trading-videos|personal-finance|how-to-invest)/p/(.*)
+  script: edu/category.htm
+  
+- url: /edu/(how-to-trade|trading-videos|personal-finance|how-to-invest)/?$
+  script: edu/category.htm
+  
+- url: /edu/(.*)/(([a-zA-z0-9]+)(|-)?){2,8}/?$
+  script: edu/alert.htm
+  
+- url: /edu/glossary
+  script: edu/eduGlossary.htm
+  
+- url: /edu/home/?$
+  script: /edu/index.htm
+
+- url: /.*
+  script: lib/redirect.php
+  

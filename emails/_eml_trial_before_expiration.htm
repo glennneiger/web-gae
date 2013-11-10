@@ -1,0 +1,17 @@
+<?include("$D_R/emails/_eml_header.htm")?>
+<br>
+<p>Dear <?= $row[fname]?>,
+  <br>
+  <br>
+We hope you&rsquo;re benefiting from the Buzz &amp; Banter. We&rsquo;ve  had people tell us that one investment idea pays for the Buzz tenfold. We hope you&rsquo;ve  found many.</p>
+<p>To that end, we would love for you to become a full time  Minyan.</p>
+<p>Your trial will be up on
+  <?= date('m/d/Y',$row[expires]);?>
+, but you can  join us by simply <strong><a href="<?=$HTDOMAIN?>/register/trial/manage.htm" target="_blank">clicking this link</a></strong> today.&nbsp; You can choose between a monthly  subscription at $<?=$REG_MONTHLY_NEWPREM?> or an annual at $<?=$REG_CHARGE_YR2?> (that&rsquo;s 30% off the monthly rate).</p>
+<p>Just <strong><a href="<?=$HTDOMAIN?>/register/trial/manage.htm" target="_blank">click here</a></strong> to ensure you don&rsquo;t miss a minute of the &lsquo;Ville and Buzz &amp; Banter.</p>
+<p>Please contact us at <a href="mailto:support@minyanville.com">support@minyanville.com</a> with any questions or comments.</p>
+
+<?php
+$tracking_name = $tracking_name['_eml_trial_before_expiration'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?>

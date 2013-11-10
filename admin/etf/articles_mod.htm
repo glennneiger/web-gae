@@ -1,0 +1,86 @@
+<?
+global $D_R;
+include_once("$D_R/lib/_news.php");
+include_once($D_R.'/lib/_exchange_lib.php');
+include_once("$D_R/lib/layout_functions.php");
+$id=$_POST['id'];
+$articles=$_POST['articles'];
+$datefield=$_POST['$datefield'];
+$approvearticle=$_POST['approvearticle'];
+$deletearticle=$_POST['deletearticle'];
+
+$articles['title']=addslashes(mswordReplaceSpecialChars(stripslashes($articles['title'])));
+$articles['blurb']=addslashes(mswordReplaceSpecialChars(stripslashes($articles['blurb'])));
+$articles['keyword']=addslashes(mswordReplaceSpecialChars(stripslashes($articles['keyword'])));
+$articles['position']=addslashes(mswordReplaceSpecialChars(stripslashes($articles['position'])));
+$articles['note']=addslashes(mswordReplaceSpecialChars(stripslashes($articles['note'])));
+
+
+$emailsend=$_POST['emailsend'];
+include("$ADMIN_PATH/_header.htm");
+$bounceback = "./articles.htm";
+$getresult = getContribuotrDetails('Ron Coby & Denny Lamson'); //_news.php in lib
+$cid =$getresult['id'];
+$articles['contrib_id']=$cid;
+$objThread = new Thread();
+$tagnames = $articles['keyword'];
+$tagnames = $objThread->normalize_tag($tagnames);
+$tagnames = $objThread->tag_space(&$tagnames);
+$tagname = $objThread->tag_length($tagnames);
+$articles[keyword] = implode("-",$tagname);
+$articles[sent]=($articles[sent]?1:0);
+
+if(is_array($datefield) && $datefield[year])
+{
+	$date=time($datefield[hour],$datefield["min"],0, $datefield[mo],$datefield[day],$datefield[year]);
+	if($date==-1){
+		$date=$articles["date"];
+	}else{
+		$date=mysqlNow($date);
+	}
+	$articles["date"]=$date;
+}
+
+if ($approvearticle)
+{
+	$articles["approved"]=1;
+}
+if($id){
+	if($deletearticle){
+		del_query($ARTICLE_TABLE,"id",$id);
+		location( "$bounceback".qsa(array(error=>"The article was deleted")) );
+		exit();
+	}
+	elseif($emailsend)//send email to subscribers
+	{
+		/*-------create subscribers file------*/
+	/*	$listfile=prepare_prof_subs_list($prof_id,$SCRIPT_DIR);
+		$professor_details=get_prof_domain_name($prof_id);
+		$sitename=$professor_details['sitename'];
+		$to=$NOTIFY_JOURNAL_TO;
+		$from= $prof_lang['FROM_email_template']."<".$REG_EML_REPLYTO_PROFESSOR.">";
+		$subject=htmlentities("[{$professor_details['name']}"."'s] - ".$articles['title'],ENT_QUOTES);
+		$msgfile="/tmp/spam_".mrand().".eml";
+		$msghtmlfile="$D_R/assets/data/".basename($msgfile);
+		$msgurl=$SPAM_EML_SINGLE_ARTICLE_TMPL.qsa(array(aid=>$id,prof_id=>$prof_id,sitename=>$sitename));
+		//write out file
+		$mailbody=inc_web($msgurl); */
+
+
+    /*------send message------------------*/
+   	 location( "$bounceback".qsa(array(id=>$id,error=>"Your article has been sent to your subscribers")) );
+	 exit();
+
+	}/*----------mail sent---------------*/
+	else{
+		update_query("etf_articles",$articles,array(id=>$id));
+		$msg="The article was updated";
+	}
+}else{
+	$id=insert_query("etf_articles",$articles);
+	$msg="The article was created";
+}
+
+location($bounceback.qsa(array(id=>$id,error=>$msg,contributor_id=>$cid)));
+
+?>

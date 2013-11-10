@@ -1,0 +1,100 @@
+<?php
+global $HTHOST,$HTPFX,$arrRightCols,$D_R;
+include_once($D_R."/lib/_content_data_lib.php");
+$pageName="contributor";
+$show_canonical = 1;
+global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$bannername=$cm8_ads_Button_160x30;
+/* End Operative Configuration *****/
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav","minyanville","bios");
+if($_GET['bio']){
+	$objContent=new Content('21',$_GET['bio']);
+}
+include_once("../_header.htm");
+
+
+
+include_once("../lib/layout_functions.php");
+include_once($D_R."/admin/lib/_contributor_class.php");
+include_once($D_R."/lib/_contributor_design_lib.php");
+include_once($D_R."/lib/ads/_indstrybrains_class.php");
+$objCont = new contributor();
+$objContView =	new contributorView();
+?>
+<div class="shadow">
+<div id="content-container">
+<div id="article-left"><!--left contaner start from here-->
+<?php
+if($_GET['bio'] && $_GET['bio']!=''){
+	$objContent=new Content('21',$_GET['bio']);
+	$contributors=get_bio_contributors();
+	$contName = $objCont->getContributor($_GET['bio']);
+	if($contName['has_bio']=='1' and $contName['suspended'] == '0')
+	{
+	 $objContView->getBioDetail($contributors,$contName);
+        }
+        else
+        {
+		$contributors	=	get_bio_contributors();
+		$weAreTitle 	=   'Who We Are';
+		$groupId		= 	0;
+		$objContView->getBioProfessorsLanding($contributors,$weAreTitle,$groupId);
+	}
+}
+else
+{
+	if($_GET['type'] && $_GET['type'] !='')
+	{ 
+		if($_GET['type']=='professors')
+		 { 
+			$groupId	=	1;
+			$weAreTitle =  'Minyanville Professors';
+		}
+		elseif($_GET['type']=='contributors')
+		{
+			$groupId	=	2;
+			$weAreTitle =  'Minyanville Contributors';
+		}
+		elseif($_GET['type']=='staff')
+		{
+			$groupId	=	3;
+			$weAreTitle =  'Minyanville Staff';
+		}
+		elseif($_GET['type']=='buzz')
+		{
+			$groupId	=	4;
+			$weAreTitle =  'Buzz & Banter Contributors';
+		}
+		else
+		{
+			$weAreTitle =  'Who We Are';
+		}
+		if($groupId>0)
+		{
+			$contributors	=	$objCont->getContributorsByGroup($groupId);
+		}
+		else
+		{
+			$contributors=get_bio_contributors();
+		}
+	}
+	else
+	{
+		$contributors=get_bio_contributors();
+		$weAreTitle =  'Who We Are';
+	}
+	$objContView->getBioProfessorsLanding($contributors,$weAreTitle,$groupId);
+	
+}
+?>
+</div>
+<?php
+$arrRightCols	=	array('show_mostpopular','show_ads','show_subcenter');
+include("../_rightcolumn.htm"); ?>
+</div><!--Main contaner end here-->
+</div><!-- shadow end -->
+<div style="clear:both;"></div>
+<!--right contaner end here-->
+<? include("../_footer.htm")?>

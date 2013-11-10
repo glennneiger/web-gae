@@ -1,0 +1,98 @@
+<?
+$articleRssArr = getKeyVal('cat_id',$_SERVER['REQUEST_URI']);
+$categoryId = ($_GET['cat_id']=="" ? $articleRssArr['sec_id'] : $_GET['cat_id']);
+
+header('Content-type: text/xml;charset=utf-8');
+echo '<?xml version="1.0" encoding="utf-8" ?>' ;
+if($categoryId){
+	$sqlGetChannelSummary="SELECT name,description,logo from section where section_id='".$categoryId."'";
+	$resGetChannelSummary=exec_query($sqlGetChannelSummary,1);
+	if(count($resGetChannelSummary)>0){
+		$title=$resGetChannelSummary['name'];
+		$description=$resGetChannelSummary['description'];
+		$logo=$resGetChannelSummary['logo'];
+	}else{
+		$title="Hoofy and Boo's World In Review";
+		$description="Meet Hoofy and Boo,the world's first ever animated business news anchors.  Join them each week as they take an irreverent look at what's going on in the world of business.  For more financial commentary and analysis, check out Minyanville.com.";		
+		$logo=$IMG_SERVER."/admin/assets/World_In_review.JPG";
+	}
+}
+?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+<channel>
+
+<title><?=htmlentities($title);?></title>
+
+<link>http://www.minyanville.com</link>
+<ttl>5</ttl>
+<language>en-us</language>
+
+<copyright>2008 Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
+<itunes:author>Minyanville</itunes:author>
+<description><?=mswordReplaceSpecialChars($description);?></description>
+<itunes:summary><?=mswordReplaceSpecialChars($description);?></itunes:summary>
+
+<itunes:explicit>No</itunes:explicit>
+
+<itunes:image href="<?=$logo;?>" />
+
+
+<itunes:category text="Business" />
+<itunes:category text="Comedy" />
+<?
+$sql = "SELECT id,publish_time, keywords, description, title, duration, podcasturl, podcastsize,stillfile ";
+$sql .= "FROM mvtv ";
+$sql .= "WHERE is_live='1' and approved='1' and podcasturl!='' and publish_time < '".mysqlNow()."'";
+if($categoryId){
+	$sql.=" AND cat_id='".$categoryId."' ";
+}
+$sql .= "ORDER BY updation_time DESC LIMIT 0, 20";
+
+$results = exec_query($sql);
+
+
+for($j=0; $j<count($results); $j++)
+{
+	$numWords = 100;
+	$tempBody = htmlentities(strip_tags($results[$j]['description'],'ENT_QUOTES'));
+	$tempBody = htmlentities(strip_tags($tempBody,'ENT_QUOTES'));
+    if($tempBody!='')
+	{
+	              
+		$bodyArray = preg_split("/[\s,]+/",$tempBody);
+		for($i=0;$i<$numWords;$i++) {
+			$body .= $bodyArray[$i] . " ";
+		}
+		if (count($bodyArray) > 100) {
+			$body .= "...";
+		}
+	}
+	else
+	{
+		$body='';
+	}
+    $body=preg_replace($specialchar,$replacechar,$body);
+	$podCastDuration=getMinutesAndSeconds($results[$j]['duration']);
+	$fileExtension = strtolower(substr(strrchr($results[$j]['podcasturl'], "."), 0)); 
+?>
+     <item>
+		<title><?=htmlentities(strip_tags(mswordReplaceSpecialChars($results[$j]['title'])));?></title>
+		<description><?=mswordReplaceSpecialChars($body);?></description>
+		<category>Podcasts</category>
+		<itunes:author>Minyanville</itunes:author>
+		<itunes:summary><?=mswordReplaceSpecialChars($body);?></itunes:summary>
+		<enclosure url="<?=htmlentities(strip_tags($results[$j]['podcasturl']));?>" length="<?=$results[$j]['podcastsize'];?>" type="<?=$PODCAST_ENCLOSURE_TYPES[$fileExtension]?>" />
+		<guid><?=$results[$j]['id']?></guid>
+		<podcasturl><?=htmlentities(strip_tags($results[$j]['podcasturl']));?></podcasturl>
+		<pubDate><?=date('D, j M Y H:i:s',strtotime($results[$j]['publish_time'])) ?> EST</pubDate>
+		<itunes:duration><?=$podCastDuration;?></itunes:duration>
+		<itunes:keywords><?=htmlentities(strip_tags($results[$j]['keywords']));?></itunes:keywords>
+		<itunes:image><?=htmlentities(strip_tags($results[$j]['stillfile']));?></itunes:image>
+     </item>
+<?
+	$body = "";
+	}
+?>
+
+</channel>
+</rss>

@@ -1,0 +1,402 @@
+<?
+ob_start();
+session_start();
+include_once ($D_R."/lib/registration/_manageAccountDesignLib.php");
+$objDesign=new manageAccountDesignLib();
+$orderDetails=array();
+global $viaPrdouctsarray,$HTPFXSSL,$HTHOST;
+$orderDetails=$viaPrdouctsarray;
+ $from = $_GET['from'];
+ $emailpassed = ($_GET['emailaddress']=='') ? 'Email Address':$_GET['emailaddress'];
+ $confemailpassed = ($_GET['emailaddress']=='') ? 'Confirm Email Address':$_GET['emailaddress'];
+//$objVia=new Via();
+
+$productName="subExchange";
+$trialtype="iboxHardTrial";
+$producttype="";
+
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+	if($_GET['from']){
+		$from=$_GET['from'];
+	}else{
+		$from=substr($_SERVER['HTTP_REFERER'],7);
+	}
+$eventname="CloseNewUserScreen";
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+ ?>
+<!--Login Area Start from here-->
+<div class="login_main_container" name="parentdiv" id="parentdiv">
+<span><a onClick="javascript:closemeibox();" href="JavaScript:void(0);"><img src="<?=$IMG_SERVER?>/images/redesign/login_close.jpg" onClick="javascript:closemeibox('<?=$trackname;?>');" alt="Close" border="0" align="right" /></a></span>
+<br />
+<form id="iboxregform" name="iboxregform" onSubmit="javascript:void(0);" style="margin:0px;padding:0px;float:left;">
+<input type="hidden" name="cuurntscreen" id="cuurntscreen" value="1">
+<input type="hidden" name="freeemailexchng" id="freeemailexchng" value="<? echo $orderDetails['Ex_Email_Alert'];?>">
+<input type="hidden" name="targeturl" id="targeturl" value="">
+<!-- screen_1 starts -->
+<? $starttabindex=3; ?>
+<div id="screen_1" style='display:none1'>
+	<!-- Main Table Starts-->
+	<table width="420" border="0" cellpadding="5" cellspacing="0" style="margin-left:40px;">
+	<tr><td width="102" colspan="2" rowspan="10" valign="top">
+			<!--Login Table Starts-->
+			<table width="200" class="login_table" border="0" align="left" cellpadding="5" cellspacing="0">
+			<tr><td colspan="2" valign="top" class="log_head">log-in</td></tr>
+			<tr><td colspan="2" valign="bottom"><div id="loginErrorMsg"  class="login_error"></div></td></tr>
+			<tr><td colspan="2"><input id="useremailadd" name="useremailadd" type="text" tabindex="<?= $starttabindex+1;?>" class="login_input_box" value="<?= $emailpassed;?>" onKeyPress="javascript:checkenterKey(event,'iboxlogin',1);" onBlur="javascript:chkSpaceNull('useremailadd',this.value,'Email Address');" onFocus="javascript:if(this.value=='Email Address') this.value=''; return false;" /></td></tr>
+			<tr><td colspan="2"><input id="userpassword" name="userpassword" type="text" tabindex="<?= $starttabindex+2;?>" class="login_input_box" value="Password" onKeyPress="javascript:checkenterKey(event,'iboxlogin',1);" onFocus="javascript:textboxToPasswordHeader(this,'userpassword','<?= $starttabindex+2;?>','login_input_box');" onBlur="javascript:chkSpaceNull('userpassword',this.value,'Password');" />
+			</td></tr>
+			<tr><td colspan="2" valign="top"><input type="checkbox" name="checkbox" tabindex="<?= $starttabindex+3;?>" value="checkbox" name="autologin" id="autologin" value="1" />Remember me </td></tr>
+			<tr><td valign="top"  ><a href="JavaScript:void(0);" target="_self"><img src="<?=$IMG_SERVER?>/images/redesign/log_in_button.jpg" tabindex="<?= $starttabindex+4;?>" alt="Log In" width="64" height="18" border="0" onClick="javascript:iboxLogin('useremailadd','userpassword','autologin','loginErrorMsg');" /></a></td><td align="left" width="120"><a target="_self" onclick="javascript:$('forgotpwds').show();" href="JavaScript:void(0);">Forgot Password?</a></td></tr>
+			</table>
+			<!--Login Table Ends-->
+			<!--Login Table Starts-->
+			<div id="forgotpwds" style='display:none;width:100%;float:left;clear:both;border:0px solid red;'>
+				<table width="200" class="login_table" border="0" align="left" cellpadding="5" cellspacing="0">
+				<tr><td colspan="2" valign="bottom"><div id="password_login_error"  class="login_error"></div></td></tr>
+				<tr><td colspan="2">Enter your Member ID (email) in the field below and we will send your password to you.</td></tr>
+				<tr>
+				<td colspan="2"><input id="forgot_pwd" name="forgot_pwd" type="text" tabindex="<?= $starttabindex+5;?>" class="login_input_box" value="Member ID" onFocus="javascript:if(this.value=='Member ID') this.value=''; return false;" onBlur="javascript:iboxisValidEmail('password_login_error','forgot_pwd');" /></td></tr>
+				<tr><td colspan="2" valign="top" ><a href="JavaScript:void(0);" target="_self" style="text-decoration:none"><img src="<?=$IMG_SERVER?>/images/redesign/button_sendpassword.gif" alt="sendpwd" border="0" onClick="javascript:checkforgotpassword('password_login_error','forgot_pwd');" /></a><a target="_self" onclick="javascript:$('forgotpwds').hide();" href="JavaScript:void(0);" style="text-decoration:none" ><img src="<?=$IMG_SERVER?>/images/redesign/forget_cancel.gif" alt="cancel" border="0" style="padding-left:20px;" /></a>
+				</td>
+				</tr>
+				</table>
+			</div>
+			<!--Login Table Ends-->
+		</td>
+		<td width="9" valign="top" rowspan="10"><div class="login_divider"></div></td>
+	<td colspan="2" valign="top" class="log_head">new user?<h5>sign up for free membership</h5></td>
+		<?
+			$eventname="NewUser";
+			$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+		?>
+
+	</tr>
+	<tr><td colspan="2" valign="top">
+	<div name="regError" id="regError"  class="login_error"/>
+	</td></tr>
+	<tr><td colspan="2" valign="top"><input name="userFname" id="userFname" type="text" tabindex="<?= $starttabindex+6;?>" onKeyPress="javascript:checkenterKey(event,'iboxRegist',1);" class="login_input_box" value="First Name" onBlur="javascript:chkSpaceNull('userFname',this.value,'First Name');" onClick="javascript:if(this.value=='First Name') this.value=''; return false;" /></td></tr>
+	<tr><td colspan="2" valign="top"><input name="userLname" id="userLname" type="text" tabindex="<?= $starttabindex+7;?>" onKeyPress="javascript:checkenterKey(event,'iboxRegist',1);" class="login_input_box" value="Last Name" onBlur="javascript:chkSpaceNull('userLname',this.value,'Last Name');" onClick="javascript:if(this.value=='Last Name') this.value=''; return false;" /></td></tr>
+	<tr><td colspan="2" valign="top"><input name="useremail" id="useremail" type="text" tabindex="<?= $starttabindex+8;?>" onKeyPress="javascript:checkenterKey(event,'iboxRegist',1);" class="login_input_box" value="<?= $emailpassed;?>" onBlur="javascript:chkSpaceNull('useremail',this.value,'Email Address');" onClick="javascript:if(this.value=='Email Address') this.value=''; return false;" /></td></tr>
+	<tr><td colspan="2" valign="top"><input name="useremailConf" id="useremailConf" type="text" tabindex="<?= $starttabindex+9;?>" onKeyPress="javascript:checkenterKey(event,'iboxRegist',1);" class="login_input_box" value="<?= $confemailpassed;?>" onBlur="javascript:chkSpaceNull('useremailConf',this.value,'Confirm Email Address');" onClick="javascript:if(this.value=='Confirm Email Address') this.value=''; return false;" /></td></tr>
+	<tr><td colspan="2" valign="top"><input type="text" size="15" id="userRPassword" name="userRPassword"  tabindex="<?= $starttabindex+10;?>" class="login_input_box"  onFocus="javascript:textboxToPassword(this,'tuserRPassword',<?=$starttabindex+10?>);" value="Password" /></td></tr>
+	<tr><td colspan="2" valign="top"><input type="text" size="15" id="userConfPassword" name="userConfPassword"  tabindex="<?= $starttabindex+11;?>" class="login_input_box" onFocus="javascript:textboxToPassword(this,'tuserConfPassword',<?= $starttabindex+11;?>);" value="Confirm Password" /></td></tr>
+	<tr><td width="24" valign="top"><label><select id="agegroup" tabindex="<?= $starttabindex+12;?>" name="agegroup" class="login_drop_down"><option value="">--Age Group--</option><?php display_agegroups($user_exchange[agegroup])?></select></label></td><td width="151" align="right" valign="top"><label><input name="userzipcode" id="userzipcode" tabindex="<?= $starttabindex+13;?>" type="text"  class="zip_input_box" value="Zip Code"	onBlur="javascript:chkSpaceNull('userzipcode',this.value,'Zip Code');" onFocus="javascript:if(this.value=='Zip Code') this.value=''; return false;" /></label></td></tr>
+	<tr><td colspan="2" valign="top"><table width="100%" border="0" align="left" cellpadding="0" cellspacing="0"><tr><td width="11%" valign="top">
+	<input type="checkbox" name="agreechkbox" tabindex="<?= $starttabindex+14;?>" id="agreechkbox" /></td><td colspan="2">I hereby acknowledge that I have read and accept Minyanville's</td></tr>
+	<tr><td>&nbsp;</td>
+	<td width="44%" >
+	<a onclick="window.open(this.href, 'popupwindow', 'status=no,toolbar=no,scrollbars=yes,titlebar=yes,menubar=no,resizable=yes,height=640,width=800,directories=no,location=no,top=225');return false;" href="<? echo $HTPFX.$HTHOST.'/company/privacy.htm';?>" tabindex="<?= $starttabindex+15;?>">Privacy Policy </a></td><td width="45%"><a onclick="window.open(this.href, 'popupwindow', 'status=no,toolbar=no,scrollbars=yes,titlebar=yes,menubar=no,resizable=yes,height=480,width=640,directories=no,location=no,top=225');return false;" href="<? echo $HTPFX.$HTHOST.'/company/substerms.htm';?>" tabindex="<?= $starttabindex+16;?>">Terms of Use</a></td></tr></table></td></tr>
+	<tr><td colspan="5" class="register" align="right" valign="top"><a href="JavaScript:void(0);"><img tabindex="<?= $starttabindex+17;?>" src="<?=$IMG_SERVER?>/images/redesign/register.jpg" alt="Register"  width="85" height="18" border="0" align="right" onClick="javascript:launchCategoryScreen('regError','screen_1','screen_2','<?=$trackname;?>');" /></td></tr>
+	</table>
+	<!-- Main Table Ends-->
+</div>
+<!-- screen_1 Ends -->
+<!-- screen_2 starts -->
+<div id="screen_2" name="screen_2" style="display:none;" onKeyPress="javascript:checkenterKey(event,'iboxRegist',2);">
+<?
+$prevvalue=18;
+$getcateogries_arr=array(array('id'=>0,'title' => "Minyanville Digest",'frequency'=> "daily",'description' => "An end of day synopsis of all the articles published on Minyanville.com for the day."));
+$sqlfor_cat="select id,title,frequency,description from email_categories where visible='1'";
+$getcateogries_arr_result=exec_query($sqlfor_cat);
+
+foreach($getcateogries_arr_result as $i=>$v){
+	$newindex=$i+1;
+	$getcateogries_arr[$newindex]=$v;
+}
+//htmlprint_r($getcateogries_arr);
+
+$getcateogries=count($getcateogries_arr);
+$noofrows=0;if(($getcateogries%2)==0){$noofrows=$getcateogries/2;}else{$noofrows=(($getcateogries-1)/2)+1;}
+
+$eventname="EmailCategories";
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+?>
+<div class="log_top_heading">Select Categories for Email Alerts</div>
+<div class="login_screen_two">
+   <table border="0" cellpadding="0" cellspacing="10">
+	<?php $tdcount=0;for($z=0;$z<$noofrows;$z++){if($tdcount!=0){$tdcount=$tdcount+1;}?>
+	<tr><td width="7%" valign="top"><? if($tdcount<$getcateogries){?>&nbsp;<input type="checkbox" tabindex="<?= $prevvalue+$tdcount+1;?>"  checked="checked" style="border:0px;" name="category" id="category" value="<?= $getcateogries_arr[$tdcount]['id'];?>" /></td>
+	<td width="43%" valign="top"><span class="log_common_heading"><?= $getcateogries_arr[$tdcount]['title'];?></span>(<?= $getcateogries_arr[$tdcount]['frequency'];?>) - <?= $getcateogries_arr[$tdcount]['description'];?></span><? }?></td>
+	<td width="6%" valign="top"><? if(($tdcount+1)<$getcateogries){?><input type="checkbox" tabindex="<?= $prevvalue+$tdcount+2;?>" checked="checked" style="border:0px;" name="category" id="category" value="<?= $getcateogries_arr[$tdcount+1]['id'];?>" />&nbsp;</td>
+	<td width="44%" valign="top"><span class="log_common_heading"><?= $getcateogries_arr[$tdcount+1]['title'];?></span>(<?= $getcateogries_arr[$tdcount+1]['frequency'];?>) - <?= $getcateogries_arr[$tdcount+1]['description'];?><? $tdcount=$tdcount+1;?></span><? } ?></td>
+	</tr>
+	<?php }?>
+	<tr><td colspan="4" valign="bottom"><a href="JavaScript:void(0);"><img src="<?=$IMG_SERVER?>/images/redesign/register.jpg" tabindex="<? echo $nextproceed=$prevvalue+$getcateogries+1;?>" alt="Register" width="85" height="18" border="0" align="right" onClick="javascript:launchNextScreen('regError','screen_2','screen_3','<?=$trackname;?>');" /></a></td></tr>
+	</table>
+</div>
+</div>
+<!-- screen_2 Ends -->
+<!-- screen_3 starts -->
+<div id="screen_3" style="display:none;" onKeyPress="javascript:checkenterKey(event,'iboxRegist',3);">
+		<div class="log_top_heading">Select Contributors for Email Alerts</div>
+			<div class="login_screen_three">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<?
+			$getauthors_arr_filterd=array();
+			$getauthors_arr_filterd=iboxgetContributorsArray("",$authornotstr); // defined in _module_data_lib.php
+			$getauthors=count($getauthors_arr_filterd);
+			$noofrows_auth=0;
+			if(($getauthors%2)==0){
+				$noofrows_auth=$getauthors/2;
+			}
+			else
+			{
+				$noofrows_auth=(($getauthors-1)/2)+1;
+			}
+			$tdcount_auth=0;
+			for($z=0;$z<$noofrows_auth;$z++){if($tdcount_auth!=0){$tdcount_auth=$tdcount_auth+1;}
+			$eventname="Contributors";
+			$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+			?>
+				<tr>
+				<td width="20" align="left" valign="top"><?php if($tdcount_auth<$getauthors){?><input type="checkbox" tabindex="<?= $nextproceed+$tdcount_auth+1;?>" style="border:0px;" name="contributors" id="contributors" value="<?= $getauthors_arr_filterd[$tdcount_auth]['id'];?>"></td>
+				<td width="201" align="left" valign="top" ><?= $getauthors_arr_filterd[$tdcount_auth]['name'];?><? } ?></td>
+				<td width="20" align="left" valign="top" ><? if(($tdcount_auth+1)<$getauthors){?><input type="checkbox" tabindex="<? echo $cnts = $nextproceed+$tdcount_auth+2;?>" style="border:0px;" name="contributors" id="contributors" value="<?= $getauthors_arr_filterd[$tdcount_auth+1]['id'];?>"></td>
+				<td width="209" align="left" valign="top"><?= $getauthors_arr_filterd[$tdcount_auth+1]['name'];?><? $tdcount_auth=$tdcount_auth+1;?><? } ?></td>
+				</tr>
+			<? } ?>
+			</table>
+			</div>
+			<br />
+			<div class="register"><a href="JavaScript:void(0);"><img src="<?=$IMG_SERVER?>/images/redesign/register.jpg" align="right" tabindex="<? echo $nextproceed1=$cnts+1;?>" onClick="javascript:launchNextScreen('regError','screen_3','screen_4','<?=$trackname;?>');" /></a></div>
+			<br />
+			</div>
+<!-- screen_3 Ends -->
+<!-- screen_4 starts -->
+<div id="screen_4" style="display:none;padding-left:20px;" onKeyPress="javascript:checkenterKey(event,'iboxRegist',4); ">
+	<div id="producterr" class="login_error" style="padding-left:34px;"></div>
+	<table width="95%" border="0" cellpadding="2" cellspacing="0">
+	<tr><td valign="middle" class="log_top_heading" colspan="7">Select Trials for Minyanville Premium Products</td></tr>
+	<tr><td height="30" align="left" valign="top" colspan="7">In addition to our free newsletters, we&#39;d like to offer you a <b>14 Day FREE Trial</b> to any of our Premium Products. Choose any or all of the options below.</td></tr>
+	<!-- static display -->
+		<tr>
+		<td width="20" height="30" align="left" valign="top" rowspan="2"><input class="checkboxes" type="checkbox" tabindex="<?= $startin = $nextproceed1+1;?>" style="border:0px;" name="buzzproduct" id="buzzproduct" value="buzz" onchange="javascript:radiofldsupdates('buzzproduct');" ></td>
+		<td width="300" align="left" valign="top"class="log_common_heading">Buzz &amp; Banter</td>
+		<td width="23" align="left" valign="top"><input type="radio" tabindex="<?= $startin+1;?>" class="buzzs" name="buzz_1" id="buzz_1"
+		value="<? echo $orderDetails['B&B_FT_Monthly'];?>" disabled="disabled" /></td>
+	    <td width="55" align="left" valign="top" >Monthly</td>
+	    <td width="23" align="left" valign="top"><input type="radio" tabindex="<?= $startin+2;?>" class="buzzs" name="buzz_1" id="buzz_1" value="<? echo $orderDetails['B&B_FT_Annual'];?>" disabled="disabled" /></td>
+		<td align="left" valign="top" colspan="4" >Annual</td>
+		</tr>
+		<tr>
+			<td colspan="7">Real-time trading ideas, insights and analysis from Wall Street's top traders and money managers</td>
+		</tr>
+		<tr><td width="20" height="30" align="left" valign="top" rowspan="2"><input class="checkboxes" type="checkbox" tabindex="<?= $startin+3;?>" style="border:0px;" name="optionsmithproduct" id="optionsmithproduct" value="optionsmith" onchange="javascript:radiofldsupdates('optionsmithproduct');" ></label></td>
+		<td align="left" valign="top" class="log_common_heading">OptionSmith</td>
+		<td align="left" valign="top" ><input type="radio" tabindex="<?= $startin+4;?>" class="optionsmiths" name="optionsmithproduct_1" id="optionsmithproduct_1"
+		value="<? echo  $orderDetails['OS_FT_Monthly'];?>" disabled="disabled" /></td>
+	    <td align="left" valign="top">Monthly</td>
+	    <td align="left" valign="top"><input type="radio" tabindex="<?= $startin+5;?>" class="optionsmiths" name="optionsmithproduct_1" id="optionsmithproduct_1" value="<?=$orderDetails['OS_FT_Annual'];?>" disabled="disabled" /></td>
+		<td align="left" valign="top" colspan="4" >Annual</td>
+		</tr>
+		<tr>
+			<td colspan="7">An options newsletter featuring real-time options trading alerts and ideas along with an active portfolio, written by veteran options trader Steve Smith.</td>
+		</tr>
+
+		<tr><td width="20" height="30" align="left" valign="top" rowspan="2"><input class="checkboxes" type="checkbox" tabindex="<?= $startin+6;?>" style="border:0px;" name="coopproduct" id="coopproduct" value="cooper" onchange="javascript:radiofldsupdates('coopproduct');" ></label></td>
+		<td align="left" valign="top" class="log_common_heading">Jeff Cooper's Daily Market Report</td>
+		<td align="left" valign="top" ><input type="radio" tabindex="<?= $startin+7;?>" class="coopss" name="cooper_1" id="cooper_1" value="<? echo $orderDetails['JC_FT_Monthly']; ?>" disabled="disabled" /></td>
+	    <td align="left" valign="top" >Monthly</td>
+	    <td align="left" valign="top" ><input type="radio" tabindex="<?= $startin+8;?>" class="coopss" name="cooper_1" id="cooper_1" value="<? echo $orderDetails['JC_FT_Annual']; ?>" disabled="disabled" /></td>
+		<td align="left" valign="top" colspan="4">Annual</td>
+		</tr>
+		<tr>
+			<td colspan="7">Day and swing trading setups and market commentary from one of the most successful traders in the world.</td>
+		</tr>
+
+		<tr><td width="20" height="30" align="left" valign="top" rowspan="2">
+		<input class="checkboxes" type="checkbox" tabindex="<?= $startin+9;?>" style="border:0px;" name="flexproduct" id="flexproduct" value="quint" onchange="javascript:radiofldsupdates('flexproduct');" /></label></td>
+		<td align="left" valign="top" class="log_common_heading">FlexFolio by Quint Tatro</td>
+		<td align="left" valign="top" ><input type="radio" tabindex="<?= $startin+10;?>" class="flexos" name="flexfolio_1" id="flexfolio_1" value="<? echo  $orderDetails['Flex_FT_Monthly']; ?>" disabled="disabled" /></td>
+	    <td align="left" valign="top" >Monthly</td>
+	    <td align="left" valign="top" ><input type="radio" tabindex="<?= $startin+11;?>" class="flexos" name="flexfolio_1" id="flexfolio_1" value="<? echo  $orderDetails['Flex_FT_Annual'];  ?>" disabled="disabled" /></td>
+		<td align="left" valign="top" colspan="4">Annual</td>
+		</tr>
+		<tr>
+			<td colspan="7">Access to a real portfolio traded by Quint Tatro.&nbsp; Receive email alerts with in depth analysis before every trade.</td>
+		</tr>
+
+		<tr><td width="20" height="30" align="left" valign="top" rowspan="2">
+			<input class="checkboxes" type="checkbox" tabindex="<?= $startin+12;?>" style="border:0px;" name="tspproduct" id="tspproduct" value="tsp" onchange="javascript:radiofldsupdates('tspproduct');" /></label></td>
+			<td align="left" valign="top" class="log_common_heading">The Stock Playbook</td>
+			<td width="23" align="left" valign="top" ><input type="radio" tabindex="<?= $startin+13;?>" class="tsps" name="tsp_1" id="etf_1" value="<? echo  $orderDetails['TheStockPlaybook_FT_Monthly']; ?>" disabled="disabled" /></td>
+			<td width="50" align="left" valign="top">Monthly</td>
+			<td width="23" align="left" valign="top" ><input type="radio" tabindex="<?= $startin+14;?>" class="tsps" name="tsp_1" id="tsp_1" value="<? echo  $orderDetails['TheStockPlaybook_FT_Quart'];  ?>" disabled="disabled" /></td>
+			<td width="55" align="left" valign="top">3 Months</td>
+			<td width="23" align="left" valign="top" ><input type="radio" tabindex="<?= $startin+15;?>" class="tsps" name="tsp_1" id="tsp_1" value="<? echo  $orderDetails['TheStockPlaybook_FT_Annualy'];  ?>" disabled="disabled" /></td>
+			<td width="50" align="left" valign="top" >Annual</td>
+			</tr>
+			<tr>
+				<td colspan="7">Daily videos detailing Dave Dispennette's market view, portfolio strategy (which has averaged +41% annually since '04) and more.</td>
+		</tr>
+
+		<tr><td width="20" height="30" align="left" valign="top" rowspan="2">
+				<input class="checkboxes" type="checkbox" tabindex="<?= $startin+16;?>" style="border:0px;" name="etfproduct" id="etfproduct" value="etf" onchange="javascript:radiofldsupdates('etfproduct');" /></label></td>
+				<td align="left" valign="top" class="log_common_heading">Grail ETF & Equity Investor Newsletter</td>
+				<td width="23" align="left" valign="top" ><input type="radio" tabindex="<?= $startin+17;?>" class="etfs" name="etf_1" id="etf_1" value="<? echo  $orderDetails['ETF_FT_Monthly']; ?>" disabled="disabled" /></td>
+			    <td width="50" align="left" valign="top">Monthly</td>
+			    <td width="23" align="left" valign="top" ><input type="radio" tabindex="<?= $startin+18;?>" class="etfs" name="etf_1" id="etf_1" value="<? echo  $orderDetails['ETF_FT_Quart'];  ?>" disabled="disabled" /></td>
+				<td width="55" align="left" valign="top">3 Months</td>
+				<td width="23" align="left" valign="top" ><input type="radio" tabindex="<?= $startin+19;?>" class="etfs" name="etf_1" id="etf_1" value="<? echo  $orderDetails['ETF_FT_Annualy'];  ?>" disabled="disabled" /></td>
+				<td width="50" align="left" valign="top" >Annual</td>
+				</tr>
+				<tr>
+					<td colspan="7">Ron Coby & Denny Lamson use their proprietary Grail Indicator to identify trends in ETFs and equities, and ride them to profits.</td>
+		</tr>
+<?
+$eventname="TrialProducts";
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+?>
+
+	<!-- static display -->
+	<tr><td width="20" valign="top">&nbsp;</td><td valign="top" colspan="6"><img src="<?=$IMG_SERVER?>/images/redesign/get_14_days.gif" width="141" height="36" align="left"  alt="Get 14 Days Trials"  /></td></tr>
+	<tr><td width="20" valign="top">&nbsp;</td><td valign="top" colspan="6"><a href="JavaScript:void(0);"><img src="<?=$IMG_SERVER?>/images/redesign/register.jpg" align="right" tabindex="<?= $startin+15;?>" onClick="javascript:launchNextScreen('producterr','screen_4','screen_5','<?=$trackname?>');" /></a></td></tr>
+	</table>
+</div>
+<!-- screen_4 Ends -->
+<!-- screen_5 starts -->
+<div id="screen_5" style="display:none;" onKeyPress="javascript:checkenterKey(event,'iboxRegist',5);">
+<?
+$eventname="PaymentInfo";
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+?>
+<table width="90%" border="0"  cellpadding="5" cellspacing="0">
+    <tr><td width="457" valign="middle" class="log_top_heading">Payment Info<div id="paymenterr"  class="login_error" style="padding-top:10px;"></div></td></tr>
+    <tr>
+      <td height="30" align="left" valign="top"><!--Step 3rd start from here-->
+        <table width="532" border="0" cellpadding="6" cellspacing="0" id="login_screen_five">
+          <tr>
+            <td>Billing Address Line 1* </td>
+            <td>Billing Address Line 2* </td>
+            <td valign="top">City*</td>
+          </tr>
+          <tr>
+            <td><input type="text" tabindex="<?= $startin+10;?>" id="billingaddress1" name="billingaddress1" class="screen_common_drop" value="" /></td>
+            <td><input type="text" tabindex="<?= $startin+11;?>" id="billingaddress2" name="billingaddress2" class="screen_common_drop" value="" /></td>
+            <td><input type="text" tabindex="<?= $startin+12;?>" id="billingcity" name="billingcity" class="screen_common_drop" value="" /></td>
+          </tr>
+          <tr>
+            <td>Phone Number*<br />(no &quot;-&quot; or spaces please) </td>
+            <td>State*</td>
+            <td>Country*</td>
+          </tr>
+
+          <tr>
+            <td><input type="text" tabindex="<?= $startin+13;?>" id="iboxphone" name="iboxphone" class="screen_common_drop" value="" /></td>
+            <td>
+			  <select id="iboxstate" tabindex="<?= $startin+14;?>" name="iboxstate" class="register_drop_down_five">
+              <option value="">--Select--<?php display_states($states); ?></option></select>
+
+		  </td>
+            <td>
+			<!--<select id="iboxcountry" tabindex="<?= $startin+15;?>" name="iboxcountry" class="register_drop_down_five">
+            <option value="">--Select--<?php display_countries($country); ?></option></select>
+			-->
+			<select id="iboxcountry" tabindex="<?= $startin+15;?>" name="iboxcountry"  onChange="Javascript:manage_state('iboxcountry','iboxstate');"  class="register_drop_down_five">
+			<option value="">--Select--<?php echo $objDesign->displayCountryManageAccount(); ?></select>
+			</td>
+          </tr>
+          <tr>
+            <td>Credit Card Type* </td>
+            <td>Credit Card Number </td>
+            <td>Expiration Date </td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>(no &quot;-&quot; or spaces please)</td>
+            <td>(MM/YYYY)*</td>
+          </tr>
+          <tr>
+            <td width="31%">
+			  <select id="iboxcctype" tabindex="<?= $startin+16;?>" name="iboxcctype" class="register_drop_down_five">
+              <option value="">--select--</option>
+              <option value="MasterCard">Master Card</option>
+              <option value="Visa">Visa</option>
+              <option value="AmericanExpress">American Express</option>
+              <option value="Discover">Discover</option>
+            </select></td>
+            <td width="32%"><?php $startin =$startin+17;  input_text("iboxccnum","",20,16,"class=screen_common_drop tabindex=$startin"); ?><!--<input value="****" type="text" name="textfield4422" class="small_common_input" />--></td>
+            <td width="37%"><?php $startin =$startin+1; input_text("iboxccexpire","",7,7,"class=screen_common_drop tabindex=$startin"); ?><!--<input type="text" name="textfield" class="small_common_input" />--></td>
+          </tr>
+          <tr>
+            <td>Security Code </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td valign="top">(CVV2)*</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+
+          <tr>
+            <td valign="top">
+				<?php $startin =$startin+1; input_pass("iboxcvvnum","",5,8,"class=screen_common_drop tabindex=$startin"); ?>
+				 <!--<input type="text" name="textfield4423"  class="small_common_input"/>-->				</td>
+            <td><a href="_self" onclick="window.open('<?=$HTPFXSSL.$HTHOST?>/subscription/register/cvv2.htm','cvv2','width=560,height=500,resizable=1,scrollbars=1')">What's This?</a></td>
+            <td>&nbsp;</td>
+          </tr>
+
+          <tr>
+            <td colspan="3">Your credit card will not be charged until two weeks from the day you create your account. If you wish to cancel your account during the trial period, you must do so in the &quot;Manage Account&quot; section before the two weeks is up to avoid being charged. </td>
+          </tr>
+        </table>
+      <!--Step 3rd end here--></td>
+    </tr>
+</table>
+<br />
+<div class="register"><table border="0" width="100%" cellpsacing="5" cellpadding="5"><tr><td><a href="JavaScript:void(0);"><img src="<?=$IMG_SERVER?>/images/redesign/skip.gif" tabindex="<?= $startin+1;?>" onClick="javascript:paymentScreenvalidate(1,'paymenterr','screen_5','screen_6');" /></a></td><td width="10%"><a href="JavaScript:void(0);"><img src="<?=$IMG_SERVER?>/images/redesign/register.jpg" align="right" tabindex="<?= $startin+2;?>" onClick="javascript:paymentScreenvalidate(0,'paymenterr','screen_5','screen_6','<?=$trackname?>');" /></a></td></tr></table></div>
+</div>
+</form>
+
+<!-- screen_5 Ends -->
+<!-- screen_6 starts -->
+<div id="screen_6" style="display:none">
+<?
+$eventname="WelcomeExchange";
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+?>
+  <table width="100%" border="0" cellpadding="6" cellspacing="0" id="login_screen_six">
+    <tr>
+      <td colspan="2" align="center"  class="log_top_heading" >Welcome to the Exchange, <span id="jsfname" name="jsfname"></span>&nbsp;<span id="jslname" name="jslname"></span>!<div  style="display:none;">Error div</div></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">The Exchange is Minyanville's Social Network. Now that you're<br />
+      a member, here's a list of some of the things you can do:</td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="6" align="left">
+      <ul>
+      <li>Discuss Minyanville Articles</li>
+      <li>Build a network of friends</li>
+      <li>Write your own Blog</li>
+      <li>Read other's Blogs</li>
+      <li>Customize Email Alerts</li>
+      <li>Maintain your Profile</li>
+      </ul>
+      </td>
+      </tr>
+    <tr>
+      <td align="center">&nbsp;</td>
+      </tr>
+    <tr>
+      <td align="center">&nbsp;</td>
+      </tr>
+    <tr>
+      <td align="center">&nbsp;</td>
+      </tr>
+    <tr>
+      <td align="center">&nbsp;</td>
+      </tr>
+
+    <tr>
+      <td align="center" valign="top">&nbsp;</td>
+      </tr>
+      <td colspan="2" align="center"><a href="javascript:closemeibox('<?=$trackname;?>');"><img src="<?=$IMG_SERVER?>/images/redesign/okay.gif" border="0" /></a></td>
+    </tr>
+  </table>
+  <div id="gAds"></div>
+</div><!-- screen_6 Ends -->
+<br />
+</div>

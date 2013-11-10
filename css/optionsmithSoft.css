@@ -1,0 +1,590 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+margin: 0px 10px 0px 15px;
+background-color:#a3adb6;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+}
+h5 {
+font-family:Helvetica;
+font-size:11px;
+font-weight:bold;
+margin:0px;
+line-height:20px;
+text-align:left;
+color:#083d70;
+text-transform:uppercase;
+}
+h5 a{
+font-family:Helvetica;
+font-size:11px;
+font-weight:bold;
+margin:0px;
+line-height:20px;
+text-align:left;
+color:#083d70;
+text-transform:uppercase;
+}
+.OptionSoftMAin{
+width:98%;
+border:solid 0px red;
+float:left;
+padding-left:10px;
+padding-left:8px!important;
+padding-right:10px;
+background-image:url(http://storage.googleapis.com/mvassets/images/optionsmithTrial/BuzzmainBg.jpg);
+background-repeat:repeat-y;
+background-position:center;
+
+}
+
+.JackHeader{
+text-align:center;
+background-image:url(http://storage.googleapis.com/mvassets/images/optionsmithTrial/CooperHeaderbg.jpg);
+background-repeat:repeat-x;
+width:100%;
+float:left;
+
+}
+.JackSoftMAininner{
+border:solid 0px red;
+float:left;
+width:956px;
+width:955px!important;
+background-color:#fff;
+background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/bodyContentBg.jpg);
+background-repeat:repeat-x;
+padding-bottom:30px;
+}
+.left_cont_Jack{ 
+ width:630px;
+ float:left;
+ padding:0px 0px 0px 7px;
+ margin:0px;
+ border:solid 0px red;
+}
+
+.right_cont_jack{ 
+ width:300px;
+ float:right;
+ margin-right:1px;
+ border:solid 0px red;
+ padding-right:0px;
+
+}
+.right_Video_jack{ 
+ width:300px;
+ margin-right:1px;
+ border:solid 0px red;
+ padding-right:0px;
+ clear:both;
+}
+.option_soft_titleMain{
+width:640px;
+float:left;
+}
+.option_soft_title{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:24px;
+color:#3C546C;
+vertical-align:top;
+font-weight:normal;
+text-align:left;
+margin-bottom:10px;
+width:98%;
+text-transform:none;
+padding-left:10px;
+
+}
+.option_soft_title h2{
+margin:0px;
+font-size:12px;
+padding-top:10px;
+padding-bottom:10px;
+font-family:Arial, Helvetica, sans-serif;
+color:#323232;
+font-weight:normal;
+letter-spacing:normal;
+line-height:20px;
+}
+.optionFreeTrialBoxMain{
+float:left;
+width:auto;
+padding-left:35px;
+}
+.optionFreeTrialBox{
+float:left;
+text-align: center;
+padding:15px 0px 15px 0px;
+background-color:#054a71;
+color:#FFFFFF;
+width:540px;
+border:solid 1px #000;
+background-image: url(http://storage.googleapis.com/mvassets/images/optionsmithTrial/Laverytrialboxbg.jpg);
+background-repeat:repeat-x;
+}
+
+.LaveryFreeTrialBoxLeft
+{
+float:left;
+width:52%;
+border:solid 0px red;
+}
+.LaveryFreeTrialBoxLeft h1
+{
+margin:0px;
+font-size:22px;
+font-weight:bold;
+text-transform:uppercase;
+padding-bottom:5px;
+padding-top:45px;
+color:#FFFFFF;
+}
+.OptionFreeTrialBoxRight
+{
+float:left;
+text-align:left;
+width:48%;
+border:solid 0px red;
+}
+.OptionFreeTrialBoxRight form{
+padding:0px;
+margin:0px;
+}
+.OptionFreeTrialBoxRight input{
+width:230px;
+border:solid 1px #FFF;
+padding-left:5px;
+margin-bottom:10px;
+font-size:12px;
+font-weight:bold;
+}
+.OptionFreeTrialBoxRight img{
+cursor:pointer;
+text-align:right;
+padding-right:22px;
+}
+
+.optionArticleMain{
+width:600px;
+font-weight:normal;
+padding-top:10px;
+padding-bottom:10px;
+text-align:left;
+padding-left:10px;
+clear:both;
+line-height:18px;
+color:#323232;
+float:left;
+margin-bottom:10px;
+}
+
+.optionArticleMain h1{
+font-family: Arial, Helvetica, sans-serif;
+font-size:12px;
+line-height:20px;
+font-weight:normal;
+text-align:left;
+margin:0px
+}
+
+.Lavery_window_trial_Main{
+width: 95%;
+padding-top:10px;
+float:left;
+padding-left:20px;
+
+}
+
+.Lavery_window_trial_boxRight{
+float:left;
+background-image:url(http://storage.googleapis.com/mvassets/images/optionsmithTrial/Flex_article_bg.gif);
+background-position:top;
+background-repeat:repeat-x;
+width:96%;
+padding:15px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:14px;
+font-weight:;
+text-align:left;
+line-height:25px;
+margin-bottom:20px;
+color:#323232;
+background-color:#E0E0E0;
+}
+
+.Lavery_window_trial_boxRight span{
+color:#000000;
+font-family:Arial,Helvetica,sans-serif;
+font-size:12px;
+font-weight:bold;
+text-transform:none;
+}
+
+.Lavery_window_trial_boxRight ul{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+color:#323232;
+text-transform:none;
+margin:0px;
+padding:0px;
+}
+.Lavery_window_trial_boxRight li{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight: normal;
+color:#323232;
+line-height:25px;
+margin-left:55px;
+text-transform:none;
+}
+
+.option_common_container{
+margin-top:10px;
+clear:both;
+width:300px;
+float:left;
+ }
+ .Lavery_common_head{ 
+ padding-top:2px; 
+ padding-bottom:2px;
+ text-align:center;
+ clear:both;
+ height:28px;
+ background-color:#063e5f;
+ }
+ .Lavery_common_head h2{
+color:#FFFFFF;
+font-family:Arial,Helvetica,sans-serif;
+font-size:13px;
+font-weight:normal;
+line-height:28px;
+margin:0;
+padding:0;
+text-transform:uppercase; 
+}
+.Flexquint_sub_heading{
+font-family: Arial, Helvetica, sans-serif;
+font-size:11px;
+padding:0px;
+color:#777775;
+font-weight:normal;
+text-align:left;
+}
+
+.Flexquint_sub_heading td{
+padding:0px;
+color:#777775;
+height:20px;
+font-weight:normal;
+text-align:left;
+}
+
+.cooperMaillinks{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+color:#083d70;
+text-transform:none;
+}
+.cooperMaillinks a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+text-decoration:underline;
+color:#00314c;
+text-transform:none;
+}
+
+
+.AddtocartLaverymain{
+width:100%;
+float:left;
+text-align:center;
+padding-top:45px;
+clear:both;
+}
+.AddtocartLaverymain h1{
+color:#2c2c2c;
+font-family:Arial,Helvetica,sans-serif;
+font-size:22px;
+font-weight:bold;
+text-transform:none;
+text-align:center;
+margin:0px;
+}
+.AddtocartLaverymain h1 span{
+color:#265B8A;
+font-family:Arial,Helvetica,sans-serif;
+font-size:22px;
+font-weight:bold;
+text-transform:none;.
+}
+.AddtocartLaverymain img{
+padding-bottom:5px;
+padding-top:15px
+} 
+.Contactmain{
+width:100%;
+float:left;
+text-align:center;
+padding-top:10px;
+clear:both;
+}
+.Contactmain p{
+color:#2c2c2c;
+font-family:Arial,Helvetica,sans-serif;
+font-size:18px;
+font-weight:normal;
+text-transform:none;
+margin:0px;
+width:auto;
+float:left;
+padding-left:30px;
+
+}
+.Contactmain span{
+color:#265B8A;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-transform:none;
+float:left;
+padding-left:10px;
+}
+.Contactmain  span a{
+color:#265B8A;
+text-decoration:none;
+cursor:pointer;
+}
+.cooper_Article_head {
+color:#000000;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-transform:none;
+}
+
+
+.laverycommon_content_dis{
+clear:both;
+color:#000100;
+float:left;
+border:solid 0px red;
+font-family:Arial,Helvetica,sans-serif;
+font-size:11px;
+font-weight:normal;
+padding-top:10px;
+line-height:15px;
+text-align:left;
+width:95%;
+}
+.LaveryImage{
+float:left;
+width:80px;
+}
+.LaveryImage span{
+clear:both;
+color:#0A2D53;
+float:left;
+font-family:Arial,Helvetica,sans-serif;
+font-size:11px;
+text-align:center;
+font-weight:bold;
+padding-top:2px;
+text-transform:uppercase;
+}
+.jack_producttrial_container{
+width:600px;
+float:left;
+clear:both;
+margin-top:10px;
+}
+.jack_producttrial_container h1{
+color:#284a6d;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-align:center;
+text-transform:none;
+}
+.jack_producttrial_container h1 a{
+color:#284a6d;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-align:center;
+text-decoration:none;
+text-transform:none;
+}
+.jack_recurringTrial{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+text-decoration:none;
+text-align:center;
+padding-bottom:0px;
+padding-top:3px;
+line-height:15px;
+text-transform:uppercase;
+color:#FFFFFF;
+font-weight:bold;
+}
+.option_add_to_cart_box_trial{
+width:250px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:30px;
+color:#FFFFFF;
+line-height:30px;
+background-color:#054467;
+font-weight:bold;
+margin-top:10px;
+margin-left:10px;s
+}
+
+.option_add_to_cart_box_trial img{
+padding-top:2px;
+padding-bottom:4px;
+}
+.option_add_to_cart_box_trial h1{
+font-family:Arial, Helvetica, sans-serif;
+font-size:18px;
+padding-top:12px;
+text-align:right;
+font-weight:normal;
+color:#FFFFFF;
+}
+
+.jack_article_box{
+background-image:url(http://storage.googleapis.com/mvassets/images/optionsmithTrial/jack_article_bg.gif);
+background-position:top;
+background-repeat:repeat-x;
+padding:25px;
+font-weight:bold;
+line-height:25px;
+color:#323232;
+float:right;
+padding-bottom:15px;
+background-color:#e0e0e0;
+text-align:left;
+}
+.jack_article_box ul{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+color:#323232;
+text-transform:none;
+margin:0px;
+padding:0px;
+}
+.jack_article_box li{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+color:#323232;
+line-height:15px;
+padding-bottom:15px;
+margin-left:10px;
+text-transform:none;
+}
+.jack_article_box span{
+color:#000000;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-transform:none;
+}
+.optionsmith_main_cart_container{
+float:left;
+width:100%;
+border:solid 0px red;
+}
+.add_to_cart{
+width:300px;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size:30px;
+color:#FFFFFF;
+background-color:#275b8b;
+font-weight:bold;
+text-align:center;
+line-height:20px;
+margin-top:10px;
+}
+.add_to_cart td{
+padding:2px;
+}
+.add_to_cart img{
+padding-top:2px;
+}
+.optionsmith_recurring{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+text-decoration:none;
+padding-top:10px;
+text-transform:uppercase;
+color:#ffffff;
+font-weight:normal;
+}
+.optionsmitherrmsg{
+float:left; 
+font-size:11px; 
+color: #FF0000;
+margin-top:5px;
+width:60%;
+}
+.TrialFooter{
+float:left;
+width:98%;
+width:99.5%!important;
+}
+.right_common_container{
+border:solid 1px #A5A5A5;
+margin-top:10px;
+clear:both;
+width:100%;
+float:left;
+ }
+ 
+ .right_common_head h2{
+color:#FFFFFF;
+font-family:Arial,Helvetica,sans-serif;
+font-size:13px;
+font-weight:normal;
+line-height:28px;
+margin:0;
+padding:0;
+text-transform:uppercase; 
+}
+
+  .right_common_head{ 
+ padding-top:2px; 
+ padding-bottom:2px;
+ text-align:center;
+ background-color:#054A71;
+ clear:both;
+ height:28px;
+ } 
+ 
+ .quint_sub_heading{
+font-family: Arial, Helvetica, sans-serif;
+font-size:11px;
+padding:0px;
+color:#777775;
+font-weight:normal;
+text-align:left;
+}
+
+.quint_sub_heading td{
+padding:0px;
+color:#777775;
+height:20px;
+font-weight:normal;
+text-align:left;
+}
+.product_text
+{
+text-align:center;
+padding-left:35px;
+padding-right:35px;
+}

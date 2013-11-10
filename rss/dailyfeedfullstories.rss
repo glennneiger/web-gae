@@ -1,0 +1,73 @@
+<?
+header( 'Content-Type: application/rss+xml; charset=utf-8' );
+global $HTPFX,$HTHOST,$D_R;
+include_once($D_R."/lib/config/_article_config.php");
+include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
+include_once($D_R."/lib/MemCache.php");
+include_once("$D_R/lib/config/_rss_config.php");
+include_once("$D_R/admin/lib/_contributor_class.php");
+$objContrib= new contributor();
+$objDailyfeed= new Dailyfeed();
+$objCache= new Cache();
+$currentFilter=$_GET['from'];
+?>
+<rss version="2.0">
+<channel>
+<title>Minyanville - Daily Feed</title>
+<description>The Trusted Choice for the Wall Street Voice</description>
+<link>http://www.minyanville.com</link>
+<ttl>1</ttl>
+<copyright>2007 Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
+
+<?
+$sql = "SELECT DF.id,DF.title,DF.body,DF.title_link,DF.creation_date,DF.updation_date,IF(DF.publish_date = '0000-00-0000:00:00',DF.creation_date,DF.publish_date) AS display_date,C.name as author from daily_feed DF ,contributors C WHERE DF.is_approved='1' and DF.is_deleted='0' and DF.is_live='1' and DF.contrib_id=C.id ";
+if($currentFilter){
+    $contribFilterId=$objContrib->getExcludedPartnerId();
+	$sql .= " and C.id IN (SELECT CGM.contributor_id FROM contributor_groups_mapping CGM,
+contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($contribFilterId)) ";
+$urlPostFix = "?from=".$currentFilter;
+}
+
+$sql.="order by display_date desc limit 10";
+$results = exec_query($sql);
+foreach ($results as $result) {
+    $body=$objCache->buzzAdReplace($result['body']);
+    $articlebody=strip_tag_style($body);
+	$tempBody = htmlentities($articlebody,ENT_QUOTES);
+	$body=preg_replace($specialchar,$replacechar,$tempBody);
+	$title = preg_replace($specialchar,$replacechar,$result['title']);
+	/* $source = preg_replace($specialchar,$replacechar,$result['source']);
+	  $source_link = htmlentities($result['source_link']); */
+
+	$urltitle=$objDailyfeed->getDailyFeedUrl($result['id']);
+	$source	= '';
+    $source_link  = '';
+	$getSource		=	"SELECT source,source_link FROM ex_source where item_id = ".$result['id'];
+	$resultSource	=	 exec_query($getSource,1);
+	if($resultSource && count($resultSource)>0)
+	{
+		$source = preg_replace($specialchar,$replacechar,$resultSource['source']);
+		$source_link = htmlentities($resultSource['source_link']);
+    }
+	if(substr_count($body,"{FLIKE}") > 0)
+	{
+		$body = str_replace("{FLIKE}","", $body);
+	}
+	$body = make_stock_links($body,$result['display_date']);
+	$body = utf8_encode(mswordReplaceSpecialChars($body));
+
+?>
+     <item>
+        <title> <?=htmlentities(utf8_encode(mswordReplaceSpecialChars($title))); ?></title>
+		<category>Daily Feed</category>
+		<description><![CDATA[<?=$body?>]]></description>
+        <link><?=$HTPFX.$HTHOST.$urltitle.$urlPostFix;?></link>
+		<guid><?=$result['id'];?></guid>
+        <pubDate><?=date('D, j M Y H:i:s',strtotime($result['display_date'])) ?> EDT</pubDate>
+		<author><?=$result['author'];?></author>
+     </item>
+<?
+	}
+?>
+</channel>
+</rss>

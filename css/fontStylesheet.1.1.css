@@ -1,0 +1,55 @@
+
+@font-face {
+    font-family: 'FrancoisOneRegular';
+    src: url('../font/francoisone-webfont.eot');
+    src: url('../font/francoisone-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/francoisone-webfont.woff') format('woff'),
+         url('../font/francoisone-webfont.ttf') format('truetype'),
+         url('../font/francoisone-webfont.svg#FrancoisOneRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+
+}
+
+@font-face {
+    font-family: 'OpenSansExtrabold';
+    src: url('../font/os/opensans-extrabold-webfont.eot');
+    src: url('../font/os/opensans-extrabold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/os/opensans-extrabold-webfont.woff') format('woff'),
+         url('../font/os/opensans-extrabold-webfont.ttf') format('truetype'),
+         url('../font/os/opensans-extrabold-webfont.svgz#OpenSansExtrabold') format('svg'),
+         url('../font/os/opensans-extrabold-webfont.svg#OpenSansExtrabold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'OpenSansBold';
+    src: url('../font/os/opensans-bold-webfont.eot');
+    src: url('../font/os/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/os/opensans-bold-webfont.woff') format('woff'),
+         url('../font/os/opensans-bold-webfont.ttf') format('truetype'),
+         url('../font/os/opensans-bold-webfont.svgz#OpenSansBold') format('svg'),
+         url('../font/os/opensans-bold-webfont.svg#OpenSansBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: "Book Antiqua";
+    src: url('../font/BKANT.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: "LatoRegular";
+    src: url('../font/Lato_font_family/Lato-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}

@@ -1,0 +1,48 @@
+<?php
+
+//receive submitted form from preferences object on client
+if ($_POST['sid']) {
+	$sid = $_POST['sid'];
+	$characters = $_POST['characters'];
+	$alerts = $_POST['alerts'];
+	$window_size = $_POST['window_size'];
+	$text_size = $_POST['text_size'];
+	$auto_jump = $_POST['auto_jump'];
+	$posts_per_page = $_POST['posts_per_page'];
+	$cidString = explode(":",$_POST['cidString']);
+	$shString = explode(":",$_POST['shString']);
+}
+
+$sid = 7184;
+$characters = 1;
+$alerts = 1;
+$window_size = 'm';
+$auto_jump = 1;
+$posts_per_page = 5;
+$text_size = 'm';
+
+$prefs = array( 'ssid'=>$sid,
+				'characters' => $characters,
+				'alerts' => $alerts,
+				'auto_jump' => $auto_jump,
+				'window_size' => $window_size,
+				'text_size' => $text_size,
+				'posts_per_page' => $posts_per_page);
+
+insert_or_update("subscriber_buzzbanter_preferences", $prefs , array(ssid=>$sid) );
+
+del_query(subscribers_to_contributors, "sid", $sid);
+
+//foreach teacher in form
+
+	if($cidString && $shString){		
+		for ($i=0;$i<count($cidString);$i++) {
+		//if teacher value is on, run insert query
+			if ($shString[$i]=="1"){
+			$teachers[cid]=$cidString[$i];
+			$teachers[sid]=$sid;
+			insert_query(subscribers_to_contributors, $teachers);
+			}
+		}
+}
+?>

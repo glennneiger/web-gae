@@ -1,0 +1,230 @@
+<?
+global $IMG_SERVER ,$HTPFX,$HTHOST,$D_R;
+include_once($D_R."/lib/_robots.php");
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
+include_once("$D_R/lib/_content_data_lib.php");
+
+$objWryData = new worryData();
+$d=$_GET['d'];
+$s=$_GET['s'];
+$p=$_GET['p'];
+$viewapproved=$_GET['viewapproved'];
+$page = "gazette";
+
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+
+if(!empty($_POST)){
+	$viewapproved=$_POST['viewapproved'];
+	$approve=$_POST['approve'];
+	$delarticle=$_POST['delarticle'];
+	$publishdatefield = $_POST['publishdatefield'];
+	if(!empty($approve))
+	{
+		$id = $objWryData->updateWry($approve,$viewapproved,$publishdatefield);
+		if($id){
+			$strError="Updated Successfully";
+		}
+	}
+	if(!empty($delarticle))
+	{
+		$id = $objWryData->deleteWry($delarticle);
+		if($id){
+			$strError="Worry deleted Successfully";
+		}
+	}
+}
+
+
+$viewapproved=intval($viewapproved);
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("publish_worry create_worry approve_worry"))){
+	admin_error();
+}
+
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js" type='text/javascript' ></script>
+<script type="text/javascript">
+function submitWorry(){
+	var delchk  = document.frmWorryapprove.delWorry.length;
+	var delcount = "";
+	if(delchk==undefined){
+		 if(document.frmWorryapprove.delWorry.checked){
+			delcount=1;
+		}
+	}else{
+		for (i = 0; i < delchk; i++) {
+			if (document.frmWorryapprove.delWorry[i].checked) {
+					delcount = 1;
+			}
+		}
+	}
+	var appchk  = document.frmWorryapprove.appWorry.length;
+	var appcount = "";
+	if(appchk==undefined){
+		if(document.frmWorryapprove.appWorry.checked){
+			appcount=1;
+		 }
+	}else{
+		for (i = 0; i < appchk; i++) {
+			if (document.frmWorryapprove.appWorry[i].checked) {
+					appcount =1;
+			}
+		}
+	}
+	if(delcount=="1"){
+	$("#inputvalue").val('delete');
+	  if (confirm("Are you sure you want to delete article(s).")) {
+		 frmWorryapprove.submit();
+	  }
+	}else if(appcount=="1"){
+		$('#inputvalue').val('approve');
+	   	frmWorryapprove.submit();
+	}else{
+	  alert("Please select an article.");
+	}
+}
+
+</script>
+
+<?
+
+/*-- query params --*/
+
+$pagesize=10;
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+$qry = "SELECT WA.id, WA.creation_date, IF (WA.publish_date,WA.publish_date,WA.creation_date) AS publish_date, CONCAT( 'worry-publish.htm?id=', WA.id ) arturl,DATE_FORMAT(IF(publish_date>creation_date,publish_date,creation_date),'%c/%e/%Y') format_publish_date FROM worry_alert WA WHERE WA.is_approve='".$viewapproved."' AND WA.is_deleted='0'";
+
+$qry.=" ORDER BY publish_date DESC ";
+/*--- end query params --*/
+
+/*--paging --*/
+
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+/*-- end paging  ---*/
+$pagedata = exec_query($qry);
+
+?>
+<div class=adminheader>Lloyds Wall of Worry - Approve worry</div><br />
+	<div style="padding:20px 5px 10px 0px; width:400px">
+		<?if($AD->getPerm("create_worry")){?>
+			<li><a href="worry-create.htm">Worry Databank</a></li>
+		<?}?>
+		<?if($AD->getPerm("publish_worry")){?>
+			<li><a href="worry-publish.htm">Create Wall of Worry</a></li>
+		<?}?>
+	</div>
+<br />
+<? if($strError != ''){ ?>
+	<div style="color:red; padding:0px 0px 10px 0px;"><?=$strError;?></div>
+<? } ?>
+<br />
+<center>
+<?if(!$viewapproved){?>
+<div style="width:700;text-align:left">These are the worries that are awaiting approval. Check the worries you've approved, click save and they will be posted live to the site and an email will be sent to all your subscribers.<br>&nbsp;</div>
+<?}else{?>
+<div style="width:700;text-align:left">These are the worries that are approved. Check the worries you've disapproved, click save and they will be disapproved.<br>&nbsp;</div>
+<?}?></center>
+<table width="100%" align=center style="border:1px black solid">
+<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array('viewapproved'=>1),"p"),"View Approved Worries","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array('viewapproved'=>'0'),"p"),"View Unapproved Worries","class=small",(!$viewapproved))?></TD>
+<TD colspan=3>&nbsp;</TD>
+</TR>
+<form name="frmWorryapprove" method="post" action="<?=$PHP_SELF;?>">
+<? input_hidden("viewapproved") ?>
+<? input_hidden("inputvalue") ?>
+<TR bgcolor=#cccccc align=center>
+<TD<?colclass("date")?>><a href="<?=$PHP_SELF.qsa(array(s=>"date",d=>togD($d)))?>">Worry Date</a></TD>
+<TD<?colclass("title")?>><a href="<?=$PHP_SELF.qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+<TD nowrap>Publish date</td>
+<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>
+<TD>Delete</TD>
+<TD>Preview</td>
+</TR>
+<?if(count($pagedata)){?>
+	<? foreach($pagedata as $i=>$row){
+		$breakDateStr="n|j|Y|G|i";
+		list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,convert_date_to_unix($row[publish_date])));
+		if($y=="2000" || $y=="1969"){//invalid date
+			$publishdatefield=array();
+		}else{
+			$publishdatefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+		}
+
+		if($row[publish_date] == "0000-00-00 00:00:00")
+		{
+			$publishdatefield="";
+			$row[publish_date]="";
+
+		}
+
+		$color=$i%2?"dddddd":"eeeeee";
+		$link=urlqsa($row[arturl],array(PHPSESSID=>$PHPSESSID,AMADMIN=>1),"*");
+		$link1="/investing/lloyds-wall-of-worry/".$row['format_publish_date'].'/';
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?> ><?=$row[creation_date]?></TD>
+	<TD nowrap <?colclass("title")?> >
+	<!-- Add script to make link to titles according to authorizations to edit-->
+	<a href="<?=$link?>" target="_blank">Lloyds Wall of Worry - <?=date("m/d/Y",strtotime($row[publish_date]))?></a></TD>
+	<?if(!$viewapproved){?>
+		<TD nowrap>
+			<?month_options_articles("publishdatefield[mo][$row[id]]",$ctrlstatus)?>
+		<?day_options_articles("publishdatefield[day][$row[id]]",$ctrlstatus)?>
+		<?year_options_articles("publishdatefield[year][$row[id]]",$publishdatefield[year],$ctrlstatus,date("Y"),date("Y")+3)?>
+		<?hour_options_articles("publishdatefield[hour][$row[id]]",$ctrlstatus)?>
+			<?minute_options_articles("publishdatefield[min][$row[id]]",$ctrlstatus)?>
+		</td>
+	<?}else{?>
+	<TD nowrap><?=$row[publish_date]?></TD>
+	<?}?>
+	<TD align=center><input type="checkbox" id="appWorry" name="approve[<?=$row[id]?>]" title="Check this to approve the article then submit the page"></TD>
+
+	<TD>
+	<input type="checkbox" id="delWorry" name="delarticle[<?=$row[id]?>]" title="Check to remove have this article removed">
+	</TD>
+	<td>
+	<a href="<?=$link1?>" target="_blank">Preview</a></TD>
+	<?}?>
+	</TR>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There is no Wall of Worry awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<img src="<?=$IMG_SERVER?>/images/llyods-wall-of-worry/bttn_saveWW.jpg" style="cursor:pointer;" onclick="submitWorry();"  />
+</TD>
+</TR>
+</form>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

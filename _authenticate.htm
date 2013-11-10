@@ -1,0 +1,36 @@
+<?	include_once("$D_R/lib/_auth.php");
+	session_start();
+	auth_from_cookie();
+
+	$USER = new user($_SESSION["EMAIL"],$_SESSION["PASSWORD"]);
+	
+	//redirect for duplicate logins
+	if($USER->isDupeLogin() && $ARCHIVER!="fishypop()" ){
+		$error="Only one login allowed per account! <i>msg:fr-auth</i>";
+		location($SIGNIN_URL.qsa(array(error=>$error),0,1));
+	}
+	//redirect for users who need premium services
+	if($USER->needsPremium && $ARCHIVER!="fishypop()"){
+		$error="You need premium services to view that area.";
+		location($USER->manageUrl.qsa(array(error=>$error)));
+		exit();
+	}
+	//redirect for generally unauthed users
+	if(!$USER->isAuthed && !$USER->isAdmin && $USER->account_status!="disabled" && $ARCHIVER!="fishypop()"){
+		set_sess_vars("EMAIL");
+		set_sess_vars("PASSWORD");
+		mcookie("email");
+		mcookie("password");
+		mcookie("autologin");
+		location($SIGNIN_URL.qsa(array(error=>"You're not logged in"),0,1));
+		exit();
+	}
+	if($USER->type){
+		$mgurl=$USER->manageUrl;
+		if($USER->account_status=="disabled" && !stristr($PHP_SELF,$mgurl)){
+			location($mgurl);
+			exit();
+		}
+	}
+
+?>

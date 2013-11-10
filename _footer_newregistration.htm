@@ -1,0 +1,28 @@
+<?php
+global $pfx, $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+?>
+<table align="center" width="1024px" cellspacing="0" cellpadding="0">
+<tr><td height="2" align="left" style="padding-left:10px;"><img src="<?=$IMG_SERVER?>/images/community_images/hr.gif" align="left" width="1024px" height="1px" /></td>
+</tr>
+<tr><td align="center" style="background-image:url(<?= $IMG_SERVER; ?>/images/newregistration_images/left-col-bkg-footer.gif); width:900px; padding-left:25px;">
+<a href="<?=$pfx?>/company/" style="text-decoration:none; color: #323232;">About us</a> <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new" style="text-decoration:none; color: #323232;">Advertise</a>
+		  <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" />
+<a href="<?=$pfx?>/company/contact.htm" style="text-decoration:none; color: #323232;">Contact Us</a>
+		  <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/help.htm" style="text-decoration:none; color: #323232;">Help</a> <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/privacy.htm" style="text-decoration:none; color: #323232;">Privacy Policy</a>
+		  <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/substerms.htm" style="text-decoration:none; color: #323232;">Terms of Use</a> <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/disclaimers.htm" style="text-decoration:none; color: #323232;">Disclaimers</a>
+		  <br>&copy;2007 Minyanville Publishing and Multimedia, LLC.  All Rights Reserved<br>
+
+          <a href="<?= $pfx; ?>/rss/"><img src="<?= $pfx; ?>/rss/rss-logo.gif" border="0"></a>
+
+	<!-- end begin footer area -->
+
+	</td>
+	</tr></table>
+<?php
+$profileid=1;
+//googleanalytics($profileid, $is_ssl, $tracking_name['_footer_newregistration']);
+googleanalytics();
+?>
+</body>
+</html>

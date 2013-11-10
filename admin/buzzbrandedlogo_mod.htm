@@ -1,0 +1,62 @@
+<?
+include_once($D_R."/lib/config/_rsync_config.php");
+include_once($D_R."/lib/_image_rsync.php");
+if(($_POST['logo'])&&($_POST['msg'])){
+	echo $_POST['msg'];
+} else {
+	$bounceback="./buzzbrandedlogo.htm";
+	if(!count($_POST)){
+		location($bounceback.qsa(array(error=>"No changes were made")));
+		exit;
+	}
+				$logoname=$_POST['logoname'];
+				$logourl=$_POST['logourl'];
+				$logo_id=$_POST['logo_id'];
+				if(!$logo_id) $logo_id=0;
+				$table="buzz_branded_images";
+				$params['name']=$logoname;
+				$newimg=$_FILES[newimg1];
+				if($newimg['name']){
+					$imgpath=$BUZZLOGO_PATH.$newimg[name];
+					$params['assets1']=$IMG_SERVER."/".$imgpath;
+					$ncharpath=$imgpath;
+					copy($newimg[tmp_name],"$D_R/$ncharpath");
+					//echo "$D_R/$ncharpath"; exit;
+					pushToImgServer($ncharpath);
+				}
+				$newimg=$_FILES[newimg2];
+				if($newimg['name']){
+					$imgpath=$BUZZLOGO_PATH.$newimg[name];
+					$params['assets2']=$IMG_SERVER."/".$imgpath;
+					$ncharpath=$imgpath;
+					copy($newimg[tmp_name],"$D_R/$ncharpath");
+					//echo "$D_R/$ncharpath"; exit;
+					pushToImgServer($ncharpath);
+				}
+                                
+                if($_FILES[newimg1]['name'] || $_FILES[newimg2]['name'])
+                {
+                	        $obRsync = new ImageSync();
+					//$obRsync->setImageUploadPath("buzz_logo");
+                                $obRsync->uploadAdminServerImages("buzz_logo",$_FILES[newimg1]['name']);
+					
+                }
+
+				$params['url']=$logourl;
+
+				/*code added on 01/28/2009*/
+				$qrydata=exec_query("SELECT id,name FROM buzz_branded_images WHERE name='$logoname'",1);
+				if($qrydata['id']){
+				    update_query($table,$params,array('name'=>$logoname));
+				}else {
+
+					$id=insert_query($table,$params,$safe=0);
+					$msg=1;
+				}
+				if(!$id) $id=$qrydata['id'];
+                                
+                                
+			location($bounceback.qsa(array(msg=>$msg,id=>$id)));
+			exit;
+	}
+?>

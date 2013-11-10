@@ -1,0 +1,215 @@
+<?
+global $DATE_STR, $D_R;
+include_once($D_R."/lib/_robots.php");
+$page = "gazette";
+
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+$viewapproved=$_GET[viewapproved];
+$viewapproved=intval($viewapproved);
+include("$ADMIN_PATH/_header.htm");
+?>
+<script type="text/javascript">
+function submitBanterArticle(){
+	var delchk  = document.frmBanterApprove.delBanterArticle.length;
+	var delcount = "";
+	if(delchk==undefined){
+		 if(document.frmBanterApprove.delBanterArticle.checked){
+			delcount=1;
+		 }
+	}else{
+		for (i = 0; i < delchk; i++) {
+			if (document.frmBanterApprove.delBanterArticle[i].checked) {
+					delcount = 1;
+			}
+		}
+	}
+	var appchk  = document.frmBanterApprove.appBanterArticle.length;
+	var appcount = "";
+	if(appchk==undefined){
+		if(document.frmBanterApprove.appBanterArticle.checked){
+			appcount=1;
+		 }
+	}else{
+		for (i = 0; i < appchk; i++) {
+			if (document.frmBanterApprove.appBanterArticle[i].checked) {
+					appcount =1;
+			}
+		}
+	}
+	
+	if(delcount=="1"){
+	  if (confirm("Are you sure you want to delete post(s).")) {
+		 frmBanterApprove.submit();
+	  }
+	}else if(appcount=="1"){
+	   frmBanterApprove.submit();
+	}else{
+	  alert("Please select a post.");
+	}
+}
+</script>
+<?
+$appr_banter=$AD->getPerm("banter_approve");
+$editbanterall=$AD->getPerm("banter_all");
+$editbanterown=$AD->getPerm("banter_own");
+
+if(!$appr_banter){
+	admin_error();
+}
+$del_banter=$AD->getPerm("banter_delete");
+$handler="apprbanter_mod.htm";
+
+
+$pagesize=10;
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+//$posttitle="concat(date_format(date,'%m/%d/%Y %r'),'/',login,' || ',mid(body,1,20),'...')";
+$posttitle="concat(mid(body,1,40),'...')";
+$qry = "SELECT a.id,a.date,$posttitle title,a.approved,a.author login, a.publish_date,
+		concat( 'banter.htm?id=', id ) arturl
+		FROM buzzbanter a
+		WHERE  a.approved='$viewapproved'";
+if($viewapproved)$qry.=" AND To_days('".mysqlNow()."') - TO_DAYS(date)<=3";
+$qry.=" GROUP BY a.id";
+if($s)$qry.=" ORDER BY $s $d ";
+
+
+/*--- end query params --*/
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+
+/*-- end paging  ---*/
+
+$pagedata = exec_query($qry);
+
+?>
+<br>
+<?if($AD->getPerm("banter_all")||$AD->getPerm("banter_own")||$AD->getPerm("create_banter")){?>
+	<a href="banter.htm">Create/ Edit Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("create_schoolhouse")||$AD->getPerm("create_gazette")||$AD->getPerm("create_radar")||$AD->getPerm("articles_all")||$AD->getPerm("articles_own")){?>
+	<a href="articles.htm">Create/ Edit Articles</a><br>
+<?}?>
+<?if($AD->getPerm("approve_gazette")||$AD->getPerm("approve_schoolhouse")){?>
+<a href="approve.htm">Approve Articles</a><br>
+<?}?>
+
+<br>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<center>
+<?if(!$viewapproved){?>
+<div style="width:300;text-align:left">These are the buzz and banter posts that are awaiting approval. Check the posts you've approved, click save and they will be posted live to the site.<br>&nbsp;</div>
+<?}else{?>
+<div style="width:300;text-align:left">These are the buzz and banter posts that are approved. Check the posts you've disapproved, click save and they will be disapproved.<br>&nbsp;</div>
+<?}?>
+</center>
+<table width=300 align=center style="border:1px black solid">
+<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>1),"p"),"View Approved Posts","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>0),"p"),"View Unapproved Posts","class=small",(!$viewapproved))?></TD>
+
+<TD colspan=3>&nbsp;</TD>
+</TR>
+<form name="frmBanterApprove" method="post" action="<?=$handler?>">
+<?input_hidden("viewapproved")?>
+<TR bgcolor=#cccccc align=center>
+<TD<?colclass("date")?>><a href="<?=$PHP_SELF.qsa(array(s=>"date",d=>togD($d)))?>">Post Date</a></TD>
+<TD<?colclass("title")?>><a href="<?=$PHP_SELF.qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+<TD<?colclass("login")?>><a href="<?=$PHP_SELF.qsa(array(s=>"login",d=>togD($d)))?>">Author</a></TD>
+<TD nowrap>Publish date</td>
+<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>
+<?if($del_banter){?>
+<TD>Delete</TD>
+<?}?>
+</TR>
+<?if(count($pagedata)){?>
+	<?foreach($pagedata as $i=>$row){
+	$breakDateStr="n|j|Y|G|i";
+		list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,convert_date_to_unix($row[publish_date])));
+		if($y=="2000" || $y=="1969"){//invalid date
+			$publishdatefield=array();
+		}else{
+			$publishdatefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+		}
+		if($row[publish_date] == "0000-00-00 00:00:00")
+		{
+			$publishdatefield="";
+			$row[publish_date]="";
+
+	}
+		$color=$i%2?"dddddd":"eeeeee";
+		$link=urlqsa($row[arturl],array(AMADMIN=>1),"*");
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?>><?=date($DATE_STR,strtotime($row['date']))?></TD>
+	<TD nowrap <?colclass("title")?>>
+	<?if(!$editbanterall && !editbanterown){?>
+	<?=($row[title]?htmlspecialchars($row[title],ENT_QUOTES):"(legacy data w/out title)")?></TD>
+	<?}elseif($editbanterall){?>
+	<a href="<?=$link?>" target="_blank"><?=($row[title]?htmlspecialchars($row[title],ENT_QUOTES):"(legacy data w/out title)")?></a></TD>
+	<?}elseif($AD->userInfo[name]==$row[login] && $editbanterown){?>
+	<a href="<?=$link?>" target="_blank"><?=($row[title]?htmlspecialchars($row[title],ENT_QUOTES):"(legacy data w/out title)")?></a></TD>
+	<?}else{?>
+	<?=($row[title]?htmlspecialchars($row[title],ENT_QUOTES):"(legacy data w/out title)")?></TD>
+	<?}?>
+
+	<TD nowrap<?colclass("login")?>><?=$row[login]?></TD>
+	<?if(!$viewapproved){?>
+		<TD nowrap><?month_options_articles("publishdatefield[mo][$row[id]]",$publishdatefield[mo],$ctrlstatus)?>
+			<?day_options_articles("publishdatefield[day][$row[id]]",$publishdatefield[day],$ctrlstatus)?>
+			<?year_options_articles("publishdatefield[year][$row[id]]",$publishdatefield[year],$ctrlstatus,date("Y"),date("Y")+3)?>
+			<?hour_options_articles("publishdatefield[hour][$row[id]]",$publishdatefield[hour],$ctrlstatus)?>
+		<?minute_options_articles("publishdatefield[min][$row[id]]",$publishdatefield["min"],$ctrlstatus)?></td>
+		<?}else{?>
+		<TD nowrap><?=$row[publish_date]?></TD>
+	<?}?>
+	<TD align=center><input type="checkbox" id="appBanterArticle" name="approve[<?=$row[id]?>]" title="Check this to approve the article then submit the page"></TD>
+
+	<TD><?if($del_banter){?>
+	<input type="checkbox" id="delBanterArticle" name="delarticle[<?=$row[id]?>]" title="Check to remove have this article removed">
+	</TD>
+	<?}?>
+	</TR>
+	<?}?>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There are no posts awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<input type="button" value="Save Changes" onclick="javascript:submitBanterArticle();">
+
+</TD>
+</TR>
+</form>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

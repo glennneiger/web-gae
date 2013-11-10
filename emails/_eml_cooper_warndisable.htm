@@ -1,0 +1,22 @@
+<?
+$UNSUB=0;
+global $D_R;
+include_once("$D_R/lib/_robots.php");
+include("$D_R/emails/_eml_header.htm");
+$prof_id=$_GET['prof_id'];
+$combo_id=$_GET['combo_id'];
+$templateProductName=retrieve_products_body($prof_id,$combo_id);
+
+?>
+
+<font color="#1E1648">
+      <h3>Subscription will be Disabled</h3>
+</font>
+<p>Unfortunately we had problems   charging your credit card while trying to renew your subscription to <?=$templateProductName['name'].' '.$templateProductName['description'];?>. These problems could be caused by an expired card on file or the card being decline for some reason.</p>
+<p>To update your credit card information, please click here, or login to <a href="HTTP://'.$HTHOST.'" target="_blank">Minyanville.com</a> and click "Manage Account" Be sure to click "Submit" at the end and not "Change"</p>
+<p>If your payment information is not update, your account will be disabled within 3 days from the date of this email.</p>
+<p>For any problems or questions, or if you believe you\'ve received this email in error, please contact Josh Sander at <a href="mailto:sander@minyanville.com" target="_blank"><u>sander@minyanville.com</u></a> or 212-991-9357.</p>
+<?php
+$tracking_name = $tracking_name['_eml_cooper_warndisable'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?>

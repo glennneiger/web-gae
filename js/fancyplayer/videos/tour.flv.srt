@@ -1,0 +1,33 @@
+1
+00:00:04,800 --> 00:00:08,700
+Hey, this is a nice bar.
+Let's make a video tour of it..
+
+2
+00:00:10,600 --> 00:00:13,800
+Yes, we should totally do that!
+
+3
+00:00:14,900 --> 00:00:16,800
+Cruzcampo wall clock...
+
+4
+00:00:20,400 --> 00:00:23,600
+Hey, who's the bald guy?
+
+5
+00:00:24,600 --> 00:00:25,800
+Lorem ipsum text...
+
+6
+00:00:27,400 --> 00:00:29,300
+Some more Lorem ipsum text...
+
+7
+00:00:32,800 --> 00:00:35,100
+Air conditioning...
+A must in Spain...
+
+8
+00:00:37,200 --> 00:00:39,600
+THE END

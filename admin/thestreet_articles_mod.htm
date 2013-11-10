@@ -1,0 +1,124 @@
+<?
+global $D_R;
+include_once("./_authenticate.htm");
+$bounceback="./thestreet_articles.htm";
+include_once("$D_R/lib/_db.php");
+$id				=	$_POST['article'];
+$articleType	=	trim($_POST['atype']);
+$article	=	array();
+$article['title']=addslashes(mswordReplaceSpecialChars(stripslashes($TS_articles['title'])));
+$article['seo_title']	=	addslashes(mswordReplaceSpecialChars(stripslashes($TS_articles['seo_title'])));
+$article['character_text']	=	addslashes(mswordReplaceSpecialChars(stripslashes($TS_articles['character_text'])));
+$article['keyword']			=	addslashes(mswordReplaceSpecialChars(stripslashes($TS_articles['keyword'])));
+$article['contrib_name']	=	addslashes(mswordReplaceSpecialChars(stripslashes($TS_articles['contrib_name'])));
+$article['body']			=	addslashes(mswordReplaceSpecialChars(stripslashes($TS_articles['body'])));
+/*$verifyTickers			=	getTickerStock($article['tickers']);*/
+$tickersList				=	addslashes(mswordReplaceSpecialChars(stripslashes($TS_articles['tickers'])));
+if($id=='')
+{
+		$id=insert_query("thestreet_articles",$article);
+		if($id)
+		{
+			$tickersRet = setTSTickers($id,$tickersList);
+			if($tickersRet == 0)
+			{
+				$backparams=array(article=>$id,page=>$page,atype=>$atype,error=>'Invalid Tickers'); 
+			}
+			else
+			{
+				$backparams=array(article=>$id,page=>$page,atype=>$atype,error=>'Article has been saved');
+			}
+		}
+}
+else
+{
+		update_query("thestreet_articles",$article,array("id"=>$id));
+		if($id)
+		{
+			$tickersRet = setTSTickers($id,$tickersList);
+			if($tickersRet == '0')
+			{
+				$backparams=array(article=>$id,page=>$page,atype=>$atype,error=>'Invalid Tickers'); 
+			}
+			else
+			{
+				$backparams=array(article=>$id,page=>$page,atype=>$atype,error=>'Article has been updated');
+			}
+		}
+}
+location($bounceback.qsa($backparams));
+
+function setTSTickers($id,$tickersList)
+{
+	$tickersStr		='';
+	$expTickers	=	 explode(",",$tickersList);
+	foreach($expTickers as $ticker)
+	{
+		if(trim($ticker)=="")
+		continue;
+		echo $sqlGetTicker="SELECT id from ex_stock where stocksymbol='".trim($ticker)."'";
+		$resGetTicker=exec_query($sqlGetTicker,1);
+		if(empty($resGetTicker['id']))
+		{
+			$getStock=getstockdetails(trim($ticker)); 		/*verify ticker from yahoo*/
+			//echo "Ticker=> " .$ticker."<br />";
+			if($getStock > 0)
+			{
+				$tickersStr  .=	$ticker.",";		
+			}
+			else
+			{
+				$err = 'invalid';
+			}
+		}
+		else
+		{
+			$tickersStr  .=	$ticker.",";
+		}
+		
+	}
+		$last = $tickersStr[strlen($tickersStr)-1];
+		if($last == ',')
+		{
+			$tickersStr	=	substr($tickersStr,0,-1);
+		}
+		else
+		{
+			$tickersStr	=	trim($tickersStr);
+		}
+	
+	if($tickersStr!='')
+	{
+		update_query("thestreet_articles",array(tickers=>"$tickersStr"),array("id"=>$id));
+		if($err!='')
+		{
+			return('0'); 
+		}
+		else
+		{
+			return('1');
+		}
+	}
+	
+}
+
+ function getstockdetails($symbolname){ /*Validate ticker from Yahoo and if validate return value of ticker*/
+		$tickersymbol=$symbolname;
+		if (isset($tickersymbol))
+		{
+			$open = @fopen("http://download.finance.yahoo.com/d/quotes.csv?s=$tickersymbol&f=sl1d1t1c1ohgvnx&e=.csv", "r");
+			$read = @fread($open, 2000);
+			@fclose($open);
+			unset($open);
+			$read = str_replace("\"", "", $read);
+			$read = explode(",", $read);
+			//echo "CHEL".$read[1];
+			IF ($read[1] < 1)
+			{
+				return 0;
+			}ELSE{
+				return $read;
+			}
+		}
+	}
+?>

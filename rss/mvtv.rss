@@ -1,0 +1,21 @@
+<? echo "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>"; ?>
+   <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" 
+        xmlns:atom="http://www.w3.org/2005/Atom">
+        <channel>
+        <?
+	$sql_videos = " SELECT * FROM mvtv WHERE approved='1' and publish_time < '".mysqlNow()."' and find_in_set(cat_id,'23') order by id desc";
+	$results_videos = exec_query($sql_videos);	
+	foreach($results_videos as $id=>$videoitem){
+?>
+            <item>
+                <title><?=htmlentities($videoitem['title']);?></title>
+                <media:description><?=htmlentities($videoitem['description']);?></media:description>
+                <link><?=$HTPFX.$HTHOST."/audiovideo/".htmlentities($videoitem['id']);?></link>
+                <media:thumbnail url="<?=htmlentities($videoitem['stillfile']);?>"/>
+                <media:content type="video/x-flv" url="<?=htmlentities($videoitem['videofile']);?>"/>
+            </item> 
+       <?
+       }
+	?>
+       </channel>
+        </rss>

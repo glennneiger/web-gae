@@ -1,0 +1,530 @@
+/* CSS Document */
+.wall-main{
+    width:975px;
+    float:left;
+    padding:10px 0px 20px 10px;
+    background-color:#000000;
+}
+
+.wall-left{
+    float:left;
+    width:700px;
+    margin:0px 10px 0px 0px;
+}
+
+.wall-right{
+    float:left;
+    width:245px;
+}
+
+.wall-title{
+    margin:25px 0px 20px 0px;
+    text-align:center; 
+    width:700px;
+}
+
+.wall-timer{
+    width: 295px;
+    float:left;
+    background-color:#404040;
+    padding:5px 5px 4px;
+}
+
+.time-val{
+    width:55px;
+    float:left;
+    font-size:43px; 
+    color:#6d6e71; 
+    font-family:ITCFranklinGothicStd Book, Arial, Helvetica, sans-serif;
+    padding:0px 2px 0px 2px;
+}
+
+.time-val div{
+    width:55px;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/time_bg.gif);
+    height:44px;
+    margin:0px 0px 4px 0px;
+    background-repeat:no-repeat;
+    padding:0px 0px 0px 4px;
+}
+
+.time-val span{
+    font-size:9px; 
+    color:#6d6e71; 
+    font-family:HelveticaNeue Roman,Arial, Helvetica, sans-serif;
+    padding:0px 0px 0px 5px;
+}
+
+.wall-right-box{
+    width:230px;
+    background-color:#9e9fa2;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#404041;
+    padding:10px 10px 10px 10px;
+}
+
+.wall-right-box span{
+    color: #000000; 
+    font-size:16px; 
+    text-transform:uppercase;
+    font-weight:bold;
+}
+
+.wall-right-box span a{
+    color: #000000; 
+}
+
+.wall-right-middle{
+    width:230px;
+    background-color:#9e9fa2;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#404041;
+    padding:10px 10px 10px 10px;
+    margin:10px 0px 10px 0px;
+}
+
+.wall-right-middle span{
+    color: #000000; 
+    font-size:16px; 
+    text-transform:uppercase;
+    font-weight:bold;
+}
+
+.wall-right-middle p{
+    font-size: 11px; 
+    color:#020202; 
+    font-family:HelveticaNeue Roman, Arial, Helvetica, sans-serif;
+    font-weight:bold;
+}
+
+.wall-right-meter{
+    width:211px;
+    height:34px;
+    text-align:center;
+    margin:5px 0px 10px 0px;
+    padding:8px 0px 0px 4px;
+    background-repeat:no-repeat;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/meter.gif);
+}
+.wall-right-meter span{
+    color:#b3b3b3;
+    font-size:12px;
+    font-weight:bold;
+    font-family:HelveticaNeue Roman, Arial, Helvetica, sans-serif;
+    width:9px;
+    float:left;
+}
+.wall-right-meter #dotclass{
+    color:#b3b3b3;
+    font-size:11px;
+    font-weight:bold;
+    font-family:HelveticaNeue Roman, Arial, Helvetica, sans-serif;
+    width:5px;
+    float:left;
+}
+
+.wall-right-meter #txt{
+    color:#b3b3b3;
+    font-size:11px;
+    font-weight:bold;
+    font-family:HelveticaNeue Roman, Arial, Helvetica, sans-serif;
+    width:11px;
+    float:left;
+}
+
+.wall-right-meter #arrow{
+    width:9px;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/arrowup.png);
+    background-repeat:no-repeat;
+}
+
+.QE2-countdown{
+    width: 375px;
+    float:left;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/timedscrp_corner.gif);
+    background-repeat:no-repeat;
+    font-family:HelveticaNeue Roman, Arial, Helvetica, sans-serif;
+    background-position:3px 0;
+}
+
+.QE2-countdown div{
+    width: 380px;
+    float:left;
+    margin:0px 5px 0px 10px;
+    background-color:#404041;
+    padding:5px;
+}
+
+.QE2-countdown span{
+    color:#9d9fa2; 
+    font-size: 11px;
+    float:left;
+}
+
+.QE2-countdown h1{
+    float:left; 
+    font-size:35px; 
+    color:#9d9fa2; 
+    padding:9px 5px 0 0;
+}
+
+.QE2-countdown h2{
+    float:left; 
+    font-size:15px; 
+    color:#9d9fa2; 
+    padding:0px 5px 0 0; 
+    clear:left;
+    font-weight:bold;
+}
+
+.wall-wry-box{
+    float:left;
+    position:relative;
+    width:700px;
+}
+
+.wall-wry-box img{
+    float:left;
+    margin:12px 8px 0px 0px;
+    z-index:-1;
+    /*cursor:pointer;*/
+}
+
+#clr{
+    clear:both;
+}
+
+#fourth-img{
+    margin:12px 0px 0px 0px;
+    z-index:-1;
+}
+
+.wry-archive-rght{
+    float:left;
+    margin:0px 0px 10px 10px;
+}
+
+.visit{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:normal;
+    color:#000000;
+}
+
+.wry-archive-rght img{
+    float:left;
+    margin:4px 3px 0px 0px;
+}
+
+.wall-share{
+    float:left;
+    width:245px;
+    height:16px;
+    margin:10px 0px 0px 0px;
+    background-repeat:no-repeat; 
+}
+
+.share-txt{
+    font-size:8px;
+    color:#000000;
+    font-family:ITCFranklinGothicStd Book, Arial, Helvetica, sans-serif; 
+}
+/* Archive Page CSS */
+
+.archive-top{
+    width:700px;
+    float:left;
+}
+
+.archive-top div{
+    float:left;
+    font-size:12px; 
+    color:#737275; 
+    font-family:ITCFranklinGothicStd Book, Arial, Helvetica, sans-serif; 
+    text-transform: uppercase;
+}
+
+.archive-top div a{
+    color:#737275; 
+}
+
+.archive-share{
+    float:right;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/share_archive.png);
+    width:125px;
+    height:16px;
+    background-repeat:no-repeat;
+}
+
+.archive-heading{
+    float:left;
+    margin:10px 0px 15px 0px;
+}
+
+.click-here{
+    float:left;
+    font-size: 16px; 
+    color:#949598; 
+    font-family:ITCFranklinGothicStd Book, Arial, Helvetica, sans-serif; 
+    text-transform: uppercase;
+    margin:0px 0px 5px 0px;
+    width:100%;
+}
+
+.click-here span{
+    color:#FFFFFF;
+}
+
+.archive-right{
+    float:left;
+    background-color:#9c9da1;
+    width:247px;
+    height:814px;
+    padding:20px 0px 0px 0px;
+    overflow-y:auto;
+}
+
+.month-name-hidden{
+    width:211px; 
+    height:21px; 
+    background-color:#000000; 
+    margin:0px 0px 5px 10px;
+    cursor:pointer;
+}
+
+.month-name-hidden img{
+    padding:5px 7px 0px 10px; 
+    border-right:#696868 solid 1px;
+}
+
+.month-name-hidden span{
+    padding:5px 3px 0px 7px;
+    font-size:14px; 
+    color:#818184; 
+    font-family:ITCFranklinGothicStd Book, Arial, Helvetica, sans-serif; 
+    text-transform: uppercase;
+}
+
+.month-name-visible{
+    width:211px; 
+    height:21px; 
+    background-color:#000000; 
+    margin:0px 0px 5px 10px;
+    cursor:pointer;
+}
+
+.month-name-visible img{
+    padding:5px 7px 0px 10px; 
+    border-right:#696868 solid 1px;
+}
+
+.month-name-visible span{
+    padding:5px 3px 0px 7px;
+    font-size:14px; 
+    color:#bcbdc0; 
+    font-family:ITCFranklinGothicStd Book, Arial, Helvetica, sans-serif; 
+    text-transform: uppercase;
+}
+
+.archives{
+    float:left;
+    margin:5px 7px 10px 10px;
+    border-bottom:#000000 1px solid;
+    cursor:pointer;
+}
+
+.archives img{
+    float:left;
+    margin:3px 3px 0px 0px;
+}
+
+.archive-fourth-img{
+    margin:3px 0px 0px 0px;
+}
+
+.month-detail{
+    margin:10px 10px 5px 0px;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/monthdetail_bg.gif);
+    background-repeat:no-repeat;
+    padding:0px 0px 0px 8px;
+    font-size:12px; 
+    color:#000000; 
+    font-family:ITCFranklinGothicStd Book, Arial, Helvetica, sans-serif; 
+    text-transform: uppercase;
+    font-weight:bold;
+}
+
+/* Mouse over text style */
+.tTip { 
+    cursor: pointer;
+}
+
+.tTip2 { 
+    cursor: pointer;
+}
+
+
+.tip {
+    font-weight: bold;
+    font-family: Arial;
+    font-size: 12px;
+    color : #000000;
+    width: 212px;
+    padding-top: 30px;
+    overflow: hidden;
+    display: none;
+    position: absolute;
+    z-index: 500;
+    background: transparent url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/tipTop1.png) no-repeat top;
+}
+    
+.tipMid {
+    background: transparent url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/tipMid1.png) repeat-y; 
+    padding: 0 25px 20px 25px;
+}
+
+.tipBtm {
+    background: transparent url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/tipBtm1.png) no-repeat bottom; 
+    height: 59px;
+}
+
+.tipBox{
+    float:left;
+    overflow: hidden;
+    display: none;
+    position: absolute;
+    z-index: 500;
+}
+
+.tipBox img{
+float:left;
+}
+
+.tipSmallBox{
+    float:left; 
+    width:153px;
+    height:39px; 
+    color:#FFFFFF;
+    font-size:20px;
+    letter-spacing:-1px;
+    padding:10% 12px 10% 12px;
+    font-weight:bold;
+    text-align:center;
+    line-height:22px;
+    word-wrap:break-word;
+    text-transform:uppercase;
+    background-color:#999999;
+    background-position:top right;
+    background-repeat:no-repeat;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/border.gif); 
+    *height:25px; 
+    *padding:6% 12px 6% 4px; 
+}
+
+.tipBigBox{
+    float:left;
+    width:327px; 
+    height:114px;
+    font-size:16px;
+    font-weight:bold;
+    line-height:18px;
+    text-align:left;
+    letter-spacing:-0.9px;
+    background-color:#999999; 
+    padding:15px 10px 15px 10px;
+}
+
+.tipBigBox a {
+color:#FFFFFF;
+}
+
+.closetip{
+float:left;
+height:14px;
+/*width:159px;*/
+cursor:pointer;
+}
+
+.maintipsmall{
+float:left;
+width:169px;
+/*height:94px;*/
+background-color:#999999;
+border-right:4px dashed #000000;
+background-repeat:no-repeat;
+background-position:left top;
+}
+
+.tipBoxfour{
+    float:left;
+    overflow: hidden;
+    display: none;
+    position: absolute;
+    z-index: 500;
+}   
+
+.tipSmallBoxfourth{
+    float:left; 
+    width:161px;
+    height:39px; 
+    color:#FFFFFF;
+    font-size:20px;
+    letter-spacing:-1px;
+    padding:10% 4px 10% 12px;
+    font-weight:bold;
+    text-align:center;
+    line-height:22px;
+    word-wrap:break-word;
+    text-transform:uppercase;
+    background-color:#999999;
+    background-position:top left;
+    background-repeat:no-repeat;
+    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/border.gif); 
+    *width:155px;
+    *height:58px; 
+    *padding:6% 10px 6% 10px;
+    
+    /**height:25px; 
+    *padding:6% 12px 6% 4px; */
+}
+
+.tipBigBoxfour{
+    float:left;
+    width:327px; 
+    height:114px;
+    font-size:16px;
+    font-weight:bold;
+    line-height:18px;
+    text-align:left;
+    letter-spacing:-0.9px;
+    background-color:#999999; 
+    padding:15px 10px 15px 10px;
+    *width:325px; !important
+    *height:144px; !important
+    *padding:15px 10px 15px 10px; !important
+}
+
+.tipBigBoxfour a {
+color:#FFFFFF;
+}
+
+.closetipright{
+float:right;
+height:14px;
+/*width:159px;*/
+cursor:pointer;
+
+}
+
+.maintipright{
+float:left;
+width:169px;
+/*height:94px;*/
+background-color:#999999;
+border-left:4px dashed #000000;
+background-repeat:no-repeat;
+background-position:left top;
+}
+

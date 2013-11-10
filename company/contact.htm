@@ -1,0 +1,242 @@
+<?php
+$pageName="contactus";
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville","fontStylesheet");
+include("$D_R/_header.htm");
+global $D_R,$publicCaptchakey,$privateCaptchakey;
+include_once($D_R.'/lib/recaptchalib.php');
+$resp = null;					// the response from reCAPTCHA
+$error = null;
+if(count($_POST['contact'])){
+    $name=$_POST['contact']['name'];
+    $cemail=$_POST['contact']['email'];
+    $phone=$_POST['contact']['phone'];
+    $subject=$_POST['contact']['subject'];
+    $body=$_POST['contact']['body'];
+}elseif($_SESSION['email'])
+{
+	$name = $_SESSION['nameFirst']." ".$_SESSION['nameLast'];
+	$cemail = $_SESSION['email'];
+}
+elseif($_GET['email'])
+{
+	$name = $_GET['name'];
+	$cemail = $_GET['email'];
+}
+
+
+if (isset($_GET['signup']))
+{
+    $title="Minyanville : Company : Sign up for Minyanville Articles Newsletters";
+    //$heading="Sign up for Minyanville Articles / New letter";
+    $subject="Minyanville Articles Newsletter";
+}
+
+foreach(get_active_contributors() as $i=>$row){
+	if(!$row[email])continue;
+	if(!$row[name])continue;
+	$CONTACT_SUBJECT_MAP[$row[name]]=$row[email];
+}
+$error_fields=qw("email name body");
+if($_POST["recaptcha_response_field"])
+{
+        $resp = recaptcha_check_answer($privateCaptchakey,$_SERVER["REMOTE_ADDR"],$_POST["recaptcha_challenge_field"],	$_POST["recaptcha_response_field"]);
+
+if ($resp->is_valid)
+{
+	if($POSTBACK){
+		$contact=$_POST[contact];
+		$errors=build_err_keys($error_fields,$contact);
+		if(!count($errors)){
+			$name=$contact[name];
+			$name.=" <${contact[email]}>";
+			$toemail=$CONTACT_SUBJECT_MAP[$contact[subject]];
+			if(is_array($toemail))
+            {
+            	$email_to = implode(',',$toemail);
+            }
+            else
+            {
+            	$email_to = $toemail;
+            }
+            $arData['name'] =$contact[name];
+            $arData['email_from'] = $contact[email];
+            $arData['phone'] = $contact[phone];
+            $arData['subject'] = $contact[subject];
+            $arData['comments'] = $contact[body];
+            $arData['email_to'] = $email_to;
+            $arData['contact_date'] = mysqlNow();
+            insert_query('contactus_data',$arData);
+            $body="Name: $contact[name]<br>Email: ".href("mailto:$contact[email]")."<br>Phone: ${contact[phone]}<br><br>";
+			$body.=strip(nl2br($contact[body]));
+			mymail($toemail,$name,$contact[subject],$body);
+			location($PHP_SELF.qsa(array(sent=>1)));
+			exit;
+		}else{
+			$errors=array_merge($errors,$contact);
+			location($PHP_SELF.qsa($errors));
+		}
+	}
+	elseif($_SESSION['email'])
+	{
+		$name = $_SESSION['nameFirst']." ".$_SESSION['nameLast'];
+		$cemail = $_SESSION['email'];
+	}
+	elseif($_GET['email'])
+	{
+		$name = $_GET['name'];
+		$cemail = $_GET['email'];
+	}
+}
+else
+{
+	$error = $resp->error;
+}
+}
+?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div id="article-left" class="site-text">
+<div class="sction_title_contact">
+<div class="pad10"><h3 class="new-head">Contact Us</h3></div>
+<span class="current_date_contact" style="">
+<?= displayCurrentDate() ?>
+</span>
+</div>
+
+<?if(!$_GET['sent']){?>
+<script language="javascript">
+function isEmail(aStr)
+{
+	var reEmail=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-zA-Z]{2,6}(?:\.[a-zA-Z]{2})?)$/;
+	if(!reEmail.test(aStr))
+	{
+		return false;
+	}
+	return true;
+}
+function validateMe(){
+	frm=$('theform');
+	var err="";
+	$('errorname').innerHTML="&nbsp;";
+	$('erroremail').innerHTML="&nbsp;";
+	$('errorbody').innerHTML="&nbsp;";
+	$('errorcaptcha').innerHTML="&nbsp;";
+
+	if(!frm["contact[name]"].value){
+		$('errorname').innerHTML="Please enter your name.";
+		err=1;
+	}
+	if(!frm["contact[email]"].value)
+	{
+	   $('erroremail').innerHTML="Please enter email address.";
+	   err=1;
+	}
+	else if(!isEmail(frm["contact[email]"].value))
+	{
+	   $('erroremail').innerHTML="Invalid Email Address.";
+	   err=1;
+	}
+	if(!frm["contact[body]"].value){
+
+		$('errorbody').innerHTML="Please enter your comments.";
+		err=1;
+	}
+
+
+	if(!frm["recaptcha_response_field"].value){
+		$('errorcaptcha').innerHTML="Please Type the characters you see in the picture.";
+		err=1;
+	}
+	if(err=="1"){
+		return false;
+	}
+	else
+	{
+	   return true;
+	}
+}
+</script>
+	<?	if($_GET['is_error']){?>
+	<div class=error>There was a problem with the information you provided.	Please review the asterisked items and try again.</div><br>
+	<?} if($error) { ?>
+	<div class=error style="padding-left:20px;">The characters you entered didn't match the word verification. Please try again.</div><br>
+	<? } ?>
+	<form id="theform" name="theform" action="<?=$PHP_SELF?>" method="post">
+	<table width="600" cellpadding="0" cellspacing="0" border="0" align="left" class="contact_us_table" style="margin:20px;">
+		<tr>
+			<td><label for="contact[name]"><span><strong>Name:</strong></span></label><?err("name")?></td>
+			<td><?input_wordsonly("contact[name]",$name,"58")?><div id="errorname" class="error_contact"></div></td>
+
+		</tr>
+		<tr>
+			<td><label for="contact[email]"><span><strong>Email:</strong></span></label><?err("email")?></td>
+			<td><?input_text("contact[email]",$cemail,"58")?><div id="erroremail" class="error_contact"></div></td>
+		</tr>
+		<tr>
+			<td><label for="contact[phone]"><span><strong>Phone:</strong></span></label></td>
+			<td><?input_numsonly("contact[phone]",$phone,"58")?><div id="errorphone" class="error_contact"></div></td>
+		</tr>
+		<tr>
+			<td><label for="contact[subject]"><span><strong>Subject:</strong></span></label></td>
+			<td><select id="contact[subject]" name="contact[subject]">
+			<?foreach($CONTACT_SUBJECT_MAP as $subj=>$subjemail){
+				$sel=($subj==$subject)?" selected":"";
+			?>
+			<option<?=$sel?>><?=$subj?></option>
+			<?}?>
+				</select></td>
+		</tr>
+		<tr>
+			<td valign="top"><label for="contact[body]"><span><strong>Comments:</strong></span></label><?err("body")?></td>
+			<td><textarea name="contact[body]" id="contact[body]" cols=40 rows="10"><?=strip($body)?></textarea>
+            <div id="errorbody" class="error_contact"></div>
+			</td>
+		</tr>
+        <tr><td></td><td>Type the characters you see in the picture below:</td></tr>
+		<tr>
+        <td valign="top"></td>
+		<td valign="top"><?php echo recaptcha_get_html($publicCaptchakey, $error);?>
+        <div id="errorcaptcha" class="error_contact"></div></td>
+		</tr>
+
+		<tr>
+			<td valign="top">&nbsp;</td>
+			<td align="left">
+				<input type="image" class="button" src="<?=$IMG_SERVER?>/images/sendMessage.gif" onClick="javascript:return validateMe()">
+			</td>
+		</tr>
+        <tr>
+        	<td valign="top">&nbsp;</td>
+            <td>
+            <b>Customer Support</b><br />
+            Monday - Friday: 9:00AM - 6:00PM EST If you need immediate assistance please call 212-991-9357
+            </td>
+        </tr>
+	</table>
+	</form>
+<?}else{?>
+	<table cellpadding="0" cellspacing="0" border="0" align="left" width="620">
+    <tr align="center">
+	<td><h1 style="color:#113B61; font-family:Arial,Helvetica,sans-serif; font-size:28px; line-height:30px; font-weight:bold; padding:20px; text-align:left">Your comments have been received and we will get back to you shortly.</h1></td>
+	</tr>
+	<tr align="left">
+	<td><img src="<?=$IMG_SERVER?>/assets/contactusimage1.jpg" alt="Thank You" border=0 /></td>
+	</tr>
+	</table>
+
+<?}?>
+
+ </div>
+<!--left contaner end here-->
+
+<!--right will come here-->
+
+<?php
+$arrRightCols	=	array('show_300x250','show_mostpopular','email_alert','show_rss_emailalert');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

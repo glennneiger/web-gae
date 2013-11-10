@@ -1,0 +1,141 @@
+<?
+global $D_R,$HTPFX,$HTHOST;
+$page="gazette";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
+
+$objWorryData = new worryData();
+
+if(!$AD->getPerm(qw("upload_worry create_worry approve_worry"))){
+	admin_error();
+}
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script>
+function saveWorryImg(){
+	var worryTitle = $("worryTitle").value;
+	var worryImg = $("worryImg").value;
+	var archiveImg = $("archiveImg").value;
+
+	if(worryTitle==''){
+		alert('Enter Title of the Worry.');
+		worryTitle.focus();
+	}
+	else if(worryImg==''){
+		alert('Upload Worry Image.');
+		worryImg.focus();
+	}
+	else if(archiveImg==''){
+		alert('Uplaod Archive Image.');
+		archiveImg.focus();
+	}else{
+		document.frmUploadWorry.submit();
+	}
+}
+</script>
+
+<?
+$worryImgPath= "/assets/lloyds-wall-of-worry/";
+$worryId=$_POST['worryid'];
+if(!empty($_POST['worryTitle'])){
+	$data['title'] = $_POST['worryTitle'];
+	$qry = "SELECT id FROM upload_worry WHERE title = '".$data['title']."'";
+	$result = exec_query($qry,1);
+		$strWorry = pathinfo($_FILES['worryImg']['name']);
+		$data['worryImgName'] = $strWorry[filename].'-'.rand().'.'.$strWorry[extension];
+
+		$strArchive = pathinfo($_FILES['archiveImg']['name']);
+		$data['archiveImgName'] = $strArchive[filename].'-'.rand().'.'.$strArchive[extension];
+		$data['worryImgName'] = str_replace(" ","_",$data['worryImgName']);
+		$data['archiveImgName'] = str_replace(" ","_",$data['archiveImgName']);
+	
+		move_uploaded_file($_FILES["worryImg"]["tmp_name"], $D_R."/assets/lloyds-wall-of-worry/".$data['worryImgName']);
+		move_uploaded_file($_FILES["archiveImg"]["tmp_name"], $D_R."/assets/lloyds-wall-of-worry/".$data['archiveImgName']);
+        if($worryId){
+        	$data['worryid']=$worryId;
+        }
+		$id = $objWorryData->prepareWorryData($data);
+		if($id){
+			$strError = "Worry has been created.";
+		}
+
+}
+$getAllWorry=$objWorryData->getAllWorrys();
+if($worryId){
+   $pageData=$objWorryData->getWorrysById($worryId);
+}
+?>
+	<div class=adminheader>Lloyds Wall of Worry - Manage Worry</div>
+	<div style="padding:20px 5px 10px 0px;width:400px">
+		<?if($AD->getPerm("create_worry")){?>
+			<li><a href="worry.htm">Create a new Worry</a></li>
+		<?}?>
+		<?if($AD->getPerm("approve_worry")){?>
+			<li><a href="approve.htm">Approve Worry</a></li>
+		<?}?>
+        <?if($AD->getPerm("upload_worry")){?>
+			<li><a href="uploadworry.htm">Upload New Worry</a></li><br>
+		<?}?>
+	</div>
+	<? if($strError != ''){ ?>
+		<div style="color:red;"><?=$strError;?></div>
+	<? } ?>
+
+	<div>
+    <form method="post" action="<?=$PHP_SELF?>">
+    <table width="100%" border="0">
+        <tr>
+            <td width="20%"><b>Select worry to edit:</b>&nbsp;</td>
+            <td width="80%">
+            <select name="worryid" id="worryid" style="width:350px;" class="search_author_drop_down" onchange="this.form.submit()">
+				<option value="">-Select worry-</option>
+                <?
+                foreach($getAllWorry as $row){
+	                $sel=($worryId==$row[id]?" selected":"");
+					$disp=$row[title];
+                ?>
+                    <option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+                <?
+                }
+                ?>
+			</select>
+            </td>
+        </tr>
+    </table>
+    </form>
+
+	<form action="" method="post" enctype="multipart/form-data"  name="frmUploadWorry" id="frmUploadWorry">
+	<table width="100%">
+
+	<tr>
+		<td width="20%"><b>Title :</b></td>
+		<td width="80%"><input type="text" style="width:350px;" id="worryTitle" name="worryTitle" value="<?=$pageData['title']?>" /></td>
+	</tr>
+    <? if($worryId) {?>
+    <tr>
+		<td width="20%"><b>Uploaded Worry Image :</b></td>
+		<td width="80%"><img width="169px" height="144px" src="<?=$HTPFX.$HTADMINHOST.$worryImgPath.$pageData['worry_img'];?>" /></td>
+	</tr>
+    <tr>
+		<td width="20%"><b>Uploaded Archive Image :</b></td>
+		<td width="80%"><img  width="50px" height="42px" src="<?=$HTPFX.$HTADMINHOST.$worryImgPath.$pageData['archive_img'];?>" /></td>
+	</tr>
+    <? } ?>
+	<tr>
+		<td width="20%"><b>Upload Worry Image :</b></td>
+		<td width="80%"><input size="53" type="file" id="worryImg" name="worryImg" /></td>
+	</tr>
+	<tr>
+		<td width="20%"><b>Upload Archive Image :</b></td>
+		<td width="80%"><input size="53" type="file" id="archiveImg" name="archiveImg" /></td>
+	</tr>
+	<tr>
+		<td width="20%">&nbsp;</td>
+		<td width="80%"><input type="button" value="save"  style="cursor:pointer;" onclick="saveWorryImg();" /></td>
+	</tr>
+	</table>
+    <input type="hidden" name="worryid" id="worryid" value="<?=$worryId;?>" />
+</form>
+	</div>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

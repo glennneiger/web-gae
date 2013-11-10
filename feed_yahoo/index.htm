@@ -1,0 +1,36 @@
+<?
+global $D_R;
+include_once($D_R."/lib/config/_yahoolivestand_config.php");
+include_once($D_R."/lib/feed/_design_lib.php");
+include_once($D_R."/lib/config/_article_config.php");
+include_once("$D_R/lib/config/_rss_config.php");
+
+global $partnerIdYahooLiveStand;//  yahoo livestand partner id
+
+$maxItemLimit=$_GET['maxItems'];
+$feedType=$_GET['idContentType'];
+$accountid=$GET['account'];
+$thread_id=$_GET['tid'];
+$partnerId=$_GET['idPartner'];
+$currentFilter=$_GET['from'];
+
+if(!$partnerId){
+	echo "We are sorry this is an invalid partner information.";
+	exit;
+}
+/* Load Default values */
+if(!$maxItemLimit || $maxItemLimit>500){
+	$maxItemLimit=25;
+}
+$objFeedView= new feedViewer($feedType,$partnerId);
+if (trim($partnerId) == trim($partnerIdYahooLiveStand)){
+	echo $objFeedView->showFeed($maxItemLimit,$thread_id,$currentFilter);
+}
+else{
+header('Content-type: text/xml');
+echo "<?xml version='1.0' encoding='ISO-8859-1'?>";
+
+echo $objFeedView->showRSS($maxItemLimit,$thread_id,$currentFilter);
+}
+
+?>

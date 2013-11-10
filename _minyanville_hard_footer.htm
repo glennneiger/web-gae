@@ -1,0 +1,111 @@
+ </div> <!-- Gradient below subnavigation div closed here -->
+        <!--Main footer div start from here-->
+        <div class='main_footer'>
+      <!---bottom quick link start from here-->
+	  <div class="FooterLinksMain">
+
+      <div class="FooterLinksHeader">
+<!-- <img src="<?=$HTPFX.$HTHOST?>/images/home_redesign/QuickLinks.jpg" alt="Quick Links" align="left"/> -->
+</div>
+<?
+//echo  footerdisplay();
+?>
+</div>   <img src='<?=$IMG_SERVER?>/images/buzzTrial/hard_trialfooter.gif' width='988'  align='absbottom' />
+            <div class='footer_hardtrials'></div>
+</div>
+<!--Main footer div end here-->
+</div>
+</div>
+<!--Main div end here-->
+<!-- Footer JS Starts -->
+<?  if($userid) { ?>
+<!-- <script language="javascript">
+	window.onload=function(){
+		getYourAccount(hide=1);
+	}
+</script> -->
+<? } ?>
+<?
+/* Analytics Tag starts */
+global $is_ssl;
+$pageno=$_GET[p];
+if($pageno==""){
+	$pageno=1;
+}else{
+	$pageno=$pageno+1;
+}
+if($pageName=="article_familyfinance" || $pageName=="article_lifemoney" || $pageName=="article_businessmarket" ){
+
+   $tracking_name = substr($article['date'],0,12)."-".$article['title'];
+   if($_GET['from']=="home")
+   		$tracking_name = substr($article['date'],0,12)."-".$article['title']."-from-featured";
+}
+else
+{
+	if(isset($trackname))
+	{
+		$tracking_name = $trackname;
+	}
+	else
+	{
+		$tracking_name = "";
+	}
+}
+$profileid=1;
+// For subscription-registr-wecome page google analytics execute on the same page in loop on the basis of number of products purchanse by user
+/*
+if($pageName!="SlideShow" && $pageName != "subscription_product_welcome")
+{
+	googleanalytics($profileid,$tracking_name);
+}
+if($domain=='ameritrade'){
+
+	$profileid=5;
+	googleanalytics($profileid,$tracking_name);
+}*/
+googleanalytics();
+/* Analytics Tag Ends */
+?>
+<script src="<?=$HTPFX.$HTHOST;?>/_externalLinks.js" language="JavaScript" type="text/javascript"></script>
+<!-- Start Quantcast tag -->
+ <script type="text/javascript">
+  var _qevents = _qevents || [];
+
+  (function() {
+   var elem = document.createElement('script');
+
+   elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+   elem.async = true;
+   elem.type = "text/javascript";
+   var scpt = document.getElementsByTagName('script')[0];
+   scpt.parentNode.insertBefore(elem, scpt);
+  })();
+</script>
+<script type="text/javascript">
+_qevents.push([{
+qacct:"p-76i-akcf8qEJM",
+labels: "<?=getquantcastlabel($pageName);?>"
+}]);
+</script>
+
+<noscript>
+<a href="http://www.quantcast.com/p-76i-akcf8qEJM" target="_blank"><img
+
+src="//pixel.quantserve.com/pixel/p-76i-akcf8qEJM.gif" style="display: none;" border="0" height="1" width="1"
+
+alt="Quantcast"/></a>
+</noscript>
+<!-- End Quantcast tag -->
+<!-- Footer Js Ends -->
+<?
+$pageName="header";
+$userid=$_SESSION['SID'];
+if($userid){
+?>
+	<script language="javascript">
+	getMarketWatchlist('<?=$userid?>','<?=$pageName;?>');
+	</script>
+<? } ?>
+<img src="<?=$HTPFX;?>bh.contextweb.com/bh/set.aspx?action=add&advid=1271&token=MNVL1" width="1" height="1" border="0">
+</body>
+</html>

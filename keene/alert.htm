@@ -1,0 +1,84 @@
+<?php
+global $D_R,$HTPFX,$HTHOST,$keeneItemMeta;
+session_start();
+if($_SESSION['keene']!="1"){
+  Header( "Location: http://mvp.minyanville.com/keene-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=keene");
+  exit;
+}
+
+include_once($D_R."/lib/_content_data_lib.php");
+include($D_R."/lib/config/_keene_config.php");
+include($D_R."/lib/keene/_keene_data_lib.php");
+include($D_R."/lib/keene/_keene_design_lib.php");
+$objKeeneData = new keeneData('keene_alerts');
+$objKeeneDesign = new keeneDesign();
+global $objKeeneDesign, $objKeeneData,$elliotAnalystGroup;
+
+$pageName="keeneAlert";
+$pageurl = $_SERVER["REQUEST_URI"];
+$alertId = $objKeeneData->getKeeneAlertIdByUrl($pageurl);
+$objContent = new Content('keene_alert',$alertId);
+$pageJS=array("config","redesign","keene","fancybox");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","keene","fancybox");
+
+include($D_R."/_header.htm");
+
+if(empty($alertId))
+{
+	header("HTTP/1.1 404 Not Found");
+    header("Status: 404 Not Found");
+	location("/errors/?code=404");
+	exit;
+}
+$alertDetails = $objKeeneData->getKeeneAlertDetails($alertId);
+$categoryName = $alertDetails['category_alias']
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
+<body>
+<script language="javascript" type="text/javascript">
+	function docKeyDown1(oEvent){ // controls keyboard navigation
+	var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+	var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+	var intKeyCode = oEvent.keyCode;
+	var inc;
+	if(intKeyCode==13) {
+	   if($F("optionsearch")){
+		searchalert('optionsearch','<?=$contribid?>','optionsearch','<?=$oid?>');
+		}
+	}
+	if(intKeyCode==17){	inc=0;}
+	if (inc==0){
+		if(intKeyCode==65 || intKeyCode==97 )	{
+			return(false);   //in case of IE & firefox1.5
+		}
+	}
+
+
+
+	}
+	document.onselectstart=new Function("return false");
+	document.onmousedown=new Function("return false");
+	document.oncontextmenu=new Function("return false");
+	document.onkeydown=docKeyDown1;
+
+	function disableclick()
+	{
+		document.onmousedown=new Function("return false");void(0);
+	}
+	function enableclick()
+	{
+		document.onmousedown=new Function("return true");void(0);
+	}
+	</script>
+<div id="keene_wrapper">
+	<?php echo $objKeeneDesign->displayKeeneHeader($categoryName);?>
+	<div class="clr"></div>
+	<div class="keene_contentPanel">
+		<?=$objKeeneDesign->displayKeeneAlert($alertId,$alertDetails);?>
+		<?=$objKeeneDesign->displayKeeneRightCol();?>
+	</div>
+	<div class="clr"></div>
+</div>
+</body>
+
+<? include($D_R."/_footer.htm"); ?>

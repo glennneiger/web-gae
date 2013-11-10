@@ -1,0 +1,322 @@
+<?
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Content-Type: text/plain");
+header("Pragma: nocache\n");
+header("cache-control: no-cache, must-revalidate, no-store\n\n");
+header("Expires: 0");
+//*** include_once("$ADMIN_PATH/_authenticate.htm");
+include_once($D_R."/lib/ss/_ss_config.php");
+include_once($D_R."/admin/ss/ss_classes/class_Optiontransaction.php");
+include_once($D_R."/admin/ss/ss_classes/class_transaction.php");
+include_once($D_R."/lib/ss/_ss_library_function.php");
+
+$optiontransobj = new optiontransaction();
+/*============set up permissions=================*/
+//*** $performtransaction=$AD->getPerm("own_transaction");//can't create anything
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+//***	admin_error("You're not allowed to use this page.");
+}
+
+$textpass=$_POST['type'];
+$transtype=$_POST['transtype'];
+
+if($textpass=='save')
+{
+$optiontranstype=$_POST['optiontranstype'];
+$optPurdate=$_POST['optPurdate'];
+$optionticker=trim($_POST['optionticker']);
+$optiontype=$_POST['optiontype'];
+$basestock=$_POST['basestock'];
+$optionexpirymonth=$_POST['optionexpirymonth'];
+$optionexpiryyear=$_POST['optionexpiryyear'];
+$strikeprice=$_POST['strikeprice'];
+$noofcontract=$_POST['noofcontract'];
+$contractprice=$_POST['contractprice'];
+$notes=$_POST['notes'];
+$baseStockId=$_POST['stockBaseId'];
+$objPortfolio = new optionPortfolio();
+
+	$getidfromoptions="select id,baseStockId from ex_option where optionticker= trim('".$optionticker."')";
+	$allressym=exec_query($getidfromoptions,1);
+
+	if(count($allressym)>0)
+	{
+		$optiontickerid=$allressym['id'];
+		$baseStockIdGet=$allressym['baseStockId'];
+		if(($baseStockIdGet==0)||($baseStockIdGet==''))
+		{
+			$stockbase['baseStockId']=$baseStockId;
+			$updateid=update_query("ex_option",$stockbase,array(id=>$optiontickerid));
+
+			$memCacheDelete = new memCacheObj();
+			$key="ssOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="ssOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="ssDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$objPortfolio->updateOpenPositionRecords();
+		}
+	}else
+	{
+		$stocktabldata=array('optionticker'=>$optionticker,'baseStockId'=>$baseStockId);
+		$optiontickerid=insert_query("ex_option",$stocktabldata);
+
+			$memCacheDelete = new memCacheObj();
+			$key="ssOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="ssOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="ssDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$objPortfolio->updateOpenPositionRecords();
+	}
+	# Try to insert the transaction in ss_transaction table
+	if(isset($optiontickerid) and ($optiontickerid>0))
+	{
+		global $contractqty;
+		$dateArray=explode('/',$optPurdate);
+		$date = $dateArray[2]."-".$dateArray[0]."-".$dateArray[1];
+		$datetime = $date." ".date('h:i:s');
+		$expirydate = getThirdFriday($optionexpirymonth,$optionexpiryyear); // defined in /lib/ss/_ss_library_function.php file
+		$transactiondata=array(
+						   'quote_id'=>$optiontickerid,
+						   'transaction_type'=>$optiontranstype,
+						   'creation_date'=>$datetime,
+						   'unit_price'=>$contractprice,
+						   'strike_price'=>$strikeprice,
+						   'quantity'=>($noofcontract*$contractqty),
+						   'description'=>$notes,
+						   'entity_type'=>'1',
+						   'expirydate'=>$expirydate,
+						   'base_stock_symbol'=>$basestock,
+						   'option_type'=>$optiontype
+		);
+
+	if($optiontickerid > 0)
+	{
+		$retstatus=insert_query("ss_transaction",$transactiondata);
+		$objPortfolio->updateOpenPositionRecords();
+		/**
+		** If transaction type is for short sell then it will entry the record in sell table also
+		**/
+		if(($optiontranstype==2) && (isset($retstatus)&&($retstatus>0))){
+
+			$memCacheDelete = new memCacheObj();
+			$key="ssOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="ssOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="ssDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+
+			$shortselldata=array('sell_trans_id'=>$retstatus,'creation_date'=>$datetime,'trans_status'=>'pending','entity_type'=>'1');
+			insert_query("ss_sell_transaction",$shortselldata);
+			$memCacheDelete = new memCacheObj();
+			$key="ssOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="ssOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="ssDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$objPortfolio->updateOpenPositionRecords();
+
+		}
+	}
+	}
+	if(isset($retstatus)&&($retstatus>0))
+	{
+		echo "1";
+	}else
+	{
+		echo "0";
+	}
+
+}
+else if($textpass=='view'){
+	echo $optiontransobj->alltransaction();
+}
+else if($textpass=='update')
+{
+	echo $optiontransobj->updatetransaction('update',$_POST['optionnotes'],$_POST['optionunitprice'],$_POST['recordid'],$_POST['noofcontracts']);
+}
+else if($textpass=='delete')
+{
+	$transtypes=$transtypearray[$transtype];
+	switch ($transtypes){
+		case 'Buy':
+			echo $optiontransobj->updatetransaction('delete',"","",$_POST['recordid'],"");
+			break;
+		case 'Sell':
+			//echo "i equals Sell";
+			$deleted=$optiontransobj->deleteSellOption('option',$_POST['recordid'],$transtypes);
+			echo $deleted;
+			break;
+		case 'SS':
+			$deleted=$optiontransobj->deleteShortSellOption('option',$_POST['recordid'],$transtypes);
+			echo $deleted;
+			break;
+		case 'BTC':
+			$deleted=$optiontransobj->deleteBTCOption('option',$_POST['recordid'],$transtypes);
+			echo $deleted;
+			break;
+		default:
+			echo "";
+
+	}
+
+
+	///**** echo $optiontransobj->updatetransaction('delete',"","",$_POST['recordid'],"");
+}
+if($textpass=='nexttrans'){
+	global $sstransactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start+$sstransactioncnt;
+	echo $optiontransobj->alltransaction('',$start,$end);
+}
+if($textpass=='prevtrans'){
+	global $sstransactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start-$sstransactioncnt;
+	echo $optiontransobj->alltransaction('',$start,$end,'','');
+}
+if($textpass=='btcView'){
+	echo $optiontransobj->shortsellOptionTransactionView();
+}
+else if($textpass=='transView'){
+	/*
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start-$transactioncnt;*/
+	echo $optiontransobj->alltransaction();
+}
+else if($textpass=='nextbtctrans'){
+	global $sstransactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start+$sstransactioncnt;// in exchange just change newblogdiscusionsreply.htm
+	echo $optiontransobj->shortsellOptionTransactionView('',$start,$end);
+}
+else if($textpass=='prevbtctrans')
+{
+	global $sstransactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start-$sstransactioncnt;
+	echo $optiontransobj->shortsellOptionTransactionView('',$start,$end,'','');
+}
+else if($textpass=='cashentry')
+{
+		$amt=$_POST['amt'];
+		$idget=$_POST['idget'];
+		$msg=0;
+		$casharr=array();
+
+		if($idget==0)
+		{
+			$casharr['cash_amt']=$amt;
+			$casharr['entity_type']='1';
+			$casharr['status']='1';
+			$casharr['creation_date']=mysqlNow();
+			$insertid=insert_query("ss_cash",$casharr);
+			if($insertid>0)
+			{
+			    $memCacheDelete = new memCacheObj();
+				$key="ssOpenPositiontrade";
+				$memCacheDelete->deleteKey($key);
+				$key="ssOpenPosition";
+				$memCacheDelete->deleteKey($key);
+				$key="ssDisplayPerformance";
+				$memCacheDelete->deleteKey($key);
+				$objPortfolio->updateOpenPositionRecords();
+				echo "<b><font color=green>Data Saved Successfully</font></b>";
+				$msg=1;
+			}
+		}else
+		{
+			$casharr['cash_amt']=$amt;
+			$casharr['updation_date']=date('Y-m-d h:i:s');
+			$casharr['entity_type']='1';
+			$updateid=update_query("ss_cash",$casharr,array(id=>$idget));
+			if($updateid>0){
+			    $memCacheDelete = new memCacheObj();
+				$objPortfolio = new optionPortfolio();
+
+				$key="ssOpenPositiontrade";
+				$memCacheDelete->deleteKey($key);
+				$key="ssOpenPosition";
+				$memCacheDelete->deleteKey($key);
+				$key="ssDisplayPerformance";
+				$memCacheDelete->deleteKey($key);
+				$objPortfolio->updateOpenPositionRecords();
+				echo "<b><font color=green>Data Updated Successfully</font></b>";
+				$msg=1;
+			}
+		}
+
+		// storing values for divident/interest
+		$dividentamt=$_POST['dividentamt'];
+		$dividentidget=$_POST['dividentid'];
+		$dividentcasharr=array();
+		if($dividentidget==0){
+			$dividentcasharr['cash_amt']=$dividentamt;
+			$dividentcasharr['status']='2';
+			$dividentcasharr['entity_type']='1';
+			$dividentcasharr['creation_date']=mysqlNow();			
+			$dividentinsertid=insert_query("ss_cash",$dividentcasharr);
+			if($dividentinsertid>0){
+				$memCacheDelete = new memCacheObj();
+				$key="ssOpenPositiontrade";
+				$memCacheDelete->deleteKey($key);
+				$key="ssOpenPosition";
+				$memCacheDelete->deleteKey($key);
+				$key="ssDisplayPerformance";
+				$memCacheDelete->deleteKey($key);
+				$objPortfolio->updateOpenPositionRecords();
+				if($msg==0){echo "<b><font color=green>Data Saved Successfully</font></b>";}
+			}
+		}else{
+			$dividentcasharr['cash_amt']=$dividentamt;
+			$dividentcasharr['updation_date']=date('Y-m-d h:i:s');
+			$dividentcasharr['entity_type']='1';
+
+			$dividentupdateid=update_query("ss_cash",$dividentcasharr,array(id=>$dividentidget));
+			if($dividentupdateid>0){
+				$memCacheDelete = new memCacheObj();
+				$key="ssOpenPositiontrade";
+				$memCacheDelete->deleteKey($key);
+				$key="ssOpenPosition";
+				$memCacheDelete->deleteKey($key);
+				$key="ssDisplayPerformance";
+				$memCacheDelete->deleteKey($key);
+				$objPortfolio->updateOpenPositionRecords();
+				if($msg==0){echo "<b><font color=green>Data Updated Successfully</font></b>";}
+			}
+		}
+
+}
+else if($textpass=='seachstock'){
+	global $transactioncnt;
+	$serhsymname=$_POST['ticker'];
+	echo $optiontransobj->getTransactionDetailofTicker($serhsymname);
+}
+else if($textpass=='validateoption')
+{
+	global $transactioncnt;
+	$getcurrentvalue = $optiontransobj->validateOptionTicker(trim($_POST['ticker']),$_POST['enity_type']);
+	echo $getcurrentvalue;
+}
+else if($textpass=='validateBaseStock')
+{
+	global $transactioncnt;
+	$getSID = $optiontransobj->validateBaseStock(trim($_POST['ticker']),$_POST['enity_type']);
+	echo $getSID;
+}
+//**** $transtypearray = array(0=>'Buy',1=>'Sell',2=>'SS',3=>'BTC');
+?>

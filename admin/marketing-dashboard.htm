@@ -1,0 +1,76 @@
+<?
+global $D_R,$HTPFX,$HTHOST;
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/config/_products_config.php");
+include_once("$D_R/lib/registration/_report_design_lib.php");
+global $viaProductsName;
+$objReportDesign=new reportDesign();
+
+$cancreate=$AD->getPerm("subscription_dashboard");
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+
+?>
+
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/adminManageSubscription.1.3.css">
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/admin/_style.1.3.css">
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/adminManageSubscription.1.4.js"></script>
+
+<div class="subReportMain">
+	<div class=adminheader>View/Download Marketing Dashboard Report</div><br>
+
+	<div class="subReportSearchBox">
+		<div class="subReportSearchLabel">Search Filter</div>
+		<div class="reportError" id="reportError">&nbsp;</div>
+		<div class="searchFilters">
+			<div class="serchBase">Product<span class="required_symbol">&nbsp;</span><br>
+				<select name="product" id="product">
+					<option value="0">-- Select Product --</option>
+					<? foreach($viaProductsName as $key=>$val){
+					    if($_GET['product']==$key){
+						 	echo '<option id='.$key.' value='.$key.' selected >'.$val.'</option>';
+					    } else {
+						 	echo '<option id='.$key.' value='.$key.'  >'.$val.'</option>';
+					    }
+					} ?>
+				</select>
+			</div>
+			<div class="serchBaseMiddleMarketingDashboard">From<span class="required_symbol">*</span><br>
+				<select id="fromDate" name="fromDate">
+					<option value="0">Date</option>
+					<?=$objReportDesign->showDateDropDown(); ?>
+				</select>
+				<select id="fromMonth" name="fromMonth">
+					<option value="0">Month</option>
+					<?=$objReportDesign->showMonthDropDown(); ?>
+				</select>
+				<select id="fromYear" name="fromYear">
+					<option value="0">Year</option>
+					<?=$objReportDesign->showYearDropDownMarketingFashboard(); ?>
+				</select>
+			</div>
+			<div class="serchBase">To<span class="required_symbol">*</span><br>
+				<select id="toDate" name="toDate">
+					<option value="0">Date</option>
+					<?=$objReportDesign->showDateDropDown(); ?>
+				</select>
+				<select id="toMonth" name="toMonth">
+					<option value="0">Month</option>
+					<?=$objReportDesign->showMonthDropDown(); ?>
+				</select>
+				<select id="toYear" name="toYear">
+					<option value="0">Year</option>
+					<?=$objReportDesign->showYearDropDownMarketingFashboard(); ?>
+				</select>
+			</div>
+		</div>
+		<div style="clear:left;"></div>
+		<center><input type="button" value="View" class="goBttn" onClick="javascript:generateMarketingReport('marketingDashboard','','','');" /><input type="button" value="Download" class="dwnloadBttn" onClick="javascript:generateMarketingReport('exportMarketingReport','','','');" /></center>
+	</div>
+	<div class="recordCount" id="recordCount">&nbsp;</div>
+	<div style="clear:left;"></div>
+	<div class="reportContent" id="reportContent">&nbsp;</div>
+</div>

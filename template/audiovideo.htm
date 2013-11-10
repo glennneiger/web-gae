@@ -1,0 +1,28 @@
+<?php
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav");
+$pageName = "video";
+?>
+<script language="javascript" type="text/javascript">
+var searchagaent= new Array("iphone","ipod","aspen","dream","android","cupcake","blackberry","opera mini","webos","incognito","webmate");
+ var stragent=navigator.userAgent;
+ var i,strfind;
+ for(i=0;i<searchagaent.length; i++){
+  struseragent=stragent.toLowerCase();
+  strfind=struseragent.search(searchagaent[i]);
+  if(strfind>=0){
+   window.location="http://m.minyanville.com/section/video/";
+  }
+ }
+</script>
+<?
+include("../_header.htm");
+?>
+<div class="shadow">			
+	<div id="content-container">	
+		<div id="article-left">			
+				<!-- Body content will display here -->
+		</div>							
+	</div>							
+</div>							
+<? include("../_footer.htm"); ?>

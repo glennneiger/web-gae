@@ -1,0 +1,30 @@
+<?
+$page="gazette";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("ss_alerts_all ss_own_transaction"))){
+	admin_error();
+}
+?>
+<table align=center>
+<TR>
+	<TD nowrap><div class=adminheader>Editing+Posting</div><br><br
+	<div style="padding:10px;width:400px">
+		<?if($AD->getPerm("ss_own_transaction")){?>
+			<li><a href="transaction.htm">Add Transaction</a></li>
+		<?}?>	
+		<?if($AD->getPerm("ss_initial_cash_entry")){?>
+			<li><a href="cashentry.htm">Initial Cash Entry</a></li>
+		<?}?>
+		<br>
+		<?if($AD->getPerm("ss_alerts_all")){?>
+			<li><a href="alerts.htm">Create/ Edit Alerts</a>
+			<li><a href="approve.htm">Approve Alerts</a>
+			<br><br>
+		<?}?>
+		<br />
+	</div>	
+	</td>
+</tr>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

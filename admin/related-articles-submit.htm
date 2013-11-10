@@ -1,0 +1,12 @@
+<?
+
+function insertRelatedLink ($parent_article, $article_type, $related_article, $keyword, $title) {
+
+        $sql = "INSERT INTO article_related_links (parent_article_id, article_type, article_id, keyword, title) VALUES ('24485', 'mv', '24487', 'todd-harrison-lehman-markets-minyanville-', 'One Year Later: What Have We Learned?')";
+                        insert_query("ap_related_links2", $sql);
+
+}
+
+insertRelatedLink('24485', 'mv', '24487', 'keyword-', 'dan title');
+
+?>

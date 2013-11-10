@@ -1,0 +1,21 @@
+<xml>
+          <characters>
+           <character1text>Click here to read the latest in creative financial commentary and real-time chatter from Wall Street's finest professors.</character1text>
+            <character2text>Take a gander at the fine works  in the Gallery for the Arts</character2text>
+           <character3text>Toddo's Toys is coming soon! More fun than a barrel of monkeys. No, really!</character3text>
+           <character4text>See the newest fashions at  Harrison's Department Store</character4text>
+           <character5text>Satisfy your sweet tooth at  Spirited Sweets</character5text>
+          </characters>
+          <links>
+                <gazetteLink>/index.php</gazetteLink>
+                <artsLink>/shops/gallery.htm</artsLink>   
+                <toysLink>/shops/toddostoys.htm</toysLink>
+                <deptLink>/shops/harrisons.htm</deptLink>   
+                <sweetsLink>/shops/spritedsweets.htm</sweetsLink>
+           </links>
+</xml>
+          
+          
+          
+          
+          

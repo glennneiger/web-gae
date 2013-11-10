@@ -1,0 +1,67 @@
+<?php
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+include($D_R."/lib/peter-tchir/_peterTchir_data_lib.php");
+
+global $contributorId, $contributorName;
+$objPeterData = new peterTchirData('peter_alerts');
+
+$bounceback = $HTPFX.$HTHOST."/admin/peter-tchir/featured-heatmap.htm";
+
+$heatMapImgPath="/assets/peter-tchir/";
+$heatMapId=$_POST['mapId'];
+if(!empty($_POST['heatMapTitle'])){
+	$data['title'] = $_POST['heatMapTitle'];
+	if($heatMapId ==''){
+	  	$qry = "SELECT id FROM peter_heatmap WHERE title = '".$data['title']."'";
+		$result = exec_query($qry,1);
+
+		if(!empty($result)){
+			$strError = "HeatMap Title Already Exists.";
+		}else{ 
+			if($_FILES['heatMapImg']['name']!="")
+			{
+				$data['heatMapImgName'] = rand().'-'.str_replace(" ","_",$_FILES['heatMapImg']['name']);
+				move_uploaded_file($_FILES["heatMapImg"]["tmp_name"], "gs://mvassets".$heatMapImgPath.$data['heatMapImgName']);
+			}
+			else
+			{
+				$data['heatMapImgName'] = $_POST['heatmapUploadedImgName'];
+			} 
+
+			if($heatMapId){
+				$data['heatMapId']=$heatMapId;
+			}
+			$id = $objPeterData->prepareMapData($data);
+			$mapId = $id;
+			if(!empty($id)){
+				$strError = "HeatMap has been uploaded successfully";
+			}
+		}
+	}else{
+		if($_FILES['heatMapImg']['name']!="")
+		{
+			$data['heatMapImgName'] = rand().'-'.str_replace(" ","_",$_FILES['heatMapImg']['name']);
+			move_uploaded_file($_FILES["heatMapImg"]["tmp_name"], "gs://mvassets".$heatMapImgPath.$data['heatMapImgName']);
+		}
+		else
+		{
+			$data['heatMapImgName'] = $_POST['heatmapUploadedImgName'];
+		} 
+
+        if($heatMapId){
+        	$data['heatMapId']=$heatMapId;
+        }
+
+		$id = $objPeterData->prepareMapData($data);
+		$mapId = $heatMapId;
+		if($heatMapId!=""){ 
+			$strError = "HeatMap has been updated.";
+		}
+	}
+}
+
+header( "HTTP/1.1 301 Moved Permanently" );
+header( "Location: ".$bounceback."?mapId=".$mapId."&error=".$strError);
+exit;
+
+?>

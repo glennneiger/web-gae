@@ -1,0 +1,74 @@
+<?php
+global $D_R,$errorconfig;
+$errorcode=$_GET['code'];
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav");
+$pageName="urlbuilder";
+$hideCanonical=TRUE;
+include("_header.htm");
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$sqlGetCST="SELECT id,name FROM content_syndication_tracking WHERE show_in_builder='1'";
+$resCST=exec_query($sqlGetCST);
+
+if(!empty($_POST['URL']))
+{
+	$url=parse_url($_POST['URL']);
+	$sqlGetSelectedCST="SELECT * FROM content_syndication_tracking WHERE id='".$_POST['channel']."'";
+	$resSelectedCST=exec_query($sqlGetSelectedCST,1);
+	$syndicationURL=$url['scheme']."://".$url['host'].$url['path'];
+	if(!empty($url['query'])){
+		$syndicationURL.="?".$url['query']."&";
+	}else{
+		$syndicationURL.="?";
+	}
+	$syndicationURL.="from=".$resSelectedCST['source']."&medium=".$resSelectedCST['medium']."&camp=".$resSelectedCST['campaign'];
+	if(!empty($_POST['term'])){
+			$syndicationURL.="&utm_term=".clean_url(str_replace(" ","-",$_POST['term']));
+	}
+	if(!empty($url['fragment'])){
+			$syndicationURL.="#".$url['fragment'];
+	}
+	if($_POST['xml']=="on"){
+		$syndicationURL=htmlspecialchars($syndicationURL);
+		$syndicationURL=str_replace("&","&amp;",$syndicationURL);
+	}
+}
+
+
+?>
+<div id="content-container">
+			<div id="homepage-content" style="width:987px;">
+				<h1 style="padding-left:5px;">URL Builder</h1>
+				<form name="urlbuilder" id="urlbuilder" action="<?=$_SERVER['PHP_SELF'];?>" method="post">
+				<table cellpadding="5" cellspacing="2" border="0">
+				<? if($syndicationURL){ ?>
+					<tr><td colspan="2"><?=$syndicationURL;?></td></tr>
+				<? }elseif(!empty($_POST) && empty($_POST['URL'])){ ?>
+					<tr><td colspan="2">Please enter a valid URL</td></tr>
+				<? }else{ ?>
+				<tr><td style="font-weight:bold;">URL:*</td><td><?input_text("URL",NULL,0,255,"style='width:400px;'")?></td></tr>
+				<tr><td style="font-weight:bold;">Channel:</td><td>
+				<select name="channel">
+				<?
+				foreach($resCST as $row){
+						$disp=$row[name];
+					?>
+						<option value="<?=$row[id]?>"><?=$disp?></option>
+					<?}?>
+				</select>
+				</td></tr>
+				<tr><td style="font-weight:bold;">Link text:</td><td><?input_text("term",NULL,0,255,"style='width:400px;'")?></td></tr>
+				<tr><td style="font-weight:bold;">Is XML:</td><td><? input_check("xml",0); ?></td></tr>
+				<tr><td colspan="2"><input type="submit" value="Generate URL"></td></tr>
+				<? } ?>
+				</table>
+				</form>
+				<div id="result"></div>
+
+			</div>
+</div>
+</div>
+<?
+
+include("_footer.htm"); ?>

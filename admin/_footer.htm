@@ -1,0 +1,13 @@
+<?
+include_once("$D_R/lib/layout_functions.php");
+global $is_ssl;
+$profileid=1;
+$tracking_name=$page;
+//googleanalytics($profileid,$tracking_name);
+googleanalytics();
+universalGoogleAnalytics();
+?>
+<?if(!$hide_ui){?>
+</TD></TR></table>
+<?}?><!-- footer --></body>
+</html><!-- end footer -->

@@ -1,0 +1,7 @@
+DirectoryIndex getFeed.htm
+
+AuthUserFile /home/sites/minyanville/web/feed/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Minyanville Feeds"
+AuthType Basic
+require valid-user

@@ -1,0 +1,53 @@
+<?php
+global $D_R,$HTPFX,$HTHOST,$pageName,$sectionName;
+session_start();
+
+$pageName="eduSearchAlert";
+include($D_R."/edu/eduHeader.htm");
+include_once($D_R."/lib/_content_data_lib.php");
+require_once($D_R."/lib/config/_edu_config.php");
+require_once($D_R."/lib/edu/_edu_data_lib.php");
+require_once($D_R."/lib/edu/_edu_design_lib.php");
+require_once($D_R."/lib/_article_design_lib.php");
+$pageJS=array("config","redesign","fancybox","edu");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","edu");
+
+$objEduData = new eduData('edu_alerts');
+$objEduDesign = new eduDesign();
+$objArticle = new articleViewer();
+loadjavascriptheader($pageCSS,$pageJS,'H',$noDefaultLoad);
+$item_table = 'edu_alerts';
+$objContent = new Content($item_table,'');
+$show_canonical="1";
+global $objEduData, $objEduDesign, $pageName, $objArticle;
+
+$sectionName="Home";
+if($_GET['q'])
+{
+	$search = trim($_GET['q']);
+	$searchType = 'text';
+}
+
+$p=1;
+$offset=0;
+if($_GET['p']){
+	$p=$_GET['p'];
+	$offset=$_GET['p'];
+}
+if($p>1){
+	$offset--;
+}
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<body>
+<div id="eduOuterContainer">
+	<?php echo $objEduDesign->displayEduHeader($sectionName);?>
+	<div class="eduContentContainer">
+		<div class="eduContainer">
+			<?php echo $objEduDesign->eduSearch($search,$offset,$searchType,$p);?>
+			<?php echo $objEduDesign->displayEduRightCol();?>
+		</div>
+	</div>
+</div>
+</body>
+<?php require_once($D_R."/_footer.htm"); ?>

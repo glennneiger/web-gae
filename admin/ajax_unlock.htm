@@ -1,0 +1,6 @@
+<?
+$id = $_GET['id'];
+$qry = "SELECT CL.id FROM content_locking as CL WHERE item_id=".$id." AND item_type = 1";
+$res = exec_query($qry,1);
+del_query('content_locking',id,$res['id']);        
+?>

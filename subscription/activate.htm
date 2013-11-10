@@ -1,0 +1,353 @@
+<?php
+global $D_R;
+$pageName="accountactivation";
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav");
+
+include($D_R."/_header.htm");
+include_once($D_R."/lib/ads/_indstrybrains_class.php");
+include_once($D_R."/admin/lib/_article_data_lib.php");
+$ViaEmail= new ViaEmail();
+$objVia=new Via();
+$objUser= new user();
+$objViaCtrl=new ViaController();
+$errorObj=new ViaException();
+$dfsubscriber=0;
+if($_GET['df']==md5("1")){
+	$dfsubscriber=1;
+}
+if($_GET['topicuser']==md5("2")){
+	$topicsubscriber=2;
+}
+
+$section_id=$_GET['sec_id'];
+
+if($_GET['df']==md5("3")){
+	$dailyDigestSubscriber=1;
+}
+
+if($_GET['a']==md5("1")){
+		unset($_SESSION['action']);
+		unset($_SESSION['notactivatedemail']);
+		unset($_SESSION['via_inactive_id']);
+}
+unset($_SESSION['firstname']);
+unset($_SESSION['lastname']);
+?>
+<!--Body area start from here-->
+<!--left contaner start from here-->
+<div class="shadow">
+    <div id="content-container">
+        <div id="article-left">
+        <table cellpadding=0 cellspacing=0 border="0" width="100%" class="welcome_activation">
+<?
+	$inactiveaccount=$_SESSION['action'];
+	if($inactiveaccount=='inactiveaccount'){
+		$notactivatedemail=$_SESSION['notactivatedemail'];
+		if($notactivatedemail){
+			$txtvalue=$notactivatedemail;
+		}else{
+				$txtvalue="Email Address";
+		}
+	?>
+	<div align="left" class="active_account">
+		<p><strong>Thank you for registering for Minyanville, the fastest growing community in finance.</strong></p><br/>
+		<p>Before you can begin to enjoy the benefits of your membership, we need to make sure you&lsquo;re a real person.</p>
+		<br /><p>Momentarily you will receive an email with an activation link to the email address you registered with. <br />Click that and you&lsquo;ll have full access to your Minyanville membership.</p>
+		<p><br />If you did not receive this email, or to have it resent, enter it in the box below.</p>
+			<div class="activation_email" >
+				<input type="text" class="input" name="txtemail" id="txtemail" value="<?=$txtvalue;?>" onblur="javascript:chkSpaceNull('txtemail',this.value,'Email Address');" onfocus="javascript:if(this.value=='Email Address') this.value=''; return false;" /><img src="<?=$IMG_SERVER?>/images/redesign/resend.jpg" style="cursor:pointer;" align="absmiddle" onclick="sendActivation();" />
+				<div id="showactivatemsg" style="display:block; color:#FF0000; padding-top:7px; padding-bottom:5px;"></div>
+			</div>
+		<p>Contact us at <a href="mailto:support@minyanville.com">support@minyanville.com</a> with any questions.</p>
+	</div>
+	<? }
+	else
+	{
+		$code=$_GET['activateid'];
+		$viaid=valid_code($code);
+		if($viaid['via_id'])
+		{
+			$getCustomerInfo=$objVia->customerSubInfo($viaid['via_id']);
+			$getAuxField=$getCustomerInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->auxFields->field;
+			if(is_array($getAuxField))
+			  {
+			   $temp_orders="";
+				foreach($getAuxField as $auxvalue){
+					if($auxvalue->name=='account_activated'){
+						$inactiveaccount=$auxvalue->value;
+					}
+					if($auxvalue->name=='temp_orders'){
+						$temporders=$auxvalue->value;
+					}
+
+				}
+			}
+			else
+			{
+				if($getCustomerInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->auxFields->field->name=='account_activated')
+				{
+					$inactiveaccount=$getCustomerInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->auxFields->field->value;
+				}
+			}
+
+		if($inactiveaccount){
+		
+		?>
+		<tr>
+			<td>
+				<div class="account_activation"><br />
+				<p><b>Thank you for registering with Minyanville! Your account is already activated.</b></p>
+				<br />
+				<p>With your account you can now:</p>
+				<ul >
+				<li>Comment on any article or blog</li>
+				<li>Sign up for free <a style="text-decoration:none;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">email alerts</a> from your favorite authors</li>
+				<li>Take two week free trials of any of our <a href="<?=$HTNOSSLDOMAIN?>/subscription/" style=" text-decoration:none; ">subscription products</a></li>
+				</ul>
+				<br />
+				<p>If you&lsquo;ve already registered for a free trial of one or more of our subscription products you can put your mouse over the green "Subscriptions &amp; Products" tab on the upper right of this page and then click the product you&lsquo;d like to access in the navigation bar.</p>
+
+				<p>You can also just click these links below.</p>
+				<br />
+				<ul>
+				<li>
+				<div  id="Registrationstepfinish">Buzz & Banter - <a style="cursor:pointer;" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');"><strong>Launch it now</strong></a> or<strong> click the black "Launch Buzz & Banter" button above.</strong></div></li>
+				<li>
+				<div  id="Registrationstepfinish">Jeff Cooper's Daily Market Report - <a href="<?=$HTPFX.$HTHOST?>/cooper"><strong>View the latest reports</strong></a>.</div>
+				</li>
+				<li>
+				<div id="Registrationstepfinish">OptionSmith by Steve Smith - <a href="<?=$HTPFX.$HTHOST?>/optionsmith"><strong>See Steve's most recent trades</strong></a>.
+				</div>
+				</li>
+				<li>
+				<div  id="Registrationstepfinish">Active Investor - <a href="<?=$HTPFX.$HTHOST?>/active-investor"><strong>See Active Investor's most recent trades</strong></a>.
+				</div>
+				</li>
+				<li>
+				<div  id="Registrationstepfinish">TechStrat by Sean Udall - <a href="<?=$HTPFX.$HTHOST?>/techstrat/"><strong>Read Sean's latest on the tech sector</strong></a></div>
+				</li>
+				<li>
+					<div  id="Registrationstepfinish">The Stock Playbook by Dave Dispennette - <a href="<?=$HTPFX.$HTHOST?>/the-stock-play-book/"><strong>View Dave's latest video</strong></a></div>
+				</li>
+				</ul>
+				<br />
+				<p>Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com">support@minyanville.com</a></p>
+				</div>
+			</td>
+		</tr>
+		<?
+		
+		}
+		else
+		{
+			$objVia->customerIdVia=$viaid['via_id'];
+
+			$account_activated=1; /*set account activation to via- 0,1*/
+			$auxInfo=$objVia->setAuxilaryFields($account_activated,$temporders);
+			if($dfsubscriber){ /*check only if user register from dailyfeed*/
+				$chkdfuser=$objUser->getDailyFeedUser($viaid['id']);
+            }
+			if($topicsubscriber){ /*check only if user register from topic*/
+				$chktopicuser=$objUser->getTopicUser($viaid['id'],$section_id);
+            }
+			
+			if($chkdfuser || $chktopicuser || $dailyDigestSubscriber){
+				$password = gen_trivial_password(6);
+				$loginInfo=array('password'=>$password);
+				$custInfo=array('loginInfo'=>$loginInfo,'auxFields'=>$auxInfo);
+			}else{
+				$custInfo=array('auxFields'=>$auxInfo);
+			}
+
+			
+			$customerDetails=$objVia->updateCustomer($custInfo);
+			if($customerDetails!='true'){
+				$errMessage=$errorObj->getExactCustomError($customerDetails);
+				if($errMessage==''){
+					$pattern = '/Error:(.*)/';
+					preg_match($pattern, $errViaMessage, $matches);
+					$errMessage=$matches[1];
+					echo $errMessage;
+				}
+				if($errMessage==''){
+				  $errMessage="An error occurred while processing your request. Please click again on activation link.";
+				} ?>
+			<tr>
+			<td height="200" align="center"><div align="center" ><h3><?=$errMessage;?></h3><br />
+			</div>
+			</td>
+			</tr>
+			<?
+			}else{
+
+					/*start place customer order to via*/
+
+					$recipient_email = $viaid['email'];
+					$name = $viaid['fname'];
+					if(!$name){
+						$name='Minyan';
+					}
+					$ordval=$objVia->setOrderAfterAccountActivation($temporders,$viaid['id'],$recipient_email,$name);
+					if($ordval){
+					/*code to send welcome email for soft trials after activation*/
+
+						$ViaEmail->sendSoftTrialActivationEmail($name,'',$recipient_email,$activate=1,'');
+						/*update email free alerts after account activation*/
+						$objUser->setEmailAletsAfterActivation($viaid['id']);
+						/*Daily feed welcome emails*/
+						if($chkdfuser){
+							$user_type = 'newuser';
+							daily_feed_welcome_email($user_type,$recipient_email,$password);
+						}
+						/*Toic welcome emails*/
+						if($chktopicuser){
+						   	$user_type = 'newuser';
+							$objArticle= new ArticleData();
+							$subSectionData =$objArticle->getArticleSectionDetail($section_id);
+                          	$subSectionName=$subSectionData['name'];
+							topic_welcome_email($user_type,$recipient_email,$password,$subSectionName);
+						}
+						/*Daily Digest welcome email*/
+						if($dailyDigestSubscriber){
+						    $user_type = 'newuser';
+							dailyDigestWelcomeEmail($user_type,$recipient_email,$password);
+						}
+						
+					}
+					/*end place customer order to via*/
+				?>
+			<tr>
+			<td height="50" align="center">
+			<div class="account_activation"><br />
+			<p><b>Thank you for registering with Minyanville! Your account is now active.</b></p>
+			<p><b>Login above using the email address and password you registered with.</b></p>
+			<br />
+			<p>With your account you can now:</p>
+			<ul >
+							<li>Comment on any article or blog</li>
+							<li>Sign up for free <a style="text-decoration:none;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">email alerts</a> from your favorite authors</li>
+							<li>Take two week free trials of any of our <a href="<?=$HTNOSSLDOMAIN?>/subscription/" style=" text-decoration:none; ">subscription products</a></li>
+							</ul>
+							<br />
+							<p>If you&lsquo;ve already registered for a free trial of one or more of our subscription products you can put your mouse over the green "Subscriptions &amp; Products" tab on the upper right of this page and then click the product you&lsquo;d like to access in the navigation bar.</p>
+
+							<p>You can also just click these links below.</p>
+							<br />
+							<ul>
+							<li>
+							<div  id="Registrationstepfinish">Buzz & Banter - <a style="cursor:pointer;" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');"><strong>Launch it now</strong></a> or<strong> click the black "Launch Buzz & Banter" button above.</strong></div></li>
+							<li>
+							<div  id="Registrationstepfinish">Jeff Cooper's Daily Market Report - <a href="<?=$HTPFX.$HTHOST?>/cooper"><strong>View the latest reports</strong></a>.</div>
+							</li>
+							<li>
+							<div id="Registrationstepfinish">OptionSmith by Steve Smith - <a href="<?=$HTPFX.$HTHOST?>/optionsmith"><strong>See Steve's most recent trades</strong></a>.
+							</div>
+							</li>
+							<li>
+							<div  id="Registrationstepfinish">Active Investor - <a href="<?=$HTPFX.$HTHOST?>/active-investor"><strong>See Active Investor's most recent trades</strong></a>.
+							</div>
+							</li>
+							<li>
+							<div  id="Registrationstepfinish">TechStrat by Sean Udall - <a href="<?=$HTPFX.$HTHOST?>/techstrat/"><strong>Read Sean's latest on the tech sector</strong></a></div>
+							</li>
+							<li>
+								<div  id="Registrationstepfinish">The Stock Playbook by Dave Dispennette - <a href="<?=$HTPFX.$HTHOST?>/the-stock-play-book/"><strong>View Dave's latest video</strong></a></div>
+							</li>
+				</ul>
+			<br />
+			<p>Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com">support@minyanville.com</a></p>
+			</div>
+			</td>
+			</tr>
+			<?
+		}
+		}
+		}
+		else
+		{
+		?>
+			<tr align="left">
+			<td>
+			<div class="account_activation">
+				<? if($_SESSION['SID']){ /*user login and redirect on subscription/activate.htm*/  ?>
+					<tr>
+						<td align="left">
+						<div class="account_activation"><br />
+						<p><b>Thank you for registering with Minyanville! Your account is already activated.</b></p>
+						<br />
+						<p>With your account you can now:</p>
+						<ul >
+										<li>Comment on any article or blog</li>
+										<li>Sign up for free <a style="text-decoration:none;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">email alerts</a> from your favorite authors</li>
+										<li>Take two week free trials of any of our <a href="<?=$HTNOSSLDOMAIN?>/subscription/" style=" text-decoration:none; ">subscription products</a></li>
+										</ul>
+										<br />
+										<p>If you&lsquo;ve already registered for a free trial of one or more of our subscription products you can put your mouse over the green "Subscriptions &amp; Products" tab on the upper right of this page and then click the product you&lsquo;d like to access in the navigation bar.</p>
+
+										<p>You can also just click these links below.</p>
+										<br />
+										<ul>
+										<li>
+										<div  id="Registrationstepfinish">Buzz & Banter - <a style="cursor:pointer;" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');"><strong>Launch it now</strong></a> or<strong> click the black "Launch Buzz & Banter" button above.</strong></div></li>
+										<li>
+										<div  id="Registrationstepfinish">Jeff Cooper's Daily Market Report - <a href="<?=$HTPFX.$HTHOST?>/cooper"><strong>View the latest reports</strong></a>.</div>
+										</li>
+										<li>
+										<div id="Registrationstepfinish">OptionSmith by Steve Smith - <a href="<?=$HTPFX.$HTHOST?>/optionsmith"><strong>See Steve's most recent trades</strong></a>.
+										</div>
+										</li>
+										<li>
+										<div  id="Registrationstepfinish">Active Investor - <a href="<?=$HTPFX.$HTHOST?>/active-investor"><strong>See Active Investor's most recent trades</strong></a>.
+										</div>
+										</li>
+										<li>
+										<div  id="Registrationstepfinish">TechStrat by Sean Udall - <a href="<?=$HTPFX.$HTHOST?>/techstrat/"><strong>Read Sean's latest on the tech sector</strong></a></div>
+										</li>
+										<li>
+											<div  id="Registrationstepfinish">The Stock Playbook by Dave Dispennette - <a href="<?=$HTPFX.$HTHOST?>/the-stock-play-book/"><strong>View Dave's latest video</strong></a></div>
+										</li>
+				</ul>
+						<br />
+						<p>Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com">support@minyanville.com</a></p>
+						</div>
+						</td>
+					</tr>
+				<? }
+				else
+				{ ?>
+					<tr align="left">
+						<td>
+						<h3 style="text-align:left;">
+						Sorry, this is not a valid link. Please try again.</h3><br/>
+						<p><strong>Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com">support@minyanville.com</a></strong></p>
+						</td>
+					</tr>
+					<tr align="left">
+						<td><strong>or Call 212-991-9357</strong></td>
+					</tr>
+				<? } ?>
+				<br />
+			</div>
+			</td>
+			</tr>
+		<?
+		}
+		?>
+
+		</div></td></tr>
+	<? } ?>
+</table>
+
+	    </div><!--left contaner end here-->
+
+    <!--right contaner start from here-->
+        <div class="right_contant" >
+        	<?
+			$arrRightCols	=	array('show_video','show_subcenter','show_markets','show_localguides','show_industrybrains');
+            include("../_rightcolumn.htm"); ?>
+        <!--right contaner end here-->
+        </div>
+    </div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<?include("$D_R/_footer.htm");?>

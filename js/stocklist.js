@@ -1,0 +1,1 @@
+var stocklistarray=new Array('A','AA','AAE','AAG PRT','AAI','AAM','AAR','AAT','ABB','ABC');

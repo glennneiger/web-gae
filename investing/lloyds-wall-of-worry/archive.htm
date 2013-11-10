@@ -1,0 +1,41 @@
+<? 
+global $D_R,$HTHOST,$HTPFX,$IMG_SERVER;
+session_start();
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+
+$pageName = "lloyds-wall-of-worry-archive";
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav","redesign","worry");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","wallofworry");
+
+include($D_R."/_header.htm");
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_design_lib.php");
+
+$objWorryData = new worryData();
+$objWorryDesign = new worryDesign();
+
+?>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  	<script src="http://ui.jquery.com/latest/ui/effects.core.js"></script>
+	<script src="http://ui.jquery.com/latest/ui/effects.explode.js"></script>
+    <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.betterTooltip.1.2.js"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			jQuery('.tTip').betterTooltip({speed: 150, delay: 300});
+		});
+	</script>
+	<script type="text/javascript">jQuery.noConflict() ;</script>
+
+<div class="shadow">
+<div id="content-container">
+	<div class="wall-main">
+		<? 	echo $objWorryDesign->displayArchiveLeft(); 
+			echo $objWorryDesign->displayArchiveRight();
+		?>
+
+	</div>
+</div>
+</div>
+<? include($D_R."/_footer.htm"); ?>

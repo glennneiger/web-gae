@@ -1,0 +1,468 @@
+<?php
+global $HTPFX,$HTHOST,$ADS_SIZE,$IMG_SERVER,$D_R,$HTPFXSSL,$HTPFXNSSL,$pageMetaData,$objCache,$objPage,$scriptRefresh,$article_keywords,$nextUrl,$prevUrl,$articlePages,$secure_urls,$purifier,$config;
+handle_ssl();
+session_start();
+
+$cokies_status = checkCookies();
+if(!is_object($objCache)){
+	$objCache = new Cache();
+}
+
+if(strpos($_SERVER[REQUEST_URI],'store') || strpos($_SERVER[REQUEST_URI],'shops')){
+	include_once($D_R."/lib/_cart.php");
+	$cart=new CartDisplay();
+}
+
+setReferer($_GET['from']);
+autoLogin();
+if($_GET['refresh']=="1")
+{
+	$scriptRefresh="1";
+}
+if($articlePages>1)
+{
+	$fullText = "?page=full";
+}
+include_once($D_R."/lib/_content_data_lib.php");
+$objPage= new Page($pageName,$topicPageID);
+
+if(($_GET['from'] && strtolower($_GET['from'])=='thestreet') || ($_GET['utm_source'] && strtolower($_GET['utm_source'])=='thestreet'))
+{
+	$_SESSION['thestreet']	=	'1';
+}
+
+if($_GET['pcode'] && strtolower($_GET['pcode'])=='googlead'){
+	set_sess_vars("googleAdWordlead","1");
+}
+
+if($objContent->contentType)
+{
+	$pageMetaData=$objContent->getMetaData();
+    global $default_section;
+	if(!$pageMetaData['section'] && $objContent->contentType=='1'){
+		$pageMetaData['section']=$default_section;
+	}
+	$title=ucwords($pageMetaData['title']);
+	$section=ucwords(strtolower($pageMetaData['section']));
+
+	 $titleMetaData=$title;
+     if($pageName=='dailyfeed' || $pageName=='dailyfeed_article'){
+     	if($pageName=='dailyfeed_article')
+     	{
+     		if($pageMetaData['is_title_duplicate']=='1')
+     		{
+     			$publishDate = date("F d Y h:i",strtotime(($pageMetaData['publish_date']=="0000-00-00 00:00:00" || $pageMetaData['publish_date']=="")?$pageMetaData['date']:$pageMetaData['publish_date']));
+     			$titleMetaData=$title.' '.$publishDate.' | MV Premium | Minyanville\'s Wall Street';
+     		}
+     		else
+     		{
+     			$titleMetaData=$title.' | MV Premium | Minyanville\'s Wall Street';
+     		}
+     	}
+     	else {
+     		$titleMetaData=$title.' | MV Premium | Minyanville\'s Wall Street';
+     	}
+
+	 }else{
+		if(!empty($section))
+        {
+        	if($pageName=="SlideShow")
+        	{
+        		$titleMetaData=$title.' | Slideshow | Minyanville\'s Wall Street';
+        	}
+        	else
+        	{
+        		if($pageMetaData['is_title_duplicate']=='1')
+	     		{
+	     			$publishDate = date("F d Y h:i",strtotime(($pageMetaData['publish_date']=="0000-00-00 00:00:00" || $pageMetaData['publish_date']=="")?$pageMetaData['date']:$pageMetaData['publish_date']));
+        		$titleMetaData=$title.' '.$publishDate.' | '.$section.' | Minyanville\'s Wall Street';
+	     		}
+	     		else
+	     		{
+	     			$titleMetaData=$title.' | '.$section.' | Minyanville\'s Wall Street';
+	     		}
+        	}
+        }
+	}
+	if($article->syndicationChannels['google_news_standout']){
+		$pageMetaData['show_standout']=TRUE;
+	}
+	if($feedData->synd['google_news_standout']){
+		$pageMetaData['show_standout']=TRUE;
+	}
+ 	$pageMetaData['show_canonical']=$show_canonical;
+
+}else{
+
+	 if($pageName=='dailyfeed' || $pageName=='dailyfeed_article'){
+	 	$pageMetaData=$objPage->getMetaDataDailyFeed($metatext);
+	}elseif($pageName=="subscription_product_welcome"){
+		$pageMetaData=$objPage->getMetaDataRegWelcome($orderStatus);
+	}elseif($pageName=="buzz_alert"){
+        $pageMetaData['title'] = $getBuzzResult['title'].' | '.'Buzz and Banter | Minyanville\'s Wall Street';
+        $pageMetaData['description'] = $getBuzzResult['description'];
+        $pageMetaData['show_canonical']=$show_canonical;
+        $pageMetaData['url']=$getBuzzResult['url'];
+        $pageMetaData['keywords']=$getBuzzResult['keywords'];
+        $pageMetaData['robots']=$getBuzzResult['robots'];
+	}
+	elseif($topicPageID)
+		 {
+		 	if($pageName=="Radio")
+		 	{
+		 		$pageMetaData['title']=$pageName.' - All Shows | Minyanville\'s Wall Street';
+		 		$pageMetaData['keywords']=$pageName.',All Shows,Minyanville.com';
+		 	}
+		 	else
+		 	{
+		 		$pageMetaData['title']=$pageName.' - All Articles | Minyanville\'s Wall Street';
+		 		$pageMetaData['keywords']=$pageName.',All Articles,Minyanville.com';
+		 	}
+			$pageMetaData['description']=$meta_description;
+			$pageMetaData['show_canonical']=$_SERVER['SCRIPT_URI'];
+	        $pageMetaData['url']=$_SERVER['SCRIPT_URL'];
+        }
+	else{
+
+	     $pageMetaData=$objCache->getPageMeta();
+	}
+	if($pageName=="audiovideo")
+ 	{
+ 		$pageMetaData['title']=$title.' | AUDIO & VIDEO';
+ 	}
+    if($pageMetaData['title'] == "")
+    {
+    	$pageMetaData['title'] = $pageMeta['title'];
+        $pageMetaData['description'] = $pageMeta['description'];
+    }
+	$titleMetaData=$pageMetaData['title'];
+}
+
+$pageDetail=$objPage->getPageDetail($topicPageID);
+$objPage->build_lang();
+$userid= $_SESSION['SID'];
+$userobj = new user();
+if(($userobj->user_id==''))
+{
+	$userid='';
+}
+
+$pageMetaData['keywords']=$pageMetaData['keywords'].','.'Minyanville\'s Wall Street';
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<?
+include_once("$D_R/lib/analytics/_googleweboptimizer.php");
+$objWebOpt = new googleWebOptimizer();
+$objWebOpt->version = $version;
+$objWebOpt->page_name = $pageName;
+$objWebOpt->webOptimizerControllerCode();
+$purifier = new HTMLPurifier($config);
+?>
+<head prefix="og: http://ogp.me/ns# mvgraphtest:http://ogp.me/ns/apps/mvgraphtest#">
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<!-- commented 152555418092812 fb app id from flike  -->
+<meta property="fb:admins" content="100000216316983"/>
+<?
+if($pageMetaData['publish_date']!="" && $pageMetaData['publish_date']!="0000-00-00 00:00:00")
+{
+?>
+<meta property="article:published_time" content="<?=date('c',strtotime($pageMetaData['publish_date']));?>"/>
+<? } ?>
+<meta property="fb:app_id" content="139123259501339"/>
+<? if($pageName=='home') { ?>
+<meta name="google-site-verification" content="TQ7jNQwBK7VPIs0mRl-moEL0xUoshXAme_xem-VyERY" />
+<? }?>
+<title><?=mswordReplaceSpecialChars(html_entity_decode($titleMetaData))?></title>
+<!-- Mets Data Starts --->
+<meta name="description" content="<?=htmlentities(mswordReplaceSpecialChars($pageMetaData['description']));?>" >
+<meta name="keywords" content="<?=mswordReplaceSpecialChars($pageMetaData['keywords']);?>">
+<?
+$article_keywords = mswordReplaceSpecialChars($pageMetaData['keywords']);
+if($pageMetaData['show_standout']){ ?>
+	<link rel="standout" href="<?php echo $HTPFX.$HTHOST.$pageMetaData['url']; ?>" />
+<?php  }
+if($pageMetaData['show_canonical']){
+	if($pageName=='dailyfeed' || $pageName=='dailyfeed_article'){
+        $canonical=$pageMetaData['url']==""?$pageMetaData['alias']:$pageMetaData['url'];
+		$canonical = urldecode($canonical);
+	?>
+		<link rel="canonical" href="<?=$HTPFX.$HTHOST.$canonical.$fullText;?>"/>
+		<? if($show_canonical) { // check to dislpay meta only on detail page ?>
+			<meta name="publication_date" content="<?=date('c',strtotime($pageMetaData['publish_date']));?>" />
+			<meta name="topic" content="<?=strtoupper($pageMetaData['topic']);?>" />
+			<meta name="resource" content="<?=$pageMetaData['resource']?>" />
+			<meta name="author" content="<?=$pageMetaData['author_name']?>" />
+	<?
+		}
+	}
+	else {
+		$canonical=$pageMetaData['alias']==""?$pageMetaData['url']:$pageMetaData['alias'];
+        if($pageName =='home')
+        {
+        	$canonicalPostFix ='/';
+        }
+        if($canonical=="videos.minyanville.com")
+        {
+			$canonical_url = urldecode($canonical.$canonicalPostFix);
+        	echo '<link rel="canonical" href="http://'.$canonical_url.$fullText.'"/>';
+        }
+        else
+        {
+			$canonical_url = urldecode($HTPFX.$HTHOST.$canonical.$canonicalPostFix);
+        	echo '<link rel="canonical" href="'.$canonical_url.$fullText.'"/>';
+        }
+	}
+	?>
+		<meta name="robots" content="<?=$pageMetaData['robots']?>"/>
+	<?
+}
+if(!empty($prevUrl))
+{
+	echo '<link rel="prev" href="'.$prevUrl.'" />';
+}
+if(!empty($nextUrl))
+{
+	echo '<link rel="next" href="'.$nextUrl.'" />';
+}
+$obOuterTemplate = new OuterTemplate($pageName); // lib/_outer_design_lib.php
+$obOuterTemplate->showFacebookMetaData($pageName,$pageMetaData);
+
+?>
+
+<!-- Meta Data Ends -->
+<!-- RSS Configuration Starts-->
+<?php
+if($pageName=='markets'){
+	?>
+	<link rel="alternate" type="application/rss+xml" title="Minyanville.com - Editor's Pick" href="<?= $HTPFX.$HTHOST; ?>/rss/editors-pick.rss" />
+	<?php
+}else if(!empty($sectionId)){ ?>
+	<link rel="alternate" type="application/rss+xml" title="Minyanville.com - Stories on <?php echo ucwords($subSectionName);?>" href="<?= $HTPFX.$HTHOST; ?>/rss/articlerss.rss?sec_id=<?php echo $sectionId;?>" />
+<?php  }else{ ?>
+<link rel="alternate" type="application/rss+xml" title="Minyanville.com - All Articles" href="<?= $HTPFX.$HTHOST; ?>/rss/" />
+<link rel="alternate" type="application/rss+xml" title="Minyanville.com - All DailyFeed Stories" href="<?= $HTPFX.$HTHOST; ?>/rss/dailyfeed.rss" />
+<!-- RSS Configuration Ends-->
+<?php } loadjavascriptheader($pageCSS,$pageJS,'H',$noDefaultLoad);?>
+<!--
+<script type="text/javascript" src="<?=$CDN_SERVER;?>/js/fancyzoom/jquery.fancybox-1.3.4.3.js"></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER;?>/css/juery.fancybox-1.3.4.2.css" type="text/css" media="all">
+<script type="text/javascript" src="<?=$CDN_SERVER;?>/js/surveyBox.js"></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER;?>/css/surveyBox.css" type="text/css" media="all">
+-->
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/fancybox.1.4.css" type="text/css" media="all">
+
+<? include_once($D_R."/lib/mailchipapi/mailchimp_design_lib.php");
+include_once($D_R."/lib/mailchipapi/mailchimp_data_lib.php");
+include_once($D_R."/lib/config/_article_config.php");
+$objMailChimpPopupDesign= new mailChimpFancyBoxDesign();
+if(!empty($cokies_status))
+{
+	$objMailChimpPopupDesign->showBuzzFancyBox();
+}
+
+?>
+
+<? kissMetricsTracking($pageName); ?>
+<!-- JS Ends -->
+<?
+global $arMenuDetail;
+if($pageName=='article_template'){
+	$pageDetail['id']=$article->checkM8ArticlepageId;
+    $pageName=$article->checkM8articlePagename;
+	if($pageDetail['id']=="0"){
+		$pageDetail['id']="56";
+	}
+
+	$sectionArticleBreadCrumb=1;
+}
+
+$featuredlinks=explode('/',$_GET['from']);
+if($featuredlinks[1]=='Sponsored_Articles' & $featuredlinks[2]=='Yes' ){
+	show_adds_checkmate($pageName,'Sponsored_Articles=1');
+}
+else{
+		show_adds_checkmate($pageName,'',$topicPageID);
+}
+?>
+<script language="javascript" type="text/javascript">var ord = Math.random() * 10000000000000000;var adBanners;</script>
+<script type="text/javascript">
+if(document.location.protocol=='http:'){
+ var Tynt=Tynt||[];Tynt.push('bGQzgMfvWr4BOuacwqm_6r');Tynt.i={"ap":"Read more:"};
+ (function(){var s=document.createElement('script');s.async="async";s.type="text/javascript";s.src='http://tcr.tynt.com/ti.js';var h=document.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);})();
+}
+</script>
+<!------ IMS OAS SETUP begin ------>
+<!--Include OAS Analytics Setup Script -->
+<SCRIPT LANGUAGE="JavaScript" src="http://oascentral.investingmediasolutions.com/Scripts/oas_analytics.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">
+
+//configuration
+OAS_url = 'http://oascentral.investingmediasolutions.com/RealMedia/ads/';
+//OAS_sitepage = window.location.hostname + window.location.pathname;
+OAS_sitepage = 'Minyanville/homepage';
+OAS_listpos = 'Top,TopRight,BottomRight,x13,Position1,Position2,Position3,Position4,Bottom';
+
+<!--Define Custom Reporting Taxonomy, format is: �&Attribute1=Value1&Attribute2=Value2� -->
+
+var OAS_taxonomy='';
+var OAS_query='';
+OAS_query == '' ? OAS_query += 'XE' + '&' + OAS_taxonomy + OAS_rdl + "&if_nt_CookieAccept=" + OAS_CA + '&XE' : OAS_query += '&XE' + '&' + OAS_taxonomy + OAS_rdl + "&if_nt_CookieAccept=" + OAS_CA + '&XE';
+
+OAS_target = '_top';
+//end of configuration
+OAS_version = 10;
+OAS_rn = '001234567890'; OAS_rns = '1234567890';
+OAS_rn = new String (Math.random()); OAS_rns = OAS_rn.substring (2, 11);
+function OAS_NORMAL(pos) {
+  document.write('<A HREF="' + OAS_url + 'click_nx.ads/' + OAS_sitepage + '/1' + OAS_rns + '@' + OAS_listpos + '!' + pos + '?' + OAS_query + '" TARGET=' + OAS_target + '>');
+  document.write('<IMG SRC="' + OAS_url + 'adstream_nx.ads/' + OAS_sitepage + '/1' + OAS_rns + '@' + OAS_listpos + '!' + pos + '?' + OAS_query + '" BORDER=0></A>');
+}
+
+</SCRIPT>
+
+<SCRIPT LANGUAGE="JavaScript1.1">
+
+OAS_version = 11;
+if (navigator.userAgent.indexOf('Mozilla/3') != -1 || navigator.userAgent.indexOf('Mozilla/4.0 WebTV') != -1)
+  OAS_version = 10;
+if (OAS_version >= 11)
+  document.write('<SCR' + 'IPT LANGUAGE="JavaScript1.1" SRC="' + OAS_url + 'adstream_mjx.ads/' + OAS_sitepage + '/1' + OAS_rns + '@' + OAS_listpos + '?' + OAS_query + '"><\/SCR' + 'IPT>');
+</SCRIPT>
+
+<SCRIPT LANGUAGE="JavaScript">
+
+document.write('');
+function OAS_AD(pos) {
+  if (OAS_version >= 11)
+    OAS_RICH(pos);
+  else
+    OAS_NORMAL(pos);
+}
+
+</SCRIPT>
+<!------ IMS OAS SETUP end ------>
+
+</head>
+<body><!--Minyanville Header Start--><div id="cart_message" style="top:350px;left:450px;border:1px solid #F9BE46;position:fixed;z-index:100;width:320px;height:180px;background-color:#F8EACF;display:none;"></div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=139123259501339";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<input type='hidden' id='logouttarget' name='logouttarget' value=''>
+<?
+if(!($_GET['from']=="ameritrade" || $_SESSION['referer']=="http://www.ameritrade.com")){
+global $is_ameritrade;
+$is_ameritrade=true;
+ } ?>
+<div id="outer-container">
+	<div class="articleNotFound" id="articleNotFound">Sorry!! The article you are trying to read is not available now.</div>
+	<?php if($_SESSION['notFound']=='1'){ ?>
+			<script>
+				jQuery('#articleNotFound').css('display','block');
+				setTimeout("jQuery('#articleNotFound').hide()",15000);
+			</script>
+			<? unset($_SESSION['notFound']);
+	}?>
+	<div id="page-name" style="display:none;"><?=$pageName?></div>
+
+<?php
+   // $obOuterTemplate->autoRefresh();
+?>
+<!-- MSN Money Logo Comes only when user Comes from MSN via articles: End" -->
+<?
+$obOuterTemplate->displayMSN();
+?>
+<div id="header-container">
+    <div id="search-login">
+        <ul style="float:left;">
+        <?
+        $inTotalProduct = count($_SESSION['viacart']['SUBSCRIPTION']);
+        if($userid) {
+        ?>
+        <li class="login-bar" >Welcome <?= ucwords($_SESSION['nameFirst']); ?> &nbsp;| </li>
+        <li class="login-bar" style="padding-right: 15px;" >
+        <a id="<?=$_SESSION['user_id']?>" target="_self" href="<?=$HTPFX.$HTHOST?>/subscription/register/loginAjax.php?type=logout"> &nbsp;Logout &nbsp;</a> |
+        </li>
+        <li class="login-bar"  style="padding-right: 15px;" >
+             <a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/manage.htm">&nbsp;My Account&nbsp;</a>
+        </li>
+
+            <? } else { ?>
+
+        <li class="login-bar" style="padding-right: 15px;">
+            <div class="shelf">
+			<div class="btn-shelf">
+				<a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/login.htm" style="color:#ffffff;text-decoration:none;" class="mvLoginBtn">Log In</a>
+			</div>
+	    </div>
+        </li>
+       <!-- <li class="login-bar"><a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/sign-up.htm" >&nbsp;Sign-up&nbsp;</a></li> -->
+        <? } ?>
+       <!-- <li class="login-bar-cart"> | <a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register" ><img src="<?=$IMG_SERVER;?>/images/home_redesign/cart_icon_transparent.gif" align="absbottom" />&nbsp;Cart&nbsp;(<?=$inTotalProduct?>)</a></li>    -->
+     <li id="site_search_box">
+        <form method="get" id="frmsearch"  name="frmsearch" action="<?=$HTPFX.$HTHOST?>/library/search.htm?search=1&stock=1" >
+            <input id="search" style="width:175px;" class="search-input-box-header" type="text"  value="Search this site..." onmouseover="enableclick();" onFocus="if(this.value=='Search this site...')this.value=''" name="q"/>
+
+            <input type="image" id="search-button" class="searchGo" src="<?=$IMG_SERVER;?>/images/home_redesign/search_button.gif" onclick="if(jQuery('#search').val() == 'Search this site...' )jQuery('#search').val('');" />
+     </form>
+         </li>
+         <li id="ticker_search_box">
+                <input id="txtQuote" style="width:120px;" class="search-input-box-header" type="text" onkeypress="if(event.keyCode==13){getQuoteSearch();}"  value="Get Quote" onmouseover="enableclick();" onFocus="if(this.value=='Get Quote')this.value=''" name="txtTicker"/>
+
+        <img class="searchGo" src="<?=$IMG_SERVER;?>/images/home_redesign/quote_button.gif" onClick="if($('txtQuote').value == 'Get Quote' )$('txtQuote').value='';getQuoteSearch();" />
+        </li>
+        <li class="88x31" style="width:88px;height:31px;padding:0 0 0 10px;"><?php
+        	if($pageName == "ticker")
+			{
+				echo "<!-- FINANCIALCONTENT ADCODE 5 -->";
+			}
+			else {
+					//CM8_ShowAd("88x31_QT");   /* No Ad Tag from IMS*/
+			}
+					?></li>
+    </ul>
+</div>
+
+
+<div id="main-navigation-container">
+<div id="site-logo">
+ <a href="<?= $HTPFXNSSL.$HTHOST; ?>"><img src="<?=$IMG_SERVER;?>/images/home_redesign/mv_logo_site.png" alt="Minyanville.com"/></a>
+</div>
+<?
+$cacheHeader= new Cache();
+
+$getHeaderNavCache=$cacheHeader->getHeaderMainNavigationCache();
+
+echo displayNavigation($pageDetail['id'],$getHeaderNavCache,$sectionId);
+?>
+</div> <!-- end main navigation container -->
+	<? if($customHeader){
+		displayCustomHeader($pageName);
+	}
+	else{
+		if($pageName != "newsletter_offers")
+		{
+			displayLeaderboard($pageName);
+		}
+
+	}
+	?>
+<?
+
+if($sectionArticleBreadCrumb=="1"){
+	$breadcrum=$objCache->getCacheBreadCrum($article->pageId);
+}else{
+$breadcrum=$objCache->getCacheBreadCrum($pageDetail['id']);
+}
+
+
+?>
+</div> <!-- header container -->
+<!--Minyanville Header End-->

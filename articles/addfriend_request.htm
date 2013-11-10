@@ -1,0 +1,77 @@
+<?php
+global $HTPFX,$HTHOST,$D_R;
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/Articles.1.9.js" type="text/javascript"></script>
+<?
+include_once($D_R.'/lib/_exchange_lib.php');
+include_once('../lib/_includes.php');
+include_once('../lib/_db.php');
+include_once('../lib/_exchange_lib.php');
+include_once('../lib/layout_functions.php');
+$objaddrequest=new friends();
+$pageName = "article_template";
+$pageId = "2";
+build_lang($pageId);
+if($_GET['ra']=='true')
+{
+	$objaddrequest->ReportAbuse($_GET['subscription_id'], $_GET['comment_id'], $_GET['itemtype'], $_GET['poster_id'], $_GET['pagename'], $_GET['strAttribute']);
+}
+$comment_id = $_GET["comment_id"];
+$poster_id = $_GET["poster_id"];
+$aid = $_GET["article_id"];
+if(!$USER->email)
+{
+include_once("$D_R/lib/_auth.php");
+$USER=new user($_SESSION[EMAIL],$_SESSION[PASSWORD]);
+}
+
+global $page_config;
+$id=$_GET['subscription_id'];
+$article_id=$_GET["article"];
+$subid=$_GET["subid"];
+$postid=$_GET["postid"];
+$objThread = new Thread();
+$itemtype='articles';
+$threadArray = $objThread->get_thread_on_object($article_id);
+$threadid=$threadArray['id'];
+$objThread->thread_id=$threadid;
+$count = '5';
+$friends=$objaddrequest->get_friends($id);
+$friendslist=$objaddrequest->get_friend_list($id,'','','');
+$comments = $objThread->get_all_comments($objThread, 'articles', 'teasure', 0, $count,$user,$shift=0);
+
+$findrequest=$objaddrequest->searchrequest($id,$subid);
+if($findrequest[0][id]==""){
+ $objaddrequest->sendrequest($id,$subid);
+}
+
+$txtsendrequest="<table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin-left:0px'>";
+$rand=rand();
+$txtsendrequest.="<tr><td colspan='3' class='Article28Comments'><div id=".$rand." ></div></td></tr>";
+
+$index=0;
+$urlmessage='Post.php?from_subscription_id='.$id;
+$urlmessage.='&message_id='.$rand;
+$ReportAbuse=$objaddrequest->CheckReportAbuse($id);
+
+	if (($_GET['ra']=='true') && ($comment_id!=""))
+	{
+
+		echo $lang['Report_sent'];
+		exit;
+	}
+
+	$chkFriend=is_friend($postval['subid'],$id);
+    if($chkFriend==0)
+	{
+		if($findrequest[0][id]=="")
+	{
+ 			$objaddrequest->sendrequest($id,$subid);
+			echo $lang['Request_sent'];
+		}
+		else{
+			echo $lang['request_exist'];
+	}
+}
+
+?>

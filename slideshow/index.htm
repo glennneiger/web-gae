@@ -1,0 +1,414 @@
+<?
+session_start();
+global $HTPFX,$HTHOST,$D_R;
+include_once($D_R."/lib/_article_design_lib.php");
+include_once($D_R."/lib/_content_data_lib.php");
+$slideUrlArr= explode('/',$_SERVER['REQUEST_URI']);
+$slideArr = getKeyVal('slideshow',$_SERVER['REQUEST_URI']);
+$id = ($slideArr['slideshow']=="" ? $_GET['a'] : $slideArr['slideshow']);
+$page = ($_GET['page']=="" ? end($slideUrlArr) : $_GET['page']);
+$cookiesid=$_SESSION['SID']."_default";
+$pageName="SlideShow";
+global $default_slider_time;
+$title= "SlideShow";
+$sourceURL = $_SERVER['SCRIPT_URI'];
+
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search","ajax");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav");
+
+
+googleanalytics();
+universalGoogleAnalytics();
+/*pages dataval  to load   first slide*/
+global $cm8_ads_MediumRectangle;
+$preview_data = recursive_array_replace($purifier,urldecode($_GET['preview']));
+if(is_numeric($preview_data))
+{
+	$preview_data = $preview_data;
+}
+else {
+	$preview_data="";
+}
+if(isset($preview_data)&&($id))
+{
+	//get the page no of the id passed through URL
+	$pageno = getPageNoofSlideshow($id); // defined in layout_function.php
+}
+$preview=0;
+$preview = $preview_data?$preview_data:'0';
+$stotal = 0;
+$slideid = 0;
+$slide_no = 1;
+$lastpreview=0;
+$slideshowTitle = '';
+$slide = array();
+$slidePageNo=$page;
+if(!is_numeric($slidePageNo))
+{
+	$slidePageNo=$pageno;
+}
+$slideshow_id_type=get_itemtype_id("slideshow");// defined inside layout functions
+if (($id != "") && (is_numeric($id)))
+{
+	$slideid = $id;
+	if($_GET['slide_no'] =="")
+	{
+         $slide_no = 1;
+	 }
+
+
+$tagsAssociated=getSlideShowTags($slideid,$slideshow_id_type);
+$tagsAssociatedIds="";
+foreach($tagsAssociated as $key=>$val){
+	if($tagsAssociatedIds==''){
+	$tagsAssociatedIds=implode(",", $val);
+	}else{
+	$tagsAssociatedIds.=",".implode(",", $val);
+	}
+}
+$slide = getSlideShow($slideid,$slide_no,$preview);
+if(empty($slide))
+{
+	location("/slideshow/");
+	exit;
+}
+$slideTags=array();
+global $slidesCnt;
+$configSlideCnt=$slidesCnt; // get this value from constant
+
+$slideTags=getRelatedSlides($slideid,0,$configSlideCnt,$slideshow_id_type); // returns an array that relates to slide id passed
+
+$totalslides=$slideTags['totalslides'];
+$currentpage=1;
+if(($totalslides%$configSlideCnt)==0){
+$totalPages=($totalslides/$configSlideCnt);
+}else{
+$totalPages=ceil($totalslides/$configSlideCnt);
+}
+if(!empty($slide))
+{
+ $stotal = $slide['total_slides'];
+ $slideshowTitle = $slide['title'];
+}
+}else
+{
+ $slide =  getlatestslideshow();
+ if(!empty($slide)){
+ 	$slide_no = $slide['slide_no'];
+ 	$slideid = $slide['id'];
+ 	$stotal = $slide['total_slides'];
+ 	$slideshowTitle = $slide['title'];
+	}
+}
+if($slide != 0){
+	$slideSet = true;
+	if (!$USER->isAuthed) {
+		$loggedin = "no";
+	} else {
+		$loggedin = "yes";
+	}
+}
+if($id)
+{  $objContent = new Content('Slideshow',$id);   }
+else { $objContent = new Content('Slideshow',$slideid); }
+
+$itemtype='slideshow';
+$subscription_id=$_SESSION['SID'];
+	if($subscription_id==""){
+		$subscriptionid=$_SERVER['REMOTE_ADDR'];
+	}else{
+		$subscriptionid=$subscription_id;
+	}
+if($subscription_id)
+{
+		$profile_exchange=$_SESSION['EID'];
+}
+
+$disqusArticleId=$slideid;
+$disqusTableName=$objContent->contentTable;
+$disqusItemType=$objContent->contentType;
+$disqusItemUrl=$_SERVER['REQUEST_URI'];
+googleanalytics();
+$slide_title = addslashes(substr($slide['title'],0,125));
+
+include($D_R."/_header.htm");
+?>
+<div id="fb-root"></div>
+
+<script src="<?=$HTPFX.$HTHOST?>/js/friends.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/Articles.1.9.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/slideshow.1.11.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/slider.1.1.js" language="JavaScript" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/slideshow_styles.1.12.css" type="text/css" />
+<script type="text/javascript">
+var lastRange=<?=$lastrange;?>;
+var anum;
+var slide_no;
+var slideshowtype=<?=$slideshow_id_type?>;
+var total_slides= <?php echo $stotal; ?>;
+var previewdata = <?php echo $preview?>;
+var slide_title = '<?=$slide_title?>';
+var slideshowtitle= '<?php echo $tracking_name; ?>';
+anum = <?php echo $slideid; ?>;
+slide_no = <?php  echo $slide_no; ?>;
+lastpreview=<?php echo $lastpreview; ?>;
+</script>
+
+<!--left contaner start from here-->
+
+<!--Body area start from here-->
+<!--left contaner start from here-->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+<div class="mv_slideshow_container">
+<div class="mv_slideshow_head">
+<table width="659px" border="0" cellpadding="0" cellspacing="0" align="left">
+<tr class="mv_mono_header_image">
+<td width="590" align="left" style="padding: 0 0 0 11px;">
+<span class="mv_madoff" style="width:100%"><?=substr(ucwords(strtolower($slide['title'])),0,125);?></span>
+<br />
+<?php
+if($slide['publish_date']!="0000-00-00 00:00:00" && $slide['publish_date']!="")
+{
+	$publish_date = date('M d, Y g:i a',strtotime($slide['publish_date']));
+}
+else
+{
+	$publish_date = $slide['date'];
+}
+?>
+<span class="mv_publish_date"><?=$publish_date;?></span>
+
+</td>
+<td width="0" valign="top" >
+<div style="">
+        <!-- slider div start -->
+<div style="border:solid 0px #FFFF00; padding-left:10px;  float:right;">
+<table class="header_pagination" width="0%" align="right" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="23px">
+<img src="<?=$IMG_SERVER;?>/images/slideshow/slide_next_button.gif" name="bt_play" border="0" align="absbottom"  id="bt_play" style="cursor:pointer;;display:none;" onclick="statPlay();" />
+<!-- <img id="bt_pause" src="<?=$IMG_SERVER;?>/images/slideshow/slide_pause_button.gif" border="0" align="absbottom" style="cursor:pointer" onClick="play_pause();" /></td> -->
+<td><img src="<?=$IMG_SERVER;?>/images/slideshow/slide_prev_disabled_button_new.gif" vspace="3" hspace="5" name="bt_left" align="bottom" id= "bt_left" onclick=" showslideshow('prev');"  onload="this.disabled=true;"></td>
+<td>
+<? if (($stotal > 1 )){?>
+<img src="<?=$IMG_SERVER;?>/images/slideshow/slide_next_button_new.gif" align="absbottom" id = "bt_right" style="cursor:pointer"  onClick=" showslideshow('next'); " />
+<?} else {?><img src="<?=$IMG_SERVER;?>/images/slideshow/slide_next_button.gif" align="absbottom" id = "bt_right"  onClick=" showslideshow('next') ; " onload="this.disabled=true;" />
+<?}?></td>
+</tr>
+<tr><td colspan="3">
+<!--  <div class="speedometer">
+<div id="wrap1" style="width: 48px;position: absolute;background-color: #78a1c7; height: 6px;">
+<div id="span1" style="float: left; background-color: #FFF; height: 6px;"></span>
+<div id="value1-right" style="position: absolute; text-align: right; width: 48px;"></div>
+<div id="value1-left" style="position: absolute; width: 48px;"></div>
+<div id="track1" style="width: 48px; height: 10px; position: absolute;">
+<div id="handle1" style="position: absolute; width:5px; height:10px; background-color: #FFFFFF; cursor: pointer;"></div>
+</div>
+</div>
+<?
+/* COOKIE SETINGS */
+global $default_slider_time,$slideshowpausetime;
+if((is_numeric($_GET['default']))&&($_GET['default']!=''))
+{
+$deftime=$_GET['default'];
+$_SESSION['defaulttime']=$deftime;
+}else
+{
+$deftime=$_SESSION['defaulttime']; // get the value from session
+if($deftime=='')
+{
+$deftime=$default_slider_time;
+$_SESSION['defaulttime']=$deftime; //5
+}
+}
+?>
+<input name="debug1" type="hidden" id="debug1" value="<?=$deftime;?>" />
+</div>
+</div>  -->
+</td></tr>
+</table>
+</div>
+</div>
+<!-- slider div End -->
+</td>
+</tr>
+</table>
+</div>
+<div>
+<div class="mv_mid_container">
+<?php
+global $maximagewidth;
+global $maximageheight;
+if($slide['image']==''){
+$imageurl="";
+//$width="0%";
+}else{
+$imageurl=$slide['image'];
+$imgproperties=getImageSize($imageurl);
+$imgwidth=$imgproperties[0];
+$imgheight=$imgproperties[1];
+}
+?>
+<div class="slide_main_container">
+<?
+if($imageurl!=''){
+//$width="15%";
+if(($imgwidth>$maximagewidth)||($imgheight>$maximageheight)){
+if($imgwidth>$maximagewidth){
+$imgwidth=$maximagewidth;
+//echo "Width : ".$imgwidth;
+}
+if($imgheight>$maximageheight){$imgheight=$maximageheight; //echo "Height : ".$imgheight;
+}
+}
+?>
+<div class="mv_mid_left_cont" id="slideimage">
+<img style="width: 317px; height: 321px;" src="<?php echo $imageurl;?>">
+</div>
+<? } else { ?>
+<div class="mv_mid_left_cont"  id="slideimage">&nbsp;</div>
+<? } ?>
+<div class="mv_mid_right_cont" id="slidecontent">
+<?php echo $slide['body'];?></div>
+</div>
+<div class="mv_logo_container" align="center"><a  href="<?=$HTPFX.$HTHOST?>">MORE Slideshows from</a>&nbsp;<a href="<?=$HTPFX.$HTHOST?>">MINYANVILLE.com</a></div>
+<div style="float:left;">
+<!-- START RESULT DIV -->
+<div id="resultdiv" class="thub_loader">
+<?php
+//echo getSlideContent_Latest($totalslides,$slideTags,$slideid);
+?>
+<!---Combo tabs start from here-->
+<div style="border:0px solid red;float:left;height:170px;">
+<div id="combo_tab1" style="float:center;height:150px;width:650px;">
+<?php
+include_once("slidethumbs.php");
+?>
+</div>
+</div>
+<!---Combo tabs end here-->
+</div>
+<input name="slidepagenos" type="hidden" id="slidepagenos" value="<?=$slidePageNo;?>" />
+<input name="currentPage" type="hidden" id="currentPage" value="<?=$currentpage;?>" />
+<input name="limit" type="hidden" id="limit" value="<?=$configSlideCnt;?>" />
+<input name="totalslides" type="hidden" id="totalslides" value="<?=$totalslides;?>" />
+<input name="totalPages" type="hidden" id="totalPages" value="<?=$totalPages;?>" />
+<input name="tagsrelated" type="hidden" id="tagsrelated" value="<?=$tagsAssociatedIds;?>" />
+<!-- END RESULT DIV -->
+</div>
+<div></div>
+</div>
+
+<!-- Slideshow ends here -->
+
+<!--Rate this Slideshow area start from here-->
+
+<div class="rate_article_main">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" align="left">
+	<tr>
+      <td width="20%">
+       <table border="0" cellpadding="10" cellspacing="0" align="left">
+		<tr>
+          <td colspan="2" valign="top">
+		 	 <table width="356" border="0" align="left" cellpadding="0" id="article_double_line_bottom" cellspacing="0"  >
+			<tr>
+				<td width="294" class="common_article_heading" colspan="4" valign="top">
+				 <div id='vote'>
+				 <?
+					$object_name="slideshow";
+					$vote = voteCast($slideid,$rating_type,$subscriptionid,$slideshow_id_type,$object_name);
+					echo $vote;
+					if($voter_id == $voter_id){
+					 if($vote != '<span>Rate this post</span>')	{
+						$voteContent.='<div id="post_rating_block'.$slideid.'" style="margin-right:2px;">'.$vote.'</div>';
+					  }
+					}else{
+						if(getVotingStatus($subscriptionid,$slideid)) // If subscriber has already rated for the vote
+					{
+						$ratingDisplay = 'none';
+						$editRatingDisplay = '';
+					}
+					else
+					{
+						$ratingDisplay = '';
+						$editRatingDisplay = 'none';
+					}
+					 $voteContent.='<div class="rating_block" id="post_rating_block'.$slideid.'" style="margin-right:2px;">'.$vote.'&nbsp;
+					<span id="vote_rating'.$slideid.'" style="display:'.$ratingDisplay.';"><a href="javascript:void(0);" onclick="javascript:voteR('.$slideid.',0,\''.$subscriptionid.'\','.$object_id.',\''.$object_name.'\');"><img src="$IMG_SERVER/images/redesign/vote_down.gif" width="31" height="30" border="0" align="middle"/></a>
+					<a href="javascript:void(0);" onclick="javascript:voteR('.$article[id].',1,\''.$subscriptionid.'\','.$object_id.',\''.$object_name.'\');"><img src="$IMG_SERVER/images/redesign/vote_up.gif" width="31" height="30" border="0" align="middle"/></a></span><span id="vote_rating_edit'.$slideid.'" style="display:'.$editRatingDisplay.';"><a style="cursor:pointer;" onClick="javascript:editVote('.$slideid.');">Change Vote</a></span></div>';
+					}
+					?>
+					</div>
+				</td>
+			</tr>
+		</table>
+		  </td>
+		</tr>
+      </table>
+	  </td>
+	</tr>
+</table>
+   <!--   </div>-->
+</td>
+</tr>
+<tr>
+	<td><div class="articlePageTags">
+		<table align="left" cellspacing="0" cellpadding="0" border="0">
+		  <tr>
+		   <td valign="middle" class="common_article_headingTags">tags: </td>
+		   <td class="tags_content"><?php
+					 //*** displayslideshowTags($slideshow_id_type,$tags); Search was not working
+					 displayslideshowTags("",$tags);
+					?> &nbsp;&nbsp;&nbsp; </td>
+		  </tr>
+		</table>
+	</div>
+	</td>
+</tr>
+</table>
+</div>
+
+
+<!-- Rate ends here -->
+
+<!--Main comment box start from here-->
+<?
+$from='slideshow';
+//$imagevalue=1;
+$imagevalue=0;
+$showcomment=1;
+?>
+<div id="showcomment">
+
+</div>
+<?php $objAcrticle = new articleViewer(); ?>
+<div id="fbcomment_layout">
+<div id="fb_seo">
+<?php $objAcrticle->FbcommentSEO(); ?></div>
+<?php
+$objAcrticle->fbcommentLayout();
+?>
+</div>
+<!-- <div id="disqus_thread" class="disqusComment"></div>-->
+
+	    </div><!--left contaner end here-->
+		</div>
+		</div>
+
+    <!--right contaner start from here-->
+        <div class="right_contant" >
+       		<?
+			global $arrRightCols;
+            $arrRightCols	=	array('show_300x250','show_video','show_mostpopular','show_rss_emailalert','show_localguides');
+            include("../_rightcolumn.htm"); ?>
+        <!--right contaner end here-->
+        </div>
+
+
+	</div><!--Content contaner end here-->
+
+</div><!-- shadow end -->
+<?include("$D_R/_footer.htm");?>

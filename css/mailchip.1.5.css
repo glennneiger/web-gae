@@ -1,0 +1,57 @@
+/*///////////////////////////////////////////////////////////////////////
+Part of the code from the book 
+Building Findable Websites: Web Standards, SEO, and Beyond
+by Aarron Walter (aarron@buildingfindablewebsites.com)
+http://buildingfindablewebsites.com
+
+Distrbuted under Creative Commons license
+http://creativecommons.org/licenses/by-sa/3.0/us/
+///////////////////////////////////////////////////////////////////////*/
+
+/** {margin:0; padding:0; font:10px Helvetica,sans-serif; color:#333; border:0;}*/
+
+
+.subscriptionnav #sub_menu li {  /*added to avoid navigation display on fancybox popup*/
+float: left;
+position: relative;
+list-style: none;
+z-index: 1000070;
+}
+
+#main-navigation-container ul li {  /*added to avoid navigation display on fancybox popup*/
+float: left;
+position: relative;
+list-style: none;
+z-index: 1100;
+}
+
+
+fieldset {margin:1em; padding:1em; border:1px solid #ccc; background:#eee;}
+legend {font:1.5em "Century Gothic",Helvetica,sans-serif; color:#000; border:1px solid #ccc; border-bottom:0; background:#eee; padding:.4em;}
+label {display:block; font:1.3em "Century Gothic",Helvetica,sans-serif; color:#333;}
+/*input {border:1px solid #999; padding:.4em; width:152px; font-size:1.4em;}*/
+.btn {border:0; padding:0; width:152px;}
+ 
+#response {
+    float:left;
+    color:red;
+    /*font-style:italic;*/
+    font-size:10px;
+    margin:0px 0px 0px 0px;
+    padding:5px 0px 0px 0px;
+    text-align:left;
+    width:100%;
+}
+
+#response a{
+    color:red;
+}    
+
+#no-spam {
+    font-size:1.1em; font-style:italic; color:#666; margin-top:.4em;
+}
+
+#description {
+    font-size:1.1em; margin:1.5em 1em -1.9em 0; color:#333; text-align:right; color:#333;
+}
+

@@ -1,0 +1,200 @@
+<?
+session_start();
+global $DATE_STR,$D_R;
+include_once($D_R."/lib/_robots.php");
+$page = "gazette";
+$d	=	trim($_REQUEST['d']);
+$s	=	trim($_REQUEST['s']);
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+$islive=0;
+$viewapproved=intval($_REQUEST['viewapproved']);
+//$viewapproved=intval($viewapproved);
+if($viewapproved){
+	$islive=1;
+}
+include("$ADMIN_PATH/_header.htm");
+$p=$_GET['p'];
+?>
+<script type="text/javascript">
+function submitStratArticle(){
+	var delchk  = document.frmStratApprove.delStratArticle.length;
+	var delcount = "";
+	if(delchk==undefined){
+		 if(document.frmStratApprove.delStratArticle.checked){
+			delcount=1;
+		 }
+	}else{
+		for (i = 0; i < delchk; i++) {
+			if (document.frmStratApprove.delStratArticle[i].checked) {
+					delcount = 1;
+			}
+		}
+	}
+	var appchk  = document.frmStratApprove.appStratArticle.length;
+	var appcount = "";
+	if(appchk==undefined){
+		if(document.frmStratApprove.appStratArticle.checked){
+			appcount=1;
+		 }
+	}else{
+		for (i = 0; i < appchk; i++) {
+			if (document.frmStratApprove.appStratArticle[i].checked) {
+					appcount =1;
+			}
+		}
+	}
+	
+	if(delcount=="1"){
+	  if (confirm("Are you sure you want to delete post(s).")) {
+		 frmStratApprove.submit();
+	  }
+	}else if(appcount=="1"){
+	   frmStratApprove.submit();
+	}else{
+	  alert("Please select a post.");
+	}
+}
+
+</script>
+
+<?
+$edit_approve_feed=$AD->getPerm("techstrat_approve");
+
+if(!$edit_approve_feed){
+	admin_error();
+}
+
+$handler="/admin/techstrat/approve_mod.htm";
+
+
+$pagesize=10;
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+
+$posttitle="concat(mid(body,1,40),'...')";
+
+$qry = "SELECT id,creation_date date,title,is_approved,updation_date,
+		concat( 'posts.htm?id=', id ) arturl
+		FROM techstrat_posts
+		WHERE is_approved='$viewapproved' and is_deleted='0'";
+$qry.=" GROUP BY id";
+if($s)$qry.=" ORDER BY $s $d ";
+
+
+$qry = "SELECT a.id, a.creation_date date,a.title,a.is_approved,a.updation_date,c.category_name as 'category',a.category_id,concat( 'posts.htm?post_id=', a.id ) arturl 	FROM techstrat_posts a , techstrat_category c WHERE a.is_approved='$viewapproved' and a.is_deleted='0' and a.category_id = c.id GROUP BY a.id";
+
+if($s)$qry.=" ORDER BY $s $d ";
+
+/*--- end query params --*/
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+/*-- end paging  ---*/
+$pagedata = exec_query($qry);
+
+?>
+<br>
+<?if($AD->getPerm("techstrat_post")){?>
+	<a href="posts.htm">Create/ Edit Post</a><br>
+<?}?>
+<?php
+if($AD->getPerm("techstrat_performance")){?>
+		<a href="performance.htm">Upload Performance</a><br />
+<? } ?>
+
+<br>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<center>
+<?if(!$viewapproved){?>
+<div style="width:300;text-align:left">These are the posts that are awaiting approval. Check the posts you've approved, click save and they will be posted live to the site.<br>&nbsp;</div>
+<?}else{?>
+<div style="width:300;text-align:left">These are the posts that are approved. Check the posts you've disapproved, click save and they will be disapproved.<br>&nbsp;</div>
+<?}?>
+</center>
+<table width=300 align=center style="border:1px black solid">
+<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array(viewapproved=>1),"p"),"View Approved Feeds","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array(viewapproved=>0),"p"),"View Unapproved Feeds","class=small",(!$viewapproved))?></TD>
+<TD colspan=3>&nbsp;</TD>
+</TR>
+<form name="frmStratApprove" method="post" action="<?=$handler?>">
+<?input_hidden("viewapproved")?>
+<TR bgcolor=#cccccc align=center>
+<TD<?colclass("date")?>><a href="<?=$PHP_SELF.qsa(array(s=>"date",d=>togD($d)))?>">Feed posted Date</a></TD>
+<TD<?colclass("title")?>><a href="<?=$PHP_SELF.qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+<!--<TD<?colclass("login")?>><a href="<?=$PHP_SELF.qsa(array(s=>"login",d=>togD($d)))?>">Author</a></TD>-->
+<!--<TD nowrap>Publish date</td>-->
+<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>
+<TD>Delete</TD>
+</TR>
+<?if(count($pagedata)){?>
+	<?foreach($pagedata as $i=>$row){
+	$breakDateStr="n|j|Y|G|i";
+		list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,convert_date_to_unix($row[publish_date])));
+		if($y=="2000" || $y=="1969"){//invalid date
+			$publishdatefield=array();
+		}else{
+			$publishdatefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+		}
+		if($row[publish_date] == "0000-00-00 00:00:00")
+		{
+			$publishdatefield="";
+			$row[publish_date]="";
+
+	}
+		$color=$i%2?"dddddd":"eeeeee";
+		$link=urlqsa($row[arturl],array(AMADMIN=>1),"*");
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?>><?=date($DATE_STR,strtotime($row['date']));?></TD>
+	<TD nowrap <?colclass("title")?>>
+	<a href="<?=$link?>" target="_blank"><?=($row[title]?htmlspecialchars($row[title],ENT_QUOTES):"(legacy data w/out title)")?></a></TD>
+
+	<TD align=center><input type="checkbox" id="appStratArticle" name="approve[<?=$row[id]?>]" title="Check this to approve the article then submit the page"></TD>
+
+	<TD>
+	<input type="checkbox" id="delStratArticle" name="delarticle[<?=$row[id]?>]" title="Check to remove have this article removed">
+	</TD>
+	</TR>
+	<?}?>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There are no posts awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<input type="button" value="Save Changes" onclick="javascript:submitStratArticle();">
+
+</TD>
+</TR>
+</form>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

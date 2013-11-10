@@ -1,0 +1,75 @@
+<?
+global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER;
+include("$ADMIN_PATH/_header.htm");
+$handler= $D_R."/admin/barndedlogo_mod.htm";
+if(!$AD->getPerm("branded_logo")){
+	admin_error();
+}
+$logo_id=$_POST['logo_id'];
+if(!$logo_id){
+	$logo_id=$_GET['id'];
+}
+$result=getBrandedLogo($logo_id);
+$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$frm1_url = $cloudStorageTool->createUploadUrl($PHP_SELF, $options);
+$frm2_url = $cloudStorageTool->createUploadUrl($HTPFX.$HTHOST."/admin/barndedlogo_mod.htm", $options);
+
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" type="text/javascript"></script>
+<br>
+<div style="padding-bottom:20px;" class=adminheader>
+	Articles Branded Logos
+</div>
+	<table width="100%" border="0">
+	<div style="color:#FF0000;" id="savemsg"> </div>
+	<tr >
+  <td valign="middle"  align="right" colspan="3" class="admin_module_head">
+   <a href="<?=$HTPFX.$HTHOST?>/admin/layout/listbrandedlogo.htm" style="text-decoration:none">Delete Article Branded Logo</a>
+  </td>
+</tr>
+	  <tr>
+			<form method="post" action="<?=$frm1_url?>" enctype="multipart/form-data">
+			<td width="14%" nowrap="nowrap"><b><label>Select logo to edit:</label></td>
+			<td width="26%"><select name="logo_id" id="logo_id" style="width:350px;" class="search_author_drop_down" onchange="this.form.submit()">
+				<option>-Select Logo-</option>
+				<?selectHashArr(getBrandedLogo(),"id","name",$logo_id)?>
+			</select></td>
+			</form>
+		  <td width="60%">&nbsp;</td>
+	  </tr>
+<form name="frmlogo" method="post" action="<?=$frm2_url?>" enctype="multipart/form-data">
+	  <tr>
+		<td><b><label>Name:</label> </td>
+		<td>
+		<?input_text("logoname",$result['name'],"","","style=width:100%")?></td>
+		<td>&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td><b><label>Url:</label></td>
+		<td><?input_text("logourl",$result['url'],"","","style=width:100%")?></td>
+		<td>&nbsp;</td>
+	  </tr>
+	 <? if($result['assets']){ ?>
+	  <tr>
+		<td><b><label>Uploaded logo:</label></td>
+		<td><img src="<?=$IMG_SERVER.$result['assets']?>" border=0 align=absmiddle></td>
+		<td>&nbsp;</td>
+	  </tr>
+	  <? } ?>
+	  <tr>
+		<td><b><label>Upload logo:</label></td>
+		<td><input id="newimg" type="file" name="newimg"></td>
+		<td>&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td>&nbsp;</td>
+		<td><input type="button" value="save" onclick="saveLogo();">&nbsp;<input type="button" value="cancel" onclick="cancelLogo();"></td>
+		<td>&nbsp;</td>
+	  </tr>
+	  
+</form>
+	</table>
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

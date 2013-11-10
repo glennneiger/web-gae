@@ -1,0 +1,138 @@
+<?php
+global $D_R,$errorconfig,$VIDEOHOST,$HTPFX,$HTHOST;
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav");
+$pageName="site-index";
+$hideCanonical=TRUE;
+include("../_header.htm");
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+?>
+<style>
+.siteMapColumn{
+	float:left;
+	width:450px;
+	padding:0 0 0 20px;
+	text-align:left;
+	color:#113B61;
+	font-size:12px;
+	font-weight:bold;
+}
+
+.siteMapColumn a{
+	text-decoration:underline;
+	color:#113B61;
+}
+
+.siteMapColumn li{
+	list-style-type:none;
+	padding-bottom:15px;
+}
+
+.siteMapColumn ul ul li{
+	list-style:disc outside none;
+	padding-bottom:0px;
+}
+
+</style>
+<div class="shadow">
+<div id="content-container">
+	<div>
+		<div class="sction_title"><h1>Site Map</h1></div>
+		<div class="siteMapColumn">
+        <ul><li><a href="<?=$HTPFX.$HTHOST;?>/">Minyanville Homepage</a></li>
+        <li>
+        		<a href="<?=$HTPFX.$HTHOST;?>/business-news/">Business News</a>
+        			<ul>
+        			<li><a href="<?=$HTPFX.$HTHOST;?>/business-news/politics-and-regulation/">Politics and Regulation</a></li>
+        			<li><a href="<?=$HTPFX.$HTHOST;?>/business-news/markets/">Markets</a></li>
+        			<li><a href="<?=$HTPFX.$HTHOST;?>/business-news/the-economy/">The Economy</a></li>
+				<li><a href="<?=$HTPFX.$HTHOST;?>/business-news/editors-pick/">Editor's Pick</a></li>
+					</ul>
+        </li>
+        <li>
+        <a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/">Trading and Investing</a>
+			<ul>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/stocks/">Stocks</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/etfs/">ETFs</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/fixed-income/">Fixed Income</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/earnings/">Earnings</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/currencies/">Currencies</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/commodities/">Commodities</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/options/">Options</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/taxes/">Taxes</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/personal-finance/">Personal Finance</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/how-to-trade/">How to Trade</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/trading-and-investing/how-to-invest/">How to Invest</a></li>
+			</ul>
+        </li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/">Sectors</a>
+			<ul>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/biotech-pharma/">Biotech/Pharma</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/consumer/">Consumer</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/energy/">Energy</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/financial/">Financial</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/global-markets/">Global Markets</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/media/">Media</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/precious-metals/">Precious Metals</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/real-estate/">Real Estate</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/technology/">Technology</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/sectors/transportation/">Transportation</a></li>
+			</ul>
+        </li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/special-features/">Special Features</a>
+			<ul>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/special-features/wall-of-worry/">Wall of Worry</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/special-features/random-thoughts/">Random Thoughts</a></li>
+			    <li><a href="<?=$HTPFX.$HTHOST;?>/special-features/sports-business/">Sports Business</a></li>
+				<li><a href="<?=$HTPFX.$HTHOST;?>/special-features/minyanville-press/">Minyanville Press</a></li>
+				<li><a href="http://videos.minyanville.com/video/">Video</a></li>
+				<li><a href="http://videos.minyanville.com/video/hoofyandboo/">Hoofy & Boo</a></li>
+				<li><a href="<?=$HTPFX.$HTHOST;?>/special-features/radio/">Radio</a></li>
+			</ul>
+        </li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/articles/articlelisting.htm">All Articles</a></li>
+        </ul>
+      </div>
+      <div class="siteMapColumn">
+      <ul>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/subscription/">MVP Subscriptions</a>
+          <ul>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/">Buzz &amp; Banter</a></li>
+			<li><a href="<?=$HTPFX.$HTHOST;?>/keene/">Keene On Options</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/ewi/">Elliott Wave Insider</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/tchir-fixed-income/">Tchir's Fixed Income Report</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/cooper/">Cooper's Market Report</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/techstrat/">TechStrat Report</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/optionsmith/">OptionSmith</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/the-stock-playbook/">The Stock Playbook</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/ad-free/">Ad Free Minyanville</a></li>
+            <li><a href="<?=$HTPFX.$HTHOST;?>/book-store/">Minyanville Book Store</a></li>
+           </ul>
+            </li>
+          </ul>
+        </li>
+		<li><a href="<?=$HTPFX.$HTHOST;?>/mvpremium/">MV Premium</a></li>
+		<li><a href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm">Contributor Bios</a></li>
+		<li><a href="<?=$HTPFX.$HTHOST;?>/library/dictionary.htm">Directory of terms</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/library/search.htm">Archive</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/subscription/register/controlPanel.htm">Email Alerts</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/rss/">RSS Feeds</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/shops/harrisons.htm">Minyanville Merchandise</a></li>
+        <li><a href="http://www.minyanland.com/">Minyanland</a></li>
+        <li><a href="http://www.minyanvillemedia.com/">Minyanville  Media</a></li>
+        <li><a href="http://www.buzzandbanter.com/">Buzz  and Banter.com</a></li>
+        <li><a href="http://www.rpfoundation.org/">Ruby  Peck Foundation</a></li>
+        <li><a href="http://www.minyanvillemedia.com/">About  Us</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/ads/docs/mvMediaKit2013.pdf">Advertise</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/company/contact.htm">Contact Us</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/company/help.htm">Help</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/company/privacy.htm">Privacy Policy</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/company/substerms.htm">Terms and Conditions</a></li>
+        <li><a href="<?=$HTPFX.$HTHOST;?>/company/disclaimers.htm">Disclaimers</a></li>
+        </ul>
+      </div>
+  </div>
+</div>
+</div>
+<? include("../_footer.htm"); ?>

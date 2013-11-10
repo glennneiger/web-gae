@@ -1,0 +1,142 @@
+<?
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/ss/_search_lib.php");
+include("$D_R/lib/ss/_home_lib.php");
+include("$D_R/admin/ss/ss_classes/class_transaction.php");
+include("$D_R/admin/ss/ss_classes/class_ytdreturn.php");
+include("$D_R/lib/ss/_ss_config.php");
+include_once("$D_R/lib/json.php");
+$pageName="closepositions";
+# we will be passing subscription_id from session here
+global $transobj,$ytdobj,$contractqty;
+$transobj= new Qtransaction();
+$ytdobj=new YTDRET();
+$start=$_GET['start'];
+$limit=$_GET['limit'];
+$callback=$_GET['callback'];
+$sort=$_GET['sort'];
+$dir=$_GET['dir'];
+$var=array();
+$objjson= new Services_JSON();
+$qry="(select  QT.id,QT.quote_id,QT.transaction_type,ES.companyname,ES.stocksymbol,QT.creation_date,QT.unit_price,QT.quantity,QT.description,QT.entity_type,QT.expirydate,QT.option_type,QT.strike_price from ss_transaction QT, ex_stock ES where QT.quote_id=ES.id and (QT.transaction_type='1' or QT.transaction_type='3') and QT.status='1' and entity_type='0') ";
+$qry.="union";
+$qry.=" (select QT.id,QT.quote_id,QT.transaction_type,substring(ET.companyname,'1','15'),ES.optionticker as stocksymbol,QT.creation_date,QT.unit_price,QT.quantity,QT.description,QT.entity_type,QT.expirydate,QT.option_type,QT.strike_price from ss_transaction QT, ex_option ES,ex_stock ET where QT.quote_id=ES.id and ES.baseStockId=ET.id  and (QT.transaction_type='1' or QT.transaction_type='3') and QT.status='1' and entity_type='1') ";
+if($sort){
+	$qry.=" order by $sort $dir";
+}else{
+	$qry.=" order by stocksymbol,creation_date";
+}
+
+$qrycount=$qry;
+
+$qry.=" limit $start,$limit";
+
+$result=exec_query($qry);
+$resultcount=exec_query($qrycount);
+$numrows=count($resultcount);
+
+	$date_purchase=$transobj->selltrans();
+	$date_purchasesellshort=$transobj->selltransforsellshort();
+	$price_purchase=$transobj->purpricetrans();
+	$price_purchasebuytocover=$transobj->purpricetransforbuytocover();
+	$unitprice_sortsell_arr=$transobj->shortsellsaleprice();
+
+ foreach($result as $postkey=>$postval){
+		if($postval['entity_type']=="1"){
+		  $company=$postval['companyname'].' '.date("My", strtotime($postval['expirydate'])).' '.$postval['strike_price'].' '.$postval['option_type'];
+		}else{
+			$company=$postval['companyname'];
+		}
+			$ticker=$postval['stocksymbol'];
+
+	// sale date
+	if($postval['transaction_type']=='1'){
+		$dd=$postval['creation_date'];
+		$sale_date_get=$transobj->formatdate2LocalSCR($dd);
+	} else {
+        $date_sortsell=$transobj->datesoldshortsell($postval['id']);
+		$sale_date_get=$transobj->formatdate2LocalSCR($date_sortsell['creation_date']);
+	}
+
+	if($postval['transaction_type']=='1'){
+	    $sale_price='$'.number_format($postval['unit_price'], 2, '.', ',');
+	 } else {
+		$sale_price='$'.number_format($price_purchasebuytocover[$postval['id']], 2, '.', ',');
+	 }
+	 // purchase date
+	if($postval['transaction_type']=='1'){
+		$purchase_date_get=$transobj->formatdate2LocalSCR($date_purchase[$postval['id']]);
+		$date_open=$purchase_date_get;
+	} else {
+		$purchasedate_sortsell=$transobj->creationdateshortsell($postval['id']);
+		$purchase_datesort_get=$transobj->formatdate2LocalSCR($purchasedate_sortsell['creation_date']);
+		$date_open=$purchase_datesort_get;
+	}
+
+	 if($postval['transaction_type']=='1'){
+		$purchase_price='$'.number_format($price_purchase[$postval['id']], 2, '.', ',');
+	 } else {
+		$unitprice_sortsell=$unitprice_sortsell_arr[$postval['id']];
+		$purchase_price='$'.number_format($unitprice_sortsell, 2, '.', ',');
+	}
+
+	if($postval['transaction_type']=='1'){
+	   if($postval['entity_type']=="1"){
+	   	  $noofshare=($postval['quantity']/$contractqty);
+	   }else{
+	   	  $noofshare=$postval['quantity'];
+	   }
+	 } else {
+	 	if($postval['entity_type']=="1"){
+	   	  $noofshare='-'.($postval['quantity']/$contractqty);
+	   }else{
+	   	  $noofshare='-'.$postval['quantity'];
+	   }
+
+	}
+
+	if($postval['transaction_type']=='1'){
+		$purchase_amount=($postval['quantity']*$price_purchase[$postval['id']]);
+		$purchaseamount='$'.number_format($purchase_amount, 2, '.', ',');
+	 } else {
+	   $sale_proceedsbuytocover=($unitprice_sortsell*$postval['quantity']);
+	   $purchaseamount='$'.number_format($sale_proceedsbuytocover, 2, '.', ',');
+	 }
+
+	if($postval['transaction_type']=='1'){
+			$sale_proceeds=($postval['unit_price']*$postval['quantity']);
+			$saleproceeds='$'.number_format($sale_proceeds, 2, '.', ',');
+	} else {
+			$purchase_amountbuytocover=($postval['quantity']*$price_purchasebuytocover[$postval['id']]);
+			$saleproceeds='$'.number_format($purchase_amountbuytocover, 2, '.', ',');
+	 }
+	if($postval['transaction_type']=='1'){
+		$gainloss=($sale_proceeds-$purchase_amount);
+		if(substr($gainloss,0,1)=='-'){
+			$gainloss_val='$'.number_format($gainloss, 2, '.', ',');
+		} else {
+		   $gainloss_val='$'.number_format($gainloss, 2, '.', ',');
+		}
+	} else {
+		//*****	$gainlossbuytocover=($sale_proceedsbuytocover-$purchase_amountbuytocover);
+		// variable is wrong meaning = $purchase_amountbuytocover //=> means sale proceeds
+		// variable is wrong meaning = $sale_proceedsbuytocover //=> means btc purchase amout total
+		$gainlossbuytocover=($purchase_amountbuytocover-$sale_proceedsbuytocover);
+		//if(substr($gainlossbuytocover,0,1)=='-'){
+			$gainloss_val='$'.number_format($gainlossbuytocover, 2, '.', ',');
+		//}
+
+	}
+
+	if($gainloss_val==""){
+			$gainloss_val='$'."0.00";
+	}
+	$data[]=array( "Companyname" =>$company,"ticker" =>$ticker,"creation_date" =>$sale_date_get,"unit_price"=>$sale_price,"Date Opened"=>$date_open,"Purchase Price"=>$purchase_price,"# of Shares"=>$noofshare,"Purchase Amount"=>$purchaseamount,"Sale Proceeds"=>$saleproceeds,"GainLoss"=>$gainloss_val);
+}
+$displaydata='{"totalCount":';
+$displaydata.='"'.$numrows.'"';
+$displaydata.=',"topics":';
+$displaydata.=$objjson->encode($data);
+$displaydata.='}';
+echo $callback."(".$displaydata.");";
+?>

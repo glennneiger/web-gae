@@ -1,0 +1,115 @@
+<?$img_dir="/assets/sources";
+if($POSTBACK){
+	if($f=$_FILES[myimage]){
+		if($f[size]){
+			$newname="$img_dir/".cleanfilename($f[name]);
+			copy($f[tmp_name],"$D_R$newname");
+			pushToImgServer($newname);
+		}
+	}
+}
+
+?>
+
+<html>
+<head>
+<title>Upload a file</title>
+<link rel="stylesheet" href="db_window.css">
+<style>
+body{background:buttonface}
+fieldset{padding:5px}
+</style>
+<script src="/_script.js"></script>
+<script>
+
+
+
+
+function createlink(){
+	var pkr=document["picker"]["src"];
+	document.all("linkarea").innerText=pkr[pkr.selectedIndex].text;
+}
+
+
+
+
+
+function uploadImage(){
+ 	var frm=document.upload;
+	if(!frm.myimage.value){
+		alert("Please click browse and select a file to upload");
+		frm.myimage.focus();
+		return;
+	}
+
+	with(document.all.uploadButton){
+		disabled="true";
+		value="Uploading...";
+	}
+	document.all("bcancelbutton").disabled=true;
+	document.all("insertbutton").disabled=true;
+	document.body.style.cursor="wait";
+	frm.submit();
+}
+
+function save(){
+	var srcFrm=document.picker.src;
+	
+	if(srcFrm.selectedIndex<0){
+		alert("Please choose a file from the list to insert. \nOtherwise click cancel");
+		return;
+	}
+	
+	var ed=findObj("htmleditor",window.opener.document);
+	ed.getDocument().all("editBox").setActive();
+	ed.getDocument().execCommand("CreateLink",false,srcFrm[srcFrm.selectedIndex].text);
+	txtlink=ed.getLinkSelection();
+	if(txtlink)
+		txtlink.setAttribute("TARGET","_blank");
+	window.close();
+
+}
+
+function cancel(){
+	window.close();
+}
+
+
+
+</script>
+</head>
+<body topmargin=2 leftmargin=2 rightmargin=0 bottommargin=0 style="border:0px;overflow:auto">
+
+
+
+<form method="get" action="<?=$PHP_SELF.qsa()?>" name="img_dir_form">
+<fieldset>
+<legend>Select file from: <b><?=$img_dir?></b></legend>
+</form>
+<form name="picker">
+<select name="src" size=11 style="width:100%;" onChange="createlink()">
+<?foreach(assetList($img_dir,array("*.*"),1) as $f){?>
+	<option value="<?=$f?>"><?=$f?></option>
+<?}?>
+</select>
+</form>
+or
+ <fieldset><legend>Upload a file</legend>
+<form name="upload" method="POST" action="<?=$PHP_SELF?>" enctype="multipart/form-data">
+<?input_hidden("img_dir")?>
+<input type="file" name="myimage" style="border:1px black solid;margin-bottom:7px"><br> 
+<input type="button" name="uploading" value="Upload" class=submit onClick="uploadImage()" id="uploadButton"> &nbsp;
+<input type="button" value="Cancel" class=submit onClick="document.upload.reset();location.replace(location.href)"> 
+</form>
+</fieldset> 
+<br> 
+<fieldset style="display:expression(document.all('linkarea').innerText==''?'none':'block')"><legend>File URL</legend>
+	<div id="linkarea"></div>
+</fieldset>
+
+<center style="margin-top:5px">
+<input type="button" id=insertbutton value="Insert Link" class=submit onClick="save()" title="Insert the image seen on the right" style="display:expression(document.all('linkarea').innerText==''?'none':'inline')"> &nbsp; &nbsp;
+<input type="button" id=bcancelbutton value="Cancel" class=submit onClick="cancel()">
+</center>
+</body>
+</html>

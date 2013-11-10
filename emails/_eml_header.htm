@@ -1,0 +1,32 @@
+<?
+global $IMG_SERVER;
+if($type!="text"){?>
+<?if(!$HEADER)$HEADER="/assets/characters/noopinion_01_white.jpg";?>
+<body bgcolor="#FFFFFF" text="#333333" link="#24478A">
+<table width="700" border="0" cellspacing="0" cellpadding="0" height="580">
+  <tr>
+    <td valign="top" height="84" width="1%"><img src="<?=$IMG_SERVER?>/spacer.gif" width="27" height="8"><br>
+     <a href="<?=$HTNOSSLDOMAIN?>"><img src="<?=$IMG_SERVER?>/assets/logo_spring.gif" border=0></a>
+</td>
+<td align="right">
+<?
+if(($bannerad=getPhpAdsBanner($SEC_TO_ZONE[$SECTION]))){
+?>
+		<div style="padding:10px;padding-right:0px"><?=$bannerad?></div>
+	<?}}?></td>
+  </tr>
+  <tr>
+    <td valign="top" align="center" colspan="5" height="13">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" height="26" bgcolor="#66CBFF">
+        <tr bgcolor="#24478A">
+          <td colspan="3">&nbsp;</td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" align="left" width="215"><img src="<?=$IMG_SERVER?>/assets/buddy_pose.gif" align="texttop" hspace="20"></td>
+    <td valign="top" align="left" colspan="3" width="465">
+

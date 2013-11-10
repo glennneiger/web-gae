@@ -1,0 +1,113 @@
+<?php
+session_start();
+if($_SESSION['ElliottWave']!="1")
+{
+  Header( "Location: http://mvp.minyanville.com/ewi-landing-page-organic/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=elliottwave");
+  exit;
+}
+$ewiArr = getKeyVal('p,analyst,mo,yr,p,cat,q',$_SERVER['REQUEST_URI']);
+$p_offset = ($ewiArr['p']=="" ? $_GET['p'] : $ewiArr['p']);
+$bio = ($ewiArr['analyst']=="" ? $_GET['bio'] : $ewiArr['analyst']);
+$mo = ($ewiArr['mo']=="" ? $_GET['mo'] : $ewiArr['mo']);
+$yr = ($ewiArr['yr']=="" ? $_GET['yr'] : $ewiArr['yr']);
+$cat = ($ewiArr['category']=="" ? $_GET['cat'] : $ewiArr['category']);
+$q = ($ewiArr['q']=="" ? $_GET['q'] : $ewiArr['q']);
+
+$pageName="elliott-wave-search";
+
+include_once($D_R."/lib/_content_data_lib.php");
+include_once($D_R."/lib/config/_elliottWave_config.php");
+include_once($D_R."/lib/elliott-wave-insider/_elliottWave_data_lib.php");
+include_once($D_R."/lib/elliott-wave-insider/_elliottWave_design_lib.php");
+$pageJS=array("config","redesign","fancybox","elliottWave");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","elliottWave");
+include($D_R."/_header.htm");
+$objElliottData = new elliottWaveData('elliot_alert');
+$objElliottDesign = new elliottWaveDesign();
+
+$item_table = 'elliot_alert';
+$objContent 	= 	new Content($item_table,'');
+$show_canonical="1";
+global $objElliottData, $objElliottDesign, $pageName, $objContent;
+
+if($q)
+{
+	$search = trim($q);
+	$searchType = 'text';
+}
+else if($cat)
+{
+	$search = trim($cat);
+	$searchType = 'category';
+}
+else if($bio)
+{
+	$search = trim($bio);
+	$searchType	= 'analyst';
+}
+else if($mo && $yr){
+	$search = trim($yr).'/'.trim($mo);
+	$searchType	= 'archive';
+}
+
+$offset=0;
+if($p_offset){
+	$offset=$p_offset;
+}
+
+$p=0;
+if($p_offset){
+	$p=$p_offset;
+}
+$sectionName="";
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<script language="javascript" type="text/javascript">
+function docKeyDown1(oEvent){ // controls keyboard navigation
+var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+var intKeyCode = oEvent.keyCode;
+var inc;
+if(intKeyCode==13) {
+   if($F("optionsearch")){
+	searchalert('optionsearch','<?=$contribid?>','optionsearch','<?=$oid?>');
+	}
+}
+if(intKeyCode==17){	inc=0;}
+if (inc==0){
+	if(intKeyCode==65 || intKeyCode==97 )	{
+		return(false);   //in case of IE & firefox1.5
+	}
+}
+
+
+
+}
+document.onselectstart=new Function("return false");
+document.onmousedown=new Function("return false");
+document.oncontextmenu=new Function("return false");
+document.onkeydown=docKeyDown1;
+
+function disableclick()
+{
+	document.onmousedown=new Function("return false");void(0);
+}
+function enableclick()
+{
+	document.onmousedown=new Function("return true");void(0);
+}
+</script>
+<div id="ewi_wrapper">
+	<?=$objElliottDesign->ewiHeader($sectionName);?>
+	<div class="clr"></div>
+	<div class="ewi_contentPanel">
+		<?=$objElliottDesign->ewiSearch($search,$offset,$searchType);?>
+		<?=$objElliottDesign->ewiRightCol();?>
+	</div>
+	<div class="clr"></div>
+</div>
+
+<div style="clear:both;"></div>
+<?
+include("$D_R/_footer.htm");
+?>

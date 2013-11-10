@@ -1,0 +1,189 @@
+body {
+	margin: 0;
+	padding: 0;
+	background: #e6e6e6;
+}
+
+.clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+.yellow-txt {
+	color: #ffde00 !important;
+}
+
+.orange-txt {
+	color: #ee4a07 !important;
+}
+
+/* IE Floats Bug Fix Start */
+.header-box, .content-box, .footer-box, .registration-form {
+	overflow : hidden;
+	height : 1%;
+}
+/* IE Floats Bug Fix End */
+
+
+.container {
+	margin: 0 auto;
+	padding: 0;
+	width: 700px;
+}
+
+.header-box {
+	background: #044788 url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/gradientBkg.jpg) left top repeat-x;
+	padding: 20px;
+}
+
+.buzz-tagline {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png) 0px -3px no-repeat;
+	height: 86px;
+	width: 512px;
+	margin: 0;
+	padding: 0;
+	text-indent: -9999px;
+	float: left;
+}
+
+.mv-logo {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png) 0px -93px no-repeat;
+	float: right;
+	height: 33px;
+	width: 90px;
+	margin: 0;
+	padding: 0;
+	text-indent: -9999px;
+	outline: 0;
+}
+
+.content-box {
+	margin: 0;
+	padding: 20px;
+	background: #ffffff;
+}
+
+.content-box h1 {
+	color: #333333;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 34px;
+	font-weight: normal;
+	letter-spacing: -1px;
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
+.content-box p {
+	color: #333333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	line-height: 19px;
+	margin: 0 0 19px 0;
+	padding: 0;
+}
+
+.lt-column-box {
+	width: 320px;
+	margin:  0 10px 0 0;
+	float: left;
+}
+
+.rt-column-box {
+	width: 320px;
+	margin:  0 0 0 10px;
+	float: left;
+}
+
+.registration-form {
+	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png) -100px -89px no-repeat;	
+}
+
+.labels, .openFields {
+	margin: 0;
+	padding: 0;
+	float: left;
+	list-style-type: none;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.labels li {
+	color: #ffffff;
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 16px;
+	width: 88px;
+	padding: 7px 0 7px 10px;
+	margin: 0 0 10px 0;
+}
+
+.openFields input {
+	background: none;
+	border: 0;
+	color: #4c4c4c;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 30px;
+	width: 222px;
+	margin:  0 0 10px 0;
+	padding: 0;
+}
+
+.submit-button {
+	background: none;
+	background-image: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png);
+	background-position:  -430px -89px ;
+	cursor: pointer;
+	float: right;
+	height: 41px;
+	width: 166px;
+	border: 0;
+	text-indent: -9999px;
+}
+
+input.submit-button:focus {
+	border: 2px solid #ff8a00 !important;
+}
+
+.footer-box {
+	background: #044788 url(images/gradientBkg.jpg) left top repeat-x;
+	padding: 20px;
+}
+
+.footer-box p {
+	color: #ffffff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+.footer-contact {
+	float: left;
+}
+
+.footer-contact a {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.footer-contact a:hover {
+	color: #ffffff;
+	text-decoration: underline;
+}
+
+.page-copyright {
+	float: right;
+	margin-top: 24px;
+}
+.error
+{
+font-size:13px;
+color:#FF0000;
+}
+#reg_error
+{
+float:left;
+text-align:left;
+width:100%;
+}

@@ -1,0 +1,26 @@
+<? 
+global $HTPFX,$HTHOST,$IMG_SERVER,$HTADMINHOST;
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("banter_all banter_own create_banter banter_approve"))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Buzz Banter</div><br>
+	<div style="padding:10px;width:400px">
+		<b>Alerts </b><br><br>
+		<? if($AD->getPerm("banter_all")||$AD->getPerm("banter_own")||$AD->getPerm("create_banter")){?>
+				<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/banter.htm">Create/ Edit Buzz and Banter</a><br>
+		<? }?>
+		<? if($AD->getPerm("banter_approve")){?>
+				<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/approvebanter.htm">Approve Buzz and Banter</a><br>
+		<? }?>
+			<? if($AD->getPerm("branded_logo")){ ?>
+					<li><a href="<?=$HTPFX.$HTADMINHOST?>/admin/buzzbrandedlogo.htm">Create/Edit Buzz Branded Logo</a></li>
+			<? } ?>
+			<br>
+
+		
+		<br />
+	</div>	
+
+<? include("$ADMIN_PATH/_footer.htm");?>

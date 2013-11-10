@@ -1,0 +1,482 @@
+#hmr_outer_container
+{
+width:985px;
+text-align:left;
+margin:0 auto;
+padding:0px;
+background-color:#f2f2f2;
+}
+#hmr_container{
+float:left;
+width:950px;
+padding:19px 18px 19px 17px;
+background-color: #FFFFFF;
+border-top: 1px solid #ffffff;
+border-left: 1px solid #ffffff;
+border-right: 1px solid #ffffff;
+}
+#hmr_left
+{
+margin-right:20px;
+width:656px;
+float:left;
+}
+#hmr_top_left
+{
+float:left;
+border-bottom:1px dotted #B3B3B3;
+              padding-bottom:10px;
+}
+#hmr_top_middle
+{
+float:left;
+margin-top:30px;
+margin-bottom:41px;
+}
+#hmr_right
+{
+width:274px;
+float:left;
+}
+#hmr_logo
+{
+margin-left:20px;
+margin-right:29px;
+float:left;
+width:527px;
+}
+#keith_image
+{
+float:left;
+width:80px;
+}
+.keith_name
+{
+	font-family:Arial, Helvetica, sans-serif;
+text-transform:uppercase;
+font-size:12px;
+font-weight:bold;
+	}
+#hmr_login_reg
+{
+width:950px;
+float:left;
+}
+#hmr_top_middle ul li
+{
+margin-bottom:20px;
+float:left;
+font-family:Arial, Helvetica, sans-serif;
+color:#000000;
+line-height:17px;
+font-size:14px;
+list-style:none;
+width:100%;
+}
+#hmr_top_middle ul li.headlines
+{
+line-height:22px;
+font-size:18px;
+}
+.brown-color
+{
+color:#bd755e;
+font-weight:bold;
+}
+#footer
+{
+float:left;
+}
+#questions
+{
+	background:url(/images/housingReport/hmr_email_bkg.gif);
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	padding:9px;
+	margin-top:2px;
+	margin-bottom:20px;
+	}
+	#questions a
+	{
+	text-decoration:underline;
+	color:#024e9a;
+	}
+	#limited_offer
+	{
+	margin-bottom:20px;
+	cursor:pointer;
+	}
+	#purchase_request
+	{
+	background:url(/images/housingReport/hmr_reportsPurchase_bkg.gif);
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	padding-left:4px;
+	padding-right:4px;
+	padding-top:11px;
+	padding-bottom:5px;	
+	margin-top:2px;
+	margin-bottom:20px;
+	float:left;
+	}
+	#purchase_request ul
+	{
+	margin:0px;
+	padding:0px;
+	list-style:none;
+	}
+	#purchase_request ul li a
+	{
+	color:#24e9a;
+	font-size:14px;
+	font-weight:bold;
+	line-height:20px;
+	text-decoration:underline;
+	cursor:pointer;
+	}
+	.purchase_list
+	{
+	margin-left:10px;
+	margin-right:0px;
+	float:left;
+	width:123px;
+	height:84px;
+	}
+	#testimonial
+	{
+	width:274px;	
+	text-align:center;
+	margin-bottom:39px;
+	padding-top:10px;
+	}
+	.testimonial_text
+	{
+	color:#000000;
+	font-size:12px;
+	line-height:15px;
+	}
+	.testimonial_name
+	{
+		color:#999999;
+	font-size:11px;
+	line-height:15px;
+	}
+	#testimonial hr
+	{
+	border: 1px dotted #B3B3B3;
+    border-style: none none dotted none;
+	}
+	#hmr_middle
+	{
+	width:950px;
+	float:left;
+	}
+	#hmr_middle_one
+	{
+	float:left;
+	width:195px;
+	background:url(/images/housingReport/hmr_available_divider.jpg);
+	color:#024e9a;
+	font-size:11px;
+	line-height:14px;
+	font-family:Arial, Helvetica, sans-serif;	
+	margin-right:20px;	
+	padding-left:40px;
+	padding-bottom :30px;
+	}
+	.available_bold
+	{
+	font-size:18px;
+	line-height:18px;
+	}
+	#hmr_middle_two
+	{
+	float:left;
+	width:432px;
+	margin-right:20px;
+	}
+	#hmr_middle_three
+	{
+	float:left;
+	width:223px;
+	background:url(/images/housingReport/hmr_upcoming_divider.jpg);
+	color:#736357;
+	font-size:11px;
+	line-height:14px;
+	font-family:Arial, Helvetica, sans-serif;
+	padding-bottom :30px;
+	padding-left:20px;
+	}
+	#report_available
+	{
+	color:#024e9a;
+	border-right:1px dotted #B3B3B3;
+	width:215px;
+	float:left;
+	}
+	#report_upcoming
+	{
+	float:left;
+	color:#736357;
+	padding-left:10px;
+	width:205px;
+	}	
+	.reports ul li
+	{
+	width:97px;
+	list-style:none;	
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	line-height:15px;
+	cursor:pointer;
+	}
+	.report_list
+	{
+	float:left;
+	padding-right:10px;
+	width:92px;
+	}
+#hmr_login_panel
+{
+width:950px;
+float:left;
+
+}
+#hm_login_form
+{
+width:630px;
+margin-right:20px;
+float:left;
+background-color:#f4f8f9;
+}
+#new_user
+{
+margin-left:20px;
+color:#5C5E5D;
+font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+#hm_cart
+{
+width:300px;
+float:left;
+}	
+#hm_issue_radio
+{
+float: left;
+color: #5C5E5D;
+font-size: 12px;
+font-weight:bold;
+width:510px;
+margin-top:5px;
+margin-bottom:28px;
+}
+#hm_issue_radio ul li
+{
+float:left;
+width:50px;
+list-style:none;
+color: #5C5E5D;
+font-size: 11px;
+width: auto;
+line-height:0px;
+margin-bottom:9px;
+margin-right:20px;
+}
+#hm_issue_radio ul
+{
+margin-top:10px;
+float:left;
+width:100%;
+}
+#hm_issue_radio ul li input
+{
+margin:0px;
+margin-right:5px;
+padding:0px;
+}
+.login_reg 
+{
+color: #5C5E5D !important;
+}
+#yourcart_panel
+{
+margin-top:0px !important;
+margin-bottoom:10px !important;
+}
+.hm_form_block
+{
+margin-left:20px;
+float:left;
+}
+#hm_credit_card
+{
+margin-top:10px;
+margin-bottom:30px;
+}
+#available_heading, #upcoming_heading
+{
+font-size:12px;
+color:#000000;
+font-weight:bold;
+margin-bottom: 5px;
+}
+#available_heading_hr
+{
+  background-color: #b8e69e;
+    border: 1px dotted #B3B3B3;;
+    float: left;
+    height: 8px;
+    width: 90px;
+    margin:0px;   
+    margin-top:3px;
+	padding:0px;
+}
+#upcoming_heading_hr
+{
+  background-color: #fff1cc;
+    border: 1px dotted #B3B3B3;;
+    float: left;
+    margin:0px;
+    height: 8px;
+    width: 90px;
+    margin-top:3px;
+	padding:0px;		
+}
+
+/* Map CSS start */
+
+.wrapper {
+margin:0 auto;
+width:950px;
+height: 387px;
+position:relative;
+}
+
+#map {
+float:left;
+clear:both;
+width:610px;
+height:387px;
+background:url(/images/housingReport/map_bkg_03.png) left top no-repeat;
+margin-left:150px;
+}
+
+#shadow {
+    background-color: #000000;
+    height: 1000px;
+    left: 0;
+    margin: 0;
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+    position: absolute;
+   top: 0;
+   width: 100%;
+   display:none;
+}
+.point {
+color: #333333;
+position:absolute;
+display:none;
+padding:10px 15px;
+background:#f8f8f8;
+font-size:12px;
+font-weight:normal;
+border: 1px solid #4e4e4e;
+-moz-border-radius:6px;
+z-index:100;
+}
+
+.point a {
+	color:#024e9a;
+	text-decoration: none;
+}
+
+.point .close {
+display:block;
+position:absolute;
+top:-10px;
+right:-10px;
+width:24px;
+height:24px;
+text-indent:-9999px;
+outline:none;
+background:url(/images/housingReport/close.png) no-repeat;
+}
+a img {
+border:none;
+}
+#hmr_map
+{
+float:left;
+width:950px;
+margin-top:15px;
+margin-bottom:20px;
+}
+#read_more_keith 
+{
+width:950px;
+color: #000000;
+float: left;
+text-align:center;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:bold;
+margin-bottom:20px;
+}
+#read_more_keith  a
+{
+color: #000000;
+}
+#read_more_keith hr
+{
+border:0px;
+border-top:1px solid black;
+width:100px;
+float:left;
+width:320px;
+}
+#read_more_keith span
+{
+float:left;
+margin-left:10px;
+margin-right:10px;
+}
+/* Map CSS End */
+#sub_capture_email, #downlod_issue
+{
+cursor:pointer;
+}
+#capture_result
+{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#FF0000;
+}
+
+.hmrissueerror{
+	color: #FF0000;
+    display: block;
+    float: left;
+    font-size: 10px;
+    margin: 0 auto;
+    width: 175px;
+}
+
+.selectreport{
+	float:left;
+	color: #5C5E5D;
+	font-size: 12px;
+	font-weight: bold;
+	 width:130px;
+}
+#os_support
+{
+width:945px !important;
+margin-top:40px;
+}
+#os_desclaimer, #os_questions, #os_customer_support
+{
+width:300px !important;
+}

@@ -1,0 +1,50 @@
+<?include("./_header.htm");
+if(!$mo)$mo=date("m");
+$mo=sprintf("%02d",$mo);
+if(!$yr)$yr=date("Y");
+$yr=sprintf("%02d",$yr);
+$datestring="$mo$yr";
+if(!$s)$s="date";
+
+$qry="SELECT * , count( * ) num
+FROM subscription_trans 
+WHERE success='1' 
+AND trans_type='postauth' 
+AND concat(amt_charged)!='10.00' 
+AND concat(amt_charged)!='7.00'
+AND date_format(date,'%m%Y')='$datestring' 
+GROUP BY concat(email,date_format(date,'%m%Y')) 
+HAVING count(*)>1 
+ORDER BY `$s` DESC";
+$total=num_rows($qry);
+?>
+<div style="padding:40px">
+
+The following shows accounts that have suspicious double billings for given months. This doesn't apply to premium-only charges.
+<form method="get">
+<table>
+<TR>
+<TD><?month_options("mo",$mo)?></TD>
+<TD><?year_options("yr",$yr,0,2004,date("Y"))?></TD>
+<TD><input type="submit" value="go"></TD>
+</TR>
+</table>
+
+</form>
+<table border=1>
+<TR>
+<TD colspan=2><?=$total?> result(s)</TD>
+</TR>
+<TR>
+<TD><a href="<?=$PHP_SELF.qsa(array(s=>email))?>">EMAIL</a></TD>
+<TD><a href="<?=$PHP_SELF.qsa(array(s=>num))?>">BILLINGS</a></TD>
+</TR>
+<?foreach(exec_query($qry) as $row){?>
+<TR>
+<TD><?=href("/admin/subs.htm?search_on=1&search_by=s.email&search_param=${row[email]}",$row[email])?></TD>
+<TD><a target="_search" href="/admin/subs.trans.htm?s=st.date&d=1&id=<?=$row[subscription_id]?>&email=<?=$row[email]?>"><?=$row[num]?></a></TD>
+</TR>
+<?}?>
+</table>
+</div>
+<?include("./_footer.htm")?>

@@ -1,0 +1,158 @@
+<?php
+global $D_R;
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/config/_products_config.php");
+include_once("$D_R/lib/registration/_register_funnel_data_lib.php");
+$objFunnelData = new registrationFunnelData();
+global $viaProductsName;
+$objUserData= new userData();
+$error=$_GET['error'];
+$id = $_GET['id'];
+
+
+$cancreate=$AD->getPerm("add_user_order");				//-------Check User accesss for page---------------
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+
+$product = $_GET['product'];
+$plan = $_GET['plan'];
+if(!empty($product)){
+	if(!empty($plan)){
+		$codes = $objFunnelData->getAllPlanCodeOfProduct($product);
+		$productData = $objFunnelData->getPlanDetails($plan);
+	}else{
+		$productData = $objFunnelData->getProductData($product);
+		$codes = $objFunnelData->getAllPlanCodeOfProduct($product);
+	}
+}
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>Subscriber Add Order</title>
+	<link rel="stylesheet" href="_style.css">
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/adminManageSubscription.1.3.css">
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/min/jquery-ui-datepicker.1.1.css" type="text/css" media="all" />
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/adminManageSubscription.1.4.js"></script>
+	<script>
+	$(function() {
+		jQuery( "#activatedAt" ).datepicker({ dateFormat: "yy-mm-dd" });
+		jQuery( "#startedAt" ).datepicker({ dateFormat: "yy-mm-dd" });
+		jQuery( "#endAt" ).datepicker({ dateFormat: "yy-mm-dd" });
+		jQuery( "#trialStartedAt" ).datepicker({ dateFormat: "yy-mm-dd" });
+		jQuery( "#trialEndAt" ).datepicker({ dateFormat: "yy-mm-dd" });
+	});
+	</script>
+</head>
+
+
+
+<body onload=window.focus() style="border:0px">
+<img src="assets/headerlogo.gif" border=0>
+<br><br>
+<div class=adminheader>
+Add Order<br>
+<div style="font-size:11px;font-weight:bold;">(Please Add only Soft Trials and Comp from this page. This will be recorded only in MV DB not in Recurly. No paid subscription should be added from this page.)</div>
+</div>
+<?if($error){?><br><div id="error" class=error><?=strip($error)?></div><?}?>
+<hr />
+<div class="main">
+<div class="manage_required">Fields marked <span class="required_symbol">*</span> are required.</div>
+<div style="clear:left;"></div>
+<form method="post" id="addOrder" action="subscribers_order_mod.php">
+	<?input_hidden("id",$id)?>
+	<div id="productError" class="subError">&nbsp;</div>
+	<div class="innerDiv">
+		<div class="heading">Account Code: </div>
+		<input type="text" name="subscription_id" value="<?=$id?>" readonly="readonly" / >
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Product<span class="required_symbol">*</span> : </div>
+		<select name="product" id="product" onChange="returnProductName(this.id,'subscribers.order.htm','<?=$id?>')">
+			<option  value="0">-- Select Product --</option>
+			<? foreach($viaProductsName as $key=>$val){
+			    if($_GET['product']==$key){
+				 	echo '<option id='.$key.' value='.$key.' selected >'.$val.'</option>';
+			    } else {
+				 	echo '<option id='.$key.' value='.$key.'  >'.$val.'</option>';
+			    }
+			} ?>
+		</select>
+	</div>
+
+	<div class="innerDiv">
+		<div class="heading">Plan Codes<span class="required_symbol">*</span>: </div>
+		<select name="recurly_plan_code" id="planCode" onChange="returnPlanDetails('product','subscribers.order.htm',this.id,'<?=$id?>')">
+			<option  value="0">-- Select Plan Code --</option>
+			<? foreach($codes as $key=>$val){
+			    if($plan==$val['recurly_plan_code']){
+				 	echo '<option id='.$val['recurly_plan_code'].' value='.$val['recurly_plan_code'].' selected >'.$val['recurly_plan_code'].'</option>';
+			    } else {
+				 	echo '<option id='.$val['recurly_plan_code'].' value='.$val['recurly_plan_code'].'  >'.$val['recurly_plan_code'].'</option>';
+			    }
+			} ?>
+		</select>
+	</div>
+
+	<div class="innerDiv">
+		<div class="heading">Plan Name<span class="required_symbol">*</span> : </div>
+		<? if($productData['plan_name']!=''){ ?>
+			<input type="text" name="recurly_plan_name" id="planName" value="<?=$productData['plan_name'];?>" readonly="readonly" / >
+		<? }else{ ?>
+			<input type="text" name="recurly_plan_name" id="planName" / >
+		<? } ?>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">uuid: </div>
+		<input type="text" name="recurly_uuid" id="uuid" / ><span class="example">(Order Id { blank in case of trials and complimentary })</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Status<span class="required_symbol">*</span> : </div>
+		<input type="text" name="recurly_state" id="state" / ><span class="example">(Active, Expire, Future etc. )</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Quantity: </div>
+		<input type="text" name="recurly_quantity" id="qty" value="1" readonly="readonly" / >
+	</div>
+	<? if($productData['recurly_plan_charge']!=''){
+		$price = $productData['recurly_plan_charge']*100;
+	}else{
+		$price='';
+	} ?>
+	<div class="innerDiv">
+		<div class="heading">Plan Charges<span class="required_symbol">*</span> : </div>
+		<input type="text" name="recurly_total_amount_in_cents" id="amt" value="<?=$price?>" / ><span class="example">(in cents)</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Start Date<span class="required_symbol">*</span> : </div>
+		<input type="text" name="recurly_activated_at" id="activatedAt" autocomplete="off" / ><span class="example">(YYYY-MM-DD)</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Current Period Start Date<span class="required_symbol">*</span> : </div>
+		<input type="text" name="recurly_current_period_started_at" id="startedAt" autocomplete="off" /><span class="example">(YYYY-MM-DD)</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Current Period End Date<span class="required_symbol">*</span> : </div>
+		<input type="text" name="recurly_current_period_ends_at" id="endAt" autocomplete="off" / ><span class="example">(YYYY-MM-DD)</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Trial Start Date: </div>
+		<input type="text" name="recurly_trial_started_at" id="trialStartedAt" autocomplete="off" / ><span class="example">(YYYY-MM-DD)</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Trial End Date: </div>
+		<input type="text" name="recurly_trial_ends_at" id="trialEndAt" autocomplete="off" /><span class="example">(YYYY-MM-DD)</span>
+	</div>
+	<div style="clear:left;"></div>
+	<hr />
+	<center><br>
+		<input type="button" value="save" onClick="javascript:checkAddOrder();">
+		<input type="button" value="Close Window" onclick="window.close()">
+	</center>
+</form>
+</div>
+</body>
+</html>

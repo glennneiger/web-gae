@@ -1,0 +1,28 @@
+<?
+$page="gazette";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("etf_articles etf_approve etf_performance"))){
+	admin_error();
+}
+?>
+<table align=left>
+<TR>
+	<TD nowrap><div class=adminheader>Grail ETF & Equity Investor</div><br><br
+	<div style="padding:10px;width:400px">
+		<b>Articles</b><br><br>
+		<?if($AD->getPerm("etf_articles")){?>
+		<li><a href="articles.htm">Create/ Edit Articles</a>	
+		<?}?>
+		<?if($AD->getPerm("etf_approve")){?>
+		<li><a href="approve.htm">Approve Articles</a><br>
+		<?}?>
+		<?if($AD->getPerm("etf_performance")){?>
+		<li><a href="performance.htm">Upload Performance</a><br>
+		<?}?>
+		<br />
+	</div>	
+	</td>
+</tr>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

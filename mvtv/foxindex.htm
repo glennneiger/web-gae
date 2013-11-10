@@ -1,0 +1,176 @@
+<?
+$zoneIDSky = $SEC_TO_ZONE['mvtvtop'];
+$zoneIDBottom = $SEC_TO_ZONE['mvtvbottom'];
+$zoneIDBottom2 = $SEC_TO_ZONE['mvtvbottom2'];
+$zoneIDFooter = $SEC_TO_ZONE['mvtvfooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['mvtvfooter2'];
+/* Operative Configuration *****/
+$zone_name="mvtv";
+$tile728x90=1;
+$tile160x600top=2;
+$tile160x600bottom=3;
+$tile180x150=4;
+$tile300x250left=5;
+$tile300x250middle=6;
+$tile125x125=7;
+/* End Operative Configuration *****/
+$title= "MVTV";
+$page_navigation=$NAVIGATION["ENTERTAINMENT"];
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/layout_functions.php");
+include("$D_R/_header.htm");
+$pageName="mvtv";
+$modules = getModules();
+$videoid=$_GET["videoid"];
+$preview=$_GET["preview"];
+if($_GET["offset"])
+	$offset=$_GET["offset"];
+else
+	$offset=0;
+if($videoid && $preview){
+	$sql="SELECT * FROM mvtv WHERE id=".$videoid;
+}
+elseif($videoid){
+	$sql="SELECT * FROM mvtv WHERE approved='1' and publish_time < '".mysqlNow()."'  and id=".$videoid;
+}
+else{
+	$sql="SELECT * FROM mvtv where approved='1' and publish_time < '".mysqlNow()."' ORDER BY publish_time DESC LIMIT ".$offset.",1";
+}
+
+$mvtvvideo=exec_query($sql,1);
+?>
+<script type="text/javascript" src="/buzz/includes/prototype.js"></script>
+<script type="text/javascript" src="/buzz/includes/scriptaculous.js?load=effects"></script>
+<script type="text/javascript" src="/buzz/includes/AnchorPosition.js"></script>
+<script type="text/javascript" src="/buzz/includes/AC_RunActiveContent.js"></script>
+<script type="text/javascript" src="/js/mvtv.js"></script>
+<script language="javascript" type="text/javascript">
+function selecttab(tab)
+{
+	if(tab=='1')
+	{
+		document.getElementById('NewsViewsTab').style.display='none';
+		document.getElementById('WorldReviewTab').style.display='block';
+
+	}
+}
+</script>
+<style type="text/css">
+
+#NewsViewsTab {
+	margin: 0px;
+}
+#WorldReviewTab {
+	margin: 0px;
+}
+
+
+
+</style>
+<tr><td class="underheader">
+<div class="ArticleColumnContainer">
+<div class="MvtvTwoColumnWide">
+
+<!-- ******** Left column ********  -->
+  <div class="MvtvTwoColumnWideLeft">
+	 <table width="437" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td valign="top">
+    <table width="437" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td>
+        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="437" height="365" id="mvtv_video_simple_2" align="middle">
+          <param name="allowScriptAccess" value="sameDomain" />
+          <param name="movie" value="mvtv_videoplayer.swf?videoURL=<?=$mvtvvideo['videofile']?>&still=<?=$mvtvvideo['stillfile']?>" />
+          <param name="quality" value="best" />
+          <param name="bgcolor" value="#ffffff" />
+          <param name="wmode" value="transparent" />
+          <embed src="mvtv_videoplayer.swf?videoURL=<?=$mvtvvideo['videofile']?>&still=<?=$mvtvvideo['stillfile']?>" quality="best" bgcolor="#ffffff" width="437" height="365" name="mvtv_video_simple_2" wmode="transparent" align="middle" allowscriptaccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+</object></td>
+      </tr>
+
+      <tr>
+        <td height="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="center" valign="bottom"><p class="mvtvEpisdoeTitle"><?=$mvtvvideo['title']?></p></td></tr>
+        <tr><td align="center" valign="bottom">
+        <p class="mvtvEpisodeDescription"> <?=$mvtvvideo['description']?> </p></td>
+      </tr>
+    </table>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center"><div class="SocialNetworkLinksBottom1">
+										  <div class="share-article" style="padding: 1.5em 0">
+                                                 <a href="/share/email.htm?type=page&url=<?= urlencode($_SERVER['REQUEST_URI']) ?>&urlt=<?= urlencode('Minaynville TV') ?>"><img src="/images/icons/email-icon.gif" width="17" height="12" alt="" /> Email</a>
+											     <a href="http://del.icio.us/post" onclick="window.open('http://del.icio.us/post?v=4&noui&jump=close&url='+encodeURIComponent(window.location)+'&title='+encodeURIComponent('Minyanville TV'), 'delicious','toolbar=no,width=700,height=400'); return false;"><img src="/images/icons/delicious-logo-small.gif" width="16" height="16" alt="" /> Del.icio.us</a>
+											     <a href="http://digg.com/submit" onclick="window.open('http://digg.com/submit?phase=2&url='+encodeURIComponent(window.location)+'&title='+encodeURIComponent('Minyanville TV') + '&topic=business_finance', 'digg','toolbar=no,width=915,height=645'); return false;"><img src="/images/icons/digg-logo-small.gif" width="16" height="16" alt="" /> Digg</a>
+											     <a href="http://www.facebook.com/posted.php" onclick="window.open('http://www.facebook.com/sharer.php?src=bm&v=4&i=1176837783&u='+encodeURIComponent(window.location)+'&t='+encodeURIComponent('Minyanville TV'), 'sharer','toolbar=no,width=626,height=436'); return false;"><img src="/images/icons/facebook-logo-small.gif" width="16" height="16" alt="" /> Facebook</a>
+                                              <a href="/rss/"><img src="/rss/rss-logo-small.gif" width="27" height="15" alt="" /> Subscribe</a>
+                                            </div></div>
+ </td>
+    </tr>
+		<tr><td >
+	<!---- 2 modules starts --->
+	    <div>
+					 <table align="center" width="100%" border="0" cellpadding="0" cellspacing="0" border="1">
+			          <tr><td><br><center>
+						<? //show_ads_operative($zone_name,$tile180x150,$ADS_SIZE['Rectangle']);?>
+						</center>
+
+						</td></tr>
+						  <tr>
+						  <td width="400px"><br>
+						  <? //call_Column_Module_List($pageName,'lowerbox',$modules,'show','lowerbox'); ?>
+						   </td>
+						  </tr>
+						  <tr>
+							<td><br>
+								<center>
+								<? //show_ads_operative($zone_name,$tile300x250left,$ADS_SIZE['MediumRectangle'],"left");?>
+
+								</center>
+
+								</td>
+							</tr>
+
+					 </table>
+
+
+		      </div>
+
+
+	<!--- 2 modules ends -->
+	</td></tr>
+
+</table>
+ </div>
+
+
+  <!-- ********  Middle column ********  -->
+  <div class="MvtvTwoColumnWideRight">
+      <table cellspacing="0" cellpadding="0">
+       <tr>
+  	  <td>
+  	     <div> <? //makemvtvThumbnailContainer($offset) ?> </div>
+   	  </td>
+  	 </tr>
+  	  <tr><td height="16px">&nbsp;</td></tr>
+  	 <tr>
+  	   <td>
+  	   <div> <? //show_ads_operative($zone_name,$tile300x250middle,$ADS_SIZE['MediumRectangle'],"middle");?> </div>
+  	  </td>
+  	</tr>
+     </table>
+
+	</div>
+</div>
+<script language="javascript" type="text/javascript">
+selecttab(<?=$_GET['t']?>);
+</script>
+<!-- end flash area -->
+
+<?include("$D_R/_footer.htm");?>

@@ -1,0 +1,76 @@
+<?php
+
+ $event = $_REQUEST['event'];
+ $email = $_REQUEST['recipient_email'];
+ $name = $_REQUEST['name'];
+ $pd = $_REQUEST['pd'];
+ global $HTPFXSSL,$HTHOST;
+ $res = exec_query("select email_body from ex_email_template where event='".$event."'",1);
+ $pat[] = '/\[Name\]/';
+ $rep[] = $name;
+ $pat[] = '/\[Email\]/';
+ $rep[] = $email;
+ if($pd){
+	 $passwrd="<br>Password: ".$pd."";
+	 $pat[] = '/\[Password\]/';
+	 $rep[] = $passwrd;
+ }else{
+	 $passwrd="";
+	 $pat[] = '/\[Password\]/';
+	 $rep[] = $passwrd;
+ }
+ $pat[] = '/\[Host]/';
+ $rep[] = $HTPFX.$HTHOST;
+ $body = preg_replace($pat,$rep,$res['email_body']);
+?>
+
+<html>
+<head>
+
+</head>
+
+<body >
+
+<table width="60%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td colspan="2"><a href="<?=$HTPFX.$HTHOST;?>/cooper"><img src="<?=$IMG_SERVER;?>/images/cooper_email_st_header.jpg" border="0" alt="Daily Market Report" /></a></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="option_nav" style="background-color:#3c546c;color:#FFFFFF;font-family:Arial, Helvetica, sans-serif;font-size:12px;padding:5px;" >
+    <span style="padding-left:30px; padding-right:100px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>">Minyanville.com</a></span>
+
+    <span style="padding-right:20px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>/cooper">DailyMarketHome</a></span>
+
+    <span style="padding-right:20px;"><a style="color:#FFFFFF;" href="<?=$HTPFX.$HTHOST;?>/subscription/">Subscription Products - Free Trial</a></span>
+
+    <a style="color:#FFFFFF;" href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/controlPanel.htm">Free Email Newsletters</a>    </td>
+  </tr>
+
+	<tr><td colspan="2"><?=$body;?></td></tr>
+
+      <tr>
+    <td colspan="2">
+    <div class="copy_footer" style="font-size:11px;text-align:center;float:left;width:93%;padding:15px;line-height:20px;">
+
+    &copy;<?=date("Y");?> Minyanville Media Inc, 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm"> Contact Us</a> |&nbsp;
+    <a style="color:#3c546c;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf">Advertise With Us</a>    </div>    </td>
+  </tr>
+      <tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+*/
+?>
+</div>
+</body>
+</html>

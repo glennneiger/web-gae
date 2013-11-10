@@ -1,0 +1,151 @@
+<?
+global $ADMIN_PATH,$HTPFX,$HTHOST,$D_R;
+include_once("$D_R/lib/_content_data_lib.php");
+$viewapproved=$_POST['viewapproved'];
+$publishdatefield=$_POST['publishdatefield'];
+$approve=$_POST['approve'];
+$delarticle=$_POST['delarticle'];
+$ARTICLE_TABLE="cp_articles";
+include_once('../../lib/layout_functions.php');
+include_once("$ADMIN_PATH/_header.htm");
+$sendemail=$AD->getPerm("cp_approve");
+$objremove= new Content();
+$bounceback="./approve.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="DELETE FROM $ARTICLE_TABLE WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	/*remove deleted article from object search*/
+	$objremove->removeUnapprovedItems($keys,"Cooper");
+}
+
+if(!$viewapproved){
+if(is_array($approve)){
+foreach(array_keys($publishdatefield[mo]) as $article_id){
+if($publishdatefield[mo][$article_id] <> '' && $publishdatefield[day][$article_id] <> '' && $publishdatefield[year][$article_id] <> '' && $publishdatefield[hour][$article_id] <> '' && $publishdatefield[min][$article_id] <> '' && $approve[$article_id] == "on" )
+{
+
+	$publish_date=time($publishdatefield[hour][$article_id],$publishdatefield["min"][$article_id],0, $publishdatefield[mo][$article_id],$publishdatefield[day][$article_id],$publishdatefield[year][$article_id]);
+	if($publish_date > time())
+	{
+		$publish_date=mysqlNow($publish_date);
+		update_query($ARTICLE_TABLE,array(is_live=>'0',publish_date=>$publish_date),array(id=>$article_id));
+	}
+	else
+	{
+		$publish_date=mysqlNow($publish_date);
+		update_query($ARTICLE_TABLE,array(is_live=>'1',publish_date=>$publish_date),array(id=>$article_id));
+	}
+}
+else if(($publishdatefield[mo][$article_id] == '' || $publishdatefield[day][$article_id] == '' || $publishdatefield[year][$article_id] == '' || $publishdatefield[hour][$article_id] == '' || $publishdatefield[min][$article_id] == '') && $approve[$article_id] == "on" )
+{
+	$publish_date = '0000-00-00 00:00:00';
+	update_query($ARTICLE_TABLE,array(is_live=>'1',publish_date=>$publish_date),array(id=>$article_id));
+}
+}
+}
+}
+
+
+if(is_array($approve)){
+	$keys = implode(",",array_keys($approve));
+	$qry = "UPDATE $ARTICLE_TABLE SET approved='".($viewapproved?0:1)."'";
+	if(!$viewapproved)
+		$qry.=", date='".mysqlNow()."'";
+	$qry.="WHERE find_in_set(id,'$keys')
+		   AND approved='".($viewapproved?1:0)."'
+		  LIMIT ".count($approve);
+	exec_query_nores($qry);
+	if($viewapproved=='1'){
+		/*remove unapprove article from object search*/
+		$objremove->removeUnapprovedItems($keys,"Cooper");
+	}
+
+
+
+//final step in publishing process, flatten out article and marc as sent
+	if(!$viewapproved){//don't want to resend articles
+		foreach(array_keys($approve) as $article_id){
+			$qry="SELECT id FROM $ARTICLE_TABLE WHERE id='$article_id' AND sent='0' AND is_live='1'";
+			if(num_rows($qry)){//article hasn't been spammed yet
+				update_query($ARTICLE_TABLE,array(sent=>1),array(id=>$article_id));
+				wgetArticle($article_id);
+			}
+			else
+			{
+				$sendemail="0";
+			}
+
+            $obContent = new Content(14,$article_id);
+            $obContent->setCooperMeta($article_id);
+		}
+	}
+
+	// 31 Jul 2007
+	if(!$viewapproved && $sendemail==1){
+/* As discussed with Kamal now we don't need to generate list*/
+		# Send Articles
+	/*	$listfile=$COOPER_SUB_LIST;
+		# check what has been written in listfile.
+		$handle = fopen($listfile, "r");
+		$contents = fread($handle, filesize($listfile));
+		fclose($handle);
+		# if no subscribers exists.
+		if(trim($contents)==''){
+			$message="Articles were changed but no email could be sent as currently you have no subscriber.";
+		}
+		else{ */
+
+			// $professor_details=get_prof_domain_name($_POST['prof_id']);
+			// $sitename=$professor_details[sitename];
+			global $NOTIFY_JOURNAL_FROM_CP_NAME,$NOTIFY_JOURNAL_FROM_CP_EMAIL;
+			$to=$NOTIFY_JOURNAL_TO;
+			$from[$NOTIFY_JOURNAL_FROM_CP_EMAIL]= $NOTIFY_JOURNAL_FROM_CP_NAME;//$prof_lang['FROM_email_template']."<".$REG_EML_REPLYTO_PROFESSOR.">";
+			//$subject=htmlentities(get_article_title_cooper($keys),ENT_QUOTES);
+            $subject=get_article_title_cooper($keys);
+			$msgfile="/tmp/spam_".mrand().".eml";
+			$msghtmlfile="$D_R/assets/data/".basename($msgfile);
+			$sitename=$HTHOST."/cooper";
+			$msgurl=$SPAM_EML_MULTIPLE_ARTICLE_TMPL.qsa(array(aid=>$keys,prof_id=>$_POST['prof_id'],sitename=>$sitename));
+			// $msgurl=$SPAM_EML_MULTIPLE_ARTICLE_TMPL.qsa(array(aid=>$keys,prof_id=>$_POST['prof_id']));
+			$mailbody=inc_web($msgurl);
+		/********** Send the email request start  **********/
+			include_once("$D_R/lib/_user_controller_lib.php");
+			$userObj=new user();
+			$result = $userObj->emailDetails($from,$subject,utf8_encode($mailbody),'cooper');
+		/********** Send the email request end **********/
+			$message="The articles were changed and an email was sent to subscribers.";
+		/*}*/
+	}
+	// 31 Jul 2007
+	else{
+		if($sendemail!=1)
+			$message="Articles were changed.";
+	}
+}
+//Change error message for deleted articles.
+if (count($delarticle))
+{
+
+location($bounceback.urlencode("The articles were deleted"));
+
+exit;
+}
+if(!$viewapproved)
+{
+location($bounceback.urlencode($message));
+
+}
+else
+{
+location($bounceback.urlencode("The articles were changed and are now not live on the site"));
+
+}
+exit;
+?>

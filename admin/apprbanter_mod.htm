@@ -1,0 +1,171 @@
+<?
+//include_once("$ADMIN_PATH/_authenticate.htm");
+ini_set('max_execution_time', 5000);
+$bounceback="./approvebanter.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$D_R/admin/lib/_admin_data_lib.php");
+include_once("$D_R/admin/lib/_contributor_class.php");
+include_once("$D_R/admin/lib/_yahoo_lib.php");
+include_once("$D_R/lib/config/_yahoobuzz_config.php");
+include_once($D_R.'/lib/_action.php');
+$objAction= new Action();
+$objYahoo = new YahooSyndication();
+$objremove= new Content('buzzbanter');
+$objBuzz = new Buzz();
+
+$viewapproved = $_POST['viewapproved'];
+$approve = $_POST['approve'];
+$delarticle = $_POST['delarticle'];
+$publishdatefield = $_POST['publishdatefield'];
+
+$BUZZ_TABLE="buzzbanter";
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="DELETE FROM buzzbanter WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	// delete posts from buzzbanter_today table
+	$qry="DELETE FROM buzzbanter_today WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	/*remove deleted article from object search*/
+	 $objremove->removeUnapprovedItems($keys,$BUZZ_TABLE);
+            foreach(array_keys($delarticle) as $delValId){
+                $objAction->trigger('buzzDataDelete',$delValId);
+            }
+}
+
+
+if(!$viewapproved)
+{
+		if(is_array($approve))
+		{
+			foreach(array_keys($publishdatefield[mo]) as $article_id)
+			{
+	if($publishdatefield[mo][$article_id] <> '' && $publishdatefield[day][$article_id] <> '' && $publishdatefield[year][$article_id] <> '' && $publishdatefield[hour][$article_id] <> '' && $publishdatefield[min][$article_id] <> '' && $approve[$article_id] == "on" )
+	{
+
+		$publish_date=strtotime($publishdatefield[year][$article_id]."-".$publishdatefield[mo][$article_id]."-".$publishdatefield[day][$article_id]." ".$publishdatefield[hour][$article_id].":".$publishdatefield["min"][$article_id].":0");
+
+		if($publish_date > strtotime(date('Y-m-d H:i:s'))
+		{
+			$publish_date=mysqlNow($publish_date);
+			update_query(buzzbanter,array(is_live=>'0',publish_date=>$publish_date),array(id=>$article_id));
+			update_query(buzzbanter_today,array(is_live=>'0',publish_date=>$publish_date),array(id=>$article_id));
+			// update buzzbanter_today table
+						// updateBuzzTodayTable($article_id); // no need to call again
+
+		}
+		else
+		{
+			$publish_date=mysqlNow($publish_date);
+			update_query(buzzbanter,array(is_live=>'1',publish_date=>$publish_date),array(id=>$article_id));
+			update_query(buzzbanter_today,array(is_live=>'1',publish_date=>$publish_date),array(id=>$article_id));
+			// update buzzbanter_today table
+			// updateBuzzTodayTable($article_id); // no need to call again
+       		}
+	}
+	else if(($publishdatefield[mo][$article_id] == '' || $publishdatefield[day][$article_id] == '' || $publishdatefield[year][$article_id] == '' || $publishdatefield[hour][$article_id] == '' || $publishdatefield[min][$article_id] == '') && $approve[$article_id] == "on" )
+	{
+		$publish_date = '0000-00-00 00:00:00';
+		update_query(buzzbanter,array(is_live=>'1',publish_date=>$publish_date),array(id=>$article_id));
+		update_query(buzzbanter_today,array(is_live=>'1',publish_date=>$publish_date),array(id=>$article_id));
+		// update buzzbanter_today
+		// updateBuzzTodayTable($article_id); // no need to call again
+
+
+	}
+	}
+	}
+}
+
+if(is_array($approve)){
+
+	$keys = implode(",",array_keys($approve));
+	$qry = "UPDATE buzzbanter SET approved='".($viewapproved?0:1)."'";
+	if(!$viewapproved)
+		$qry.=", date='".mysqlNow()."'";
+	$qry.="WHERE find_in_set(id,'$keys')
+		   AND approved='".($viewapproved?1:0)."'
+		  LIMIT ".count($approve);
+	exec_query($qry);
+	//update buzzbanter_today
+	$qry = "UPDATE buzzbanter_today SET approved='".($viewapproved?0:1)."'";
+	if(!$viewapproved)
+		$qry.=", date='".mysqlNow()."'";
+	$qry.="WHERE find_in_set(id,'$keys')
+		   AND approved='".($viewapproved?1:0)."'
+		  LIMIT ".count($approve);
+	exec_query($qry);
+        if($viewapproved=='1'){
+        	/*remove unapprove article from object search*/
+		$objremove->removeUnapprovedItems($keys,$BUZZ_TABLE);
+                foreach(array_keys($approve) as $appValId){
+                    $objAction->trigger('buzzDataUpdate',$appValId);
+                }
+	}
+
+	if (!$viewapproved)
+	{
+	foreach(array_keys($approve) as $article_id)
+	{
+	$qry="SELECT id FROM buzzbanter WHERE id='$article_id' AND is_live='1'";
+	if(num_rows($qry)){//article hasn't been spammed yet
+		writeLatestBanterPostJSON();
+	}
+	}
+     }
+
+//final step in publishing process, flatten out article and marc as sent
+	if(!$viewapproved){//don't want to resend articles
+		foreach(array_keys($approve) as $article_id){
+			$qry="SELECT id FROM buzzbanter WHERE id='$article_id' AND sent='0'";
+			if(num_rows($qry)){//article hasn't been spammed yet
+				update_query(buzzbanter,array(sent=>1),array(id=>$article_id));
+				wgetArticle($article_id);
+				spamJournalToUsers($article_id);
+
+			}
+
+                        /*send buzz to yahoo if feed approved*/
+                         /*buzz approved send feed to yahoo*/
+			  $objBuzz->sendBuzzYahooSyndication($article_id);
+			  $obContent = new Content('buzzbanter',$article_id);
+                          $obContent->setBuzzMeta($article_id);
+                          $buzzKey=0;
+                          $buzzVal[$buzzKey] = $article_id;
+                          $buzzKey++;
+		}
+		foreach($buzzVal as $buzzArtKey){
+			$objAction->trigger('buzzDataUpdate',$buzzArtKey);
+		}
+	}
+	else
+	{
+		$objAction->trigger('buzzDataUpdate',$article_id);
+	}
+}
+
+
+if (count($delarticle))
+{
+
+location($bounceback.urlencode("The Posts were deleted"));
+
+exit();
+}
+if(!$viewapproved)
+{
+location($bounceback.urlencode("The Posts were changed"));
+
+}
+else
+{
+location($bounceback.urlencode("The posts were changed and are now not live on the site"));
+
+}
+exit;
+?>

@@ -1,0 +1,14 @@
+<?
+include_once($D_R.'/lib/MemCache.php');
+include_once($D_R.'/lib/_redesign_design_lib.php');
+include_once($D_R.'/lib/ads/_indstrybrains_class.php');
+include_once($D_R.'/lib/_convert_charset.class.php');
+include_once($D_R.'/lib/config/_article_config.php');
+include("$D_R/lib/_article_design_lib.php") ;
+
+$articleid = 33198;
+$articlecache= new Cache();
+$article=$articlecache->deleteArticleCache($articleid);
+$article=$articlecache->getArticleCache($articleid);
+htmlprint_r($article);
+?>

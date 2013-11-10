@@ -1,0 +1,151 @@
+<?php
+/* Operative Configuration *****/
+/*$zone_name="daily_feed";
+$tile728x90=1;
+$tile120x30=5;
+$tile300x250=3;
+$tile160x600top=4;
+/* End Operative Configuration *****/
+
+if(!$_SESSION['SID']){
+	loginRedirection();
+}
+
+$pageName = "dailyfeed";
+$pageId=142;
+$pageJS=array("config","registration","jquery","iboxregistration","creditcard","nav","redesign","scriptaculous",'dailyfeed','ajax','friends','zoomimage');
+$pageCSS=array("global","layout","rightColumn","nav","dailyfeed","zoomimage","minyanville");
+
+include_once($D_R."/_header.htm");
+include_once($D_R."/lib/ads/_indstrybrains_class.php");
+
+$user_status = $_GET['type'];
+
+$uid = $_SESSION['SID'];
+?>
+<!--Body area start from here-->
+<!--left contaner start from here-->
+<div class="shadow">
+    <div id="content-container">
+        <div id="article-left">
+        	<div class="rss_common_main">
+<div  class="footer_common_title" style="width:645px;">
+<table width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>Free Newsletters From Minyanville</td>
+</tr>
+</table>
+<br /></div>
+
+<div style="float:left;">
+<br>
+
+<div class="log_top_heading">You are now subscribed to The MV Premium. Minyanville's take on the top financial news of the day.<br>
+<a href="<?=$HTPFX.$HTHOST;?>/mvpremium/">Click here</a> to go back to MV Premium.</div>
+<div align="left">
+		<br />
+		<p>Before you can begin to enjoy the benefits of your membership, we need to make sure you&lsquo;re a real person.</p>
+		<br />
+		<p>Momentarily you will receive an email with an activation link to the email address you registered with. <br />Click that and you&lsquo;ll have full access to your Minyanville membership.</p>
+		<br />
+		<p>Contact us at <a href="mailto:support@minyanville.com">support@minyanville.com</a> with any questions.</p><br />
+	</div>
+<br />
+
+
+<br>
+<div class="log_top_heading">Subscribe to our other FREE newsletters:</div>
+<div align="center" class="unsubscribe_error" id="categoryErrorMsgs"></div>
+<table cellpadding="0" cellspacing="0" width="100%" border="0" align="left">
+<tr><td>
+<?
+if($uid != '') {
+$get_user_category = "select category_ids from email_alert_categorysubscribe where subscriber_id = '$uid'";
+$result_category=exec_query($get_user_category,1);
+
+$cat_ids= $result_category['category_ids'];
+}
+$explode_ids = explode(",",$cat_ids);
+
+$sqlfor_cat="select id,title,frequency,description from email_categories where visible='1' and id!='7'";
+$getcateogries_arr_result=exec_query($sqlfor_cat);
+
+foreach($getcateogries_arr_result as $i=>$v){
+	$newindex=$i+1;
+	$getcateogries_arr[$newindex]=$v;
+}
+
+?>
+
+<form name="email_category">
+
+<table border="0" cellpadding="0" cellspacing="10"><tr>
+<?
+$count = 2;
+$init_count = 0;
+$totalcatcount = count($getcateogries_arr);
+
+for($i=1;$i<=$totalcatcount;$i++) {
+
+if(in_array($getcateogries_arr[$i]['id'],$explode_ids)) {
+$checked = "checked";
+}
+else {
+$checked = "";
+}
+
+?>
+<td width="2%" valign="top">
+<input type="checkbox" style="border:0px;" name="category" id="category" value="<?= $getcateogries_arr[$i]['id'];?>" <?=$checked;?>/></td>
+<td width="43%" height="70" valign="top"><span class="log_common_heading">
+<?= $getcateogries_arr[$i]['title'];?></span>&nbsp;(<?= $getcateogries_arr[$i]['frequency'];?>)<br><?= $getcateogries_arr[$i]['description'];?></span></td>
+
+<?
+$init_count = $init_count + 1;
+
+if($init_count == $count) {
+$init_count = 0;
+echo "</tr><tr>";
+
+}
+}
+
+?>
+
+<tr><td colspan="4" valign="bottom">
+
+<a href="JavaScript:void(0);">
+	<input type="hidden" name="user_sess_id" id="user_sess_id" value="<?=$uid?>">
+	<img src="<?=$IMG_SERVER?>/images/button_submit.gif" alt="submit"  border="0" align="right" onClick="return iboxEmailcategory('category','user_sess_id','categoryErrorMsgs');"></a>
+
+</td></tr>
+</table>
+
+
+</form>
+</div>
+</div>
+
+			</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td class="log_top_heading">Minyanville also offers a series of subscription products that give you an edge with  in-depth information, analysis, commentary and trading ideas. <a href="https://www.minyanville.com/subscription/">Click here to learn more and get a 14-day free trial</a>.</td></tr>
+				   </table></div>
+
+
+</div>
+
+	    </div><!--left contaner end here-->
+
+    <!--right contaner start from here-->
+        <div class="right_contant" >
+        	<?
+			global $arrRightCols;
+            $arrRightCols	=	array('show_video','show_industrybrains','show_localguides');
+            include("../_rightcolumn.htm");
+            ?>
+        <!--right contaner end here-->
+        </div>
+
+    </div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<?include("$D_R/_footer.htm");?>

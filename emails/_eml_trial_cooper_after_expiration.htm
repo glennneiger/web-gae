@@ -1,0 +1,14 @@
+<?include("$D_R/emails/_eml_header.htm")?>
+<br>
+<p>Dear <?= $row[fname]?>,
+  <br>
+  <br>
+We hope you enjoyed your recent trial to Jeff Cooper’s Daily Market Report.  Though your trial has ended, you can subscribe at any time by <strong><a href="<?=$HTDOMAIN?>/register/new/manage.htm" target="_blank">clicking here</a></strong> or logging into Minyanville.com and clicking “Manage Settings”.</p>
+<p>Sign up today to begin getting Jeff’s market commentary and trading setups immediately.</p>
+<p>If you do not wish to subscribe, we hope you continue to visit Minyanville.com for all of our free content on News & Views, MVTV and The Exchange.</p>
+<p>If you have any questions or need assistance, please contact Josh Sander at <a href="mailto:sander@minyanville.com">sander@minyanville.com</a> or 212-991-9357. Feedback is always welcomed as well.</p>
+
+<?php
+$tracking_name = $tracking_name['_eml_trial_cooper_after_expiration'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?>

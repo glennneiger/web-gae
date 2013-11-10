@@ -1,0 +1,149 @@
+<?
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+$pageName="admin_leads";
+$p=intval($p);
+$search_param=trim(lc($search_param));
+if(!$pagesize)$pagesize=40;
+
+$qry='SELECT SQL_CALC_FOUND_ROWS concat(fname," ",lname) Name,email Email,addr Address, city City, state State, zip Zip,phone Phone,product ProductPurchased,investor_type InvestorType,date DateJoined FROM sub_leads ';
+
+if($search_on)
+{
+	$qry.= " where instr(lower($search_by),lower('$search_param'))";
+}
+
+$offset=($p*$pagesize);
+if(!empty($_GET['s']))
+	$qry.=" ORDER BY ".$_GET['s']." ".$_GET['d'];
+else
+$qry.=" ORDER BY date desc ";
+$qry.=" LIMIT $offset,$pagesize ";
+$pagedata=exec_query($qry);
+$numrows=exec_query("SELECT FOUND_ROWS()c",1,"c");
+$numpages=ceil($numrows/$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+
+$searchtypes=array(
+	"fname"=>"First Name",
+	"lname"=>"Last Name",
+	"email"=>"Email"
+
+);
+
+?>
+<style>
+.whilite a:hover{color:#fff;}
+.smbutton{
+	height:14px;
+ 	padding:0px;
+	font-size:9px;
+
+}
+</style>
+<div id="dhtmltooltip"></div>
+<script type="text/javascript" language="JavaScript" src="toolTiphome.js"></script>
+<link href="tooltip.css" type="text/css" rel="stylesheet">
+<div class=adminheader>Manage Subscribers</div><br />
+<? if(!$_GET['msg']){
+	$error=$_GET['error'];
+}else{
+	$error=$_GET['msg'];
+}?>
+<div style="color:#FF0000;"><?=$error;?></div>
+<table border="0" width="100%" align=center>
+<tr><td>
+<table border="0" width="100%" bgcolor=#cccccc align=center>
+<TR>
+<TD colspan=4> <b>Search Filters</b></TD>
+</TR>
+<form method="POST" action="<?=$PHP_SELF?>">
+<?input_hidden("s");input_hidden("pagesize")?>
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="search_on"<?=($search_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Show subscriptions where: </span><br>
+	<select name="search_by">
+	<?selectHash($searchtypes,$search_by)?>
+	</select> contains <?input_text("search_param")?>
+</TD>
+<TD>&nbsp;</TD>
+<TD align=center>
+		<b>Results: <?=$numrows?></b>
+</TD>
+</TR>
+
+<TR>
+<td colspan="2"><b>Summary of Users</b></td>
+<TD align=right colspan="2"><input type="submit" value="go"></TD>
+</TR>
+</form>
+</table>
+	</td></tr>
+<br>
+
+<tr><td>
+<table border="1" width="100%" align=center>
+<TR align=center bgcolor=#bbbbbb>
+<?if(count($pagedata)){
+    $hidecolumn=array('ID','Comment','premium','Type','Status','Trial','blockip','IP','InvestableAssets','Trades');
+
+	foreach(array_keys($pagedata[0]) as $col){
+		if(!in_array($col,$hidecolumn))
+		{
+			$colcolor=($_POST[s]==$col?"#8da9e6":"");
+	?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><?=href($PHP_SELF.qsa(array(s=>$col,d=>($d=="ASC"?"DESC":"ASC"))),$col)?></TD>
+	<?}}?>
+	</TR>
+	<form method="post" action="subscribers_mod.htm">
+	<?refer()?>
+	<?foreach($pagedata as $row){
+		$rowcolor=$i%2?"dddddd":"eeeeee";
+
+	?>
+		<TR bgcolor="<?=$rowcolor?>">
+		<?foreach($row as $k=>$v){
+			if(!in_array($k,$hidecolumn))
+			{
+				$colcolor=($_POST[s]==$k?"#8da9e6":"");
+		?>	<TD bgcolor="<?=$colcolor?>"><?=$v?></TD>
+
+		<?}} ?>
+
+		</TR>
+
+	<?}?>
+
+	</form>
+<?}else{//!count($pagedata)?>
+<TR>
+	<TD colspan=100>Nothing found.<br>
+	<?=mysql_error()?>
+	</TD>
+</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<hr />
+<?=$pagination?>
+<hr />
+</TD>
+</TR>
+<tr><td colspan="6"><a href="subs.export.htm/?qry=<?=urlencode(str_replace('<br />',' ',$qry))?>">Download Excel Spreadsheet of this data</a></td></tr>
+</table>
+</td></tr>
+</table>
+<br><br>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

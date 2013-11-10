@@ -1,0 +1,198 @@
+<?
+$page="shops";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("shops_edit")){
+	admin_error("You're not allowed to view this page.");
+}
+
+
+if($id){
+	$pagedata=exec_query("select * from tmpshop where id='$id'",1);
+}
+$imagelist="find $D_R$PROD_PATH -iname '*.jpg'";
+
+$defaultimg=is_file("$D_R${pagedata[asset]}")?$pagedata[asset]:"/space.gif";
+$defaultlgimg=is_file("$D_R${pagedata[lgasset]}")?$pagedata[lgasset]:"/space.gif";
+
+$w="style='width:100%'";
+?>
+<script>
+window.onload=function(){
+	theForm=findObj("shopform");
+}
+function showArrange(){
+	var obj=document.all("arrange");
+	obj.style.display=(obj.style.display=="none")?"block":"none";
+	document.all("arr").innerHTML=obj.style.display=="none"?"&darr;":"&uarr;";
+}
+
+function selectAll(listName){
+	sub=findObj(listName);
+	if(typeof(sub.options.length)=="undefined"){
+		return 0;
+	}
+	for(i=0;i<sub.options.length;i++){
+		sub.options[i].selected=true
+	}
+	return 1;
+}
+function moveDown(){
+	theList=theForm["catarr[]"];
+	var oldIdx=theList.selectedIndex;
+	if(oldIdx+1>theList.options.length-1)return;
+	var oldObj = theList.options[oldIdx];
+	var repl    = theList.options[oldIdx+1]
+	theList.options[oldIdx+1]=new Option(oldObj.text,oldObj.value,true,true);
+	theList.options[oldIdx]=new Option(repl.text,repl.value,true,false);
+}
+function moveUp(){
+	theList=theForm["catarr[]"];
+	var oldIdx=theList.selectedIndex;
+	if(oldIdx<1)return;
+	var oldObj = theList.options[oldIdx];
+	var repl    = theList.options[oldIdx-1]
+	theList.options[oldIdx-1]=new Option(oldObj.text,oldObj.value,true,true);
+	theList.options[oldIdx]=new Option(repl.text,repl.value,true,false);
+}
+function save(){
+	<?if($pagedata[cat_id]){?>
+	if(selectAll("catarr[]"))
+	<?}?>
+		theForm.submit();
+}
+function imgDropSwap(imgName,Src){
+	if(!Src || Src.charAt(0)=="-")Src="/space.gif";
+	rollOver(imgName,Src);
+}
+function lgAssetChange(imgSrc){
+	var lglink=document.all("lgassetlink");
+	lglink.innerHTML="";
+	if(imgSrc){
+		lglink.innerHTML="<a href=\""+imgSrc+"\" target=_blank>Preview Image</a>";
+	}
+}
+</script>
+<br>
+<div class=adminheader><?=exec_query("select title t from tmpshop_cat where id='$cat_id'",1,"t")?></div>
+
+<center>
+<form method="get">
+<?input_hidden("cat_id")?>
+Select a Product to Edit:<br>
+
+<select name="id" onchange="this.form.submit()">
+<option value="">--New Product--</option>
+<?foreach(exec_query("select id,name FROM tmpshop WHERE cat_id='$cat_id'") as $row){
+	$sel=($row[id]==$id?" selected":"");
+?><option value="<?=$row[id]?>"<?=$sel?>><?=htmlentities($row[name])?></option>
+<?}?>
+</select>
+</form>
+
+</center><br>
+<form method="post" action="./shop_mod.htm" enctype="multipart/form-data" name="shopform">
+
+<?input_hidden("id")?>
+<?input_hidden("cat_id")?>
+<?input_hidden("prod[cat_id]",$cat_id)?>
+<table width=700 align=center>
+<TR>
+<TD colspan=2>
+<?if($pagedata[cat_id]){
+	$catdata="select id,ordr,name from tmpshop where cat_id='${pagedata[cat_id]}' order by ordr";
+	$catdata=exec_query($catdata);
+?>
+<span id=arr>&darr;</span>
+<a href="javascript:showArrange()">arrange products on this  page</a> 
+<div id="arrange" style="display:none;background:#eee;border:2px black solid">
+	<table>
+	<TR>
+	<TD>Arrange:</TD>
+	<TD><select name="catarr[]" size=<?=count($catdata)?> id="catarr[]" multiple>
+	<?foreach($catdata as $row){?>
+	<option value="<?=$row[id]?>"><?=$row[name]?></option>
+	<?}?>
+	</select></TD>
+	<TD><input type="button" onclick="moveUp()" value="&uarr;"><br><br>
+	<input type="button" onclick="moveDown()" value="&darr;">
+	</TD>
+	</TR>
+	</table>
+</div><br>&nbsp;
+<?}?>
+
+</TD>
+</TR>
+<TR>
+<TD nowrap align=right>Product Name</TD>
+<TD><?input_text("prod[name]",htmlentities($pagedata[name]),0,255,$w)?></TD>
+</TR>
+
+<TR valign=top>
+<TD nowrap align=right>Product Description</TD>
+<TD><textarea rows="10" name="prod[description]" style="width:100%"><?=strip($pagedata[description])?></textarea></TD>
+</TR>
+
+<TR>
+<TD nowrap align=right>Product Sizes</TD>
+<TD><?input_text("prod[sizes]",$pagedata[sizes],0,0,$w)?></TD>
+</TR>
+
+<TR valign=top>
+<TD nowrap align=right>Product Skus</TD>
+<TD>
+<?rich_editor("prod[skus]",$pagedata[skus])?></TD>
+</TR>
+
+
+
+
+
+<TR bgcolor="#efefef">
+<TD align=right>Image</TD>
+<TD>
+		<input type="file" name="img" accept="image/jpeg"> OR<br>
+		Select from List:<br>
+		<select name="prod[asset]" size=5 onchange="rollOver('shopimg',this[this.selectedIndex].value)">
+		<option value="/space.gif">--None--</option>
+		<?foreach(explode("\n",trim(parseCmd($imagelist))) as $i){
+			$i=substr($i,strlen($D_R));
+			$sel=$defaultimg==$i?"selected":"";
+		?>
+			<option value="<?=$i?>" <?=$sel?>><?=$i?></option>
+		<?}?>
+		</select><br>
+		<img src="<?=$defaultimg?>" border=0 name="shopimg">
+</TD>
+</TR>
+<TR bgcolor="#efefef">
+<TD align=right>Large Version of the above image</TD>
+<TD>
+		<input type="file" name="lgimg" accept="image/jpeg"> OR<br>
+		Select from List:<br>
+		<select name="prod[lgasset]" size=5 onchange="lgAssetChange(this[this.selectedIndex].value)">
+		<option value="">--None--</option>
+		<?foreach(explode("\n",trim(parseCmd($imagelist))) as $i){
+			$i=substr($i,strlen($D_R));
+			$sel=($defaultlgimg==$i?"selected":"");
+		?>
+			<option value="<?=$i?>"<?=$sel?>><?=$i?></option>
+		<?}?>
+		</select><br>
+		<div id="lgassetlink" style="text-align:center">
+		<?if($defaultlgimg && basename($defaultlgimg)!="space.gif"){?><a href="<?=$defaultlgimg?>" target="_blank">Preview Image</a><?}?>
+		</div>
+
+</TD>
+</TR>
+<TR><TD align=center colspan=2><hr></TD></TR>
+<TR>
+<TD>&nbsp;</TD>
+<TD align=center><input type="button" value="Save" onclick="save()"> &nbsp; 
+<input type="button" value="Cancel" onclick="location.replace(location.href)">
+<?if($id){?><input  type="submit" value="Delete" name="delprod"><?}?>
+</TD>
+</TR>
+</table>
+</form>
+<?include("$ADMIN_PATH/_footer.htm")?>

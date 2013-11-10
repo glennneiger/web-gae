@@ -1,0 +1,94 @@
+<?php
+global $HTPFX,$HTHOST,$IMG_SERVER,$cloudStorageTool,$D_R;
+include("$ADMIN_PATH/_header.htm");
+include($D_R."/lib/config/_peter_tchir_config.php");
+include_once("$D_R/lib/_image_rsync.php");
+include($D_R."/lib/peter-tchir/_peterTchir_data_lib.php");
+
+$handler = $HTPFX.$HTHOST."/admin/peter-tchir/featured-heatmap_mod.htm";
+$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$frm_url = $cloudStorageTool->createUploadUrl($handler, $options);
+
+global $contributorId, $contributorName;
+$objPeterData = new peterTchirData('peter_alerts');
+
+?>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/peterTchir-admin.css">
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/peterTchir.js" ></script>
+
+<div class=adminheader>Peter Tchir's Fixed Income Report - Heatmap</div><br>
+<?  $featuredHeatmap=$AD->getPerm("peterTchir_heatmap"); //set permission
+if(!$featuredHeatmap){	// Check Permission
+	admin_error("You're not allowed to use this page.");
+}?>
+<div class="peterTchirMoreOptions">
+	<? if($AD->getPerm("peterTchir_alerts")){?>
+		<div class="peterTchirLabel"><a href="alert.htm">Create/Edit Alerts</a></div>
+	<? }
+	if($AD->getPerm("peterTchir_approve")){?>
+		<div class="peterTchirLabel"><a href="approve-alert.htm">Approve Alerts</a></div>
+	<? } ?>
+</div>
+<?
+$heatMapImgPath="/assets/peter-tchir/";
+$heatMapId=$_REQUEST['mapId'];
+$strError = $_REQUEST['error'];
+$getAllMap = $objPeterData->getAllHeapMaps();
+if($heatMapId){
+   $pageData=$objPeterData->getMapById($heatMapId);
+}
+
+if($strError != ''){ ?>
+	<div style="clear:both;">&nbsp;</div>
+	<div class="peterTchirErrorMsg" id="peterTchirErrorMsg"><?=$strError?></div>
+	<div style="clear:both;">&nbsp;</div>
+<? } ?>
+
+<form method="post" action="<?=$PHP_SELF?>">
+	<div class="peterTchirMoreOptions">
+		<p class="alertEditLabel">Select Heat-Map to edit:</p>
+		<select name="mapId" id="mapId" style="width:350px;" onchange="this.form.submit()">
+			<option value="">-Select HeatMap-</option>
+			<? foreach($getAllMap as $row){
+				$sel=($heatMapId==$row[id]?" selected":"");
+				$disp=$row[title]; ?>
+				<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+			<? } ?>
+		</select>
+	</div>
+</form>
+
+<form action="<?=$frm_url?>" method="post" enctype="multipart/form-data"  name="frmUploadHeatMap" id="frmUploadHeatMap">
+	<div class="peterTchirMoreOptions">
+		<p class="alertEditLabel">Title:</p>
+		<input style="width:353px;" type="text" name="heatMapTitle" id="heatMapTitle" value="<?=$pageData['title'];?>" />
+		<? if(!empty($heatMapId)){  ?>
+		<input type="hidden" name="mapId" id="mapId" value="<?=$heatMapId;?>" />
+		<?  }  ?>
+	</div>
+	<? if($heatMapId) {?>
+   		<div class="peterTchirMoreOptions">
+			<p class="alertEditLabel">Uploaded Heat-Map :</p>
+			<? if(!empty($pageData['mapImg'])){  ?>
+				<input type="hidden" name="heatmapUploadedImgName" id="heatmapUploadedImgName" value="<?=$pageData['mapImg'];?>" />
+			<?  }  ?>
+			<img width="280px" height="268px" id="heatmapUploadedImg" src="<?=$IMG_SERVER.$heatMapImgPath.$pageData['mapImg'];?>" />
+		</div>
+    <? } ?>
+	<div class="peterTchirMoreOptions">
+		<p class="alertEditLabel">Upload Heat-Map :</p>
+		<input style="width:353px;" type="file" id="heatMapImg" name="heatMapImg" value="<?=$pageData['mapImg']?>" />
+	</div>
+
+	<div class="peterTchirBttn">
+	
+	<input type="button" name="save" value="save" style="cursor:pointer;" onclick="saveHeatMap(this.form);" >
+	<!--  <img src="<?=$IMG_SERVER?>/images/DailyFeed/bttn_uploadnow.jpg" style="cursor:pointer;" onclick="saveHeatMap(this.form);"  />  -->
+	</div>
+</form>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

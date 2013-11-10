@@ -1,0 +1,72 @@
+<?
+if(isset($_GET['maxlimit']))
+{
+	$maxItemLimit = $_GET['maxlimit'];
+}
+else
+{
+	$maxItemLimit = 15;
+}
+$sql = "SELECT EIM.item_id, EIM.title, EIM.author_name AS author, EIM.publish_date AS pubDate, EIM.description,
+EIM.content, EIM.tickers, url FROM ex_item_meta EIM
+LEFT JOIN articles AS A ON A.id=EIM.item_id
+LEFT JOIN `contributors` C ON C.id=EIM.author_id
+ LEFT JOIN `content_syndication` AS  CS ON CS.item_id=A.id
+WHERE EIM.item_type IN (1,18) AND EIM.is_live = '1' AND CS.syndication_channel='headline_syndicate'
+ AND CS.`is_syndicated`='1'
+ ORDER BY EIM.publish_date DESC LIMIT 0,".$maxItemLimit;
+$results = exec_query($sql);
+
+$LBD= date("D, j M Y H:i:s",strtotime($results[0]['pubDate']));
+
+header('Content-type: text/xml');
+?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<atom:link href="<?=$HTPFX.$HTHOST?>/rss/headlinesyndicateok.rss" rel="self" type="application/rss+xml" />
+<title>Minyanville Headlines</title>
+<description>The Trusted Choice for the Wall Street Voice</description>
+<link>http://www.minyanville.com</link>
+<copyright><?=date('Y')?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
+<image><url>http://image.minyanville.com/images/mvLogo.png</url><title>Minyanville Headlines</title><link>http://www.minyanville.com</link><width>144</width><height>88</height></image>
+<?
+foreach ($results as $item) {
+
+	$pubDate=date('D, j M Y H:i:s',strtotime($item['pubDate']));
+	$link = $HTPFX.$HTHOST.$item['url'];
+	if($item['author_email']=="" || $item['author_email'] == NULL)
+	{
+		$author_email="editor@minyanville.com";
+	}
+	else
+	{
+		$author_email=$item['author_email'];
+	}
+?>
+
+     <item>
+        <title><![CDATA[<?=htmlentities(utf8_decode($item['title']))?>]]></title>
+		<link><![CDATA[<?=$link?>?camp=syndication&medium=portals&from=Fool]]></link>
+		<description><![CDATA[<?=$item['description']?>]]></description>
+		<author><?=$author_email."(".$item['author'].")";?></author>
+		<? $tags_qry="select ES.stocksymbol ticker from ex_item_tags EIT,ex_tags ET,ex_stock ES where EIT.tag_id=ET.id and ET.tag=ES.stocksymbol and EIT.item_id=".$item[item_id]." and EIT.item_type=1 and ET.type_id=1 GROUP BY ES.stocksymbol";
+			$ticker_result=exec_query($tags_qry);
+			if(!empty($ticker_result))
+			{
+				$ticker_result = array_slice($ticker_result, 0, 5);
+				foreach($ticker_result as $id=>$value)
+				{
+			?>
+					<category domain="stocksymbol"><?=$value['ticker']?></category>
+			<?
+				}
+			}
+		?>
+		<guid isPermaLink="true"><?=$link?></guid>
+		<pubDate><?=$pubDate;?> EST</pubDate>
+     </item>
+<?
+	}
+?>
+</channel>
+</rss>

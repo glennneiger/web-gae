@@ -1,0 +1,94 @@
+<?php
+$pageName = "dailyfeedlist";
+$pageJS=array("config","registration","jquery","iboxregistration","creditcard","nav","redesign");
+$pageCSS=array("global","layout","rightColumn","nav","dailyfeed");
+
+include_once($D_R."/admin/lib/_dailyfeed_data_lib.php");
+include_once($D_R."/lib/config/_dailyfeed_config.php");
+include_once($D_R."/lib/_dailyfeed_design_lib.php");
+$objdailyfeed=new Dailyfeed();
+include("../_header.htm");
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$listType=$_GET['type'];
+
+$feedViewer 	=	new dailyfeedViewer();
+switch($listType){
+	case "source":
+		$listItems=$objdailyfeed->getUniqueSources();
+		break;
+	case "tag":
+		$listItems=$objdailyfeed->getUniqueTags();
+		break;
+    case "ticker":
+		$listItems=$objdailyfeed->getUniqueTickers();
+		break;
+}
+$abc=qw(uc("a b c d e f g h i j k l m n o p q r s t u v w x y z"));
+$seenletters=array();
+?>
+<div class="shadow">
+	<div id="content-container">
+	<div id="article-left">
+	<div id="homepage-content">
+		<div style="margin-left:10px;border-bottom:none;">
+			<?
+			  $feedViewer->showImageDFImap();
+			?>
+			<div class="middle-df-part">
+			<?
+			$feedViewer->showHotTopic();
+			?>
+			<br />
+			</div>
+		</div>
+		<div class="dictionary_main_container">
+		<div class="dictionary_nav_bar">
+		 	<?foreach($abc as $i=>$let){			?>
+				<a href="#<?=$let?>"><?=$let?></a>&nbsp;
+			<?}?>
+		</div>
+		<div class="indent10">
+			<? foreach($listItems as $i=>$row){
+				$l=uc($row[$listType][0]);
+				if(!in_array($l,$seenletters)){?>
+				<?if($l<>'A' && ctype_alpha($l)){?><span style="float:right;"><?mOver("topup.gif","topover.gif","#")?></span><br><br><?}?>
+				<? if($i!=0) {?>
+					<div class="dictionary_divider"></div>
+				<?}?>
+				<? if(ctype_alpha($l)){ ?>
+					<div class="DictionaryModuleHeaders"><a name="<?=$l?>"><?=$l?></a></div><a name="<?=$l?>"></a>
+
+				<?} $seenletters[]=$l?>
+					<?}?><div class="dictionary_text"><a name="<?=lc($row[$listType])?>"></a>
+					<?php if($listType == 'source') {
+						$itemValue = mswordReplaceSpecialChars(ucwords(trim($row[$listType])));
+					} elseif($listType == 'tag' || $listType == 'ticker') {
+						$itemValue = mswordReplaceSpecialChars(strtoupper(trim($row[$listType])));
+                     }
+                    if($listType == 'ticker')
+                    {
+                    ?>
+   					<div class="dictionary_head"><a href="<?=$HTPFX.$HTHOST?>/mvpremium/tid/<?=($row['ticker_id']);?>"><?=$itemValue;?></a></div>
+                    <?
+                    }
+                    else
+                    {
+					?>
+					<div class="dictionary_head"><a href="<?=$HTPFX.$HTHOST?>/mvpremium/<?=$listType?><?=trim($row['url']);?>"><?=$itemValue;?></a></div>
+					<?}?>
+					</div>
+				<?  }?>
+          </div>
+	</div>
+</div>
+</div> <!-- end article left -->
+<!-- Right Section -->
+<? $feedViewer->dailyfeedRightModules(); ?>
+<!-- Right SEction End -->
+</div> <!-- content-container-->
+</div> <!-- end shadow -->
+<div style="clear:both;"></div>
+<?
+include("../_footer.htm");
+?>

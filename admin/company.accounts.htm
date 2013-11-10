@@ -1,0 +1,59 @@
+<?
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+
+if(!$AD->getPerm("company_acct_manage")){
+	admin_error();
+}
+
+$comp=getCompanyAccount($company_id);
+if(!count($comp))unset($company_id);
+
+?>
+<?=errormsg()?>
+<script>
+function Delete(){
+	if(!confirm("Are you sure you want to delete this company account?"))return;
+	findObj("del").value="1";
+	findObj("theform").submit();
+}
+function Cancel(){
+	if(!confirm("Are you sure you want to cancel?"))return;
+	location.href=location.href;
+}
+</script>
+<table width="50%" align="center"><tr><td>
+<form method="get">
+<fieldset><legend>Company Accounts <select name="company_id" onchange="this.form.submit()"><option value="">--New Account--</option><?selectHashArr(getCompanyAccountList(),"company_id","company_name",$company_id)?></select></legend>
+</form>
+<form method="post" action="company.accounts.mod.htm" name="theform">
+<input type="hidden" name="del" value="0" />
+<?input_hidden("company_id")?>
+<?refer()?>
+<table>
+<tr>
+<td>Company Name:</td>
+<td><?input_text("comp[company_name]",$comp[company_name])?></td>
+</tr>
+<tr>
+<td>Login Password:</td>
+<td><?input_text("comp[password]",$comp[password])?></td>
+</tr>
+<tr>
+<td>Expires On:</td>
+<td><?date_input($comp[uexpires]?$comp[uexpires]:(time()+month(2)),"t",date("Y"),"",date("Y")+5)?></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>
+	<?if($company_id){?><?input_button("Delete","Delete()")?><?}?>
+	<?input_button("Cancel","Cancel()")?>
+	<?input_submit("Save")?>
+</td>
+</tr>
+</table>
+</form>
+</fieldset>
+</td></tr></table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

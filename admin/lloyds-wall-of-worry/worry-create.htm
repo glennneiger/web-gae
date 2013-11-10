@@ -1,0 +1,135 @@
+<?
+global $D_R,$HTPFX,$HTHOST,$cloudStorageTool,$IMG_SERVER;
+$page="gazette";
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
+include_once("$D_R/lib/_image_rsync.php");
+
+$worryId = $_REQUEST['worryid'];
+$error = $_REQUEST['error'];
+$worryImgPath="/assets/lloyds-wall-of-worry/";
+$objWorryData = new worryData();
+$handler = $HTPFX.$HTHOST."/admin/lloyds-wall-of-worry/worry-create-mod.htm";
+
+$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$frm_url = $cloudStorageTool->createUploadUrl($handler, $options);
+
+if(!$AD->getPerm(qw("publish_worry create_worry approve_worry"))){
+	admin_error();
+}
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script>
+function saveWorryImg(frm){
+	var worryTitle = $("worryTitle").value;
+	var worryImg = $("worryImg").value;
+	var archiveImg = $("archiveImg").value;
+
+	if(worryTitle==''){
+		alert('Enter Title of the Worry.');
+		worryTitle.focus();
+		return false;
+	}
+	else if(worryImg==''){
+		alert('Upload Worry Image.');
+		worryImg.focus();
+		return false;
+	}
+	else if(archiveImg==''){
+		alert('Uplaod Archive Image.');
+		archiveImg.focus();
+		return false;
+	}else{
+		frm.submit();
+	}
+}
+</script>
+<?
+$getAllWorry=$objWorryData->getAllWorrys();
+if($worryId){
+   $pageData=$objWorryData->getWorrysById($worryId);
+}
+?>
+	<div class=adminheader>Lloyds Wall of Worry - Worry Databank</div>
+	<div style="padding:20px 5px 10px 0px;width:400px">
+		<?if($AD->getPerm("create_worry")){?>
+			<li><a href="worry-create.htm">Worry Databank</a></li>
+		<?}?>
+		<?if($AD->getPerm("publish_worry")){?>
+			<li><a href="worry-publish.htm">Create Wall of Worry</a></li>
+		<? } ?>
+		<?if($AD->getPerm("approve_worry")){?>
+			<li><a href="approve.htm">Approve Worry</a></li><br>
+		<?}?>
+	</div>
+	<? if($strError != ''){ ?>
+		<div style="color:red; padding:0px 0px 10px 0px;"><?=$strError;?></div>
+	<? } ?>
+
+	<div>
+    <form method="post" action="<?=$PHP_SELF?>">
+    <table width="100%" border="0">
+        <tr>
+            <td width="20%"><b>Select worry to edit:</b>&nbsp;</td>
+            <td width="80%">
+            <select name="worryid" id="worryid" style="width:350px;" class="search_author_drop_down" onchange="this.form.submit()">
+				<option value="">-Select worry-</option>
+                <?
+                foreach($getAllWorry as $row){
+	                $sel=($worryId==$row[id]?" selected":"");
+					$disp=$row[title];
+                ?>
+                    <option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+                <?
+                }
+                ?>
+			</select>
+            </td>
+        </tr>
+    </table>
+    </form>
+
+	<form action="<?=$frm_url?>" method="post" enctype="multipart/form-data"  name="frmUploadWorry" id="frmUploadWorry">
+	<table width="100%" border="0">
+
+	<tr>
+		<td width="20%"><b>Title :</b></td>
+		<td width="40%"><input type="text" style="width:350px;" id="worryTitle" name="worryTitle" value="<?=$pageData['title']?>" />
+		<? if($worryId!="")  {  ?>
+  	 	<input type="hidden" name="worryid" id="worryid" value="<?=$worryId;?>" />
+  		<?  }  ?>
+		</td>
+        <td>&nbsp;</td>
+	</tr>
+    <? if($worryId) {?>
+    <tr>
+		<td width="20%"><b>Uploaded Worry Image :</b></td>
+		<td width="40%"><img width="169px" height="144px" src="<?=$IMG_SERVER.$worryImgPath.$pageData['worry_img'];?>" /></td>
+        <td>&nbsp;</td>
+	</tr>
+    <tr>
+		<td width="20%"><b>Uploaded Archive Image :</b></td>
+		<td width="40%"><img  width="50px" height="42px" src="<?=$IMG_SERVER.$worryImgPath.$pageData['archive_img'];?>" /></td>
+        <td>&nbsp;</td>
+	</tr>
+    <? } ?>
+	<tr>
+		<td width="20%"><b>Upload Worry Image :</b></td>
+		<td width="40%"><input size="53" type="file" id="worryImg" name="worryImg" /></td>
+        <td>Please upload image of size:169*44. Image will display on main worry and archive page page in left column.</td>
+	</tr>
+	<tr>
+		<td width="20%"><b>Upload Archive Image :</b></td>
+		<td width="40%"><input size="53" type="file" id="archiveImg" name="archiveImg" /></td>
+        <td>Please upload image of size:50*42. Image with display in right column.</td>
+	</tr>
+	<tr>
+		<td width="20%">&nbsp;</td>
+		<td width="40%"><input type="button" value="Save" style="cursor:pointer;" onclick="saveWorryImg(this.form);"  /></td>
+        <td>&nbsp;</td>
+	</tr>
+	</table>
+</form>
+	</div>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

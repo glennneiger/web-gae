@@ -1,0 +1,220 @@
+<?
+session_start();
+include_once("$D_R/lib/_includes.php");
+include_once("$D_R/lib/config/_dailyfeed_config.php");
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/_gallery.php");
+include_once("$D_R/lib/_minyanville.php");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$ADMIN_PATH/lib/_dailyfeed_data_lib.php");
+include_once("$D_R/lib/_misc.php");
+include_once("$ADMIN_PATH/lib/_yahoo_lib.php");
+include_once($D_R.'/lib/config/_article_config.php');
+$objDailyFeed= new Dailyfeed();
+$objcontent=new Content("daily_feed","");
+$objCache= new Cache();
+$objYahoo	= new YahooSyndication();
+$item_type='18';
+$id	=	$_REQUEST['id'];
+$page	=	$_REQUEST['page'];
+$feed	=	$_POST['feed'];
+$feed['admin_id']=$_SESSION['AID'];
+$feed['publish_date']=strtotime($_POST[year]."-".$_POST[mo]."-".$_POST[day]." ".$_POST[hour].":".$_POST["minute"]);
+//$feed['publish_date']=mktime($_POST[hour],$_POST["minute"],0,$_POST[mo],$_POST[day],$_POST[year]);
+$bounceback="./feed.htm";
+if(stristr($banter[image],"space.gif"))$banter[image]="";
+if(!count($_POST)){
+	location($bounceback.qsa(array(error=>"No changes were made",id=>$id,page=>$page)));
+	exit;
+}
+$currentValue=$objcontent->getTableData($id,"daily_feed");
+$itemId=$_REQUEST['id'];
+if($_POST['chart1']=="undefined"){ $_POST['chart1']=""; }
+
+//$currenttime=mktime(date("G"),date("i"),0,date("m"),date("j"),date("Y"));
+$currenttime=time();
+
+/*$feed['source']=$_POST['feedsource'];
+$feed['source_link']=$_POST['feedsource_link'];*/
+
+if($_POST['inputvalue']=='approve')
+{
+	$feed[is_approved]=1;
+}
+else
+{
+	$feed[is_approved]=0;
+}
+
+if($feed['publish_date'] > $currenttime){
+	$feed['is_live']=0;
+}else{
+	$feed['is_live']=1;
+}
+
+$feed['is_draft']=0;
+if(($_POST['inputvalue']=="draft") && ($_POST['inputvalue']!=="approve")){
+
+	$feed['is_draft']="1";
+	$feed['is_live']=0;
+	$feed[is_approved]=0;
+}
+
+$verifyticker=$objDailyFeed->getTickerStock($_POST['feedticker']);
+
+if($verifyticker && !$feed['is_approved']){ //  New ticker not verified from Yahoo & Feed is not approved
+	$feed['is_draft']=1;
+	$feed['is_approved']=0;
+}
+
+$feed['publish_date']=mysqlNow($feed['publish_date']);
+if($_POST['is_yahoofeed'] && trim($_POST['is_yahoofeed'])!='')
+{
+	$feed['is_yahoofeed'] = '1';
+}
+else
+{
+	$feed['is_yahoofeed'] = '0';
+}
+
+$quicktitle=addslashes(mswordReplaceSpecialChars(stripslashes($_POST['quicktitle'])));
+$feed[title]=addslashes(mswordReplaceSpecialChars(stripslashes($feed[title])));
+$feed[excerpt]=addslashes(mswordReplaceSpecialChars(stripslashes($feed[excerpt])));
+$feed[position]=addslashes(mswordReplaceSpecialChars(stripslashes($feed[position])));
+
+
+if($id){
+	if($_POST['inputvalue']=='delete'){
+		$feed_remove["is_deleted"]=1;
+		$objDailyFeed->updateDailyFeed($feed_remove,$id);
+		$objcontent->removeUnapprovedItems($id,'daily_feed');
+		$objDailyFeed->deleteDailyFeedThread($id);
+		$objDailyFeed->deleteTickers($id);
+		$objDailyFeed->deleteResource($id);
+		$key="dailyfeed_".$id;
+		$objCache->deleteKey($key);
+		$err="The feed was removed";
+		unset($id);
+	}
+	else
+	{
+		$objDailyFeed->updateDailyFeed($feed,$id);
+		if ($id){
+			$obContent = new Content(18,$id);
+			$obContent->setDailyFeedMeta();
+		}
+		if($feed['excerpt'])
+		 {
+			$thread_teaser			=	substr(trim(addslashes(mswordReplaceSpecialChars(stripslashes($feed['excerpt'])))),0,400);
+		 }
+		else
+		{ 	$thread_teaser 			= substr(trim(addslashes(mswordReplaceSpecialChars(stripslashes($feed['body'])))),0,400); 	}
+		$objDailyFeed->updateDailyFeedThread($id,$feed['contrib_id'],$feed['title'],$thread_teaser);
+		if($_POST['dailyfeedimage']){
+			$objDailyFeed->getImageDailyfeedByid($_POST['dailyfeedimage'],$id);
+		}else{
+		   $urlimage="/assets/dailyfeed/uploadimage/".date('mdy').'/'.$_POST['chart1'];
+		   if($_POST['imagenamedf']){
+				$objDailyFeed->updateImageDailyFeed($id,$urlimage,$_POST['imagenamedf'],'18');
+		   }
+		}
+		if($_POST['feedticker']){
+			$objDailyFeed->setTickers($_POST['feedticker'],$id);
+		}else{
+			$objDailyFeed->deleteTickers($id);
+
+		}
+
+		if($_POST['feedtopic']!=""){
+			$objDailyFeed->setTopic($_POST['feedtopic'],$id);
+		}
+		else
+		{
+			$objDailyFeed->deleteTopic($id);
+		}
+		$objDailyFeed->setQuickTitleDailyFeed($id,$quicktitle,$item_type);
+		$objDailyFeed->setResource($id,$_POST['feedsource'],$_POST['feedsource_link'],$item_type);
+
+		//---------------------- Yahoo Syndication Code Implementation -----------------------
+		if($feed['is_yahoofeed'] == '1' && $feed['is_live'] == "1" && $feed[is_approved]== "1" )
+		{
+			$YahooSyndId		=	getSyndication($id,$item_type,'yahoo');
+			if($YahooSyndId && $YahooSyndId['id']!='')
+			{
+			}
+			else
+			{
+				$objYahoo->generateYahooXml($id,$feed,'Feeds','yahoo');
+			}
+		}
+		//---------------------- Yahoo Syndication Code Ends --------------------------------------
+		$key="dailyfeed_".$id;
+		$objCache->deleteKey($key);
+		$objCache->setDailyfeedCache($id);
+		$err="The post was updated";
+	}
+}
+else
+{
+	$id=$objDailyFeed->setDailyFeed($feed);
+	if ($id){
+		$obContent = new Content(18,$id);
+		$obContent->setDailyFeedMeta();
+	}
+
+    $itemId=$id;
+	if($feed['excerpt'])
+	 {
+	 	$thread_teaser			=	substr(trim(addslashes(mswordReplaceSpecialChars(stripslashes($feed['excerpt'])))),0,400);
+	 }
+	else
+	{ 	$thread_teaser 			= substr(trim(addslashes(mswordReplaceSpecialChars(stripslashes($feed['body'])))),0,400); 	}
+	$objDailyFeed->setDailyFeedThread($id,$feed['contrib_id'],$feed['title'],$thread_teaser);
+	$objDailyFeed->setTopic($_POST['feedtopic'],$id);
+	$objDailyFeed->setTickers($_POST['feedticker'],$id);
+	$objDailyFeed->setQuickTitleDailyFeed($id,$quicktitle,$item_type);
+	$objDailyFeed->setResource($id,$_POST['feedsource'],$_POST['feedsource_link'],$item_type);
+	if($_POST['dailyfeedimage']){
+		$objDailyFeed->getImageDailyfeedByid($_POST['dailyfeedimage'],$id);
+	}else{
+	   if($_POST['imagenamedf']){
+			$objDailyFeed->setImageDailyFeed($id,$_POST['chart1'],$_POST['imagenamedf'],'18');
+	   }
+	}
+	if($feed['is_yahoofeed'] == '1' && $feed['is_live'] == "1" && $feed[is_approved] == "1" )
+	{
+		$objYahoo->generateYahooXml($id,$feed,'Feeds','yahoo');
+	}
+	$objCache->setDailyfeedCache($id);
+	$err="Your content was submitted";
+}
+
+if(!empty($id)){
+	$objContent = new Content(18,$id);
+	if($_POST['inputvalue']=='approve')
+	{        
+        $url = $objContent->getDailyFeedURL($id);
+		$objContent->updateContentSeoUrl($id,"18",$url);		
+		$key="dailyfeed_".$id;
+		$objCache->deleteKey($key);
+		$objContent->setDailyFeedMeta();
+    }
+	
+}
+
+$objCache->deleteKey("module_339");
+$objCache->deleteKey("module_351");
+
+$updatedValue=$_POST;
+$action=$_POST['inputvalue'];
+$objcontent->userAuditAlerts($itemId,$currentValue,$updatedValue,$action);
+
+/*if(!$isUniqueTitle){
+	$err="Duplicate title are not allowed. Please enter different title";
+}*/
+
+if($verifyticker){
+	$err="Invalid ticker";
+}
+location($bounceback.qsa(array(id=>$id,error=>$err)));//redirect to the post they just made
+?>

@@ -1,0 +1,75 @@
+<?
+global $D_R;
+include_once($D_R.'/lib/videos/_data_lib.php');
+$objPlayer= new player();
+
+$received_id=$_GET['videoid'];
+$categoryId=$_GET['category_id'];
+header('Content-type: text/xml');
+include("$D_R/layout/dbconnect.php");
+echo "<?xml version=\"1.0\"?>"; ?>
+<rss xmlns:media="http://search.yahoo.com/mrss" xmlns:av="http://www.searchvideo.com/schemas/av/1.0" version="2.0">
+<channel>
+<title></title>
+<description>The Trusted Choice for the Wall Street Voice</description>
+<link>http://www.minyanville.com</link>
+<?
+$sql_videos = "SELECT * FROM mvtv WHERE approved='1' and publish_time < '".mysqlNow()."' and id='".$received_id ."'";
+$results_videos = exec_query($sql_videos);
+
+foreach($results_videos as $id=>$videoitem){
+	$patterns = "/’/";
+	$replacements = "'";
+	$videoitem['description']=preg_replace($patterns, $replacements, $videoitem['description']);
+	$patternTitle = "/’/";
+	$replacementTitle = "'";
+	$videoitem['title']=preg_replace($patternTitle, $replacementTitle, $videoitem['title']);
+	$order = "…";
+	$replace = "...";
+	$videoitem['description'] = str_replace($order, $replace, $videoitem['description']);
+	$orderTitle = "…";
+	$replaceTitle = "...";
+	$videoitem['title'] = str_replace($orderTitle, $replaceTitle, $videoitem['title']);
+?>
+<item>
+<!-- MRSS required fields -->
+<description><?=htmlentities($videoitem['description']);?></description>
+<link>http://video.aol.com/partner/minyanville/title/<?=$videoitem['id']?></link>
+<pubDate><?=date('D, j M Y H:i:s',strtotime($videoitem['publish_time'])) ?> EST</pubDate>
+<!-- GUID (GUID usually is equivalent to PID. Passed to player in its entirety, no slashes or
+other special characters in the URL are allowed)-->
+<guid><?=$videoitem['id']?></guid>
+<!-- Category - category/show name/episode name - see MRSS details for additional valid
+categories -->
+<media:category scheme="http://search.yahoo.com/mrss/category_schema">Business/Hoofy &amp; Boo/<?=htmlentities($videoitem['title']);?></media:category>
+<media:content url="<?=$videoitem['videofile']?>" type="video/x-flv"/>
+</item>
+<?
+}
+
+$playlist=$objPlayer->getVideoPlaylist($categoryId,$received_id);
+
+foreach($playlist as $id=>$videoitem){
+	if($videoitem['id']!=$received_id && $videoitem['id']!='8317' && $videoitem['id']!='8320'){
+	
+?>
+<item>
+<!-- MRSS required fields -->
+<description><?=htmlentities($videoitem['description']);?></description>
+<link>http://www.minyanville.com/audiovideo/<?=$videoitem['id']?>/</link>
+<pubDate><?=date('D, j M Y H:i:s',strtotime($videoitem['publish_time'])) ?> EST</pubDate>
+<!-- GUID (GUID usually is equivalent to PID. Passed to player in its entirety, no slashes or
+other special characters in the URL are allowed)-->
+<guid><?=$videoitem['id']?></guid>
+<!-- Category - category/show name/episode name - see MRSS details for additional valid
+categories -->
+<media:category scheme="http://search.yahoo.com/mrss/category_schema">Business/Hoofy &amp; Boo/<?=htmlentities($videoitem['title']);?></media:category>
+<media:content url="<?=$videoitem['videofile']?>" type="video/x-flv"/>
+</item>
+<?
+	}
+}
+?>
+
+</channel>
+</rss>

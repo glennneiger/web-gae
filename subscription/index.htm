@@ -1,0 +1,26 @@
+<?
+if(!empty($_GET['v'])){
+	header ('HTTP/1.1 301 Moved Permanently');
+  	header ('Location: /subscription/');
+}
+$pageName = "subscription_product";
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","nav","minyanville","etf","tsp","optionsmith","subscription","carousel","jscrollpanel");
+
+global $cm8_ads_MediumRectangle,$lang;
+include_once("$D_R/_header.htm");
+include_once("$D_R/lib/_subscription_redesign_lib.php");
+
+build_lang('subscription_product');
+$objSubViewer = new subViewer();
+$objSubRedesign = new subRedesign();
+
+global $lang,$objSubViewer;
+?>
+<div class="shadow">
+	<div id="content-container">
+		<?=showBreadCrum($breadcrum); ?>
+		<?=$objSubRedesign->displaySubPage();?>
+	</div>
+</div>
+<? include("$D_R/_footer.htm"); ?>

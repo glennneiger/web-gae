@@ -1,0 +1,38 @@
+<?php
+
+global $D_R;
+include_once("$D_R/lib/_via_data_lib.php");
+include_once("$D_R/lib/config/_via_config.php");
+$objVia= new Via();
+
+
+if($_SERVER['SERVER_NAME']=="admin.minyanville.com"){
+$qry="select viaid from subscription_cust_address where address1='' and typeOfAddr='' limit 5000";
+
+$getResult=exec_query($qry);
+if(is_array($getResult)){
+
+    foreach($getResult as $key=>$row){
+        if($row['viaid']){
+            $viaId=$row['viaid'];
+            $arrayFields = array('customerIds'=>$viaId,'orderStatus'=>'ALL','orderItemTypeList'=>'','bEmanagerIds'=>TRUE);
+            $userDetails=$objVia->getCustomerSubInfoReq($viaId,$arrayFields);
+            $getSubCustInfo=$userDetails->CustomerSubInfoReqResult->CustomerSubInfo->customer;
+            htmlprint_r($getSubCustInfo);
+           // $getSubCustOrder=$userDetails->CustomerSubInfoReqResult->CustomerSubInfo->orders;
+            $objVia->setSubscriptionCustAddressFromVia($getSubCustInfo);
+
+        }
+        echo "<br>".'via-id: '.$row['viaid'];
+        
+    }
+
+}
+
+}
+
+
+exit;
+
+
+?>

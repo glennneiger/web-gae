@@ -1,0 +1,125 @@
+<HTML xmlns:ie>
+<?import namespace=ie implementation="colorButtons.htc" />
+
+<HEAD>
+
+<public:component tagName="colorOptions">
+	
+	<public:attach event=oncontentready onevent=_createPopUp() />
+	
+	<public:method name=showPopUp />
+	<public:property name=selectedColor put=setColor get=returnColor />
+	
+	<public:event name=oncolorSelected id=updtId />
+</public:component>
+
+
+
+<BODY>
+
+<div id=dispColor style="font-size:0;height:50;width:70;background-color:#dfdfdf;border:1 solid black;padding:2">
+	<span style="padding:2;border:0 outset black;height:20;width:20"></span>
+	<span style="padding:2;border:0 outset black;height:20;width:20"></span>
+	<span style="padding:2;border:0 outset black;height:20;width:20"></span>
+	<span style="padding:2;border:0 outset black;height:20;width:20"></span>
+	<span style="padding:2;border:0 outset black;height:20;width:20"></span>
+	<span style="padding:2;border:0 outset black;height:20;width:20"></span>
+</div>
+
+</BODY>
+
+<script>
+
+var s = null;
+function showTip(oObj)
+{
+	s = event.srcElement;
+	s.title = s.style.backgroundColor;
+}
+
+var popUp = null;
+var popup_body = null;
+var iWidth = 0;
+var iHeight = 0;
+var ix = 0;
+var iy = 0;
+
+var disp_children = null;
+var bgColor = new Array();
+var szColorBehInit = "<?import namespace=ie implementation=colorButtons.htc declareNamespace" + "/>";
+szColorBehInit += "<ie:colorButton style='" + "background-color:";
+
+var szColorBehEnd = "'></" + "ie:colorButton>";
+function _createPopUp()
+{
+	bgColor[0] = "Black";
+	bgColor[1] = "White";
+	bgColor[2] = "Red";
+	bgColor[3] = "Blue";
+	bgColor[4] = "Green";
+	bgColor[5] = "Yellow";
+	bgColor[6] = "Cyan";
+	bgColor[7] = "Lime";
+	
+}
+
+function showPopUp()
+{
+	popUp = window.createPopup();
+	popup_body = popUp.document.body;
+
+	popup_body.innerHTML = dispColor.outerHTML;
+	
+	disp_children = popup_body.children[0];
+	
+	
+	for(var i = 0; i < disp_children.children.length; i++)
+	{
+		disp_children.children[i].onclick = hidePopup;
+		disp_children.children[i].innerHTML = szColorBehInit + bgColor[i] + szColorBehEnd;
+	}
+	
+	
+	iWidth = parseInt(dispColor.style.width);
+	iHeight = parseInt(dispColor.style.height);
+	
+	ix = 2;
+	iy = parseInt(element.parentElement.offsetHeight);
+	popUp.show(ix,iy,iWidth,iHeight,element.parentElement);
+	
+}
+
+var colorSrc;
+
+function hidePopup()
+{
+	popUp.hide();
+	window.status = popUp.document.parentWindow.event.srcElement.tagName;
+	colorSrc = popUp.document.parentWindow.event.srcElement;
+	
+	if(colorSrc.tagName == "colorButton")
+	{
+		window.status = colorSrc.style.backgroundColor;
+		selColor = colorSrc.style.backgroundColor;
+	}
+	
+	updtId.fire();
+}
+
+var selColor = "";
+
+function setColor(oValue)
+{
+	selColor = oValue;
+}
+
+function returnColor()
+{
+	return selColor;
+}
+
+</script>
+</HEAD>
+
+
+</HTML>

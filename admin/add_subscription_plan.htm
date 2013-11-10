@@ -1,0 +1,183 @@
+<?
+global $D_R,$HTPFX,$HTHOST;
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/admin/_authenticate.htm");
+include_once("$D_R/lib/config/_products_config.php");
+include_once("$D_R/lib/registration/_register_funnel_data_lib.php");
+$objFunnelData = new registrationFunnelData();
+$viaProductsName['peterTchir']="Tchir's Fixed Income Report";
+global $viaProductsName;
+$error=$_GET['error'];
+
+$cancreate=$AD->getPerm("add_plan");				//-------Check User accesss for page---------------
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+$product = $_GET['product'];
+$plan = $_GET['plan'];
+if(!empty($product)){
+	if(!empty($plan)){
+		$codes = $objFunnelData->getAllPlanCodeOfProduct($product);
+		$productData = $objFunnelData->getPlanDetails($plan);
+		//htmlprint_r($productData);
+	}else{
+		$productData = $objFunnelData->getProductData($product);
+		$codes = $objFunnelData->getAllPlanCodeOfProduct($product);
+	}
+}
+
+$getPlanPeriod = $objFunnelData->getEnumOptions("recurly_plan_period");
+
+$getTrialPeriod = $objFunnelData->getEnumOptions("recurly_plan_free_trial");
+
+$getTerms = $objFunnelData->getEnumOptions("subType");
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>Subscription Plans</title>
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/adminManageSubscription.1.3.css">
+	<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/adminManageSubscription.1.4.js"></script>
+</head>
+
+<body onload=window.focus() style="border:0px">
+<div class=adminheader>
+Add Subscription Plans<br>
+</div>
+<?if($error){?><br><div id="error" class="error" style="margin:0px 0px 5px 0px;"><?=strip($error)?></div><?}?>
+
+<div class="main">
+<div class="manage_required">Fields marked <span class="required_symbol">*</span> are required.</div>
+<div style="clear:left;"></div>
+<form method="post" id="addPlan" action="add_sub_plan_mod.php">
+	<div id="subError" class="subError">&nbsp;</div>
+	<div class="innerDiv">
+		<div class="heading">Product<span class="required_symbol">*</span> : </div>
+		<select name="product" id="product" onChange="returnProductName(this.id,'add_subscription_plan.htm','')">
+			<option  value="0">-- Select Product --</option>
+			<? foreach($viaProductsName as $key=>$val){
+			    if($_GET['product']==$key){
+				 	echo '<option id='.$key.' value='.$key.' selected >'.$val.'</option>';
+			    } else {
+				 	echo '<option id='.$key.' value='.$key.'  >'.$val.'</option>';
+			    }
+			} ?>
+		</select>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Plan Codes: </div>
+		<select name="existingPlans" id="existingPlans" onChange="returnPlanDetails('product','add_subscription_plan.htm',this.id,'')">
+			<option  value="0">-- Select Plan Code --</option>
+			<? foreach($codes as $key=>$val){
+			    if($plan==$val['recurly_plan_code']){
+				 	echo '<option id='.$val['recurly_plan_code'].' value='.$val['recurly_plan_code'].' selected >'.$val['recurly_plan_code'].'</option>';
+			    } else {
+				 	echo '<option id='.$val['recurly_plan_code'].' value='.$val['recurly_plan_code'].'  >'.$val['recurly_plan_code'].'</option>';
+			    }
+			} ?>
+		</select><span class="example">(Select to edit existing plan.<br> Please don't select in case of adding new plan.)</span>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Recurly Plan Code<span class="required_symbol">*</span> : </div>
+		<?input_text("planCode",$productData['recurly_plan_code'],"15","2000","id='planCode'")?>
+	</div>
+	<? if($productData['recurly_plan_code']!=''){ ?>
+		<div class="innerDiv">
+			<div class="heading">Recurly Plan Name<span class="required_symbol">*</span> : </div>
+			<?input_text("planName",$productData['plan_name'],"15","2000","id='planName'")?>
+		</div>
+	<? } else { ?>
+		<div class="innerDiv">
+			<div class="heading">Recurly Plan Name<span class="required_symbol">*</span> : </div>
+			<?input_text("planName","","15","2000","id='planName'")?>
+		</div>
+	<? } ?>
+	<div class="innerDiv">
+		<div class="heading">Recurly Plan Term<span class="required_symbol">*</span> : </div>
+		<select name="planterm" id="planterm" onChange="javascript:updatePlanPeriod(this.value);">
+			<option value='0'>-- Select Term --</option>
+			<? foreach($getTerms as $key){
+				if($key == "Payment By Check" || $key== "Combo"){
+					unset($val);
+					continue;
+				}
+				if($key==$productData['subType']){ ?>
+					<option value="<?=$key;?>" selected="selected"><?=$key;?></option>
+				<? } else { ?>
+					<option value="<?=$key;?>"><?=$key;?></option>
+				<? } ?>
+			<? } ?>
+		</select>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Recurly Plan Type<span class="required_symbol">*</span> : </div>
+		<?input_text("planType",$productData['recurly_plan_type'],"15","2000","id='planType'")?>
+		<span class="example">(standard,complimentary,20% off etc.)</span>
+	</div>
+
+	<div class="innerDiv">
+		<div class="heading">Recurly Plan Period<span class="required_symbol">*</span> : </div>
+		<select name="planPeriod" id="planPeriod">
+			<option value='0'>-- Select Plan Period --</option>
+			<? foreach($getPlanPeriod as $key){
+					if($key==$productData['recurly_plan_period']){ ?>
+						<option value="<?=$key;?>" selected="selected"><?=$key;?></option>
+					<? } else { ?>
+						<option value="<?=$key;?>"><?=$key;?></option>
+					<? } ?>
+			<? } ?>
+		</select>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Recurly Plan Charge<span class="required_symbol">*</span> : </div>
+		<?input_text("planCharge",$productData['recurly_plan_charge'],"15","2000","id='planCharge'")?>
+	</div>
+
+	<div class="innerDiv">
+		<div class="heading">Recurly Plan One Time Setup Fee<span class="required_symbol">*</span> : </div>
+		<input class="textinput" type="text" size="15" maxlength="2000" name="planSetupFee" id="planSetupFee" value="<?=$productData['recurly_plan_setup_fee']?>" title="<?=$productData['recurly_plan_setup_fee']?>" onmouseover="void(this.title=this.value)" />
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Recurly Plan Free Trial<span class="required_symbol">*</span> : </div>
+		<select name="planTrial" id="planTrial">
+			<option value='0'>-- Select Trial Period --</option>
+			<? foreach($getTrialPeriod as $key){
+					if($key==$productData['recurly_plan_free_trial']){ ?>
+						<option value="<?=$key;?>" selected="selected"><?=$key;?></option>
+					<? } else { ?>
+						<option value="<?=$key;?>"><?=$key;?></option>
+					<? } ?>
+			<? } ?>
+		</select>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Funnel Page Heading<span class="required_symbol">*</span> : </div>
+		<?input_text("recurly_plan_promotional_headline",$productData['plan_promotional_headline'],"15","2000", "id='recurly_plan_promotional_headline'")?></div>
+	<div class="innerDiv">
+		<div class="heading">Funnel Page Feature Heading<span class="required_symbol">*</span> : </div>
+		<?input_text("recurly_plan_feature_headline",$productData['plan_feature_headline'],"15","2000", "id='recurly_plan_feature_headline'")?></div>
+	<div class="innerDiv">
+		<div class="heading">Funnel Page Features<span class="required_symbol">*</span> : </div>
+		<div class="editorPlan">
+		<?input_textarea("recurly_plan_promotional_features",strip($productData['plan_promotional_features']),"600"); ?>
+		<script language="javascript">showEditor('recurly_plan_promotional_features',600,300);</script>
+		</div>
+	</div>
+	<div class="innerDiv">
+		<div class="heading">Funnel Page Description<span class="required_symbol">*</span> : </div>
+		<div class="editorPlan">
+		<?input_textarea("recurly_plan_promotional_desc",strip($productData['plan_promotional_desc']),"600");?>
+		<script language="javascript">showEditor('recurly_plan_promotional_desc',600,300);</script></div>
+	</div>
+	<div style="clear:left;"></div><hr/>
+	<div class="bttn"><center>
+		<input type="button" value="save" onClick="javascript:checkProductInfo();" /></center>
+	</div>
+</form>
+</div>
+</body>
+</html>

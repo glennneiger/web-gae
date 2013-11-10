@@ -1,0 +1,26 @@
+<?
+$page="townhall";
+$allperms=array("ourtown_edit","chars_edit");
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($allperms)){
+	admin_error("You're not allowed to view this page.");
+}
+?>
+<table align=center>
+<TR>
+<TD><div class=adminheader>Town Hall</div>
+<div style="padding:10px;width:400px">
+	<?if($AD->getPerm("ourtown_edit")){?>
+	<a href="editpage.htm?filename=/assets/data/history.html&page=townhall&title=Story of Minyanville"><!--<img src="assets/mv-storymv.gif" border=0 align=left hspace=5>--><b>Story of MV</b></a><br><br>
+	Edit the main area of the "Story of MV" page.
+	<?}?>
+<?if($AD->getPerm("chars_edit")){?>
+	<br clear=all><br><br>
+	<a href="characters.htm"><!--<img src="assets/mv-charbios.gif" border=0  hspace=5 align=left>--><b>Minyanville Character Bios</b></a><br><br>
+	Edit Minyanville Character Bios page. Editing this page affects other parts of the site like Todd's Daily Journal.
+<?}?>
+</div></TD>
+</TR>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

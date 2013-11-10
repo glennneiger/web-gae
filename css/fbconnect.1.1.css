@@ -1,0 +1,224 @@
+.Fb_iboxmain{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+float:left;
+z-index:100;
+background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tickter_post_bg.jpg);
+background-repeat: repeat-x;
+background-color:#cfe2f3;
+width:500px;
+height:100%;
+}
+.Mv_fbheader{
+height:40px;
+width:100%;
+float:left;
+background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/ticker_header.jpg);
+}
+.Mv_fbheader_left{
+float:left;
+width:50%;
+padding-left:10px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:22px;
+color:#FFFFFF;
+padding-top:5px;
+text-align:left;
+}
+.Mv_fbheader_right{
+float:right;
+width:45%;
+text-align:right;
+padding-right:10px;
+}
+.Common_rows{
+float:left;
+padding:0px 0px 0px 0px;
+border-top:none;
+border-left:solid 1px #c0dcf3;
+border-right:solid 1px #c0dcf3;
+border-bottom:solid 1px #c0dcf3;
+color:#292929;
+width:498px;
+}
+.Common_rows div.left{
+float:left;
+padding:10px;
+width:40%;
+text-align:left;
+}
+.Common_rows div.right{
+float:right;
+padding:10px;
+width:40%;
+text-align:left;
+}
+.Common_rows div.right input{
+margin:0px;
+}
+.Common_rows div.right img{
+cursor:pointer;
+}
+.Profile_pic{
+border:solid 2px #a6c5e0;
+float:left;
+}
+.Profile_title{
+padding-left:10px;
+color:#013d71;
+font-size:14px;
+font-weight:bold;
+}
+.TT_error{
+font-size:11px;
+color:#FF0000;
+float:left;
+padding:2px 2px 2px 0px;
+}
+.signin_account{
+float:left;
+background-color:#c6dbef;
+padding:5px;
+margin-top:5px;
+color:#013D71;
+font-size:11px;
+cursor:pointer;
+}
+.signin_account a{
+text-decoration:none;
+color:#013D71;
+}
+.FB_terms{
+float:none;
+color:#013D71;
+font-size:11px;
+}
+.FB_terms a{
+color:#013D71;
+}
+.FB_title{
+padding-top:3px;
+color:#013D71;
+font-size:11px;
+cursor:pointer;
+}
+
+.Fb_iboxmain_login_outer{
+float:left;
+background-color:#CFE2F3;
+padding:0px;
+width:500px;
+z-index:50;
+position: absolute;
+left:0;
+
+}
+.Fb_iboxmain_login{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+float:left;
+background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tickter_post_bg.jpg);
+background-repeat: repeat-x;
+background-color:#cfe2f3;
+width:302px;
+}
+
+.Common_rows_login{
+float:left;
+padding:0px 0px 0px 0px;
+border-top:none;
+border-left:solid 1px #c0dcf3;
+border-right:solid 1px #c0dcf3;
+border-bottom:solid 1px #c0dcf3;
+color:#292929;
+width:498px;
+}
+.Common_rows_login div.left{
+float:left;
+padding:10px;
+width:38%;
+/*text-indent:75px;*/
+text-align:left;
+}
+.Common_rows_login div.right{
+float:right;
+padding:8px;
+width:53%;
+}
+.Common_rows_login div.right img{
+cursor:pointer;
+}
+
+.Mv_fbheader_login{
+height:40px;
+width:100%;
+float:left;
+background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/ticker_header.jpg);
+}
+.Mv_fbheader_login_left{
+float:left;
+width:40%;
+padding-left:10px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:22px;
+color:#FFFFFF;
+padding-top:5px;
+}
+.Mv_fbheader_login_right{
+float:right;
+width:50%;
+padding-right:10px;
+text-align:right;
+}
+.FB_ticker_error{
+font-size:11px;
+text-align:center;
+padding-top:3px;
+height:13px;
+color:#FF0000;
+}
+#userbox img{float:left;
+margin-right:10px;
+border:0;}
+
+.login{
+margin:5px 0px 0px 0px;
+}
+
+.comment a{
+font-size:14px; color:#333;
+line-height:24px;
+}
+
+.comment{padding:4px;
+font-size:11px; color:#333;
+background-color:#dedede; border-bottom:2px solid #ccc;
+margin-bottom:3px;}
+
+.user img{float:left; margin-right:10px;}
+
+.clear{clear:both;}
+.comment span{font-weight:700; font-size:11px; color:#333;}
+#comment-text, #name{padding:4px; border:1px solid #999; margin-top:5px; font-size:15px; line-height:18px; font-family:Arial, Helvetica, sans-serif; color:#666;}
+#sub{border:0px; padding:5px; background-color:#2c5ea2; color:#fff;}
+#sub:hover{color:#ccc;}
+#ubname a{
+color:#003399;
+font-size:14px;
+}
+
+a#logout{
+color:#003399;
+font-size:14px;
+font-weight:700;
+}
+
+.fbBtn{
+width:42%;
+float:left;
+margin:0px 0px 0px 5px;
+padding-top:1px;
+text-align:left;
+}
+
+

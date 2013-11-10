@@ -1,0 +1,196 @@
+<?
+global $D_R;
+include_once($D_R."/lib/_robots.php");
+include_once("$D_R/lib/_news.php");
+global $DATE_STR;
+$page = "thestreet_articles";
+$id   = $_GET['id'];
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+$viewapproved=$_GET[viewapproved];
+$viewapproved=intval($viewapproved);
+$p=$_GET['p'];
+$s=$_GET['s'];
+$d=$_GET['d'];
+
+include("$ADMIN_PATH/_header.htm");
+
+$editarticlesall=$AD->getPerm("articles_all");
+$editarticlesown=$AD->getPerm("articles_own");
+
+$appr_gazette=$AD->getPerm("approve_gazette");
+
+if(!$appr_gazette){
+	admin_error();
+}
+$candelete=$AD->getPerm("articles_delete");
+$handler="thestreet_approve_mod.htm";
+
+/*-- query params --*/
+if($appr_gazette)$avail_categories[]="gazette";
+if($appr_sch)$avail_categories[]="schoolhouse";
+$category_ids=getAreaPerms($avail_categories);
+$category_str=implode('(,|$)|',$category_ids).'(,|$)';//use in SQL REGEXP ending w/ , or $
+
+//change
+$email_category_ids=get_all_email_categories();  // function in lib/_news.php
+$email_catid=array();
+foreach($email_category_ids as $catrow){
+$email_catid[]=$catrow['id'];
+}
+$email_catid=implode('(,|$)|',$email_catid).'(,|$)';//use in SQL REGEXP ending w/ , or $
+// change end
+
+$pagesize=10;
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+
+//Redirect articles to edit page.
+
+
+$link_info= makeArticleslink_sql($_GET['id']);
+$linkurl=makeArticleslink($_GET['id'],$link_info['keyword'],$link_info['blurb']);
+
+
+$qry="SELECT a.id,a.date date,a.article_type,a.title,a.approved,a.contrib_name name,a.publish_date,concat( 'articles.htm?id=', a.id ) arturl,concat( '".$linkurl."', a.id ) arturl1 FROM thestreet_articles a where approved='0' and is_deleted = '0'";
+
+// change end
+
+$qry.=" GROUP BY a.id";
+if($s)$qry.=" ORDER BY $s $d ";
+
+/*--- end query params --*/
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+
+
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($_SERVER['PHP_SELF'].qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+
+/*-- end paging  ---*/
+$pagedata = exec_query($qry);
+?>
+
+<?if($_GET['error']){?><div class=error><?=strip($_GET['error'])?></div><?}?>
+<center>
+<div style="width:300;text-align:center">These are the articles that are awaiting approval. Check the articles to move it to Articles List.</div>
+</center>
+<BR />
+<table width=300 align=center style="border:1px black solid">
+<!--<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>1),"p"),"View Approved Articles","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($_SERVER['PHP_SELF'].qsa(array(viewapproved=>0),"p"),"View Unapproved Articles","class=small",(!$viewapproved))?></TD>
+<TD colspan=3>&nbsp;</TD>
+</TR>-->
+<form method="post" action="<?=$handler?>">
+<?input_hidden("viewapproved")?>
+<TR bgcolor=#cccccc align=center>
+	<TD<?colclass("date")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"date",d=>togD($d)))?>">Article Date</a></TD>
+	<TD<?colclass("title")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+	<!--<TD<?colclass("note")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"note",d=>togD($d)))?>">Note</a></TD>-->
+	<TD<?colclass("name")?>><a href="<?=$_SERVER['PHP_SELF'].qsa(array(s=>"name",d=>togD($d)))?>">Author</a></TD>
+<TD nowrap>Publish date</td>
+<td nowrap="nowrap">Move to Articles</td>
+<!--<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>-->
+<?if($candelete){?>
+<TD>Delete</TD>
+<!--<TD>Preview</td>-->
+<?}?>
+</TR>
+<?if(count($pagedata)){?>
+	<?foreach($pagedata as $i=>$row){
+
+	$breakDateStr="n|j|Y|G|i";
+	list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,convert_date_to_unix($row[publish_date])));
+	if($y=="2000" || $y=="1969"){//invalid date
+		$publishdatefield=array();
+	}else{
+		$publishdatefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+	}
+	if($row[publish_date] == "0000-00-00 00:00:00")
+	{
+		$publishdatefield="";
+		$row[publish_date]="";
+
+	}
+		$color=$i%2?"dddddd":"eeeeee";
+		$link = "thestreet_articles.htm?article=".$row[id]."&atype=".trim($row[article_type]);
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?>><?=date("m/j/Y h:i:s a",strtotime($row['date']))?></TD>
+	<TD nowrap <?colclass("title")?>>
+	<!-- Add script to make link to titles according to authorizations to edit-->
+	<?if(!$editarticlesall && !$editarticlesown){?>
+			<?=($row[title]?$row[title]:"(legacy data w/out title)")?>
+	  </TD>
+	<?}elseif($editarticlesall){?>
+			<a href="<?=$link?>" target="_blank"><?=($row[title]?$row[title]:"(legacy data w/out title)")?></a>
+		</TD>
+	<?}elseif($AD->userInfo[name]==$row[name] && $editarticlesown){?>
+			<a href="<?=$link?>" target="_blank"><?=($row[title]?$row[title]:"(legacy data w/out title)")?></a>
+		</TD>
+	<?}else{?>
+			<?=($row[title]?$row[title]:"(legacy data w/out title)")?>
+		</TD>
+	<?}?>
+	<!--<TD nowrap<?colclass("note")?>><?=$row[note]?></TD>-->
+	<TD nowrap<?colclass("name")?>><?=$row[name]?></TD>
+	<TD nowrap><?=$row[publish_date]?></TD>
+	<TD align=center>
+	<?php
+	if($row[approved] == '1')
+	{
+		$chk ='checked';
+		
+	}
+	else
+	{
+		$chk ='';
+	}
+	?>
+	<input type="checkbox" name="approve[<?=$row[id]?>]" title="Check this to move the article then submit the page" <?=$chk;?>></TD>
+	<TD>
+	<?if($candelete){?>
+	<input type="checkbox" name="delarticle[<?=$row[id]?>]" title="Check to remove have this article removed">
+	</TD>
+	<?}?>
+	</TR>
+	<?}?>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There are no articles awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<input type="submit" value="Save Changes">
+</TD>
+</TR>
+</form>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

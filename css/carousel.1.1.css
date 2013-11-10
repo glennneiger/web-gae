@@ -1,0 +1,167 @@
+/* Header Style */
+.header{
+	height:25px;
+	line-height:24px;
+	font-size:13px;
+	background:#000;
+	opacity:0.9;
+	text-transform:uppercase;
+	z-index:4;
+}
+.header a{
+	padding:5px 10px;
+	letter-spacing:1px;
+	text-shadow:1px 1px 1px #000;
+	color:#ddd;
+	text-align:right;
+}
+.header a:hover{
+	color:#fff;
+}
+.header a span{
+	font-weight:bold;
+}
+.header span.right_ab{
+	position:absolute;
+	right:4px;
+}
+
+
+
+
+
+/* Circular Content Carousel Style */
+.ca-container{
+	position:relative;
+	width:900px;
+	/*width:940px;*/
+	height:190px;
+}
+.ca-wrapper{
+	width:100%;
+	height:100%;
+	position:relative;
+}
+.ca-item{
+	position:relative;
+	float:left;
+	width:180px;
+	height:100%;
+	text-align:center;
+}
+.ca-more{
+	position: absolute;
+	bottom: 10px;
+	right:0px;
+	padding:4px 15px;
+	font-weight:bold;
+	background: #ccbda2;
+	text-align:center;
+	color: white;
+	font-family: "Georgia","Times New Roman",serif;
+	font-style:italic;
+	text-shadow:1px 1px 1px #897c63;
+}
+.ca-close{
+	position:absolute;
+	top:10px;
+	right:10px;
+	background:#fff url(http://storage.googleapis.com/mvassets/images/subscription/cross.png) no-repeat center center;
+	width:27px;
+	height:27px;
+	text-indent:-9000px;
+	outline:none;
+	-moz-box-shadow:1px 1px 2px rgba(0,0,0,0.2);
+	-webkit-box-shadow:1px 1px 2px rgba(0,0,0,0.2);
+	box-shadow:1px 1px 2px rgba(0,0,0,0.2);
+	opacity:0.7;
+}
+.ca-close:hover{
+	opacity:1.0;
+}
+.ca-item-main{
+	position:absolute;
+	overflow:hidden;
+}
+
+.fade {
+	opacity: 1;
+	transition: opacity .25s ease-in-out;
+	-moz-transition: opacity .25s ease-in-out;
+	-webkit-transition: opacity .25s ease-in-out;
+	}
+   
+.fade:hover {
+	opacity: 0.5;
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	filter: alpha(opacity=50);
+}  
+
+.ca-icon{
+	width:180px;
+	height:190px;
+	position:relative;
+	margin:0 auto;
+	background:transparent url(http://storage.googleapis.com/mvassets/images/subscription/subWave.png) no-repeat center center;
+}
+
+.ca-item-1 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subWave.png);
+}
+
+.ca-item-2 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/mvp_pT_icon.png);
+}
+.ca-item-3 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subBuzz.png);
+}
+.ca-item-4 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subJeff.png);
+}
+.ca-item-5 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subOption.png);
+}
+.ca-item-6 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subTech.png);
+}
+.ca-item-7 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subStock.png);
+}
+.ca-item-8 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subAdFreeNew.png);
+}
+.ca-item-9 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subKeene.png);
+}
+.ca-item-10 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/sub03.png);
+}
+.ca-item-11 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/sub04.png);
+}
+.ca-item-12 .ca-icon{
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/sub01.png);
+}
+
+.ca-nav span{
+	width:28px;
+	height:40px;
+	background:transparent url(http://storage.googleapis.com/mvassets/images/subscription/arrows.png) no-repeat top left;
+	position:absolute;
+	top:50%;
+	margin-top:-19px;
+	left:-28px;
+	text-indent:-9000px;
+	opacity:0.7;
+	cursor:pointer;
+	z-index:100;
+}
+.ca-nav span.ca-nav-next{
+	background-position:top right;
+	left:auto;
+	right:-28px;
+}
+.ca-nav span:hover{
+	opacity:1.0;
+}

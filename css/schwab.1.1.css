@@ -1,0 +1,77 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*//////////////GLOBAL RESET//////////////*/
+html{color:#000;background-color:#fff;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{
+	margin:0;
+	padding:0;
+	border: 1px #cccccc;
+}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym {border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;overflow:hidden;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}legend{color:#000;}
+body {font-family: Arial;}table{font-size:inherit;}pre,code,kbd,samp,tt{font-family:monospace;line-height:100%;}
+/*//////////////END//////////////*/
+
+/*//////////////MAIN ELEMENTS STYLE//////////////*/
+html {background: url(http://storage.googleapis.com/mvassets/images/schwab/paper.jpg) 0 0 repeat;}
+body {font-family:Arial; font-size: 10px; color: #262626; background: url(http://storage.googleapis.com/mvassets/images/schwab/header.gif) center top no-repeat;}
+a {color: #8e0100; text-decoration: none;}
+a:hover {text-decoration: underline;}
+a:visited {color: #600;}
+em {font-style: italic;}
+strong {font-weight: bold;}
+h1 {font-size: 4.8em; letter-spacing: -0.025em;}
+h2 {margin: 1.35em 0 .55em; font-size: 2.8em;}
+input:focus,
+textarea:focus {color: #262626 !important;}
+.container {width: 951px; margin: 0 auto; overflow: visible;}
+.pp-container {width: 475px; overflow: visible;}
+.hidden {display: none;}
+.noBorderTop {border-top-width: 0 !important;}
+.noBorderBottom {border-bottom-width: 0 !important;}
+.noMarginTop {margin-top: 0 !important;}
+.noMarginRight {margin-right: 0 !important;}
+.noMarginBottom {margin-bottom: 0 !important;}
+.noMarginLeft {margin-left: 0 !important;}
+.smaller {font-size: smaller}
+/*//////////////END//////////////*/
+#radioes{ margin-top:40px;}
+.minyanville-logo { margin: 35px 0 0 0; }
+#offer-text { width: 304px; float: right; margin: 80px 30px 0 0; }
+#header { height: 319px;}
+#checkboxes { width:478px; margin:0; }
+#offer-heading { font-size: 16px; font-weight: bold; margin: 20px 0 20px 0; width: 418px; }
+#premium-product1, #premium-product2 , #premium-product3, #premium-product4, #premium-product5, #premium-product6 { font-size: 14px; font-weight: bold; }
+#pp-description { font-size: 13px; margin-left: 18px; margin-bottom: 18px; }
+#pp-disclaimer{ font-size: 13px; margin-bottom: 18px; margin-top:100px; }
+#pp-disclaimer a{ color:#0000FF; text-decoration:underline }
+#offer-details { font-size: 11px; color: #666666; margin: 32px 0 22px 0; }
+#ttc-sponsorship { width: 378px; margin-bottom:50px; margin-top:45px; float:right; clear:both; margin-right:5px;}
+#ttc-img { float:right; }
+#sponsored-img { float: left; margin-left:20px; margin-top:10px }
+#info-form { clear:both; background-image: url(http://storage.googleapis.com/mvassets/images/schwab/form_background_1.gif);background-repeat:no-repeat;; width:321px; padding: 20px 40px 0px 26px; float: right; margin:0; height:542px;}
+#pls-mssg { margin-bottom: 5px; margin-top:0px; }
+.login-box-name   { width: 100px; height: 20px; text-align: right; display: inline; font-size:12px; font-weight: bold; color: #FFFFFF; padding-top: 5px; float: left; margin-bottom: 5px; margin-left: 8px; margin-top:0px; padding-bottom:0px; }
+.text_label   {font-size:12px; font-weight: normal; color: #FFFFFF; padding-top: 5px; float: left; margin-bottom: 5px; margin-left: 8px; margin-top:0px; padding-bottom:0px; }
+.text_label_select   {font-size:11px; font-weight: normal; color: #FFFFFF; padding-top: 5px; float: left; margin-bottom: 5px; margin-left: 8px; margin-top:0px; padding-bottom:0px; }
+
+.input-field { float: right; width: 200px; display: inline; margin:0px; padding:0px;padding-bottom: 10px;}
+.form-login { width: 188px; height: 18px; font-size: 13px; color: #000000; border: 1px solid #0066cc; margin-bottom: 0px; margin-top:0px; padding:0px; }
+#state-label { width: 40px; height: 20px; text-align: right; display: inline; font-size:12px; font-weight: bold; color: #FFFFFF; padding-top: 5px; float: left; margin-bottom: 5px; margin-right: 14px; margin-left: 68px; }
+#state-input-form {  width: 52px; display: inline; }
+/*#state-list { width: 50px; height: 18px; font-size: 13px; color: #000000; border: 1px solid #0066cc; margin-bottom: 10px;  }
+#state-input-field { width: 50px; height: 18px; font-size: 13px; color: #000000; border: 1px solid #0066cc; margin-bottom: 10px; }*/
+#zip-label { float:left; height: 20px; text-align: right; display: inline; font-size:12px; font-weight: bold; color: #FFFFFF;  margin:0 8px 0 12px;   }
+#zip-form {  float: left; width: 50px; display: inline; padding:0px; margin:0px; margin-bottom: 10px; }
+#zip-field { width: 100px; height: 18px; font-size: 13px; color: #000000; border: 1px solid #0066cc; margin-bottom: 10px; }
+.form-divider { width: 315px; margin: auto; height: 10px; }
+#login-box-asset-label { width: 110px; height: 20px; text-align: left; font-size:11px; font-weight: bold; color: #FFFFFF; margin-top: 50px; margin-left: 5px; }
+#asset-list-div { height: 70px; width: 145px; float:right; margin:18px 55px 10px 0; }
+#asset-list { font-size:12px; color: #FFFFFF; }
+#asset-list li { padding: 0 0 2px 0; }
+#login-box-trades-label { width: 110px; height: 20px; text-align: right; font-size:11px; font-weight: bold; color: #FFFFFF; margin-top: 68px; }
+#login-box-name-req { width: 100px; height: 20px; text-align: right; display: inline; font-size:12px; font-weight: bold; color: #FFFFFF; padding-top: 5px; float: left; margin: 0px 0 7px 8px; }
+.button { width: 100%; margin-left: 0px; float:left }
+.button submit { }
+.submit {width:148px; border:0px; background-position: 0 0;float: left; height: 33px; text-indent: -9999px; background-image: url(http://storage.googleapis.com/mvassets/images/schwab/submitBtn1.png); outline: none;}
+.submit:hover, .submit.active {background-position: right bottom;}
+#disclaimer { float:left; size:9px; color: #FFFFFF; height: 140px; width: 312px; margin-top: 10px; line-height: 10px; padding-bottom:10px;}
+.dis-link { color: #FFFFFF; text-decoration:underline; }

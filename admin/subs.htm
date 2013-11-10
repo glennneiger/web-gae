@@ -1,0 +1,1214 @@
+<?
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+/*********** Total no of users subscribed to email Alert **********/
+$sql 			 = "select subscriber_id from email_alert_categorysubscribe where email_alert='1' UNION select subscriber_id from email_alert_authorsubscribe where email_alert='1'";
+$emailAlertCount = num_rows($sql);
+
+
+// find unique array for $product_by
+if(is_array($product_by)){
+foreach($product_by as $k => $v) {
+    if (is_array($v)) {
+      $ret = array_unique_FULL(array_merge($ret, $v));
+    } else {
+      $ret[$k] = $v;
+    }
+ }
+}
+if(is_array($ret)){$product_by=array_unique($ret);}
+
+$type_arr['prem']="Monthly";
+$type_arr['newyear']="Annual";
+$type_arr['edu']="Edu";
+$type_arr['corp']="Corporate";
+$type_arr['trial']="Free Trial";
+$type_arr['gift']="Gratis";
+$type_arr['nonbuzz']="N/A";
+
+$pqry="Select id,name from product";
+$presults=exec_query($pqry);
+$products[0] = "BuzzBanter";
+foreach($presults as $id=>$value)
+{
+	$products[$value['id']]=str_replace(" ","",$value['name']);
+}
+$productskeys=array_flip($products);
+
+$dqry="Select id,name,is_buzz,prof_id from option_deals";
+$dresults=exec_query($dqry);
+foreach($dresults as $id=>$value)
+{
+	$deals[$value['id']]=str_replace(" ","",$value['name']);
+}
+$dealskeys=array_flip($deals);
+
+$page="subscribers";
+$p=intval($p);
+$search_param=trim(lc($search_param));
+if(!$pagesize)$pagesize=40;
+
+
+if($st_mo && $st_day && $st_year)
+strtotime($_POST[year]."-".$_POST[mo]."-".$_POST[day]." ".$_POST[hour].":".$_POST["minute"])
+	//$startdate=mktime(0,0,0,$st_mo,$st_day,$st_year);
+	$startdate=strtotime($st_year."-".$st_mo."-".$st_day." "00:00:00");
+
+else
+	$startdate=time();
+
+if($e_mo && $e_day && $e_year)
+	//$enddate=mktime(0,0,0,$e_mo,$e_day,$e_year);
+	$enddate=strtotime($e_year."-".$e_mo."-".$e_day." "00:00:00");
+else
+	$enddate=time();
+
+
+if($accst_mo && $accst_day && $accst_year)
+	//$accstartdate=mktime(0,0,0,$accst_mo,$accst_day,$accst_year);
+	$accstartdate=strtotime($accst_year."-".$accst_mo."-".$accst_day." "00:00:00");
+else
+	$accstartdate=time();
+
+if($acce_mo && $acce_day && $acce_year)
+	//$accenddate=mktime(0,0,0,$acce_mo,$acce_day,$acce_year);
+	$accenddate=strtotime($acce_year."-".$acce_mo."-".$acce_day." "00:00:00");
+else
+	$accenddate=time();
+
+	/*********/
+
+if($nextst_mo && $nextst_day && $nextst_year)
+	//$nextstartdate=mktime(0,0,0,$nextst_mo,$nextst_day,$nextst_year);
+	$nextstartdate=strtotime($nextst_year."-".$nextst_mo."-".$nextst_day." "00:00:00");
+else
+	$nextstartdate=time();
+
+if($nexte_mo && $nexte_day && $nexte_year)
+	//$nextenddate=mktime(0,0,0,$nexte_mo,$nexte_day,$nexte_year);
+	$nextenddate=strtotime($nexte_year."-".$nexte_mo."-".$nexte_day." "00:00:00");
+else
+	$nextenddate=time();
+/****************/
+
+if($diss_mo && $diss_day && $diss_year)
+	//$disabledates=mktime(0,0,0,$diss_mo,$diss_day,$diss_year);
+	$disabledates=strtotime($diss_year."-".$diss_mo."-".$diss_day." "00:00:00");
+else
+	$disabledates=time();
+if($dise_mo && $dise_day && $dise_year)
+	//$disabledatee=mktime(0,0,0,$dise_mo,$dise_day,$dise_year);
+	$disabledatee=strtotime($dise_year."-".$dise_mo."-".$dise_day." "00:00:00");
+else
+	$disabledatee=time();
+// Change type in query according to the products selected.
+  if(($deal_on=='on' && $product_on!=='on' ) || (($product_by[0]=='JeffCooper' || $product_by[0]=='Quint') && $product_on=='on')){
+   		$type='sp.type'; 
+        $trialstatus='sp.trial_status';
+		$accountstatus='sp.account_status';
+		$date='sp.date';
+		$date_lastbilled='sp.date_lastbilled';
+		$date_disabled='sp.date_disabled';
+		$date_nextbill='sp.date_nextbill';
+		$date_billingstart='sp.date_billingstart';
+//Replace s with sp		
+        $search=substr($search_by,1);
+    	$oldWord = "s";
+		$newWord = "sp";
+    	$search_by =str_replace($oldWord , $newWord, substr($search_by,0,1))."".$search;
+		}
+   else{
+   		$type='s.type';
+		// change
+		if($product_on && count($product_by)>1) {
+			$type_sp='sp.type';
+		}
+		$trialstatus='s.trial_status';
+		$accountstatus='s.account_status';
+		if($product_on && count($product_by)>1) {
+			$accountstatus_sp='sp.account_status';
+		}	
+		$date='s.date';
+		$date_lastbilled='s.date_lastbilled';
+		$date_disabled='s.date_disabled';
+		$date_nextbill='s.date_nextbill';
+		$date_billingstart='s.date_billingstart';
+	}
+
+if($discount_on)
+{
+	if($AD->getPerm("hide_referer"))
+	{
+		$qry="SELECT SQL_CALC_FOUND_ROWS s.id ID,
+						 FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+						 s.email 'MemberID',
+						 s.fname 'FirstName',
+						 s.lname 'LastName',
+						 s.type 'Type',
+						 s.premium,
+						 s.account_status,
+						 s.corpuser 'Corp',
+						 s.trial_status 'Trial',
+                         s.promo_code 'RefferalCode',
+						 s.comment 'Comment'
+			FROM subscription s, subscription_trans st";
+
+			$qrydownload="SELECT SQL_CALC_FOUND_ROWS distinct(s.id) ID,
+			  					 FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+						 		 s.email 'MemberID',
+								 s.fname 'FirstName',
+								 s.lname 'LastName',
+								 s.address 'Address Line1',
+								 s.address2 'Address Line2',
+								 s.city 'City',
+								 s.state 'State',
+								 s.zip 'Zip',
+								 s.tel 'Home phone',
+			                     s.work 'Work Phone',
+								 s.country 'Country',
+								 s.type 'Type',
+								 s.premium,
+								 s.account_status,
+								 s.corpuser 'Corp',
+								 IF(s.type<>'corp',NULL,NULL) 'expire_date',
+								 s.trial_status 'Trial',
+                                 s.promo_code 'RefferalCode',
+								 IF(s.date_billingstart=0,'',FROM_UNIXTIME(s.date_billingstart,'%m/%d/%Y')) 'DateBillingStart',
+								 s.sale Sale,
+		 						 s.comment 'Comment'
+				 FROM subscription s, subscription_trans st";
+	}
+	else
+	{
+		$qry="SELECT SQL_CALC_FOUND_ROWS s.id ID,
+				 FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+				 s.email 'MemberID',
+				 s.fname 'FirstName',
+				 s.lname 'LastName',
+				 s.type 'Type',
+				 s.premium,
+				 s.account_status,
+				 s.corpuser 'Corp',
+				 s.trial_status 'Trial',
+                 s.promo_code 'RefferalCode',
+				 s.referer 'Referer',
+				 s.comment 'Comment'
+	FROM subscription s, subscription_trans st";
+
+	$qrydownload="SELECT SQL_CALC_FOUND_ROWS distinct(s.id) ID,
+	  					 FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+				 		 s.email 'MemberID',
+						 s.fname 'FirstName',
+						 s.lname 'LastName',
+						 s.address 'Address Line1',
+						 s.address2 'Address Line2',
+						 s.city 'City',
+						 s.state 'State',
+						 s.zip 'Zip',
+						 s.tel 'Home phone',
+			             s.work 'Work Phone',
+						 s.country 'Country',
+						 s.type 'Type',
+						 s.premium,
+						 s.account_status,
+						 s.corpuser 'Corp',
+						 IF(s.type<>'corp',NULL,NULL) 'expire_date',
+						 s.trial_status 'Trial',
+                         s.promo_code 'RefferalCode',
+						 IF(s.date_billingstart=0,'',FROM_UNIXTIME(s.date_billingstart,'%m/%d/%Y')) 'DateBillingStart',
+						 s.referer 'Referer',
+						 s.sale Sale,
+ 						 s.comment 'Comment'
+				 FROM subscription s, subscription_trans st";
+	  }
+
+}
+elseif($AD->getPerm("hide_referer"))
+{   
+	$qry="SELECT distinct SQL_CALC_FOUND_ROWS s.id ID,
+						 FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+						 s.email 'MemberID',
+		  	  			 s.fname 'FirstName',
+		  	  			 s.lname 'LastName',
+		  	  			 s.type 'Type',
+		  	  			 s.premium,
+		  	  			 IF(s.type<>'corp',s.account_status,IF(c.expire_date IS NULL ||  '".mysqlNow()."' < c.expire_date, s.account_status, 'expired')) 'Status',
+		  	  			 s.corpuser 'Corp',
+		  	  			 s.trial_status 'Trial',
+                         s.promo_code 'RefferalCode',
+ 						 s.comment 'Comment',s.combo
+		   FROM subscription s LEFT JOIN corp c ON (c.corp_login=s.corpuser)";
+
+	$qrydownload="SELECT distinct SQL_CALC_FOUND_ROWS s.id ID,
+		  FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+		  	  s.email 'MemberID',
+			  s.fname 'FirstName',
+			  s.lname 'LastName',
+			  s.address 'Address Line1',
+			  s.address2 'Address Line2',
+			  s.city 'City',
+			  s.state 'State',
+			  s.zip 'Zip',
+			  s.tel 'Home phone',
+			  s.work 'Work Phone',
+			  s.country 'Country',
+			  s.type 'Type',
+			  s.premium,
+			  IF(s.type<>'corp',s.account_status,IF(c.expire_date IS NULL ||  '".mysqlNow()."' < c.expire_date, s.account_status, 'expired')) 'Status',
+			  s.corpuser 'Corp',
+			  IF(s.type<>'corp',NULL,c.expire_date) 'expire_date',
+			  s.trial_status 'Trial',
+              s.promo_code 'RefferalCode',
+			  IF(s.date_billingstart=0,'',FROM_UNIXTIME(s.date_billingstart,'%m/%d/%Y')) 'DateBillingStart',
+			  s.referer 'Referer',
+			  s.sale Sale,
+			  s.comment 'Comment'
+	  FROM subscription s LEFT JOIN corp c ON (c.corp_login=s.corpuser)";
+}
+else
+{
+		$qry=" SELECT SQL_CALC_FOUND_ROWS s.id ID,
+					 FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+					 s.email 'MemberID',
+	  	  			 s.fname 'FirstName',
+	  	  			 s.lname 'LastName',
+	  	  			 s.type 'Type',
+	  	  			 s.premium,
+	  	  			 IF(s.type<>'corp',s.account_status,IF(c.expire_date IS NULL ||  '".mysqlNow()."' < c.expire_date, s.account_status, 'expired')) 'Status',
+	  	  			 s.corpuser 'Corp',
+	  	  			 s.trial_status 'Trial',
+                     s.promo_code 'RefferalCode',
+	  	  			 s.referer 'Referer',
+					 s.comment 'Comment'
+	  FROM subscription s LEFT JOIN corp c ON (c.corp_login=s.corpuser)";
+
+$qrydownload="SELECT SQL_CALC_FOUND_ROWS s.id ID,
+	  FROM_UNIXTIME(s.date,'%m/%d/%Y')'Created',
+	  	  s.email 'MemberID',
+		  s.fname 'FirstName',
+		  s.lname 'LastName',
+		  s.address 'Address Line1',
+		  s.address2 'Address Line2',
+		  s.city 'City',
+		  s.state 'State',
+		  s.zip 'Zip',
+		  s.tel 'Home phone',
+		  s.work 'Work Phone',
+		  s.country 'Country',
+		  s.type 'Type',
+		  s.premium,
+		  IF(s.type<>'corp',s.account_status,IF(c.expire_date IS NULL ||  '".mysqlNow()."' < c.expire_date, s.account_status, 'expired')) 'Status',
+		  s.corpuser 'Corp',IF(s.type<>'corp',NULL,c.expire_date) 'expire_date',
+		  s.trial_status 'Trial',
+          s.promo_code 'RefferalCode',
+		  IF(s.date_billingstart=0,'',FROM_UNIXTIME(s.date_billingstart,'%m/%d/%Y')) 'DateBillingStart',
+		  s.referer 'Referer',
+		  s.sale Sale,
+		 s.comment 'Comment'
+	  FROM subscription s LEFT JOIN corp c ON (c.corp_login=s.corpuser)";
+}
+$qstack=array();
+
+/*********Product Search *****/
+	
+$product_1=$product_by['0'];
+$product_2=$product_by['1'];
+$product_3=$product_by['2'];
+
+if($product_on && $product_by[0]!="BuzzBanter" && count($product_by)=='1')
+{
+	$qry.=",subscription_ps sp";
+    $qrydownload.=",subscription_ps sp";
+	$qstack[]="sp.subid=s.id";
+
+     if($product_1!=""){
+		$qstack[]="sp.prof_id='$productskeys[$product_1]'";
+	 }	
+	 if($product_2!=""){
+		$qstack[]="sp.prof_id='$productskeys[$product_2]'";
+	 }	
+	 if($product_3!=""){
+		$qstack[]="sp.prof_id='$productskeys[$product_3]'";
+	 }
+	
+}elseif( $product_on && count($product_by)>1 && $product_by[0]=="JeffCooper" && $product_by[1]=="Quint") {
+   $qry.=",subscription_ps sp";
+   $qrydownload.=",subscription_ps sp";
+   $qstack[]="sp.subid=s.id";
+   // $qstack[]="sp.prof_id in(2,3)";
+    if($type_on) {
+   	$qstack[]="sp.subid in (select subid from subscription_ps where prof_id='3' and type='$type_by') and s.id in (select subid from subscription_ps where prof_id='2' and type='$type_by') ";		
+   } else {
+   	$qstack[]="sp.subid in (select subid from subscription_ps where prof_id='3') and s.id in (select subid from subscription_ps where prof_id='2') ";		
+   }		
+}
+elseif($product_by[0]=="BuzzBanter" && $product_on)
+{ 
+  
+ if(count($product_by)>1  && $product_by[1]=="JeffCooper" && $product_by[2]=="") {
+   $qry.=",subscription_ps sp";
+   $qrydownload.=",subscription_ps sp";
+   $qstack[]="sp.subid=s.id";
+   $qstack[]="sp.prof_id='2'";
+   if($type_on) {
+	  $qstack[]="$type_sp='$type_by'";
+    }
+      
+}elseif(count($product_by)>1  && $product_by[1]=="Quint") {
+   $qry.=",subscription_ps sp";
+   $qrydownload.=",subscription_ps sp";
+   $qstack[]="sp.subid=s.id";   
+   $qstack[]="sp.prof_id='3'";
+  
+   		
+}elseif( count($product_by)>2  && $product_by[1]=="JeffCooper" &&  
+   $product_by[2]=="Quint") {
+   $qry.=",subscription_ps sp";
+   $qrydownload.=",subscription_ps sp";
+   $qstack[]="sp.subid=s.id";
+   // change
+   if($type_on) {
+   	$qstack[]="sp.subid in (select subid from subscription_ps where prof_id='3' and type='$type_by') and s.id in (select subid from subscription_ps where prof_id='2' and type='$type_by') ";		
+   } else {
+   	$qstack[]="sp.subid in (select subid from subscription_ps where prof_id='3') and s.id in (select subid from subscription_ps where prof_id='2') ";		
+   }
+}
+$qstack[]="s.premium='1'";
+}
+else{
+	unset($_GET['product_by']);
+	unset($_GET['product_on']);
+}
+/***********************************/
+/************Deal Search************/
+if($deal_on && !$product_on)
+{ 
+    $qry.=",subscription_ps sp";
+    $qrydownload.=",subscription_ps sp";
+	$qstack[]="sp.subid=s.id";
+	if($type_on && !$status_on) {
+		$qstack[]="sp.subid in (select subid from subscription_ps sp where sp.combo='1' and type='$type_by' and sp.combo_id='$dealskeys[$deal_by]') ";
+	} elseif($status_on) {
+		$qstack[]="sp.subid in (select subid from subscription_ps sp where sp.combo='1'  and account_status='$status_by' and sp.combo_id='$dealskeys[$deal_by]') ";
+	} else {
+		$qstack[]="sp.subid in (select subid from subscription_ps sp where sp.combo='1' and sp.combo_id='$dealskeys[$deal_by]') ";
+	}
+}
+elseif($deal_on && $product_on)
+{
+   $qstack[]="sp.subid in (select subid from subscription_ps sp where sp.combo='1' and sp.combo_id='$dealskeys[$deal_by]' ) ";
+}
+else{
+	unset($_GET['deal_by']);
+	unset($_GET['deal_on']);
+}
+/***********************************/
+/*---------- search params -------------*/
+/*if($date_on){
+	$qstack[]="s.date>=$startdate";
+	$qstack[]="s.date<=$enddate";
+}else{
+	unset($_GET[st_mo]);unset($_GET[st_day]);unset($_GET[st_year]);
+	unset($_GET[e_mo]);unset($_GET[e_day]);unset($_GET[e_year]);
+	unset($_GET[date_on]);
+}
+if($date_disabled_on){
+	$qstack[]="FROM_UNIXTIME(s.date_disabled)>='".date("Y-m-d",$disabledates)."'";
+	$qstack[]="FROM_UNIXTIME(s.date_disabled)<='".date("Y-m-d",$disabledatee)."'";
+}else{
+	unset($date_disabled_on);unset($_GET[date_disabled_on]);
+	unset($_GET[diss_mo]);	unset($_GET[diss_day]);unset($_GET[diss_year]);
+	unset($_GET[dise_mo]);	unset($_GET[dise_day]);unset($_GET[dise_year]);
+}*/
+if($status_on){
+	$qstack[]="$accountstatus='$status_by'";
+	
+}else{
+	unset($status_on,$status_by);
+	unset($_GET[status_on]);unset($_GET[status_by]);
+}
+if($accstatus_on){
+	switch($accstatus_by)
+	{
+		case "Active":
+			$qstack[]="FROM_UNIXTIME(s.login_lastactive,'%Y-%m-%d')>=FROM_UNIXTIME($accstartdate,'%Y-%m-%d')";
+			$qstack[]="FROM_UNIXTIME(s.login_lastactive,'%Y-%m-%d')<=FROM_UNIXTIME($accenddate,'%Y-%m-%d')";
+			break;
+	case "New":
+			$qstack[]="FROM_UNIXTIME($date,'%Y-%m-%d')>=FROM_UNIXTIME($accstartdate,'%Y-%m-%d')";
+			$qstack[]="FROM_UNIXTIME($date,'%Y-%m-%d')<=FROM_UNIXTIME($accenddate,'%Y-%m-%d')";
+			break;
+		case "Billed":
+			$qstack[]="FROM_UNIXTIME($date_lastbilled,'%Y-%m-%d')>=FROM_UNIXTIME($accstartdate,'%Y-%m-%d')";
+			$qstack[]="FROM_UNIXTIME($date_lastbilled,'%Y-%m-%d')<=FROM_UNIXTIME($accenddate,'%Y-%m-%d')";
+			break;
+		case "Cancelled":
+			$qstack[]="FROM_UNIXTIME($date_disabled,'%Y-%m-%d')>=FROM_UNIXTIME($accstartdate,'%Y-%m-%d')";
+			$qstack[]="FROM_UNIXTIME($date_disabled,'%Y-%m-%d')<=FROM_UNIXTIME($accenddate,'%Y-%m-%d')";
+			break;
+	}
+}else{
+	// unset($accstatus_on,$status_by);
+	// unset($_GET[status_on]); // unset($_GET[status_by]);
+}
+
+if($bill_on){
+	switch($bill_by)
+	{
+		case "NextBillingDate":
+			$qstack[]="FROM_UNIXTIME($date_nextbill,'%Y-%m-%d')>=FROM_UNIXTIME($nextstartdate,'%Y-%m-%d')";
+   			$qstack[]="FROM_UNIXTIME($date_nextbill,'%Y-%m-%d')<=FROM_UNIXTIME($nextenddate,'%Y-%m-%d')";
+			break;
+		case "BillingStartDate":
+			$qstack[]="FROM_UNIXTIME($date_billingstart,'%Y-%m-%d')>=FROM_UNIXTIME($nextstartdate,'%Y-%m-%d')";
+			$qstack[]="FROM_UNIXTIME($date_billingstart,'%Y-%m-%d')<=FROM_UNIXTIME($nextenddate,'%Y-%m-%d')";
+			break;
+	}
+}else{
+	unset($bill_on,$bill_by);
+	unset($_GET[bill_on]);unset($_GET[bill_by]);
+}
+
+if($type_on){
+	if($type_by=="corp-to-paying")
+	{
+		$qstack[]="s.type<>'corp' and s.corpuser<>''";
+	}
+	else
+	{
+		 $qstack[]="$type='$type_by'";
+		// change 
+		if($product_on && count($product_by)>1) {
+			// $qstack[]="$type_sp='$type_by'";
+		}	
+	}
+}else{
+	unset($type_on,$type_by);
+	unset($_GET[type_on]);unset($_GET[type_by]);
+}
+
+if($trial_status_on){
+	$qstack[]="$trialstatus='$trial_status'";
+}else{
+	unset($trial_status_on,$trial_status);
+	unset($_GET[trial_status_on]);unset($_GET[trial_status]);
+}
+
+if($discount_on)
+{
+	$qstack[]="s.id=st.subscription_id and st.success='1' and st.amt_charged=".$REG_CHARGE_YR_DISCOUNT."";
+}
+else
+{
+	unset($_GET[discount_on]);
+}
+if($search_on && ($search_param || $search_param==="0")){
+	$qstack[]="instr(lower($search_by),lower('$search_param'))";
+}else{
+	unset($search_on,$search_param,$search_by);
+	unset($_GET[search_on]);unset($_GET[search_param]);unset($_GET[search_by]);
+}
+if(count($qstack))$qry.=" WHERE ".implode(" AND ",$qstack);
+if(count($qstack))$qrydownload.=" WHERE ".implode(" AND ",$qstack);
+
+/*---------- end search params -------------*/
+
+$offset=($p*$pagesize);
+if($status_on || $accstatus_on || $bill_on || $product_on || $deal_on || $trial_status_on || $type_on || $search_on || $discount_on){
+	$qry.=" and s.type<>'exchange'";
+	$qrydownload.=" and s.type<>'exchange'";
+} else {
+	$qry.=" where s.type<>'exchange'";
+	$qrydownload.=" where s.type<>'exchange'";
+}
+
+if(!$d)$d="DESC";
+if(!$s)$s="s.date";
+if($s){
+	if($s=="Modified")$s="s.modified";
+	if($s=="Created")$s="s.date";
+	if($s=="DateBillingStart")$s="s.date_billingstart";
+	if($s=="Corp")$s="s.corpuser";
+	$qry.=" ORDER BY $s $d";
+	$qrydownload.=" ORDER BY $s $d";
+}
+
+$qry.=" LIMIT $offset,$pagesize ";
+
+$qrydownload.=" LIMIT $offset,$pagesize ";
+
+$pagedata=exec_query($qry);
+if(count($pagedata)){
+	$numrows=exec_query("SELECT FOUND_ROWS()c",1,"c");
+	$numpages=ceil($numrows/$pagesize);
+} else {
+	$numrows=0;
+}
+
+
+if($numpages>1){
+	$pagination=array();
+
+if(is_array($product_by)){
+foreach($product_by as $k => $v) { // get selected product
+   $product_by_url=$product_by_url.'&product_by[]'.'='.$v;
+ }
+}
+
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		$data =qsa(array(p=>$i));
+		$find ="/&product_by=Array/";
+		$data=preg_replace ($find,$product_by_url,$data);
+		$pagination[]=href($PHP_SELF.$data,$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+
+$timeperiods=array(
+	thismonth => "This Month",
+	thisweek  => "This Week",
+	today     => "Today Only"
+);
+$accounttypes=qw("prem edu newyear corp trial gift corp-to-paying");
+$trialstatus=qw("active inactive expired converted");
+$statustypes=qw("enabled disabled");
+$accstatustypes=qw("Active New Billed Cancelled");
+$billtypes=qw("NextBillingDate BillingStartDate");
+$producttypes=qw(implode(" ",$products));
+$dealstypes=qw(implode(" ",$deals));
+$searchtypes=array(
+	"s.fname"=>"First Name",
+	"s.lname"=>"Last Name",
+	"s.email"=>"Email",
+	"s.address"=>"Street Address",
+	"s.city"=>"City",
+	"s.state"=>"State",
+	"s.zip"=>"Zip Code",
+	"s.country"=>"Country",
+	"s.cc_num"=>"Credit Card Number",
+	"s.recurring_charge"=>"Recurring Charge",
+	"s.premium"=>"Premium (1 or 0)",
+	"s.preferred_user"=>"Preferred User (1 or 0)",
+	"s.corpuser"=>"Corp User",
+    "s.promo_code"=>"Refferal Code",
+	"s.referer"=>"Referer",
+	"s.sale"=>"Sale"
+);
+
+//Summary of users
+
+//--enabled/disabled counts
+if($su_mo && $su_day && $su_year && $sudate_on)
+{
+	//$specdate=mktime(0,0,0,$su_mo,$su_day,$su_year);
+	$specdate=strtotime($su_year."-".$su_mo."-".$su_day." "00:00:00");
+}
+else
+{
+	$specdate=time();
+
+}
+
+$qrysum="SELECT account_status, count(*)hits
+	  FROM subscription WHERE FROM_UNIXTIME(date,'%Y-%m-%d')<=FROM_UNIXTIME($specdate,'%Y-%m-%d') and type<>'exchange' GROUP BY account_status";
+
+foreach(exec_query($qrysum) as $i=>$row)$enabled[$row[account_status]]=$row[hits];
+
+//--disabled 30 days
+$dblmonstart=$specdate-day(30);
+$qrysum="SELECT count(*)hits
+	  FROM subscription
+	  WHERE FROM_UNIXTIME(date_disabled,'%Y-%m') = FROM_UNIXTIME($specdate,'%Y-%m') and type<>'exchange'";
+
+$disabledmonth=exec_query($qrysum,1,"hits");
+$qrydismontip="SELECT type,count(*)hits
+	  FROM subscription
+	  WHERE FROM_UNIXTIME(date_disabled,'%Y-%m') = FROM_UNIXTIME($specdate,'%Y-%m') and type<>'exchange' GROUP BY type ORDER BY type";
+
+
+$disabledmonthtip=exec_query($qrydismontip);
+
+//--preferred users
+$qrysum="SELECT count(*)hits FROM subscription WHERE FROM_UNIXTIME(date,'%Y-%m-%d')<=FROM_UNIXTIME($specdate,'%Y-%m-%d') and preferred_user='1' and type<>'exchange'";
+$preferred=exec_query($qrysum,1,"hits");
+
+//---accounts still in trial mode
+$qrysum="SELECT count(*)hits
+	  FROM subscription
+	  WHERE date > '".(time()-$RBT_TRIAL_LENGTH)."'";
+$trials=exec_query($qrysum,1,"hits");
+
+//--counts by subscription type
+$qrysum="SELECT type, count(*)hits FROM subscription WHERE FROM_UNIXTIME(date,'%Y-%m-%d')<=FROM_UNIXTIME($specdate,'%Y-%m-%d') and account_status='enabled' and type<>'exchange' GROUP BY type ORDER BY type";
+$substypes=exec_query($qrysum);
+
+//--new users this month
+
+
+$qrysum="SELECT count(*) hits FROM subscription WHERE  FROM_UNIXTIME(date,'%Y-%m')=FROM_UNIXTIME($specdate,'%Y-%m')";
+$qrymonthtip="SELECT type,count(*) hits FROM subscription WHERE  FROM_UNIXTIME(date,'%Y-%m')=FROM_UNIXTIME($specdate,'%Y-%m') and type<>'exchange' GROUP BY type ORDER BY type";
+$newmonth=exec_query($qrysum,1,"hits");
+$newmonthtip=exec_query($qrymonthtip);
+
+//--new users today
+$qrysum="SELECT count(*)hits FROM subscription WHERE FROM_UNIXTIME(date,'%Y-%m-%d')=FROM_UNIXTIME($specdate,'%Y-%m-%d') and type<>'exchange'";
+$newtoday=exec_query($qrysum,1,"hits");
+$qrynewtip="SELECT type,count(*)hits FROM subscription WHERE FROM_UNIXTIME(date,'%Y-%m-%d')=FROM_UNIXTIME($specdate,'%Y-%m-%d') and type<>'exchange' GROUP BY type ORDER BY type";
+$newtodaytip=exec_query($qrynewtip);
+
+//--disabled users today
+$qrysum="SELECT count(*)hits FROM subscription WHERE FROM_UNIXTIME(date_disabled,'%Y-%m-%d')=FROM_UNIXTIME($specdate,'%Y-%m-%d') and account_status='disabled' and type<>'exchange'";
+$disabledtoday=exec_query($qrysum,1,"hits");
+$qrydisabletip="SELECT type,count(*)hits FROM subscription WHERE FROM_UNIXTIME(date_disabled,'%Y-%m-%d')=FROM_UNIXTIME($specdate,'%Y-%m-%d') and account_status='disabled' and type<>'exchange' GROUP BY type ORDER BY type";
+$disabledtodaytip=exec_query($qrydisabletip);
+
+//--total users
+$totalusers=exec_query("select count(*)hits FROM subscription where FROM_UNIXTIME(date,'%Y-%m-%d')<=FROM_UNIXTIME($specdate,'%Y-%m-%d') and type<>'exchange'",1,"hits");
+
+$page="subscribers";
+
+//Discounted Users
+$qrysum="SELECT COUNT(distinct subscription_id) discounted_users FROM subscription_trans where date_format(date,'%Y-%m-%d')<=FROM_UNIXTIME($specdate,'%Y-%m-%d') and success='1' and amt_charged=".$REG_CHARGE_YR_DISCOUNT
+." GROUP BY amt_charged";
+$discounted_users=exec_query($qrysum,1,"discounted_users");
+
+// Active Users
+$qrysum="SELECT COUNT(*) active_users FROM subscription WHERE FROM_UNIXTIME(login_lastactive,'%Y-%m-%d') >= FROM_UNIXTIME($dblmonstart,'%Y-%m-%d') and FROM_UNIXTIME(login_lastactive,'%Y-%m-%d') <= FROM_UNIXTIME($specdate,'%Y-%m-%d') and type<>'exchange'";
+
+$active_users=exec_query($qrysum,1,"active_users");
+$qryactivetip="SELECT type,COUNT(*) hits FROM subscription WHERE FROM_UNIXTIME(login_lastactive,'%Y-%m-%d') >= FROM_UNIXTIME($dblmonstart,'%Y-%m-%d') and FROM_UNIXTIME(login_lastactive,'%Y-%m-%d') <= FROM_UNIXTIME($specdate,'%Y-%m-%d') and type<>'exchange' GROUP BY type ORDER BY type";
+
+$active_userstip=exec_query($qryactivetip);
+
+//Billing Date
+$qrysum="SELECT COUNT(*) billed_users FROM subscription WHERE FROM_UNIXTIME(date_lastbilled,'%Y-%m') = FROM_UNIXTIME($specdate,'%Y-%m')and type<>'exchange'";
+$billed_users=exec_query($qrysum,1,"billed_users");
+$qrybilledtip="SELECT type,COUNT(*)hits FROM subscription WHERE FROM_UNIXTIME(date_lastbilled,'%Y-%m') = FROM_UNIXTIME($specdate,'%Y-%m') and type<>'exchange' GROUP BY type ORDER BY type";
+$billed_userstip=exec_query($qrybilledtip);
+
+
+//New Users
+$qrysum="SELECT COUNT(*) registered_users FROM subscription WHERE date>CURDATE()- INTERVAL 30 DAY and type<>'exchange'";
+$registered_users=exec_query($qrysum,1,"registered_users");
+?>
+<style>
+.whilite a:hover{color:#fff;}
+.smbutton{
+	height:14px;
+ 	padding:0px;
+	font-size:9px;
+
+}
+</style>
+<script>
+function editSubs(subsid){
+	window.open("subs.edit.htm?id="+subsid,"_search");
+}
+function editTrans(subsid,email){
+	window.open("subs.trans.htm?id="+subsid+"&email="+email,"_search");
+}
+function removeSubs(subsid){
+	var msg="Are you sure you want to remove this subscription? The action cannot be undone";
+	if(confirm(msg)){
+		location.replace("subs.remove.htm?refer=<?=refer(1)?>&id="+subsid);
+	}
+}
+</script>
+<div id="dhtmltooltip"></div>
+<script type="text/javascript" language="JavaScript" src="toolTiphome.js">
+</script>
+<link href="tooltip.css" type="text/css" rel="stylesheet">
+<div class=adminheader>View Website Subscriptions</div>
+<table width="100%" align=center><tr><td>
+<table width="100%" bgcolor=#cccccc align=center>
+<TR>
+<TD colspan=4> <b>Search Filters</b></TD>
+</TR>
+<form method="get" action="<?=$PHP_SELF?>" >
+<?input_hidden("s");input_hidden("pagesize")?>
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="status_on"<?=($status_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show subscriptions whose membership status is: </span><br>
+<select name="status_by">
+	<?selectArr($statustypes,$status_by)?>
+</select></TD>
+<TD width=1%>&nbsp;</td>
+<TD width=99% nowrap><?=str_repeat("&nbsp;",80)?></TD>
+</TR>
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="accstatus_on"<?=($accstatus_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show subscriptions whose Account status is: </span><br>
+    <select name="accstatus_by">
+	<?selectArr($accstatustypes,$accstatus_by)?>
+</select> from  <?date_input($accstartdate,"accst",2002)?> - to -
+	<?date_input($accenddate,"acce",2002)?></TD>
+<TD width=1%>&nbsp;</td>
+<TD width=99% nowrap><?=str_repeat("&nbsp;",80)?></TD>
+</TR>
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="bill_on"<?=($bill_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show subscriptions whose has</span><br>
+ <select name="bill_by">
+ 	<?selectArr($billtypes,$bill_by)?>
+</select>
+ from  <?date_input($nextstartdate,"nextst",2002)?> - to -
+	<?date_input($nextenddate,"nexte",2002)?></TD>
+<TD width=1%>&nbsp;</td>
+<TD width=99% nowrap><?=str_repeat("&nbsp;",80)?></TD>
+</TR>
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="product_on"<?=($product_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show Users who subscribed for: </span><br>
+<select name="product_by[]" multiple="multiple" size="3">
+	<?selectArr($producttypes,$product_by)?>
+	
+	
+</select></TD>
+<TD width=1%>&nbsp;</td>
+<TD width=99% nowrap><?=str_repeat("&nbsp;",80)?></TD>
+</TR>
+
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="deal_on"<?=($deal_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show Users who subscribed for Deal: </span><br><select name="deal_by">
+	<?selectArr($dealstypes,$deal_by)?>
+</select></TD>
+<TD width=1%>&nbsp;</td>
+<TD width=99% nowrap><?=str_repeat("&nbsp;",80)?></TD>
+</TR>
+
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="trial_status_on"<?=($trial_status_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show subscriptions whose trial status is: </span><br>
+<select name="trial_status"><?selectArr($trialstatus,$trial_status)?></select></TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+</TR>
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="type_on"<?=($type_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show subscriptions whose type is: </span><br>
+<select name="type_by"><?selectArr($accounttypes,$type_by)?></select></TD>
+<TD>&nbsp;</TD>
+<TD>Number of records to show at a time<br><?input_text("pagesize",$pagesize,2,2)?></TD>
+</TR>
+
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="search_on"<?=($search_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Show subscriptions where: </span><br>
+	<select name="search_by">
+	<?selectHash($searchtypes,$search_by)?>
+	</select> contains <?input_text("search_param")?></TD>
+<TD>&nbsp;</TD>
+<TD align=center>
+		<b>Results: <?=$numrows?></b>
+
+</TD>
+</TR>
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="discount_on"<?=($discount_on?" checked":"")?>></td>
+<TD width=99% nowrap><span class=small>Only show subscriptions who choose to lock-in discount rates</span><br>
+</TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+</TR>
+
+<TR bgcolor=#eeeeee>
+<TD width=1%><input type="checkbox" name="sudate_on"<?=($sudate_on?" checked":"")?> /></td>
+<TD width=99% nowrap><span class=small>Show Current Stats from
+  <?date_input($specdate,"su",2002)?></TD>
+<TD>&nbsp;</TD>
+<TD>&nbsp;</TD>
+</TR>
+
+<TR>
+<td colspan="2"><b>Summary of Users</b></td>
+<TD align=right colspan="2"><input type="submit" value="go"></TD>
+</TR>
+</form>
+</table></td></tr><br>
+
+
+<tr><td><table width="100%" border="1" cellspacing="0" cellpadding="0">
+  <tr valign="top">
+    <td width="33%"><table width="100%" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="2" class="summaryheading">Current Stats</td>
+      </tr>
+      <tr>
+        <td><b>New Users Today</b></td>
+        <td ><img src="details.jpg"  onMouseover="ddrivetip('24', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+		<span class="ds" id="24"><table cellpadding="2" cellspacing="0" border="0" >
+		<? $j=0;$checkval=0; ?>
+		<? foreach($newtodaytip as $j=>$row){?>
+		<? $checkval=1;?>
+		<tr ><td class="borderRight"><? if(strtoupper($row[type])=="1MO" || strtoupper($row[type])=="PREM"){ echo "MONTHLY"; } else { echo strtoupper($row[type]);}?></td>
+		<td class="borderbottom"><? echo $row[hits]; ?></td></tr>
+		<?}?>
+		<? if($checkval==0){?>
+		<tr><td>No users</td></tr>
+		<?}?>
+		</table></span>
+        </td>
+        <td><?=number_format($newtoday)?></td>
+      </tr>
+      <tr>
+        <td><b>New Users This Month</b></td>
+        <td ><img src="details.jpg"  onMouseover="ddrivetip('25', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+				<span class="ds" id="25"><table cellpadding="2" cellspacing="0" border="0" >
+				<? $j=0;$checkval=0; ?>
+				<? foreach($newmonthtip as $j=>$row){?>
+				<? $checkval=1;?>
+				<tr ><td class="borderRight"><? if(strtoupper($row[type])=="1MO" || strtoupper($row[type])=="PREM"){ echo "MONTHLY"; } else { echo strtoupper($row[type]);}?></td>
+				<td class="borderbottom"><? echo $row[hits]; ?></td></tr>
+				<?}?>
+				<? if($checkval==0){?>
+						<tr><td>No users</td></tr>
+				<?}?>
+				</table></span>
+        </td>
+        <td><?=number_format($newmonth)?></td>
+      </tr>
+       <tr>
+	      <td><b>Disabled Accounts Today</b></td>
+	      <td ><img src="details.jpg"  onMouseover="ddrivetip('26', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+		  		<span class="ds" id="26"><table cellpadding="2" cellspacing="0" border="0" >
+		  		<? $j=0;$checkval=0; ?>
+		  		<? foreach($disabledtodaytip as $j=>$row){?>
+		  		<? $checkval=1;?>
+		  		<tr ><td class="borderRight"><? if(strtoupper($row[type])=="1MO" || strtoupper($row[type])=="PREM"){ echo "MONTHLY"; } else { echo strtoupper($row[type]);}?></td>
+		  		<td class="borderbottom"><? echo $row[hits]; ?></td></tr>
+		  		<?}?>
+				<? if($checkval==0){?>
+						<tr><td>No users</td></tr>
+				<?}?>
+		  		</table></span>
+        </td>
+	      <td><?=number_format($disabledtoday)?></td>
+      </tr>
+      <tr>
+        <td><b>Disabled accounts This month</b></td>
+        <td ><img src="details.jpg"  onMouseover="ddrivetip('27', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+				<span class="ds" id="27"><table cellpadding="2" cellspacing="0" border="0" >
+				<? $j=0;$checkval=0; ?>
+				<? foreach($disabledmonthtip as $j=>$row){?>
+				<? $checkval=1;?>
+				<tr ><td class="borderRight"><? if(strtoupper($row[type])=="1MO" || strtoupper($row[type])=="PREM"){ echo "MONTHLY"; } else { echo strtoupper($row[type]);}?></td>
+				<td class="borderbottom"><? echo $row[hits]; ?></td></tr>
+				<?}?>
+				<? if($checkval==0){?>
+						<tr><td>No users</td></tr>
+				<?}?>
+				</table></span>
+        </td>
+        <td width="10%"><?=number_format($disabledmonth)?></td>
+      </tr>
+      <tr>
+      <td><b>Users Billed This Month</b></td>
+        <td ><img src="details.jpg"  onMouseover="ddrivetip('28', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+				<span class="ds" id="28"><table cellpadding="2" cellspacing="0" border="0" >
+				<? $j=0;$checkval=0; ?>
+				<? foreach($billed_userstip as $j=>$row){?>
+				<? $checkval=1;?>
+				<tr ><td class="borderRight"><? if(strtoupper($row[type])=="1MO" || strtoupper($row[type])=="PREM"){ echo "MONTHLY"; } else { echo strtoupper($row[type]);}?></td>
+				<td class="borderbottom"><? echo $row[hits]; ?></td></tr>
+				<?}?>
+				<? if($checkval==0){?>
+						<tr><td>No users</td></tr>
+				<?}?>
+				</table></span>
+        </td>
+        <td><?=number_format($billed_users)?></td>
+      </tr>
+      <tr>
+        <td><b>Users Active in the past 30 days</b></td>
+        <td ><img src="details.jpg"  onMouseover="ddrivetip('29', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+				<span class="ds" id="29"><table cellpadding="2" cellspacing="0" border="0" >
+				<? $j=0;$checkval=0; ?>
+				<? foreach($active_userstip as $j=>$row){?>
+				<? $checkval=1;?>
+				<tr ><td class="borderRight"><? if(strtoupper($row[type])=="1MO" || strtoupper($row[type])=="PREM"){ echo "MONTHLY"; } else { echo strtoupper($row[type]);}?></td>
+				<td class="borderbottom"><? echo $row[hits]; ?></td></tr>
+				<?}?>
+				<? if($checkval==0){?>
+					<tr><td>No users</td></tr>
+				<?}?>
+				</table></span>
+        </td>
+        <td><?=number_format($active_users)?></td>
+      </tr>
+
+</table>
+</th>
+    <td width="33%"><table width="100%" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="2" class="summaryheading">User Stats</td>
+      </tr>
+      <tr>
+        <td><b>Total</b></td>
+        <td><?=number_format($totalusers)?></td>
+      </tr>
+      <tr>
+        <td><b>Preffered Accounts</b></td>
+        <td><?=number_format($preferred)?></td>
+      </tr>
+      <tr>
+        <td><b>Total Enabled</b></td>
+        <td><?=number_format($enabled[enabled])?></td>
+      </tr>
+      <tr>
+        <td><b>Total Disabled</b></td>
+        <td><?=number_format($enabled[disabled])?></td>
+      </tr>
+      <tr>
+        <td><b>Discount Users</b></td>
+        <td><?=number_format($discounted_users)?></td>
+      </tr>
+	  <tr>
+        <td><b>Subscribed to Email Alert</b></td>
+        <td><?=number_format($emailAlertCount)?></td>
+      </tr>
+</table>
+</th>
+    <td width="33%">
+	<table width="100%" cellpadding="0" cellspacing="0" style="margin:0px" border="1" >
+	<tr>
+	<td colspan="2" class="summaryheading">User Account By Subscription Type</td>
+  <?foreach($substypes as $i=>$row){?>
+  <tr>
+    <td><b>
+    <? if(strtoupper($row[type])=="1MO" || strtoupper($row[type])=="PREM")
+    {
+    	echo "MONTHLY";
+    }
+    else
+    {
+      echo strtoupper($row[type]);
+    }
+
+    ?></b></td>
+    <td><?=$row[hits]?></td>
+  </tr>
+<?}?>
+</table></th>
+  </tr>
+</table></td></tr>
+<tr><td><div><a href="#" onclick="javascript:window.open('subs.add.htm');">Create New Subscriptions</a></div></td></tr>
+
+<tr><td><table border="0" width="100%" align=center>
+<TR align=center bgcolor=#bbbbbb>
+
+<?if(count($pagedata)){
+	$hidecolumn=array('ID','Comment','premium','Trial','Corp','RefferalCode','Referer','combo');
+
+	foreach(array_keys($pagedata[0]) as $col){
+		if(!in_array($col,$hidecolumn))
+		{
+			$colcolor=($_GET[s]==$col?"#8da9e6":"");
+	?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite><?=href($PHP_SELF.qsa(array(s=>$col,d=>($d=="ASC"?"DESC":"ASC"))),$col)?></TD>
+	<?}}?>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Product</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+	<TD nowrap bgcolor="<?=$colcolor?>" class=whilite>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Bundle</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+	</TR>
+	<form method="get" action="subscribers_mod.htm">
+	<?refer()?>
+	<?foreach($pagedata as $row){
+	$is_buzz=0;
+	$rowcolor=$i%2?"dddddd":"eeeeee";
+	$product_qry="select from_unixtime(sp.date,'%m/%d/%Y') Created,sp.email,sp.fname,sp.lname,sp.recurring_charge 'Product Price',sp.type,sp.account_status Status,p.name 'Product' from subscription_ps sp,product p where sp.prof_id=p.id and sp.combo='0' and subid=$row[ID]";
+	if($type_on){
+		$product_qry.=" and sp.type='$type_by'";
+	}
+	if($status_on) {
+		$product_qry.=" and sp.account_status='$status_by'";
+	}
+		 $product_qry.=" order by p.name desc ";
+
+        $product_results=exec_query($product_qry);
+	 
+		$combo_qry="select account_status Status from subscription_ps where combo_id <>'' and subid=$row[ID]";
+		$combo_results=exec_query($combo_qry,1);
+				
+     if(($deal_on=='on') || ($product_on!=='on' && $combo_results['Status'])){  
+	 
+		$deal_qry="select od.description 'Bundle',od.recurring_charge 'Budndle Price',od.is_buzz,from_unixtime(sp.date,'%m/%d/%Y')
+		 Created,sp.email,sp.fname,sp.lname,sp.type,sp.account_status Status from subscription_ps sp,option_deals od where 
+		 sp.combo_id=od.id and sp.subid=$row[ID] ";
+		 
+			 if($type_on){
+				$deal_qry.=" and sp.type='$type_by'";
+			 }
+			 if($status_on) {
+				$deal_qry.=" and sp.account_status='$status_by'";
+			 }
+			 if($deal_by=='Quint'){
+					$deal_qry.=" and sp.combo_id='2'";
+			 } elseif($deal_on=='on' && $deal_by=='Cooper') {
+					$deal_qry.=" and sp.combo_id='1'";
+			 }
+		 
+	     	$deal_results=exec_query($deal_qry);
+			if($deal_results) {
+		 	foreach($deal_results as $id=>$value)
+			{   
+				$is_buzz=$value['is_buzz'];
+				?>
+				<TR align="center" bgcolor="<?=$rowcolor?>">
+				<? if($id=='0') { ?><TD><?=$value['Created'];?></TD> <? } else {?><TD></TD> <? } ?>
+				<? if($id=='0') { ?><TD><?=$value['email'];?></TD> <? } else {?><TD></TD> <? } ?>
+				<? if($id=='0') { ?><TD><?=$value['fname'];?></TD> <? } else {?><TD></TD> <? } ?>
+				<? if($id=='0') { ?><TD><?=$value['lname'];?></TD> <? } else {?><TD></TD> <? } ?>
+				<TD><?=$type_arr[$value['type']];?></TD>
+				<TD><?=$value['Status'];?></TD>
+				<TD>Bundle</TD>
+				<TD><?=$value['Bundle'];?></TD>
+				<TD nowrap>
+				<? if($id=='0') { ?>
+				<img src="details.jpg"  onMouseover="ddrivetip('d<?=$row[ID]?>', '#F0F0F0', 500);" onMouseout="hideddrivetip()">                <? } ?>
+				<span class="ds" id="d<?=$row[ID]?>">
+				<table cellpadding="2" cellspacing="0" border="0" >
+				<tr ><td class="borderRight"><? if($row['Comment']) { echo $row['Comment']; }else{ echo "No Comments"; }?></td>
+				</tr>
+				</table></span>
+		        <? if($id=='0') { ?>
+				<input type="button" onclick="editSubs('<?=$row[ID]?>')" class="smbutton" value="edit" title="edit this subscription">
+				<input type="button" onclick="editTrans('<?=$row[ID]?>','<?=$row[MemberID]?>')" class="smbutton" value="trans." title="view transaction history">
+				<input type="button" onclick="removeSubs('<?=$row[ID]?>')" class="smbutton" value="x" title="remove this subscription"> <? } ?>
+				</TD>
+				</TR>
+		   <?}
+		   
+				foreach($product_results as $id=>$value){ 
+				  ?>  
+						<TR align=center bgcolor="<?=$rowcolor?>"><TD></TD><TD></TD><TD></TD><TD></TD>
+						<TD><?=$type_arr[$value['type']];?></TD>
+						<TD><?=$value['Status'];?></TD>
+						<TD><?=$value['Product'];?></TD>
+						<TD></TD><TD></TD>
+						</TR>
+			    <?  }  ?>
+		
+
+			<TR align="center" bgcolor="<?=$rowcolor?>">
+			<?
+			if($row['premium'] && !$row['combo']){
+			    	foreach($row as $k=>$v){ 
+						if(!in_array($k,$hidecolumn)) {
+							$colcolor=($_GET[s]==$k?"#8da9e6":"");
+							 if($k=='Type'){ ?>
+									<TD bgcolor="<?=$colcolor?>"><?=$type_arr[$v];?></TD>
+							 <? }else{
+							 		if($k=='Status'){
+							 ?>
+									<TD bgcolor="<?=$colcolor?>"><?=$v?></TD>
+							 <? } else { ?>
+							 		<TD bgcolor="<?=$colcolor?>"></TD>
+							 <? } }
+						}
+					 }  // end for loop ?>
+					  <TD bgcolor="<?=$colcolor?>">Buzz & Banter</TD><TD></TD><TD></TD>
+					 
+			
+	<?		} 
+   } }    // if end for deal_on  
+	
+		if(!$is_buzz){?>
+			<TR align="center" bgcolor="<?=$rowcolor?>">
+			<?
+			if($row['premium']){
+			    	foreach($row as $k=>$v){ 
+						if(!in_array($k,$hidecolumn)) {
+							$colcolor=($_GET[s]==$k?"#8da9e6":"");
+							 if($k=='Type'){ ?>
+									<TD bgcolor="<?=$colcolor?>"><?=$type_arr[$v];?></TD>
+							 <? }else{?>
+									<TD bgcolor="<?=$colcolor?>"><?=$v?></TD>
+							 <? }
+						}
+					 }  // end for loop ?>
+					
+			    <TD bgcolor="<?=$colcolor?>">Buzz & Banter</TD> <TD></TD>
+				<TD nowrap>
+				<img src="details.jpg" onMouseover="ddrivetip('d<?=$row[ID]?>', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+		  		<span class="ds" id="d<?=$row[ID]?>"><table cellpadding="2" cellspacing="0" border="0" >
+		  		<tr ><td class="borderRight"><? if($row['Comment']) { echo $row['Comment']; }else{ echo "No Comments"; }?></td></tr>
+		  		</table></span>
+			<input type="button" onclick="editSubs('<?=$row[ID]?>')" class="smbutton" value="edit" title="edit this subscription">
+			<input type="button" onclick="editTrans('<?=$row[ID]?>','<?=$row[MemberID]?>')" class="smbutton" value="trans." title="view transaction history">
+			<input type="button" onclick="removeSubs('<?=$row[ID]?>')" class="smbutton" value="x" title="remove this subscription">
+			</TD>
+			</TR>
+			<?	foreach($product_results as $id=>$value){ ?>
+				<TR align=center bgcolor="<?=$rowcolor?>"><TD></TD><TD></TD><TD></TD><TD></TD>
+				<TD><?=$type_arr[$value['type']];?></TD>
+				<TD><?=$value['Status'];?></TD>
+				<TD><?=$value['Product'];?></TD>
+				<TD></TD><TD></TD>
+				</TR>
+			<?}
+		} else {  
+   		foreach($product_results as $id=>$value)
+			{ ?>
+			<TR align=center bgcolor="<?=$rowcolor?>">
+			<? if($id=='0') { ?> <TD><?=$value['Created'];?></TD> <? } else { ?> <TD></TD> <? } ?>
+			<? if($id=='0') { ?> <TD><?=$value['email'];?></TD><? } else { ?> <TD></TD> <? } ?>
+			<? if($id=='0') { ?> <TD><?=$value['fname'];?></TD><? } else { ?> <TD></TD> <? } ?>
+			<? if($id=='0') { ?> <TD><?=$value['lname'];?></TD><? } else { ?> <TD></TD> <? } ?>
+            <TD><?=$type_arr[$value['type']];?></TD>
+			<TD><?=$value['Status'];?></TD>
+			<TD><?=$value['Product'];?></TD>
+			<TD>&nbsp;</TD>
+
+	<? if($id=='0') { ?> 	
+          <TD nowrap>
+			<img src="details.jpg"  onMouseover="ddrivetip('d<?=$row[ID]?>', '#F0F0F0', 500);" onMouseout="hideddrivetip()">
+		  		<span class="ds" id="d<?=$row[ID]?>"><table cellpadding="2" cellspacing="0" border="0" >
+		  		<tr ><td class="borderRight"><? if($row['Comment']) { echo $row['Comment']; }else{ echo "No Comments"; }?></td></tr>
+		  		</table></span>
+
+			<input type="button" onclick="editSubs('<?=$row[ID]?>')" class="smbutton" value="edit" title="edit this subscription">
+			<input type="button" onclick="editTrans('<?=$row[ID]?>','<?=$row[MemberID]?>')" class="smbutton" value="trans." title="view transaction history">
+			<input type="button" onclick="removeSubs('<?=$row[ID]?>')" class="smbutton" value="x" title="remove this subscription">  
+		</TD><? } else { ?> <td></td> <? } ?>
+		</TR>
+    		 <? } 
+      }
+}}?>
+
+	</form>
+<?}else{//!count($pagedata)?>
+<TR>
+	<TD colspan=100>Nothing found.<br>
+	<?=mysql_error()?>
+	</TD>
+</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<hr />
+<?=$pagination?>
+<hr />
+
+
+</TD>
+</TR>
+</table></td></tr></table>
+
+<a href="subs.export.htm/?qry=<?=$qrydownload;?>">Download Excel Spreadsheet of this data</a>
+
+<br><br>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

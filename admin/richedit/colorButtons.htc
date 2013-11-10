@@ -1,0 +1,80 @@
+<public:component tagName=colorButton>
+
+	<public:attach event=ondocumentready onevent=Setup() />
+	<public:attach event=onmouseover onevent=button_mouse_over() />
+	<public:attach event=onmouseout onevent=button_mouse_out() />
+	<public:attach event=onmousedown onevent=button_down() />
+	<public:attach event=onmouseup onevent=button_mouse_over() />
+	
+	<public:property name=tip put=setToolTip />
+	
+</public:component>
+
+<script>
+var img;
+var imgSrc = "";
+var src ;
+var ttip = "";
+
+function Setup()
+{
+	
+	with(element.style)
+	{
+		fontSize = 0;
+		height = "16px";
+		width = "16px";
+	}
+	
+}
+
+
+
+function button_mouse_over()
+{
+	src = event.srcElement;
+	
+	with(src.style)
+	{
+		borderColor = "#bfbfbf";
+		borderTopColor = "white";
+		borderLeftColor = "white";
+		borderRightColor = "#dfdfdf";
+		borderBottomColor = "#dfdfdf";
+		borderWidth = 1.5;
+		borderStyle = "outset";
+	}
+}
+
+function button_mouse_out()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#dfdfdf";
+		borderWidth = 0;
+		borderStyle = "none";
+	}
+}
+
+function button_down()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#bfbfbf";
+		borderWidth = 1.5;
+		borderStyle = "inset";
+	}
+}
+
+function setImage(szImage)
+{
+	imgSrc = szImage;
+}
+
+function setToolTip(szTip)
+{
+	ttip = szTip;
+}
+</script>

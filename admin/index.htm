@@ -1,0 +1,71 @@
+<?
+session_start();
+global $D_R;
+session_cache_limiter('private');//this has to be after it's started
+session_set_cookie_params(28800,"/");
+$action = $_GET['action'];
+if($action=='logout'){
+	admin_logout();
+}else if($_GET['refer']){
+	$redirectURL=base64_decode($_GET['refer']);
+}else{
+	$redirectURL="/admin/home.htm";
+}
+$AD = new admin($_COOKIE["AUSER"],$_COOKIE["APASS"]);
+if($AD->isAuthed){
+	header("Location: ".$redirectURL,TRUE,301);
+}
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>Minyanvile.com Login</title>
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST;?>/_style.htm">
+<script>
+function signIn(){
+	 var frm=document["login"];
+	 if(!frm["username"].value.length || !frm["password"].value.length){
+	 	alert("Please enter a valid username and password. Thanks");
+		return;
+	 }
+	 frm.submit()
+
+}
+</script>
+</head>
+
+<body>
+<table width=100% height=100%>
+<TR>
+<TD align=center>
+	<form method="post" action="<?=$HTPFX.$HTHOST;?>/admin/_login.htm" name="login">
+	<?input_hidden("refer")?>
+	<?if($_GET[SUPERUSER_I_AM]){
+		input_hidden("SUPERUSER_I_AM",1);
+	}?>
+	<table border="0" cellspacing="0" cellpadding="3">
+	<TR>
+	<TD colspan=2 align=center><b>Minyanville Log-in Screen</b></TD>
+	</TR>
+	<tr>
+	<td align=right>username:</td>
+	<td><?input_text("username")?></td>
+	</tr>
+	<tr>
+	<td align=right>password:</td>
+	<td><input type="password" name="password" class=textinput onkeypress="{if (event.keyCode==13)signIn()}"></td>
+	</tr>
+	<tr>
+	<td>&nbsp;</td>
+	<td><input type="button" value="Sign In" onClick="signIn()">
+	<?input_hidden("refer",$refer)?>
+	</td>
+	</tr>
+	</table>
+	</form>
+</TD>
+</TR>
+</table>
+
+
+</body>
+</html>

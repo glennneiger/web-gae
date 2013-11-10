@@ -1,0 +1,75 @@
+
+<!-------------Right Column ---------------->
+<div class="columnRight">
+<div class="ColumnRightInner">
+<?
+if($_GET['a']==1 && !$USER->isAuthed){
+		?>
+		<script language="javascript">
+		alert ('The email and password combination you entered is invalid.  Please check to make sure you entered your information correctly or register if you do not have an account');
+		</script>
+		<?
+		//$refer = $_SERVER['HTTP_REFERER'];  // change by Vijay
+		//location($refer);
+	}
+if(!($pageName=='exchangeregister')){
+  displayquintregisterbox($USER);}
+  displayblogssearchbox();
+ // $zoneID = $SEC_TO_ZONE[mainfooter];
+if($pageName==1)
+	// showmarketwatch();
+?>
+        <div>&nbsp;</div>
+        <div align="center">
+       	</div><br />
+<br />
+		<div id="thePortlets">
+		</div>
+</div></div>
+</td>
+</tr>
+
+
+ <!-- begin footer area -->
+		<tr><td class="underheader">
+		<img src="<?= $IMG_SERVER; ?>/images/bottom_town.jpg" class="townFooter" />
+        </td></tr>
+        <tr>
+		<td class="footer">
+<a href="<?=$pfx?>/company/">About us</a> <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise</a>
+		  <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" />
+<a href="<?=$pfx?>/company/contact.htm">Contact Us</a>
+		  <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/help.htm">Help</a> <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/privacy.htm">Privacy Policy</a>
+		  <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/substerms.htm">Terms of Use</a> <img src="<?= $IMG_SERVER; ?>/images/footer_square.gif" alt="" /> <a href="<?=$pfx?>/company/disclaimers.htm">Disclaimers</a>
+		  <br>&copy;2007 Minyanville Publishing and Multimedia, LLC.  All Rights Reserved
+		 </td>
+	</tr>
+	
+		  <tr>
+		  	<td>
+				 <a href="<?= $pfx; ?>/rss/"><center><img src="<?= $pfx; ?>/rss/rss-logo.gif" border="0"></center></a>
+	</td>
+	</tr>
+
+
+</table>
+
+	</td>
+</tr>
+
+	</td></tr>
+
+
+</table>
+  
+<?
+	$profileid=2;
+	//googleanalytics($profileid); 
+	
+?>  
+  
+</td></tr></table> </div>
+<!-- end main container that began on _header.html) -->
+<? googleanalytics(); ?>
+</body>
+</html>

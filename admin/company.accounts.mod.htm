@@ -1,0 +1,38 @@
+<?
+include_once("$D_R/admin/_authenticate.htm");
+
+if(!$AD->getPerm("company_acct_manage")){
+	$error="You're not allowed to modify company accounts";
+	error($error, $refer);
+	exit();
+}
+
+if(!($refer=base64_decode($refer)))$refer="/admin/company.accounts.htm";
+
+/*====== remove company ===========*/
+if($del && $company_id){
+	$error="The company was removed";
+	removeCompanyAccount($company_id);
+	error($error,$refer);
+	exit();
+}
+
+/*======= validate what was posted =========*/
+$comp[expires]=sprintf("%4d-%02d-%02d",$t_year,$t_mo,$t_day);
+$req=qw("company_name password");
+$errors=build_err_keys($req,$comp);
+if($errors[is_error]){
+	$error="You must provide a company namd and password";
+	persistError($refer, $error);
+	exit();
+}
+
+/*============ insert/update ==========*/
+$company_id = setCompanyAccount($comp, $company_id);
+
+/*====== redirect back =================*/
+$error="Your changes were saved";
+error($error, urlqsa($refer, array(company_id=>$company_id)));
+exit();
+
+?>

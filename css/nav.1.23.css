@@ -1,0 +1,322 @@
+/*navigation css start here*/
+/* Menu  */
+#main-navigation-container {
+	background: #00395f;
+	float: left;
+	margin: 10px 0 0 0;
+	display: block;
+	width: 100%;
+	/*height: 43px;*/
+	border-top: 0px solid #00090f;
+	border-right: 0px solid #00090f;
+	overflow: visible;
+	padding: 0;
+	
+	/* left:400px;
+	top:85px; */
+}
+#main-navigation-container .menu-header, div.menu {
+	font-size: 12px;
+	width: 787px;
+	float: left;
+}
+#main-navigation-container .menu-header, div.menu {
+	font-size: 12px;
+	width: 788px;
+}
+ 
+a.nav-mvp
+{
+	background-image:url(http://storage.googleapis.com/mvassets/images/navigation/mvp_up.jpg);
+	background-repeat:no-repeat;
+	background-position: 8px 8px;
+	padding-left:35px;
+	
+}
+a.nav-mvp:hover
+{
+	background-image:url(http://storage.googleapis.com/mvassets/images/navigation/mvp_over.jpg);
+	background-repeat:no-repeat;
+	background-position: 8px 8px;
+	padding-left:35px;
+	background-color: #fff;
+	color: #157cc0;
+	
+}
+a.subs-mvp
+{
+	background-image:url(http://storage.googleapis.com/mvassets/images/navigation/mvp_icon_subs_hover1.png);
+	background-repeat:no-repeat;
+	background-position: 8px 8px;
+	padding-left:35px;
+	
+}
+#search-login
+{
+float:right;
+padding-top:16px;
+width:auto;
+}
+#search-login ul
+{
+float:left;
+margin:0px;
+padding:0px;
+line-height:15px;
+}
+#search-login ul li
+{
+float:left;
+display:inline;
+font-family: Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+}
+#search-login ul li a:Link, #search-login ul li a:Visited {
+	color: #000;
+	text-decoration: none;
+}
+.login-bar
+{
+padding-top:8px;
+}
+.login-bar-cart
+{
+padding-top:4px;
+padding-right:20px;
+}
+#site-logo {
+	margin: 0;
+	padding: 0;	
+	position:absolute;	
+	float: left;	
+}
+#site-logo img
+{
+position:absolute;
+top:-33px;
+left:5px;
+}
+#site_search_box
+{
+width:221px;
+margin-right:20px;
+}
+#ticker_search_box
+{
+width:166px;
+}
+#main-navigation-container li a.downsubs,a.subs-mvp:hover,
+#main-navigation-container li:hover > a.subs-mvp,
+#main-navigation-container ul ul :hover > a.subs-mvp {
+	background-image:url(http://storage.googleapis.com/mvassets/images/navigation/mvp_icon_subs_hover1.png);
+	background-repeat:no-repeat;
+	background-position: 8px 8px;
+	padding-left:35px;
+	background-color: #43812b;
+	color: #FFF;
+	
+}
+
+#main-navigation-container a {
+    color: #FFFFFF;
+    display: block;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 42px;
+    padding: 0 6px;
+    text-decoration: none;
+    text-transform: uppercase;
+}		
+
+
+
+#main-navigation-container ul li ul {
+	margin: 0 0 0 48px;
+}
+#main-navigation-container li a.downselect,
+#main-navigation-container li:hover > a,
+#main-navigation-container ul ul :hover > a {
+	background-color: #fff;
+	color: #157cc0;
+}
+#main-navigation-container ul li.current_page_item > a,
+#main-navigation-container ul li.current-menu-ancestor > a,
+#main-navigation-container ul li.current-menu-item > a,
+#main-navigation-container ul li.current-menu-parent > a {
+	color: #157cc0;
+	background-color: #fff;
+}
+* html #main-navigation-container ul li.current_page_item a,
+* html #main-navigation-container ul li.current-menu-ancestor a,
+* html #main-navigation-container ul li.current-menu-item a,
+* html #main-navigation-container ul li.current-menu-parent a,
+* html #main-navigation-container ul li a:hover {
+	color:#157cc0;
+	background-color: #fff;
+}
+#main-navigation-container ul li {
+	/*border-bottom: 1px solid #00090f;*/
+	
+}
+li.nav-end {
+	border-right: none;
+}
+
+#main-navigation-container ul li img {
+	margin: 0 5px 0 0;
+	}
+
+
+#main-navigation-container li:hover ul {
+	border-left:2px solid #002e5a;
+	border-right:2px solid #002e5a;
+	border-bottom:2px solid #002e5a;
+	width:182px;
+	float:left;
+	left:-50px;
+	background: #fff;
+}
+
+#main-navigation-container li:hover ul li{
+	float:left;
+	padding:1px 1px;
+	border-bottom:1px solid #c9cacc;
+ 	white-space:nowrap;
+	/*width:100px;*/
+	display:block;
+	position:relative;
+}
+
+
+
+#main-navigation-container li:hover ul li a.mvp{
+  	display:block;
+  	font-size:10px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration:none;
+	background-color:#FFFFFF;
+	color:#0576C1;
+	white-space:nowrap;
+	height:10px;
+	background-position: 10px 5px;
+	padding-left:60px;
+	padding-top:12px;
+	width:165px;
+}
+
+#main-navigation-container ul li:hover ul li a.mvp:hover{
+	background-color:#4f912f;
+ 	color:#fff;
+	width:165px;
+	width:168px !important;
+	vertical-align:top;
+	background-position: 10px 5px;
+	padding-left:60px;
+	padding-top:12px;
+
+}
+#main-navigation-container li:hover ul li a{
+  	display:block;
+  	font-size:10px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration:none;
+	background-color:#FFFFFF;
+	color:#0576C1;
+	white-space:nowrap;
+	height:10px;
+}
+
+#main-navigation-container ul li:hover ul li a:hover{
+	background-color:#4f912f;
+ 	color:#fff;
+	width:160px;
+	/* height:4px; */
+	/* margin:2px 2px 4px 0px; */
+	vertical-align:top;
+
+}
+
+
+
+
+
+/*Additions*/
+
+#main-navigation-container ul {
+margin: 0 0 0 12px;
+padding: 0;
+list-style: none;
+}
+#main-navigation-container ul li {
+float: left;
+position: relative;
+list-style: none;
+z-index: 999999;
+}
+
+#sub_menu li {  /*added to avoid navigation display on fancybox popup*/
+float: left;
+position: relative;
+list-style: none;
+z-index: 1000070;
+}
+
+#main-navigation-container ul ul {
+box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+-webkit-box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+position: absolute;
+top: 42px;
+left: 0;
+float: left;
+width: 180px;
+z-index: 999999;
+display: none;
+}
+
+#main-navigation-container ul li:hover > ul {
+	display: block;
+}
+
+#main-navigation-container ul {
+list-style: none;
+float:right;
+}
+
+
+#main-navigation-container ul ul a {
+background: #333;
+line-height: 1em;
+padding: 10px;
+width: 160px;
+height: auto;
+}
+
+
+/*@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+	#nav {
+		width: 788px;
+		float: left;
+	}
+	
+	#main-navigation-container a {
+		color: #fff;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		line-height: 42px;
+		text-decoration: none;
+		letter-spacing: 1px;
+		padding:0px 14px 0px 10px;	
+	}
+}*/
+
+.subscriptionnav{
+	background-color: #43812b;
+	}

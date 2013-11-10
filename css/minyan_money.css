@@ -1,0 +1,282 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+}
+.main_money_container{
+width:98%;
+float:left;
+padding-left:4px;
+}
+.money_header{
+float:left;
+}
+.money_sub_header{
+float:left;
+width:100%;
+clear:both;
+padding-top:10px;
+}
+.money_body{
+width:98%;
+text-align:left;
+color:#FFFFFF;
+float:left;
+padding-left:12px;
+padding-left:13px!important;
+
+}
+.money_body_rules{
+width:98%;
+text-align:left;
+color:#FFFFFF;
+float:left;
+padding-left:7px;
+}
+.money_body_inner{
+float:left;
+width:906px;
+padding-left:37px;
+background-color:#448618;
+}
+.money_body_inner_cong{
+float:left;
+width:907px;
+padding-left:37px;
+background-color:#448618;
+}
+.money_body_inner_rules{
+float:left;
+width:943px;
+padding-top:5px;
+background-color:#448618;
+}
+.money_footer{
+width:940px;
+float:left;
+}
+.money_left{
+float:left;
+width:500px;
+line-height:20px;
+padding-top:5px;
+font-size:14px;
+background-image:url(http://storage.googleapis.com/mvassets/images/mv_money/signup_arrow.gif);
+background-position: 320px 5px;
+background-repeat:no-repeat;
+padding-right:15px;
+border:solid 0px red;
+}
+
+.money_left .join{
+margin:0px;
+padding-top:10px;
+float:left;
+font-size:18px;
+}
+.money_left .join a{
+text-decoration:underline;
+color:#fff;
+text-transform:uppercase;
+font-weight:bold;
+}
+.money_left p{
+float:left;
+margin:0px;
+width:60%;
+padding-right:200px;
+padding-bottom:15px;
+}
+.money_winner_box{
+float:left;
+width:332px;
+border:solid 1px #000;
+padding:10px 15px 10px 15px;
+background-image: url(http://storage.googleapis.com/mvassets/images/mv_money/winner_box_bg.gif);
+background-repeat:repeat-x;
+}
+.winner_header{
+float:left;
+width:100%;
+}
+.money_box_body{
+float:left;
+width:100%;
+}
+
+.common_register{
+float:left;
+padding-top:8px;
+width:62%;
+color:#000000;
+}
+.common_register_submit{
+float:right;
+padding-top:10px;
+width:38%;
+color:#000000;
+}
+.common_register span{
+float:left;
+width:100%;
+padding-left:0px;
+font-weight:bold;
+}
+.common_register_small{
+margin:0px;
+float:left;
+font-size:10px;
+width:auto;
+}
+
+.common_row_register{
+float:left;
+padding-top:8px;
+width:100%;
+color:#000000;
+}
+.common_row_register span{
+float:left;
+width:100%;
+padding-left:0px;
+font-weight:bold;
+}
+.common_row_register input{
+width:auto;
+border:solid 1px #292929;
+}
+
+.common_row{
+float:left;
+padding-top:10px;
+width:100%;
+color:#000000;
+}
+.common_row span{
+float:left;
+width:100%;
+padding-left:3px;
+font-weight:bold;
+padding-bottom:5px;
+}
+.common_row  .digit{
+float:left;
+width:100%;
+padding-left:3px;
+font-weight:bold;
+}
+.common_row input{
+width:328px;
+border:solid 1px #292929;
+}
+.error_winner{
+float:left;
+width:230px;
+padding-left:5px;
+padding-top:10px;
+font-size:11px;
+color:#FF0000;
+text-align:left;
+}
+.wt_this{
+float:left;
+width:98%;
+padding-bottom:10px;
+padding-left:5px;
+}
+.wt_this a{
+font-size:11px;
+color:#448618;
+text-decoration:underline;
+}
+.bottom_container{
+float:left;
+width:95%;
+border:solid 0px red;
+padding-top:20px;
+text-align:center;
+}
+.bottom_container h1{
+font-family:Arial, Helvetica, sans-serif;
+font-size:18px;
+margin:0px;
+color:#9fde76;
+text-align:center;
+font-weight:normal;
+}
+.terms{
+float:left;
+text-align:center;
+width:100%;
+padding-top:5px;
+padding-bottom:5px;
+}
+.terms a{
+color:#fff;
+font-size:14px;
+text-decoration:underline;
+}
+.sorry_header{
+float:left;
+width:100%;
+text-align:center;
+}
+.sucess_header{
+float:left;
+width:93%;
+text-align:center;
+}
+.rules_termsofuse{
+color:#000000;
+float:left;
+font-size:14px;
+text-align:left;
+padding-left:10px;
+padding-right:10px;
+line-height:20px;
+padding-top:20px;
+margin-left:12px;
+width:95%; 
+background-color:#FFFFFF;
+}
+.rules_terms{
+margin:0 auto;
+color:#000000;
+padding-left:80px;
+font-size:14px;
+line-height:20px;
+padding-top:20px; 
+width:839px;
+background-color:#FFFFFF;
+}
+.rules_terms p{
+padding-bottom:10px;
+width:82%;
+}
+.rules_terms h1{
+margin:0px;
+color:#000000;
+font-weight:bold;
+padding-bottom:5px;
+font-size:18px;
+font-family:Arial, Helvetica, sans-serif;
+line-height:16px;
+}
+
+.gpom_articles ul li h1 a {
+color: #FFFFFF;
+}
+
+.gpom_articles ul li{
+border-bottom:1px dotted #FFF;
+}
+
+.gpom_articles ul li h3 a {
+color:#FFFFFF;
+}
+
+.gpom_articles a {
+color:#FFFFFF;
+}

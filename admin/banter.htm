@@ -1,0 +1,412 @@
+<?php
+global $IMG_SERVER;
+if(!$page)$page="gazette";
+$handler="./banter_mod.htm";
+include("$ADMIN_PATH/_header.htm");
+include_once($D_R."/admin/lib/_admin_data_lib.php");
+$upload_url = "/admin/lib/uploadFileBucket.php";
+
+/*============set up permissions=================*/
+$editallbanter=$AD->getPerm("banter_all");//can't create anything
+$onlyselfbanter=$AD->getPerm("banter_own");
+$candeletebanter=$AD->getPerm("banter_delete");
+$canapprovebanter=$AD->getPerm("banter_approve");
+$cancreatebanter=$AD->getPerm("create_banter");
+$objTicker= new Ticker();
+ /*==============================================================*/
+
+$id=$_GET['id'];
+
+$pagedata[login]=$AD->userInfo[name];
+
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$cancreatebanter && !$editallbanter && !$onlyselfbanter){
+	admin_error("You're not allowed to use this page.");
+}
+
+
+if(!$id){
+
+	if(lc($AD->userInfo[username])=="todd"){
+		$pagedata[body]="<br><br>R.P.";
+	}elseif(lc($AD->userInfo[username])=="herb"){
+		$pagedata[body]='<br><br><a href="http://www.marketwatch.com/commerce/RealityCheck.asp?siteid=mktw&dist=LAtabstore" onclick="urchinTracker(\'/authors/greenberg\');"><img src="'.$IMG_SERVER.'/assets/sig-greenberg.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="schaeffer"){
+		$pagedata[body]='<br><br><a href="http://www.schaeffersresearch.com/" onclick="urchinTracker(\'/authors/schaeffer\');"><img src="'.$IMG_SERVER.'/assets/sig-schaeffer.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="fari"){
+		$pagedata[body]='<br><br><a href="http://www.hamzeianalytics.com/" onclick="urchinTracker(\'/authors/hamzei\');"><img src="'.$IMG_SERVER.'/assets/sig-hamzei.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="jason"){
+		$pagedata[body]='<br><br><a href="http://www.sentimentrader.com/" onclick="urchinTracker(\'/authors/goepfert\');"><img src="'.$IMG_SERVER.'/assets/sig-goepfert.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="jon"){
+		$pagedata[body]='<br><br><a href="http://www.insideoptions.com/" onclick="urchinTracker(\'/authors/najarian\');"><img src="'.$IMG_SERVER.'/assets/sig-najarian.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="erlanger"){
+		$pagedata[body]='<br><br><a href="http://www.erlanger.com/" onclick="urchinTracker(\'/authors/erlanger\');"><img src="'.$IMG_SERVER.'/assets/sig-erlanger.gif" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="sanjay"){
+	 	$pagedata[body]='<br><br><a href="http://www.globaltechstocks.com/" onclick="urchinTracker(\'/authors/sanjay\');"><img src="'.$IMG_SERVER.'/assets/sig-sanjay.jpg" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="agwarner"){
+		$pagedata[body]='<br><br><a href="http://www.globaltechstocks.com/" onclick="urchinTracker(\'/authors/adam\');"><img src="'.$IMG_SERVER.'/assets/sig-sanjay.jpg" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="david"){
+		$pagedata[body]='<br><br><a href="http://www.biotechmonthly.com/" onclick="urchinTracker(\'/authors/david\');"><img src="'.$IMG_SERVER.'/assets/BSR-logo_4minyan.jpg" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="rod"){
+		//$pagedata[body]='<br><br><a href="www.optionmonster.com" onclick="urchinTracker(\'/authors/rod\');"><img src="'.$IMG_SERVER.'/assets/FCK_Aug2007/Image/optionmonster.jpg" border="0" /></a><br>';
+		$pagedata[body]='<br><br><a href="www.ifthensignals.com" onclick="urchinTracker(\'/authors/rod\');"><img src="'.$IMG_SERVER.'/assets/FCK_Aug2007/Image/ifthen_minyanville_1.JPG" border="0" /></a><br>';
+	}elseif(lc($AD->userInfo[username])=="woody"){
+		$pagedata[body]='<br><br><a href="http://www.marketsemiotics.com" onclick="urchinTracker(\'/authors/woody\');"><img src="'.$IMG_SERVER.'/assets/sig-woody.jpg" border="0" /></a><br>';
+	}
+
+	$pagedata[is_live]=1;
+	$pagedata[publish_date]="";
+	$pagedata[show_in_app]=1;
+	$pagedata[show_on_web]=1;
+ 	$pagedata[author]=$AD->userInfo[name];
+	$pagedata[image]="/assets/characters/noopinion_01.jpg";
+	$pagedata[position]=$DEFAULT_NO_POS;
+ 	$rscontrib=exec_query("SELECT id FROM `contributors` WHERE trim(name) ='$pagedata[author]'",1);
+	$rssection=exec_query("SELECT ct.id FROM ex_sections ct,buzzbanter b WHERE b.section_id=ct.id and b.id='$id'",1);
+}else{
+	$pagedata=exec_query("SELECT * FROM buzzbanter WHERE id='$id'",1);
+	if(!$pagedata[image])$pagedata[image]="/space.gif";
+	$rscontrib=exec_query("select c.id from contributors c,buzzbanter b where b.contrib_id=c.id and b.id='$id'",1);
+	$rssection=exec_query("select ct.id from ex_sections ct,buzzbanter b where b.section_id=ct.id and b.id='$id'",1);
+ 	if (!$rscontrib[id])
+	{
+		$rscontrib=exec_query("SELECT id FROM `contributors` WHERE trim(name) ='$pagedata[author]'",1);
+	}
+	if (!$rssection[id])
+	{
+		$rssection=exec_query("SELECT ct.id FROM ex_sections ct,buzzbanter b WHERE b.section_id=ct.id and b.id='$id'",1);
+	}
+
+	$pageitem=exec_query("SELECT id FROM ex_item_type WHERE item_table='buzzbanter'",1);
+
+	$tagquery="SELECT xbt.item_id, xbt.tag_id, xt.tag as tagname FROM ex_item_tags xbt, ex_tags xt where xbt.item_id=$id and xt.id = xbt.tag_id and xbt.item_type = $pageitem[id]";
+	$pagetag[tag]="";
+	$tagres = exec_query($tagquery);
+
+	foreach($tagres as $tagkey => $tagvalue)
+	{
+		if($pagetag[tag]=="")
+		{
+   			$pagetag[tag].= $tagvalue['tagname'] ;
+		}
+		else
+		{
+			$pagetag[tag].=",".$tagvalue['tagname'] ;
+		}
+
+	}
+	$objBuzz=new Buzz();
+	$buzzCharts=$objBuzz->getCharts($id);
+	$sqlGetSyndication="SELECT * FROM content_syndication WHERE item_type='2' AND syndication_channel='googlenews' and item_id='".$id."'";
+	$resGetSyndication=exec_query($sqlGetSyndication,1);
+    $sqlGetYahooSyndication="SELECT * FROM content_syndication WHERE item_type='2' AND syndication_channel='yahoo' and item_id='".$id."'";
+	$resGetYahooData=exec_query($sqlGetYahooSyndication,1);
+    if($resGetYahooData){
+    	$resGetYahooSyndication['is_syndicated']="1";
+    }
+    $pagedata['ticker']=$objTicker->getTickers($id,$item_type="2");
+}
+
+$mo=$_GET['mo'];
+$day=$_GET['day'];
+$year=$_GET['year'];
+
+if(!$mo)$mo=date("m");
+if(!$day)$day=date("d");
+if(!$year)$year=date("Y");
+$mo=sprintf("%02d",$mo);
+$day=sprintf("%02d",$day);
+$year=sprintf("%04d",$year);
+$posttitle="concat(date_format(date,'%m/%d/%Y %r'),'/',login,' || ',mid(body,1,20),'...')";
+$login=$AD->userInfo[name];
+
+if($editallbanter) {
+$postlist="SELECT $posttitle title,id
+		  FROM buzzbanter where To_days('".mysqlNow()."') - TO_DAYS(date)<=30 ORDER BY date DESC";
+}
+elseif ($onlyselfbanter) {
+$postlist="SELECT $posttitle title,id
+		  FROM buzzbanter where login='$login' ORDER BY date DESC";
+}
+
+$postlist=exec_query($postlist);
+foreach($postlist as $i=>$row){$postlist[$i][title]=strip_tags($row[title]);}
+
+$bios="SELECT au.name, c.bio_asset asset
+		FROM admin_users au, contributors c
+		WHERE au.id=c.user_id AND c.bio_asset!=''";
+$chars="SELECT concat(c.name,'/',ci.name)name, ci.asset
+		FROM character_images ci
+		LEFT JOIN characters c ON(c.id=ci.character_id)
+		ORDER BY `name`";
+$assets=array_merge(exec_query($bios),exec_query($chars));
+$contributors=get_buzzactive_contributors();
+$sectionquery="SELECT id,sectionname from ex_sections order by sectionname";
+$section=exec_query($sectionquery);
+
+foreach($assets as $i=>$row){
+	if(!is_file("$D_R${row[asset]}"))
+		unset($assets[$i]);
+}
+
+?>
+<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+
+<script>
+var count = 0;
+include_once("<?=$HTPFX.$HTHOST?>/js/jquery.buzzautocomplete.js");
+include_once("<?=$HTPFX.$HTHOST?>/js/buzz_admin.js");
+</script>
+<br><br>
+<?if($canapprovebanter){?>
+<a href="approvebanter.htm">Approve Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("create_schoolhouse")||$AD->getPerm("create_gazette")||$AD->getPerm("create_radar")||$AD->getPerm("articles_all")||$AD->getPerm("articles_own")){?>
+	<a href="articles.htm">Create/ Edit Articles</a><br>
+<?}?>
+<?if($AD->getPerm("approve_gazette")||$AD->getPerm("approve_schoolhouse")){?>
+<a href="approve.htm">Approve Articles</a><br>
+<?}?>
+<br>
+<div class=adminheader>
+	Buzz and Banter
+</div>
+<table width=700 align=center border="0">
+<?if($error){?><TR><TD colspan=100 class=error><?=strip($error)?></TD></TR><?}?>
+<form action="<?=$PHP_SELF?>">
+<TR>
+<TD align=right><b>Get Posts From:</b></TD>
+<TD>
+	<?month_options("mo",$mo)?>
+	<?day_options("day",$day)?>
+	<?year_options("year",$year,0,date("Y"),2002)?>
+	<input type="submit" value="go">
+</TD>
+</TR>
+
+<TR>
+<TD align=right><label for="id"><b>Edit Post</b>:</label> </TD>
+
+<TD>
+<table width=100% cellpadding=0 cellspacing=0 border=0>
+	<TR>
+    <TD width=50%><select name="id" onchange="this.form.submit()" style="width:100%">
+	<?if($cancreatebanter){?>
+	<option value="">--New Post--</option>
+	<?}?>
+	<?selectHashArr($postlist,"id","title",$id)?>
+</select></TD>
+ 	<TD width=50%>
+		<?if($id && $cancreatebanter){?>
+		<input type="button" onclick="void(location.href='<?=$PHP_SELF?>')" value="new post">
+		<?}?>
+	</TD>
+	</TR>
+	</table>
+
+</TD>
+</form>
+</TR>
+
+
+<form method="post" action="<?=$handler?>" enctype="multipart/form-data" name="buzzbanter">
+<?input_hidden("id")?>
+<?input_hidden("page")?>
+<?input_hidden("banter[date]",$pagedata[date])?>
+<?input_hidden("banter[login]",$pagedata[login])?>
+<?input_hidden("mo")?>
+<?input_hidden("day")?>
+<?input_hidden("year")?>
+
+<?input_hidden("chart1")?>
+<?input_hidden("chart2")?>
+<?input_hidden("chart3")?>
+<?input_hidden("chart4")?>
+<?input_hidden("chart5")?>
+<?input_hidden("chart6")?>
+<?input_hidden("chart7")?>
+<?input_hidden("chart8")?>
+<?input_hidden("chart9")?>
+
+<TR valign=top>
+<TD align=right>
+	<label for="banter[image]"><b>Chat Image</b></label>: <br><?=spacer(1,5)?><br>
+	<label for="banter[author]"><b>Chat Name</b></label>: <br>
+
+</TD>
+<TD>
+<table width=100% cellpadding=0 cellspacing=0 border=0>
+<TR valign=top>
+	<TD width=50%><select name="banter[image]" style="width:100%" onchange="selectAuthor(this)">
+		<option value="/space.gif">--Chat Image--</option>
+		<?selectHashArr($assets,"asset","name",$pagedata[image])?>
+	</select>
+	<select id="banter[contrib_id]" name="banter[contrib_id]" sytle="width:100%">
+	 		<option value="">--Chat Name--</option>
+		<?selectHashArr($contributors,"cid","name",$rscontrib[id])?>
+	</select>
+	<?//input_text("banter[author]",$pagedata[author],"","","style=width:100% onclick='this.select()'")?>
+	</TD>
+	<TD width=50%><img id="chat_image" name="chat_image" src="<?=$IMG_SERVER.$pagedata[image]?>" border=0></TD>
+</TR>
+</table>
+</TD>
+</TR>
+<TR valign=top>
+<TD align=right><b>Banter Title</b>:</TD>
+<TD><?input_text("banter[title]",$pagedata[title],255,255,"style=width:100%")?></TD>
+</TR>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
+<TR>
+<TD width=1% align=right><label for="pagetag[tag]"><b>Tags/Keyword</b>:</label></TD>
+<TD width=99%><?input_text("pagetag[tag]",$pagetag[tag],0,500,"style=width:100%")?>
+</TD>
+</TR>
+<script>
+var obj = actb(document.getElementById('pagetag[tag]'),customarray);
+</script>
+<TR>
+<TD width=1% align=right><label for="pagetag[tag]"><b>Ticker</b>:</label></TD>
+<TD width=99%><input type="text" title="" id="buzzticker" style="width:100%;" value="<?=$pagedata[ticker];?>" name="buzzticker" maxlength="255" size="240" class="textinput">
+</TD>
+</TR>
+<TR>
+<TD align=right><label for="banter[section_id]"><b>Section</b>:</label></TD>
+<TD>
+<table width=100% cellpadding=0 cellspacing=0 border=0>
+	<select name="banter[section_id]" sytle="width:100%">
+	<option value="">--Select section--</option>
+	<?selectHashArr($section,"id","sectionname",$rssection[id])?>
+	</select>
+</table>
+</TD>
+</TR>
+<?
+$brandeddata=exec_query("select id,name,assets1,assets2 from buzz_branded_images");
+
+if($pagedata[branded_img_id]){
+	// get branded logo image
+	$tmpbrandedasset=exec_query("select id,name,assets1,assets2 from buzz_branded_images where id=".$pagedata[branded_img_id],1);
+	// set branded logo
+	$pagedata[branded_asset1]=$tmpbrandedasset['assets1'];
+	//$pagedata[branded_asset2]=$tmpbrandedasset['assets2'];
+}
+
+?>
+<script>
+brand1=new Array()
+<?foreach($brandeddata as $row){?>
+	brand1["<?=$row[id]?>"]="<?=$row[assets1]?>";
+<?}?>
+
+function changeBrand(frmObj){
+	var selid=frmObj[frmObj.selectedIndex].value;
+	if(selid){
+		rollOver("brand1",brand1[selid])
+	}else{
+		rollOver("brand1","")
+	}
+
+	document.getElementById('branded_asset1').value=brand1[selid];
+
+}
+</script>
+<!-- Start Banded Logo -->
+<TR>
+<td width=1% align=left nowrap="nowrap" valign="top"><b>Branded Logo</b></td>
+	<TD>
+	<select name="banter[branded_img_id]" onchange="changeBrand(this)">
+			<option value="0">--Select a professor logo--
+			<?selectHashArr($brandeddata,"id","name",$pagedata[branded_img_id])?>
+		</select><br></option>
+		<div class=border><img src="<?=$pagedata[branded_asset1]?$pagedata[branded_asset1]:"/space.gif"?>" border=0 name="brand1"></div>
+			<input type="hidden" name="branded_asset1" id="branded_asset1" value="<?=$pagedata[branded_asset1];?>">
+		</TD>
+</TR>
+<!-- Start Upload Charts -->
+<TR>
+<TD align="right"><b>Charts</b></TD>
+<TD>
+<div>
+<?
+$count=1;
+if(count($buzzCharts)>0){
+	foreach($buzzCharts as $chart){ ?>
+	<div id="buzzchart<?=$chart['id'];?>"><a target="_blank" href="<?=$chart['original_url']?>">Click to enlarge - Chart <?=$count;?></a> -- <a href="javascript://" onclick="removeChart(<?=$chart['item_id']?>,<?=$chart['id']?>)">Remove</a> </div>
+	<?
+		$count++;
+	}
+}
+?>
+</div>
+<div id="showerr" style="color:#000;display:block;font-family:Arial,Helvetica,sans-serif;font-size:11px;text-align:left;">&nbsp;</div>
+<div id="enable_submit" class="talkreplyLeft">
+        <div id="uploaded_image"></div>
+        <!--<form name="upload_image">-->
+		<div class="btn_addchart">
+			<input style="float:left;margin: 12px 10px 0px 0px;" type="file" name="buzzFile" id="buzzFile">
+                        <img style="float:left;cursor:pointer;" src="<?=$IMG_SERVER?>/images/DailyFeed/upload-file.jpg" onClick="uploadBuzzFile('buzzFile','<?=$upload_url?>');" >
+                        &nbsp;&nbsp;&nbsp;&nbsp;<div id="output" style=" margin: 15px 0px 0px 10px;float: left; width: 150px; font-weight: bold; color: red; "></div>
+		</div>
+		<!--</form>-->
+</div>
+</TD>
+</TR>
+<!-- End Upload Charts -->
+<TR valign=top>
+<TD align=right><b>Banter Text</b>:</TD>
+<TD><?rich_editor("banter[body]",strip($pagedata[body]),"100%",400,array(img_dir=>"/assets/characters",hideimage=>true))?></TD>
+</TR>
+<TR valign=top>
+<TD align=right><label for="banter[position]">Position</label>:</TD>
+<TD><?input_text("banter[position]",$pagedata[position],255,255,"style=width:100%")?></TD>
+</TR>
+<TR>
+<TD align="left"></TD>
+<TD align="left">
+<div style="float:left;">
+<div style="float:left;"><strong>Send to Google News</strong>
+<?
+input_check("is_googlenews",0,$resGetSyndication[is_syndicated]?" checked":"");
+?>
+</div>
+<div style="float:left; padding-left:10px;"><strong>Send to Yahoo</strong>
+<?
+input_check("is_yahoonews",0,$resGetYahooSyndication[is_syndicated]?" checked":"");
+?>
+</div>
+</div>
+</TD>
+
+</TR>
+<?input_hidden("banter[publish_date]",$pagedata[publish_date])?>
+<?input_hidden("banter[is_live]",$pagedata[is_live])?>
+<?input_hidden("banter[show_in_app]",$pagedata[show_in_app])?>
+<?input_hidden("banter[show_on_web]",$pagedata[show_on_web])?>
+
+ <TR>
+<TD>&nbsp;</TD>
+<TD ><hr width=100% size=1></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD align=center>
+<? if ($canapprovebanter) {?>
+	<input type="submit" name="approve" value="Direct Post" onclick="return validate_Tag();">
+<?}?>
+	<input type="submit" value="Send to Queue" onclick="return validate_Tag();">
+	<input type="button" value="Cancel" onclick="location.replace(location.href)">
+	<?if($id && $candeletebanter){?>
+	<input type="submit" name="delete" value="Remove This Post">
+	<?}?>
+	</TD>
+</TR>
+</table>
+</form>
+<?include("$ADMIN_PATH/_footer.htm")?>

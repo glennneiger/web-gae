@@ -1,0 +1,41 @@
+<?php
+global $D_R,$HTPFXSSL,$HTHOST;
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav");
+$pageName="adFree";
+$customHeader=1;
+include("../_header.htm");
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$USER=new user();
+$hasTSP = $USER->is_adFree();
+if(!$USER->id)
+{
+?>
+	<script>
+	window.onload=function loadIbox(){
+	var url = '<?=$HTPFXSSL.$HTHOST?>/subscription/register/iboxindex.htm';
+	init_ibox("cooper",url);
+	}
+	</script>
+<?
+}
+else if(!$hasTSP)
+{
+	echo '<script>alert("Please register for the Ads Free Minyanville.");</script>';
+	location($HTPFX.$HTHOST."/ad-free/");
+	exit;
+}
+else
+{
+ ?>
+<div id="content-container">
+	<div id="homepage-content" style="width:987px;text-align:center;">
+	<iframe src="http://www.thestockplaybook.com/todays_plays_minyan.php?CDI=<?=MD5($USER->id);?>" scrolling="no" frameborder="0" width="850px" height="1800px" padding="0" margin="0"></iframe>
+		<? //displayQuickLinks(); ?>
+	</div>
+</div>
+</div>
+<?
+}
+include("../_footer.htm"); ?>

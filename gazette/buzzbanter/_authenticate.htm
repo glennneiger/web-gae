@@ -1,0 +1,52 @@
+<?php
+global $HTPFX,$HTHOST;
+$refer=refer(1);
+$ERR_PAGE=$HTPFX.$HTHOST."/buzz/msg.htm";
+$SIGNIN_PAGE=$HTPFX.$HTHOST."/gazette/buzzbanter/signin.htm";
+mcookie("autologin",1);
+include_once("$D_R/lib/_auth.php");
+$pageName = "exchange_registration";
+build_lang($pageName);
+global $lang,$HTPFX,$HTHOST,$HTPFXSSL;
+session_start();
+
+
+if(!$_SESSION['LoggedIn']){
+	auth_from_cookie(); //***will try to resurrect session from cookie
+	$s_user = ($_POST[email]?$_POST[email]:$_SESSION[EMAIL]);
+	$s_pass = ($_POST[password]?$_POST[password]:$_SESSION[PASsSWORD]);
+	$objUSER = new user(); // _user_conroller_lib.php
+	$objUSER->login($s_user,$s_pass,'0');
+	$USER = new user();
+}else{
+	$USER = new user();
+}
+
+global $from_content;
+
+if($_SESSION['action']=='inactiveaccount'){
+	location($HTPFXSSL.$HTHOST.'/subscription/activate.htm');
+}
+
+
+if(!$_SESSION['LoggedIn'] && $from_content){
+	$json = new Services_JSON();
+	$value=array('status'=>redirect,'path'=>$SIGNIN_PAGE);
+	$output = $json->encode($value);
+	echo strip_tags($output);
+	exit;
+}
+
+if(!$_SESSION['LoggedIn']){
+	$error = 'Invalid Login';
+	location($SIGNIN_PAGE.qsa(array(error=>$error,BADLOGIN=>$BADLOGIN)));
+}
+//doesn't have premimum services
+
+if(!$_SESSION['Buzz']){
+  //  $error="You do not currently have a subscription to Buzz & Banter.  To get a 14 day trial or learn more <a href=$HTPFX$HTHOST/buzzbanter> click here</a><br />";
+	$error="NoBuzz";
+    location($ERR_PAGE.qsa(array(error=>$error)));
+    exit;
+}
+?>

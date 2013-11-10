@@ -1,0 +1,109 @@
+<html>
+<head>
+<script>
+<?readfile("$DOCUMENT_ROOT/lib/_script.js");?>
+</script>
+<script>
+<?readfile("$DOCUMENT_ROOT/gazette/buzzbanter/app.js");?>
+</script>
+
+<?flush()?>
+
+<script>
+
+if(!getRegVar("sound"))
+	setRegVar("sound","on");
+
+setTitle("Minyanville's Buzz and Banter<?if($is_dev){?>::DEV APP<?}?>");
+setResizable(true);
+
+
+function toggleSound(){
+	if(!isInShell())return;
+	var snd=getRegVar("sound");
+	snd=(snd=="on"?"off":"on");
+	setRegVar("sound",snd);
+	var sndimg=findObj("soundimg");
+	if(!sndimg || typeof(sndimg)=="undefined")return;
+	findObj("soundimg").src="<?=$IMG_SERVER?>/gazette/buzzbanter/img/snd_"+snd+".jpg";
+}
+function newPost(){
+	NEW_POST=1;
+}
+NEW_POST=0;
+function setScroll(){//---scrolls down to the portion of the page they were previously looking at
+	var regscr=getScroll();
+	if(NEW_POST && getRegVar("autoscroll")=="top"){
+		var scr=0;
+
+	}else{
+		var scr=regscr;
+	}
+	if(!document.all("posts"))return;
+	document.all("posts").scrollTop=scr;
+}
+function getScroll(){//---gets teh external varialbe banterScroll. set when the page unloads.
+	var ret=getRegVar("banterScroll");
+	if(!ret)ret=0;
+	return ret;
+}
+//--since onload also gets called on the intro page it ends up taking the banter main page to the top by default
+window.onunload=function(){//---sets the last position of the "posts" layer the client was viewing
+	if(!document.all("posts"))return;
+	var ycoord=document.all('posts').scrollTop;
+	if(!ycoord)ycoord=0;
+	setRegVar("banterScroll",ycoord);
+}
+window.onload=setScroll;
+
+function clickIE4(){//---prevent rightclicks
+	if (event.button==2 || event.button==3){
+		return false;
+	}
+}
+
+function clickNS4(e){//--prevent rigth clicks
+	if (document.layers||document.getElementById&&!document.all){
+		if (e.which==2||e.which==3){
+			return false;
+		}
+	}
+}
+///--prevent select+copy-----------
+document.onselectstart=new Function("return false");
+///Added by anu --Prevent right click--
+document.oncontextmenu=new Function("return false");
+if(document.layers){
+	document.captureEvents(Event.MOUSEDOWN);
+	document.onmousedown=clickNS4;
+}else if(document.all&&!document.getElementById){
+	document.onmousedown=clickIE4;
+	document.oncontextmenu=clickIE4;
+}else if(window.sidebar){//ns6
+	void(0);
+}
+
+</script>
+<link rel="stylesheet" href="/_style.htm" />
+<style>
+body{
+	background-image:none;
+	background-color:#FEFDF2;
+}
+#appcopy{
+	width:100%;
+	text-align:center;
+	font-size:9px;
+}
+hr{
+	height:1px;
+	color:#000;
+}
+.banterAlert{
+	color:red;
+	font-weight:bold;
+	font-size:13px;
+}
+</style>
+</head>
+<body topmargin=0 leftmargin=0 height="100%">

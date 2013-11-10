@@ -1,0 +1,10 @@
+<?php
+header( 'Content-Type: application/rss+xml; charset=utf-8' );
+global $D_R,$HTPFX,$HTHOST;
+include_once($D_R."/lib/config/_article_config.php");
+include_once($D_R."/lib/config/_rss_config.php");
+include_once($D_R."/admin/lib/_contributor_class.php");
+include_once($D_R."/lib/feed/_googlenews_feed_lib.php");
+$objGoogleFeed=new googleFeed('1');
+$objGoogleFeed->displayEditorPick();
+?>

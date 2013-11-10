@@ -1,0 +1,126 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<?
+$page="mvtv";
+$allperms=array("mvtv");
+include("$ADMIN_PATH/_header.htm");
+
+$approvevideo=$AD->getPerm("mvtv_approve");
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$approvevideo){
+	admin_error("You're not allowed to use this page.");
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Untitled Document</title>
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+<br>
+</head>
+<script language="javascript">
+var story=false;
+function addEXT()
+{
+var x=confirm("Are you sure you want to delete?")
+	if (x){
+		document.frmPrivew.delete1.value=true;
+		document.frmPrivew.submit();
+	}
+	else{
+	    document.frmPrivew.delete1.value=false;
+	}
+	
+}	
+</script>
+
+<table border=0>
+
+<?php
+$_POST['delete1']=='false';
+$query = "select id,creation_time,description,videofile,title from mvtv order by creation_time desc";
+
+foreach(exec_query($query) as $i=>$row)
+{	
+	if ($i=='0')
+	{
+		$id= $row[id];
+		$file_name=$Video_file_path . "" . $row[videofile];
+	}
+		$count = 0;
+    	$list[$i] = "<OPTION>".$row[videofile];
+}
+   		$items = implode( $list);
+?>
+<form name="frmPrivew" method="post" action="" > 
+<td valign="top">
+Select Video file to Preview:
+<SELECT name="getvideo" ... onChange="this.form.submit();">
+<!--<OPTION value="">-- select Video --</OPTION>-->
+<option><?php echo $items; ?></option>
+<option></option>
+</SELECT> </td> 
+<td><?php 
+if($_POST["getvideo"]!='')
+{
+	$_POST['delete1']=='false';
+	$select_video= $_POST["getvideo"]; 
+	$query = "select id,creation_time,description,videofile,title from mvtv where videofile='$select_video'";
+	echo $query;
+	foreach(exec_query($query) as $i=>$row)
+	{	
+		$id= $row[id];
+		$file_name=$Video_file_path . "" . $row[videofile];
+	}
+}
+?></td>
+<tr>
+	<td><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="400" height="300" id="FLVPlayer">
+          <param name="movie" value="FLVPlayer_Progressive.swf" />
+          <param name="salign" value="lt" />
+          <param name="quality" value="high" />
+          <param name="scale" value="noscale" />
+          <param name="FlashVars" value="&MM_ComponentVersion=1&skinName=Corona_Skin_2&streamName=<?php echo $file_name; ?>&autoPlay=true&autoRewind=false" />
+          <embed src="FLVPlayer_Progressive.swf" flashvars="&MM_ComponentVersion=1&skinName=Corona_Skin_2&streamName=<?php echo $file_name; ?>&autoPlay=true&autoRewind=false" quality="high" scale="noscale" width="400" height="300" name="FLVPlayer" salign="LT" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />        
+</object></td>
+</tr>
+<tr>
+	<td><center><b><?php echo $row[title];?></b></center></td>
+  <tr>
+        <td width="0" valign="bottom"><p class="mvtvEpisodeDescription"><?php echo $row[description];?></p></td>
+  </tr>
+</table>
+
+<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" name="delvideo" value="Delete" onclick="addEXT()" />
+<input  type="hidden" name="delete1" value="false" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" name="Updatefile" value="Update">
+
+</form>
+
+<?php
+if(!$AD->getPerm($allperms))
+	{
+		admin_error("You're not allowed to view this page.");
+	}
+ if($_POST['delete1']!='false')
+ 	{
+	 $del_query="Delete from mvtv where id='$id'";
+		exec_query($del_query);
+	}
+ if($_POST['Updatefile']==true)
+ 	{ 
+	?>
+	<a href="http://www.microsoft.com/">
+	<!--<a href="mvtvupload.htm"></a>-->
+	
+<?}?>	
+
+</body>
+</html>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

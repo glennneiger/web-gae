@@ -1,0 +1,76 @@
+/* CSS Document */
+
+
+a.btnLinkOff {
+	visibility:hidden;
+	white-space:nowrap;
+	font-family:arial;
+	font-weight:bold;
+	font-size:12px;
+	}
+.btnPriorityOnMiddle {
+	border-color:#84bc39 #0c721c #0b4912 #79b837;
+	border-style:solid;
+	border-width:1px;
+	}
+.btnPriorityOnInner {
+	padding-top:1px;
+	padding-bottom:1px;
+	border-color:#69b234 #0e9023 #0d8b22 #47a52e;
+	border-style:solid;
+	border-width:1px;
+	background-color:#0e9023;
+	text-align:center;
+	font-family:arial;
+	font-weight:bold;
+	font-size:12px;
+	color:#fff;
+	}
+.btnOnOuter {
+	cursor:pointer;
+	cursor:hand;
+	border:1px solid #194A21;
+	}
+.btnOnMiddle {
+	border-color:#fff #a6a6a6 #a6a6a6 #fff;
+	border-style:solid;
+	border-width:1px;
+	}
+.btnOnInner {
+	padding-top:1px;
+	padding-bottom:1px;
+	border-color:#fff #f0f0f0 #f0f0f0 #fff;
+	border-style:solid;
+	border-width:1px;
+	background-color:#fff;
+	text-align:center;
+	font-family:arial;
+	font-weight:bold;
+	font-size:12px;
+	color:#006939;
+	}
+.btnPriorityOnOuter1 {
+	cursor:pointer;
+	cursor:hand;
+	border:1px solid #194A21;
+	}
+a.btnLink1 {
+	cursor:pointer;
+	cursor:hand;
+	text-decoration:none;
+	float:left;
+	white-space:nowrap;
+	}
+
+.symbol {
+	width:80px;
+	padding:0px;
+	vertical-align:middle;
+	}
+#yahoo {
+	margin:0px;
+	padding:0px
+	}	
+	
+
+

@@ -1,0 +1,65 @@
+<?
+$pageName="tradenow";
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville");
+include_once($D_R."/layout/dbconnect.php");
+include_once($D_R."/lib/layout_functions.php");
+include_once("$D_R/_header.htm");
+
+/*pages dataval  to load   first slide*/
+global $cm8_ads_WideSkyscraper_160x600;
+$bannername=$cm8_ads_WideSkyscraper_160x600;
+?>
+<div class="shadow">
+<div id="content-container">
+
+<table width=96% align=center cellpadding=0 cellspacing=0 border=0>
+<tr>
+<td class="article_title">Compare Brokers</td></tr>
+<tr><td class="post_time" align="left">Find the broker that's right for you.</td></tr>
+<tr><td>
+<table width="80%" cellpadding="3" cellspacing="2" border="1" class="trade_now_table">
+<tr>
+<td width="15%" valign="top" class="trade_now_image">&nbsp;</td>
+<td class="trade_now_image" width="21%"><? CM8_ShowAd($cm8_ads_Button_120x90_pos1); ?></td>
+<td class="trade_now_image" width="21%"><? CM8_ShowAd($cm8_ads_Button_120x90_pos2); ?>
+<!--<td class="trade_now_td" width="22%"><? CM8_ShowAd($cm8_ads_Button_120x90_pos4); ?></td>-->
+</tr>
+<tr>
+<td class="trade_now_td" valign="top">Special Deals</td>
+<td class="trade_now_text" valign="top">&nbsp;</td>
+<td class="trade_now_text" valign="top">&nbsp;</td>
+<!--<td class="trade_now_text" valign="top"><b>Buy Stocks for $8.95 !<br>Get Started Today!</b></td>-->
+
+
+</tr>
+<tr>
+<td class="trade_now_td" valign="top">Commission Schedule</td>
+<td class="trade_now_text" valign="top">&nbsp;</td>
+ <td class="trade_now_text" valign="top">&nbsp;</td>
+<!--<td class="trade_now_text" valign="top"><b>Real Time Buy and Sell</b><br>$8.95<br><br><b>Automatic Investments</b><br>As low as $1.00</td>-->
+</tr>
+<tr>
+<td class="trade_now_td" valign="top">Acct Mins</td>
+<td class="trade_now_text" valign="top">&nbsp;</td>
+<td class="trade_now_text" valign="top">&nbsp;</td>
+<!--<td class="trade_now_text" valign="top"><b>Brokerage Cash Account</b><br>$1,000<br><br><b>Brokerage plus Bank Checking</b><br>$0<br><br><b>Retirement</b><br>$0</td>-->
+</tr>
+<tr>
+<td class="trade_now_td" valign="top">Other Products</td>
+<td class="trade_now_text">&nbsp;</td>
+<td class="trade_now_text">&nbsp; </td>
+<!--<td class="trade_now_text">&nbsp;</td>-->
+</tr>
+<tr>
+<td class="trade_now_td" valign="top">Tools/Research</td>
+<td class="trade_now_text" valign="top">&nbsp;</td>
+<td class="trade_now_text" valign="top"><br> </td>
+</tr>
+</table>
+</td></tr>
+
+</table>
+</div>
+</div>
+<? include("../_footer.htm"); ?>

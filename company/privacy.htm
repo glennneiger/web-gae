@@ -1,0 +1,33 @@
+<?
+/*$title="Privacy Policy";*/
+$zoneIDSky = $SEC_TO_ZONE['privacytop'];
+$zoneIDFooter = $SEC_TO_ZONE['privacyfooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['privacyfooter2'];
+/* Operative Configuration *****/
+$pageName ='privacypolicy';
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville","fontStylesheet");
+$zone_name = $pageName;
+$tile728x90=1;
+$tile160x600top=2;
+$tile160x600bottom=3;
+$tile125x125=4;
+/* End Operative Configuration *****/
+include("$D_R/_header.htm");
+?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+    <div class="footer_common_main">
+	<div class="footer_common_title"><h3 class="new-head">Privacy Policy</h3><span class="current_date"><?= displayCurrentDate() ?></span></div>
+	<?= renderPageModules($pageDetail['id'],'PRIVACY_POLICY') ?>
+			</div>
+	</div>
+
+<?php
+$arrRightCols	=	array('show_300x250','show_mostpopular','email_alert','show_rss_emailalert');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

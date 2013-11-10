@@ -1,0 +1,42 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("techstrat_post techstrat_approve"))){
+	admin_error();
+}
+?>
+	<div class=adminheader>TechStrat</div><br><br>
+	<div style="padding:10px;width:400px">
+		<b>TechStrat Posts</b><br/>
+		<div style="padding-left:20px;">
+			<?if($AD->getPerm("techstrat_post")){?>
+				<li><a href="posts.htm">Create/ Edit Post</a></li>
+			<? }
+			if($AD->getPerm("techstrat_approve")){?>
+				<li><a href="approve.htm">Approve posts</a></li>
+			<? } ?>
+			<?php
+			if($AD->getPerm("techstrat_performance")){?>
+				<li><a href="performance.htm">Upload Performance</a></li><br>
+			<? } ?>
+		</div><br/>
+		<?php if($AD->getPerm("techstrat_add_transaction")){?>
+			<b>TechStrat Portfolio</b><br/>
+			<div style="padding-left:20px;">
+				<?php if($AD->getPerm("techstrat_add_transaction")){?>
+					<li><a href="transaction.htm">Add Transaction</a></li>
+				<? } ?>
+				<?php if($AD->getPerm("techstrat_edit_transaction")){?>
+					<li><a href="edittransaction.htm">Edit Transaction</a></li>
+				<? } ?>
+				<?php if($AD->getPerm("techstrat_sell_transaction")){?>
+					<li><a href="selltransaction.htm">Sell Transaction</a></li>
+				<? } ?>
+				<?php if($AD->getPerm("techstrat_initial_cash_entry")){?>
+					<li><a href="cashentry.htm">Initial Cash Entry</a></li>
+				<? } ?>
+			</div>
+		<? } ?>
+		<br />
+	</div>	
+
+<?include("$ADMIN_PATH/_footer.htm");?>

@@ -1,0 +1,29 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+$admin_id = $AD->userInfo[id];
+
+$draft_data=exec_query("select * from drafts where userid=$admin_id");
+foreach($draft_data as $row) {
+$draft_text = $row[text];
+}
+
+?>
+<br>
+<div class=adminheader>Recover Post</div>
+<table border="0" width="700" align="center">
+<?input_hidden("page")?>
+<tr><td>&nbsp;</td></tr>
+<TR>
+<TD>&raquo; <a style='font-weight:normal;' href="<?=$HTPFX.$HTHOST?>/admin/feed.htm?restore=1" >Recover Last Feed</a></TD></TR>
+<TR><TD>&raquo; <a style='font-weight:normal;' href="<?=$HTPFX.$HTHOST?>/admin/articles.htm?restore=1" >Recover Last Article</a></TD>
+</TR>
+<TR><td height="50"></td></TR>
+<TR valign=top style="">
+<TD align=left><b>Your last saved Editor content</b>:</TD>
+</TR>
+<tr>
+<TD><?rich_editor("draft_text",strip($draft_text),"100%",400,array(img_dir=>"/assets/articles"))?>
+</TD>
+</TR>
+</table>
+<?include("$ADMIN_PATH/_footer.htm")?>

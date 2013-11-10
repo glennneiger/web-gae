@@ -1,0 +1,50 @@
+<?
+$pageName ="shops";
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","rightColumn","nav","minyanville");
+/* End Operative Configuration *****/
+//cache_client_wholepage("$D_R/assets/swf/shops_xmas.swf");
+$title="Shops";
+$homepage=1;
+$SECTION=$PAGE="shops";
+$HEADER="/space.gif";
+$HEADERBGCLASS="shopsheader";
+$CENTERBGCLASS="shopscenter";
+$LOGO="$IMG_SERVER/assets/top_left_logo_spring_shops.jpg";
+
+$swf="/assets/swf/shopsspring.swf";
+list($w,$h)=getimagesize("$D_R$swf");
+$xmldata = urlencode("/getxml.htm?page=shops");
+include("../_header.htm");
+$title="";
+?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+	<div class="shop_main_container">
+<div  class="footer_common_title">Shopping<br /></div>
+<table border="0" width="100%" align="left" cellpadding="0" cellspacing="0">
+					<tr>
+					<td colspan="3" valign="top" align="left"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="650px" height="280" id="SnowShopsxmas" >
+	<param name="allowScriptAccess" value="sameDomain" />
+	<param name="wmode" value="transparent">
+			<param name="movie" value="../flash/SnowShopsxmas.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" /><embed src="../flash/SnowShopsxmas.swf" quality="high" wmode="transparent" width="650" height="280" name="SnowShopsxmas" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+			</object>&nbsp;</td>
+	<tr>
+					<td width="48%" valign="top" align="left"><?= renderPageModules($pageDetail['id'],'Shop Page Module1') ?></td>
+					<td width="60px" valign="top" ></td>
+					<td width="48%" valign="top" align="right" style="padding-left:11px;"><?= renderPageModules($pageDetail['id'],'Shop Page Module2') ?></td>
+				</tr>
+			</table>
+	</td>
+	<tr>
+  </table>
+	</div>
+</div>
+<?php
+$arrRightCols	=	array('show_video','show_industrybrains','show_mostpopular','email_alert','show_rss_emailalert','show_localguides');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

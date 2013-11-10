@@ -1,0 +1,56 @@
+<?php
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+include("$ADMIN_PATH/_header.htm"); ?>
+
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/keene-admin.css">
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/keene.js" ></script>
+
+<div class=adminheader>Keene on Options - SMS History</div><br>
+<div class="keeneMoreOptions">
+	<? if($AD->getPerm("keeneOptions_alert")){?>
+		<div class="keeneLabel"><a href="alert.htm">Create/Edit Alerts</a></div>
+	<? } 
+	if($AD->getPerm("keeneOptions_approve")){?>
+		<div class="keeneLabel"><a href="approve-alert.htm">Approve Alerts</a></div>
+	<? } ?>
+</div>
+<?
+$pagesize=10;
+$qry = "SELECT `alertId`,`smsBody`, tradeSmsBody, `sentDate` FROM `sms_history` ORDER BY sentDate DESC";
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($_SERVER['PHP_SELF'].qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+$pagedata = exec_query($qry); ?>
+
+<table width="700" align="center" style="border:1px black solid">
+	<tr style="background-color:#cccccc; text-align:center;">
+		<td style="background-color:#8da9e6; width: 20%;"><b>Alert Posted Date</b></td>
+		<td style="background-color:#8da9e6; width: 45%;"><b>Alert Body</b></td>
+		<td style="background-color:#8da9e6; width: 35%;"><b>Trade Value SMS</b></td>		
+	</tr>
+
+	<?php foreach($pagedata as $k=>$v){	
+		$color=$k%2?"dddddd":"eeeeee";?>
+		<tr style="background-color:#<?=$color?>;">
+			<td><?php echo $v['sentDate'];?></td>
+			<td><a href="alert.htm?id=<?=$v['alertId'];?>"><?php echo $v['smsBody'];?></td>
+			<td><a href="alert.htm?id=<?=$v['alertId'];?>"><?php echo $v['tradeSmsBody'];?></td>
+		</tr>
+	<?php } ?>
+	<tr> <td colspan=100 align=center><?=$pagination?></td></tr>
+</table>
+

@@ -1,0 +1,46 @@
+<?
+global $ADMIN_PATH,$HTPFX,$HTHOST;
+$page="ticker";
+include($ADMIN_PATH."/_header.htm");
+$handler="stock_mod.htm";
+$id=$_GET['id'];
+$error = $_GET['error'];
+if(!empty($id)){
+	$stock_query = "select * from ex_stock where id =".$id;
+	$stock=exec_query($stock_query,1);
+}
+
+$addticker=$AD->getPerm("admin_users_all");
+
+/*=============throw error if they're not allowed anything on this page====*/
+/*if(!$addticker){
+	admin_error("You're not allowed to use this page.");
+}*/
+
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+function submitTickerForm(){
+	jQuery('#error').empty();
+	if(jQuery('#stocksymbol').val()==''){
+		alert('Please Enter Ticker Value.');
+		return false;
+	}
+	jQuery('#frmUpload').submit();
+
+}
+</script>
+<?if($error){?><div class="error" id="error"><?=strip($error)?><br/></div><?}?>
+<center>
+<form id="frmUpload"  name="frmUpload" method="post" action="<?=$handler?>" enctype="multipart/form-data">
+<table align=left border=0>
+<TR>
+<TD align=left><b>Enter Ticker Symbol</b>:</TD>
+<td align="left" valign="top">
+<?input_text("stocksymbol","",0,255," style='width:100%'")?></td>
+<td><input type="button" value="Add Ticker" onClick="submitTickerForm();" style="cursor:pointer;" /></td>
+</TR>
+</table>
+</form>
+</center><br>
+<?include($ADMIN_PATH."/_footer.htm")?>

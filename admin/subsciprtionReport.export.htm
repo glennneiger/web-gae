@@ -1,0 +1,275 @@
+<?php
+global $D_R,$recurlyApiKey;
+set_time_limit (0);
+ini_set('memory_limit','256M');
+include_once($D_R."/lib/recurly/_recurly_data_lib.php");
+include_once($D_R."/lib/config/_recurly_config.php");
+include_once($D_R."/lib/recurly/recurly.php");
+
+$objRecurly = new recurlyData();
+Recurly_Client::$apiKey = $recurlyApiKey;
+
+$productName = $_GET['product'];
+$fromDate = $_GET['fromDate'];
+$toDate = $_GET['toDate'];
+$formatToDate = date("Y-m-d", strtotime($toDate));
+
+$freeTrial = $_GET['freeTrial'];
+$inFreeTrial = $_GET['inFreeTrial'];
+
+$qry = "SELECT * FROM (SELECT ROUND(sco.price,2) AS price,'' AS trans_status,sco.id AS account_num,
+CONCAT(s.fname ,' ',s.lname) AS account_name, s.email, s.id AS recurly_id, s.via_id, p.subGroup, p.subType AS term, p.recurly_plan_code AS planCode, DATE_FORMAT(sco.startDate,'%m/%d/%Y') AS start_date,
+DATE_FORMAT(sco.recurly_trial_started_at,'%m/%d/%Y') AS trialStartDate,
+DATE_FORMAT(sco.startDate,'%m/%Y') AS startDate, DATE_FORMAT(sco.expireDate,'%m/%d/%Y') AS end_date, DATE_FORMAT(sco.expireDate,'%m/%d/%Y') AS actual_end_date, IF(sco.orderStatus !='' ,'NA','NA') AS isCancel, sco.id AS id, IF(DATE_FORMAT(sco.recurly_expires_at,'%Y/%m/%d') !='' || DATE_FORMAT(sco.recurly_canceled_at,'%Y/%m/%d')!='','NA','NA') AS setToRenew, IF(sco.orderStatus IN ('SHIPPED_COMPLETE','PARTIAL_SHIPMENT','ORDER_PLACED'),'active','canceled') AS state, IF(DATE_FORMAT(sco.recurly_trial_started_at,'%Y/%m/%d')='','NA','NA') AS freeTrial, IF(DATE_FORMAT(sco.recurly_trial_ends_at,'%Y/%m/%d')='','NA','NA') AS inFreeTrial, sco.orderNumber AS orderNum FROM `subscription_cust_order` sco, subscription s, product p WHERE DATE_FORMAT(sco.expireDate,'%Y/%m/%d')>='".$fromDate."' AND DATE_FORMAT(sco.startDate,'%Y/%m/%d')<='".$toDate."' AND sco.subscription_id=s.id AND p.subscription_def_id=sco.typeSpecificId AND sco.typeSpecificId IS NOT NULL AND sco.typeSpecificId!='15' AND sco.orderStatus<>'CANCEL_CUSTOMER_REQUESTED'";
+if($productName!='0'){
+	$qry .= " AND p.subGroup='".$productName."'";
+}
+$qry .=" UNION SELECT * FROM (SELECT IF(st.amountInCents!='',IF(start_date=trialStartDate,'0',ROUND((st.amountInCents/100),2)),'0') AS price,st.status as trans_status,tempRecurly1.* FROM (SELECT sco.id AS account_num, CONCAT(s.fname ,' ',s.lname) AS account_name, s.email, s.id AS recurly_id, s.via_id, p.subGroup, p.subType AS term, scr.recurly_plan_code AS planCode, DATE_FORMAT(scr.recurly_current_period_started_at,'%m/%d/%Y') AS start_date,
+DATE_FORMAT(scr.recurly_trial_started_at,'%m/%d/%Y') AS trialStartDate,
+DATE_FORMAT(scr.recurly_current_period_started_at,'%m/%Y') AS startDate,
+IF(scr.recurly_state='expired',DATE_FORMAT(scr.recurly_expires_at,'%m/%d/%Y'),
+DATE_FORMAT(scr.recurly_current_period_ends_at,'%m/%d/%Y')) AS end_date, DATE_FORMAT(scr.recurly_current_period_ends_at,'%m/%d/%Y') AS actual_end_date, IF(sco.recurly_state='canceled' || sco.recurly_state='expired','YES','NO') AS isCancel, scr.id, IF(DATE_FORMAT(scr.recurly_canceled_at,'%Y/%m/%d')='0000/00/00' || DATE_FORMAT(scr.recurly_expires_at,'%Y/%m/%d')='0000/00/00','YES','NO') AS setToRenew, scr.recurly_state AS state, IF(DATE_FORMAT(scr.recurly_trial_started_at,'%Y/%m/%d')='0000/00/00','NO','YES') AS freeTrial, IF(DATE_FORMAT(scr.recurly_trial_ends_at,'%Y/%m/%d')>=DATE_FORMAT(NOW(),'%Y/%m/%d') && scr.recurly_state<>'expired','YES','NO') AS inFreeTrial, scr.recurly_uuid AS orderNum FROM subscription_cust_report scr, subscription s, product p, subscription_cust_order sco WHERE IF(scr.recurly_state='expired',DATE_FORMAT(scr.recurly_expires_at,'%Y/%m/%d'),
+DATE_FORMAT(scr.recurly_current_period_ends_at,'%Y/%m/%d'))>'".$fromDate."' AND DATE_FORMAT(scr.recurly_current_period_started_at,'%Y/%m/%d')<='".$toDate."' AND scr.subscription_id=s.id AND scr.recurly_plan_code=p.recurly_plan_code AND scr.subscription_id=sco.subscription_id AND scr.recurly_plan_code=sco.recurly_plan_code AND p.subType<>'Payment By Check'";
+if($productName!='0'){
+	$qry .= " AND p.subGroup='".$productName."'";
+}
+$qry .= " ORDER BY scr.id DESC
+)AS tempRecurly1
+LEFT JOIN subscription_transaction st ON st.subscriptionId=tempRecurly1.orderNum AND tempRecurly1.recurly_id=st.subscription_id AND DATE_FORMAT(st.date,'%m/%Y')=tempRecurly1.startDate ORDER BY tempRecurly1.id DESC
+)AS tempRecurly GROUP BY subGroup,email,planCode,start_date";
+
+$qry .=" UNION SELECT IF(st.amountInCents!='',IF(start_date=trialStartDate || state='expired','0',ROUND((st.amountInCents/100),2)),'0') AS price,st.status as trans_status,tempRecurlyDb.* FROM (SELECT sco.id AS account_num, CONCAT(s.fname ,' ',s.lname) AS account_name, s.email, s.id AS recurly_id, s.via_id, p.subGroup, p.subType AS term, p.recurly_plan_code AS planCode, DATE_FORMAT(sco.recurly_current_period_started_at,'%m/%d/%Y') AS start_date,
+DATE_FORMAT(sco.recurly_trial_started_at,'%m/%d/%Y') AS trialStartDate,
+DATE_FORMAT(sco.recurly_current_period_started_at,'%m/%Y') AS startDate,
+IF(sco.recurly_state='expired',DATE_FORMAT(sco.recurly_expires_at,'%m/%d/%Y'),
+DATE_FORMAT(sco.recurly_current_period_ends_at,'%m/%d/%Y')) AS end_date, DATE_FORMAT(sco.recurly_current_period_ends_at,'%m/%d/%Y') AS actual_end_date,
+IF(sco.recurly_state='canceled' || sco.recurly_state='expired','YES','NO') AS isCancel, sco.id AS id, IF(DATE_FORMAT(sco.recurly_expires_at,'%Y/%m/%d') !='' || DATE_FORMAT(sco.recurly_canceled_at,'%Y/%m/%d')!='','NA','NA') AS setToRenew, sco.recurly_state AS state, IF(DATE_FORMAT(sco.recurly_trial_started_at,'%Y/%m/%d')='0000/00/00','NO','YES') AS freeTrial, IF(DATE_FORMAT(sco.recurly_trial_ends_at,'%Y/%m/%d')>=DATE_FORMAT(NOW(),'%Y/%m/%d') && sco.recurly_state<>'expired','YES','NO') AS inFreeTrial, sco.recurly_uuid AS orderNum FROM subscription_cust_order sco,subscription s, product p WHERE IF(sco.recurly_state='expired',DATE_FORMAT(sco.recurly_expires_at,'%Y/%m/%d'),
+DATE_FORMAT(sco.recurly_current_period_ends_at,'%Y/%m/%d'))>'".$fromDate."' AND DATE_FORMAT(sco.recurly_current_period_started_at,'%Y/%m/%d')<='".$toDate."' AND sco.subscription_id=s.id AND p.recurly_plan_code=sco.recurly_plan_code AND sco.recurly_plan_code IS NOT NULL AND sco.recurly_uuid='' AND p.subType<>'Payment By Check' AND sco.recurly_state<>'expired'";
+if($productName!='0'){
+	$qry .= " AND p.subGroup='".$productName."'";
+}
+$qry .= " )AS tempRecurlyDb
+LEFT JOIN subscription_transaction st ON st.subscriptionId=tempRecurlyDb.orderNum
+AND tempRecurlyDb.recurly_id=st.subscription_id";
+
+$qry .= " ) AS temp1";
+
+if($freeTrial!='0' && $inFreeTrial!='0'){
+	$qry .=" WHERE freeTrial='".$freeTrial."' AND inFreeTrial='".$inFreeTrial."'";
+}elseif ($freeTrial!='0'){
+	$qry .=" WHERE freeTrial='".$freeTrial."'";
+}elseif ($inFreeTrial!='0'){
+	$qry .=" WHERE inFreeTrial='".$inFreeTrial."'";
+}
+
+$qry .= " GROUP BY email,subGroup,state,actual_end_date ORDER BY start_date DESC";
+
+$res = exec_query($qry);
+$mergeCount = count($res);
+
+foreach ($res as $key=>$val){
+
+	$subId = $val['recurly_id'];
+	$qryChkCC = "SELECT id,status FROM `subscription_transaction` st WHERE st.subscription_id='".$subId."' AND DATE_FORMAT(st.date,'%m/%Y') >=DATE_FORMAT('".$fromDate."','%m/%Y') AND DATE_FORMAT(st.date,'%m/%Y')<=DATE_FORMAT('".$toDate."','%m/%Y')";
+	$resChkCC = exec_query($qryChkCC,1);
+
+	if($resChkCC['id']!=''){
+		$res[$key]['validCC'] = "YES";
+	}else{
+		$res[$key]['validCC'] = "NO";
+	}
+
+	$orderNum = $val['orderNum'];
+	$qryNotify = "select notificationType from subscription_cust_report where recurly_uuid='".$orderNum."' AND DATE_FORMAT(recurly_current_period_started_at,'%m/%d/%Y')='".$val['start_date']."'";
+	$resNotify = exec_query($qryNotify,1);
+	if($resNotify['notificationType']=="new_subscription_notification"){
+		$res[$key]['chargeType'] = "NEW";
+	}elseif($resNotify['notificationType']=="renewed_subscription_notification"){
+		$res[$key]['chargeType'] = "RENEWAL";
+	}else{
+		$res[$key]['chargeType'] = "NA";
+	}
+
+}
+
+
+if(!empty($res) && count($res)>0){
+	$filterToDate = date('m/d/Y',strtotime($toDate));
+	$filterFromDate = date('m/d/Y',strtotime($fromDate));
+	$fromPrevDate = date('m/d/Y',strtotime('-1 day', strtotime($filterFromDate)));
+	foreach($res as $key=>$value){
+
+            /*find refund tracnsaction and set price 0*/
+            $qryRefund="SELECT id, ROUND((amountInCents/100),2) AS refundPrice FROM subscription_transaction WHERE ACTION='refund' AND subscriptionId='".$value['orderNum']."' AND subscription_id='".$value['recurly_id']."' AND DATE_FORMAT(date,'%m/%Y')='".$value['startDate']."'";
+            $getRefund=exec_query($qryRefund,1);
+            if(!empty($getRefund['id'])){
+            	if($value['price']>0){
+                	$value['price']=$value['price']-$getRefund['refundPrice'];
+            	}
+            }
+
+            /*Find void transaction and set price 0*/
+
+            $qryVoid="SELECT id FROM subscription_transaction WHERE STATUS='void' AND subscriptionId='".$value['orderNum']."' AND subscription_id='".$value['recurly_id']."' AND DATE_FORMAT(date,'%m/%Y')='".$value['startDate']."'";
+
+            $getVoidData=exec_query($qryVoid,1);
+
+            if(!empty($getVoidData['id'])){
+               $value['price']=0;
+            }
+
+            if($value['state']=="expired" && $value['setToRenew']=="NO" && $value['trans_status']=="declined"){
+                    $value['price']=0;
+                }
+
+
+		$accountName = $value['fname'].' '.$value['lname'];
+		$startDate = $value['start_date'];
+		$endDate="";
+		if($value['end_date']=="00/00/0000" || $value['end_date']=="" ){
+			$endDate = "00/00/0000";
+		}else{
+			$endDate = $value['end_date'];
+		}
+
+		$term = strtolower($value['term']);
+		if($term=="soft trial" || $term=="complimentary" || $term==""){
+			$revToBeRecog ="0";
+	 		$revPerDay="0";
+	 		$revRecog="0";
+		}else{
+			if($term=="monthly" || strpos($term,'monthly')!==false){
+				$durOfProductInDays = "30";
+			}elseif($term=="quaterly" || strpos($term,'quaterly')!==false){
+				$durOfProductInDays = "90";
+			}elseif($term=="annual" || strpos($term,'annual')!==false || $term=="payment by check"){
+				$durOfProductInDays = "365";
+			}elseif($term=="6 months"){
+				$durOfProductInDays = "60";
+			}
+
+			if($term=="singles"){
+	 			$revPerDay="0";
+	 			$revToBeRecog = "0";
+	 			$revRecog = $value['price'];
+	 		}else{
+				if(strtotime($startDate)>strtotime($fromPrevDate)){
+					$calStartInPeriod = date_difftime($startDate,$filterToDate);
+					$startInPeriod = intval($calStartInPeriod['d']+1);
+				}else{
+					$startInPeriod = "0";
+				}
+
+				if(strtotime($endDate)<strtotime($filterToDate)){
+					$calEndInPeriod = date_difftime($filterFromDate,$endDate);
+					$endInPeriod = intval($calEndInPeriod['d']+1);
+				}else{
+					$endInPeriod = "0";
+				}
+
+				$startEndFilterToDiff = date_difftime($filterToDate,$endDate);
+				if (intval($startEndFilterToDiff['d'])<0){
+					$startEndOutPeriod = "0";
+				}else{
+					$calStartEndOutPeriod = date_difftime($filterFromDate,$filterToDate);
+					$startEndOutPeriod = intval($calStartEndOutPeriod['d']+1);
+				}
+
+			 	$totalOfInperiod = $startInPeriod+$endInPeriod;
+				if(intval($totalOfInperiod)>0){
+					$totalDays = $totalOfInperiod;
+				}else{
+					$totalDays = $startEndOutPeriod;
+				}
+                                $revPerDayFloat=0;
+				if($durOfProductInDays>0){
+					if($value['price']!=="0"){
+						$revPerDayFloat = $value['price']/$durOfProductInDays;
+						$revPerDay = round($revPerDayFloat,2);
+						$revRecog  = round($totalDays*$revPerDayFloat,2);
+					}else{
+						$revPerDay = $value['price'];
+						$revRecog  = $value['price'];
+					}
+				}else{
+					$revPerDay = $value['price'];
+					$revRecog  = $value['price'];
+				}
+
+				if($startEndFilterToDiff['d']<0){
+					$daysRemain = "0";
+				}else{
+					$daysRemainCal = date_difftime($filterToDate,$endDate);
+					$daysRemain = $daysRemainCal['d'];
+				}
+
+		 		if($daysRemain=="0"){
+					$revToBeRecog = "0";
+				}else{
+					if($revPerDayFloat>0){
+						$revToBeRecog = round($daysRemain*$revPerDayFloat,2);
+					}else{
+						$revToBeRecog = round($daysRemain*$revPerDay,2);
+					}
+				}
+	 		}
+	 	}
+                switch($value['term']){
+                    case 'Quaterly':
+                        $value['term']="Quarterly ";
+                        break;
+                    case 'Monthly Trial':
+                        $value['term']="Monthly";
+                        break;
+                    case 'Quaterly Trial':
+                        $value['term']="Quarterly ";
+                        break;
+                    case 'Annual Trial':
+                        $value['term']="Annual ";
+                        break;
+                }
+
+		$reportContent[$key]['MV Account Number'] = trim($value['account_num']);
+		$reportContent[$key]['Product'] = trim($value['subGroup']);
+		$reportContent[$key]['Term'] = trim($value['term']);
+		$reportContent[$key]['Start Date (MM/DD/YYYY)'] = date('m/d/Y',strtotime($value['start_date']));
+		$reportContent[$key]['End Date (MM/DD/YYYY)'] = $endDate;
+		$reportContent[$key]['Set To Renew'] = trim($value['setToRenew']);
+		$reportContent[$key]['Purchase Price'] = $value['price'];
+		$reportContent[$key]['Account Name'] = ucwords($value['account_name']);
+		$reportContent[$key]['Email'] = trim($value['email']);
+		$reportContent[$key]['Recurly ID'] = trim($value['recurly_id']);
+		$reportContent[$key]['VIA ID'] = trim($value['via_id']);
+		$reportContent[$key]['Valid CC in Recurly?'] = trim($value['validCC']);
+		$reportContent[$key]['Free Trial'] = trim($value['freeTrial']);
+		$reportContent[$key]['In Free Trial'] = trim($value['inFreeTrial']);
+		$reportContent[$key]['Cancel/Expired'] = trim($value['isCancel']);
+		$reportContent[$key]['Charge Type'] = trim($value['chargeType']);
+		if($revPerDay>0){
+			$reportContent[$key]['Revenues per day'] = '$'.$revPerDay;
+		}else{
+			$reportContent[$key]['Revenues per day'] = '$0.00';
+		}
+
+		if($revRecog>0){
+			$reportContent[$key]['Revenues Recognized'] = '$'.$revRecog;
+		}else{
+			$reportContent[$key]['Revenues Recognized'] = '$0.00';
+		}
+		if($revToBeRecog>0){
+			$reportContent[$key]['Revenues to be Recognized'] = '$'.$revToBeRecog;
+		}else{
+			$reportContent[$key]['Revenues to be Recognized'] = '$0.00';
+		}
+
+	}
+	//htmlprint_r($reportContent);
+	$fileName = 'subscription-'.$fromDate.'-'.$toDate.'.csv';
+
+	csv_header($fileName,"text/csv");
+	$datestr="%m/%d/%Y";
+	data2csv($reportContent);
+}else{
+	echo "No Record Found!";
+}
+?>

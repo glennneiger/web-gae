@@ -1,0 +1,71 @@
+<?
+header('Content-type: text/xml');
+include("$D_R/layout/dbconnect.php");
+?>
+
+<rss version="2.0">
+<channel>
+<title>Minyanville</title>
+<description>The Trusted Choice for the Wall Street Voice</description>
+<link>http://www.minyanville.com</link>
+<copyright><?=date('Y');?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
+
+<?
+
+$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, publish_date, blurb, body, position, character_text ";
+$sql .= "from articles, contributors ";
+$sql .= "where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' and '19' IN (articles.category_ids) ";
+$sql .= "ORDER BY publish_date DESC LIMIT 0,15";
+
+$results = exec_query($sql);
+
+foreach ($results as $result) {
+	$numWords = 100;
+	//limit the first 100 words for the descriptions
+	$articlebody="";
+	$recentArticlerowbody=get_full_article_body($result['id']);  // fetch body from article_revision table.
+			$countbody=count($recentArticlerowbody);
+			for($i=0;$i<=$countbody-1;$i++){
+				 $articlebody.=' '.$recentArticlerowbody[$i][body];
+
+			}
+
+	$tempBody = htmlentities(strip_tags($articlebody,'ENT_QUOTES'));
+	//$bodyArray = str_word_count($tempBody,1);
+        $bodyArray = preg_split("/[\s,]+/",$tempBody);
+	//print_r($bodyArray);
+	for($i=0;$i<$numWords;$i++) {
+		$body .= $bodyArray[$i] . " ";
+	}
+
+	if (count($bodyArray) > 100) {
+		$body .= "...";
+	}
+?>
+
+     <item>
+        <title> <?=htmlentities(strip_tags($result['title'])); ?></title>
+		<description><?=$body;?></description>
+        <link>http://www.minyanville.com/articles/index.php?a=<?=$result['id'];?></link>
+        <pubDate><?=date('D, j M Y H:i:s',strtotime($result['publish_date'])) ?> EST</pubDate>
+		<tickers>
+		<? $tags_qry="select concat(ES.exchange,':',ES.stocksymbol) ticker from ex_item_tags EIT,ex_tags ET,ex_stock ES where EIT.tag_id=ET.id and ET.tag=ES.stocksymbol and EIT.item_id=".$result['id']." and EIT.item_type=1 and ET.type_id=1  GROUP BY ES.stocksymbol";
+			$ticker_result=exec_query($tags_qry);
+			if(!empty($ticker_result))
+			{
+				$ticker_result = array_slice($ticker_result, 0, 5);
+				foreach($ticker_result as $id=>$value)
+				{
+			?>
+				<ticker><?=$value['ticker']?></ticker>
+			<? }
+			}
+		?></tickers>
+     </item>
+<?
+	$body = "";
+	}
+?>
+
+</channel>
+</rss>

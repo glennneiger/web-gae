@@ -1,0 +1,45 @@
+<?php
+    global $HTPFX,$HTHOST,$D_R;
+    include_once("$D_R/lib/techstrat/_techstratData.php");
+    $objSean= new techstartData("techstrat_posts");
+
+    $bounceback = $HTPFX.$HTHOST."/admin/techstrat/performance.htm";
+    $maxSize = 2097152;
+    $arAllowedExt = array("pdf");
+    $extArr = explode('.',$_FILES['performance']['name']);
+    $ext = $extArr[count($extArr)-1];
+    if($size=="0")
+    {
+        $error = "Invalid File";
+    }
+    if($_FILES['fileInput']['size']>$maxSize && $maxSize!="")
+    {
+        $error = "File size is too big.";
+    }
+    if(!in_array($ext,$arAllowedExt))
+    {
+        $error = "File type isn't allowed";
+    }
+    if($error == "")
+    {
+
+        $fileName = strtolower($_FILES["performance"]['name']);
+	$fileName = preg_replace('/\s/', '_', $fileName);
+	$arFileDetail = preg_split("/\./",$fileName);
+	$inParts = count($arFileDetail);
+	$fileExt = $arFileDetail[$inParts-1];		
+	$front_name =rand();
+	$newFileName = "performance_".$front_name.".".$fileExt;
+        $newFileName = str_replace(" ","_",$newFileName);
+
+        $filePath ="gs://mvassets/assets/techstrat/pdf_performance";
+	$savePath = $filePath."/".$newFileName;
+        move_uploaded_file($_FILES['performance']['tmp_name'],$savePath);
+        $id=$objSean->setPerformance($newFileName);
+        if($id>0)
+        {
+            $msg = "Uploaded Sucessfully";
+        } 
+    }
+    location($bounceback.qsa(array(error=>$msg)));
+?>

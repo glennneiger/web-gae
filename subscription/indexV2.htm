@@ -1,0 +1,41 @@
+<?
+$pageName = "subscription_product";
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","nav","minyanville","etf","tsp","optionsmith","subscription");
+
+global $menu_Section,$menu_subsec,$cm8_ads_MediumRectangle,$lang;
+$menu_Section = 5;
+include_once("$D_R/_header.htm");
+include_once("$D_R/lib/_exchange_lib.php");
+$_SESSION['checkoutViacart'] = 'checkoutViacart';
+
+build_lang('subscription_product');
+global $lang;
+$objSubViewer = new subViewer();
+
+?>
+<div class="shadow">
+	<div id="content-container">
+		<?=showBreadCrum($breadcrum); ?>
+		
+		<!--Featured Area Start-->
+		<? $objSubViewer-> displayfeaturedProduct(); ?>
+		<!--Featured Area End-->
+		
+		<!--Offer Area Start-->
+		<? $objSubViewer-> displayOfferings(); ?>
+		<!--Offer Area End-->
+		
+		<!--Subscription Area Start-->
+		<? $objSubViewer-> displayProductsV2(); ?>
+		<!--Subscription Area End-->
+		
+		<!--Contact Footer Start-->
+		<? $objSubViewer-> displayContactFooter(); ?>
+		<!--Contact Footer End-->
+	
+	</div>
+</div>
+
+
+<? include("$D_R/_footer.htm"); ?>

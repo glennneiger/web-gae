@@ -1,0 +1,150 @@
+<?
+global $D_R,$IMG_SERVER;
+include_once("$D_R/lib/_register_config.php");
+$zoneIDNavCustomProduct = $SEC_TO_ZONE['NavCustomProduct'];
+$zoneIDNavNV = $SEC_TO_ZONE['NavNV'];
+$zoneIDNavEntertainment = $SEC_TO_ZONE['NavEntertainment'];
+$zoneIDNavCommunity = $SEC_TO_ZONE['NavCommunity'];
+$zoneIDNavEducation = $SEC_TO_ZONE['NavEducation'];
+
+if(stristr($HTTP_HOST,"buzzandbanter.com")){
+	location("http://$HTHOST/register/");
+	exit();
+}
+
+session_set_cookie_params(50800,"/");
+session_start();
+mcookie("PHPSESSID",session_id());
+if($_GET['promo_code'])
+	$_SESSION['promo_code']=$_GET['promo_code'];
+if($_SESSION['promo_code'])
+	$promo_code=$_SESSION['promo_code'];
+if(!$_SESSION['referer'])
+{
+	list($subdomain, $domain, $domaintype) = explode(".", $_SERVER['HTTP_REFERER']);
+	if($domain!="minyanville")
+		$_SESSION['referer']=$_SERVER['HTTP_REFERER'];
+}
+if($_GET['from']=="ameritrade")
+	$_SESSION['referer']="http://www.ameritrade.com";
+if(!$is_store){
+	mv_cache();
+}
+	handle_ssl();
+
+if(!$USER->email){
+	include_once("$D_R/lib/_auth.php");
+	$USER=new user($_SESSION[EMAIL],$_SESSION[PASSWORD]);
+}
+if($page_navigation['logo'])
+{	$LOGO="$IMG_SERVER/images/$page_navigation[logo]";
+	$below_nav_image="$IMG_SERVER/images/$page_navigation[below_nav_image]";
+ }
+else
+{	$LOGO="$IMG_SERVER/images/minyanville_logo_home.jpg";
+	$below_nav_image="$IMG_SERVER/images/newsviews_bg.gif";
+}
+
+if(!$HEADERBGCLASS)$HEADERBGCLASS="pageheader";
+if(!$CENTERBGCLASS)$CENTERBGCLASS="pageheader";
+if(!$HRULE_SRC)$HRULE_SRC="$IMG_SERVER/assets/goldrule.gif";
+if($ABS_PATHS)$pfx="http://$HTTP_HOST";
+
+/*=======font size crap=========*/
+$CSS_LENGTH=4;
+if(!$CSS_DEFAULT)//if() is here so otherpages can override.
+	$CSS_DEFAULT="fontSize0";
+if(!$fstyle || !stristr($fstyle,"fontSize")){
+	$fstyle=$CSS_DEFAULT;
+/*	if($SECTION=="schoolhouse")
+		$fstyle="fontSize4";*/
+}
+
+$browser = '';
+$navigator_user_agent = ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) ? strtolower( $_SERVER['HTTP_USER_AGENT'] ) : '';
+if (stristr($navigator_user_agent, "msie"))
+{
+	$browser = 'msie';
+
+}
+elseif (stristr($navigator_user_agent, "gecko"))
+{
+	$browser = 'mozilla';
+
+}
+elseif (stristr($navigator_user_agent, "mozilla/4"))
+{
+	$browser = 'ns4';
+
+}
+
+$THLINK=$USER->isAuthed?$USER->manageUrl:"/register/";
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title><?=$title?></title>
+<?=$HEAD?>
+<meta name="description" content="Business News and Financial commentary, analysis, insight and entertainment from over 30 market pros who make, know, and trade them better than anyone.Latest Market update on Jeff Cooper Daily Market Report" >
+
+<meta name="keywords" content="Stock Market Quotes,Wall Street, Credit Crunch, Stocks to watch, Todd Harrison, Bernanke, Trading Blogs,  Investing Ideas, Five Things, Random Thoughts,Buzz bits, Doin' It Bloggystyle, Morning Round-Up, Trading Radar, Market Recap Dow,Nasdaq, Phil Erlanger, Jeff Macke,Jeff Cooper, Fed Cut, Trading strategies, Stock Tips, ETF, Hoofy, Boo,Stock Market Quotes,Financial News,Market News, Stock Information, Buzz and Banter,Buzz,Banter,MV,Minyan,Ville">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
+
+<script language="Javascript" type="text/javascript">
+<!--
+var axel = Math.random() + "";
+var ord = axel * 1000000000000000000;
+//-->
+</script>
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $pfx; ?>/rss/minyanfeed.php" />
+
+<link rel="stylesheet" media="all" type="text/css" href="<?$D_R?>/css/mv.css" />
+<script src="<?$D_R?>/js/register_js/AC_ActiveX.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?$D_R?>/js/register_js/prototype.js"></script>
+<script type="text/javascript" src="<?$D_R?>/js/register_js/effects.js"></script>
+<script type="text/javascript" src="<?$D_R?>/js/register_js/accordion.js"></script>
+<script type="text/javascript" src="<?$D_R?>/js/register_js/scriptaculous.js"></script>
+<script src="<?$D_R?>/_script.js" language=JavaScript></script>
+<script src="<?$D_R?>/register/reg.js" language=JavaScript></script>
+<script type="text/javascript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+    </script>
+</head>
+<body>
+
+		<div align="center" ><table id="header" cellspacing="0" width="1024px" cellpadding="0" border="0" background="<?=$LOGO;?>" style="background-repeat:no-repeat;">
+	<tr>
+	<td width="264" rowspan="2" valign="top">
+<!-- Different Logo for each Menu item -->
+<a href="<?=$HTPFX.$HTTP_HOST;?>"><img src="<?= $IMG_SERVER; ?>/images/spacer.gif" width="264" height="126" align="absbottom" border="0" /></a></td>
+	<td rowspan="2" width="" class="adLeaderboard"><div class="adLeaderboarder">
+	<?  //show_ads_operative($zone_name,$tile728x90,$ADS_SIZE['LeaderBoard'],"","ist");?></div>
+ 	</td>
+	</tr>
+	</table>

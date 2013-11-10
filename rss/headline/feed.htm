@@ -1,0 +1,26 @@
+<?php
+include_once("$D_R/lib/config/_rss_config.php");
+include_once($D_R."/lib/feed/HeadlineFeed.php");
+$feedType = $_GET['type'];
+$partnerId = $_GET['partner'];
+$obFeed = new HeadlineFeed(); 
+$obFeed->feedType = $feedType;
+$obFeed->partnerId = $partnerId;
+$obFeed->maxLimit	= 15;
+$obFeed->setFeedParameters();
+if($obFeed->partnerName && $obFeed->itemType)      
+{
+    $obFeed->showFeedTemplate();
+}
+else
+{
+    if(!$obFeed->partnerName)
+    {
+        echo "We are sorry this is an invalid partner information.";
+    }
+    else
+    {
+        echo "Invalid URL";     
+    }
+}
+?>

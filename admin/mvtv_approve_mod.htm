@@ -1,0 +1,94 @@
+<?
+global $D_R;
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$ADMIN_PATH/_authenticate.htm");
+$bounceback="./mvtv_approve.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+
+$approvevideo=$AD->getPerm("mvtv_approve");
+$objremove= new Content();
+$VIDEO_TABLE="mvtv";
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$approvevideo){
+	admin_error("You're not allowed to use this page.");
+}
+
+
+$arApproveItems = $_POST['approve'];
+$arDeleteItems = $_POST['deletevideo'];
+$arPublish = $_POST['publishdatefield'];
+
+
+if($_POST['viewapproved'] == 0 && count($arDeleteItems) > 0)
+{
+	$action = 'delete';
+	$arItems = $arDeleteItems;
+	$msg = "The Video has been deleted.";
+
+}
+else if($_POST['viewapproved'] == 0)
+{
+	$action = 'approve';
+	$arItems = $arApproveItems;
+	$msg = "The Video has been approved.";
+}
+else
+{
+	$arItems = $arApproveItems;
+	$action = 'unapprove';
+	$msg = "The Video has been unapproved.";
+}
+
+if(is_array($arItems))
+{
+	foreach($arItems as $item_id => $value)
+	{
+
+		switch($action)
+		{
+			case 'approve':
+				$arData['approved'] = 1;
+				if($arPublish['mo'][$item_id] == '' && $arPublish['day'][$item_id] == '' && $arPublish['year'][$item_id] == '' && $arPublish['hour'][$item_id] == '' && $arPublish['min'][$item_id] == '')
+				{
+					$arData['is_live'] = 1;
+					$arData['publish_time'] = mysqlNow();
+				}
+				else
+				{
+                   $arData['is_live'] = 1;
+                   $startdae=date('Y-m-d H:i',strtotime($arPublish[year][$item_id]."-".$arPublish[mo][$item_id]."-".$arPublish[day][$item_id]." ".$arPublish[hour][$item_id].":".$arPublish["min"][$item_id]));
+		           $publish_date=strtotime($startdae);
+					
+					// nick changed it $publish_date=time($arPublish['hour'][$item_id],$arPublish['min'][$item_id],0, $arPublish['mo'][$item_id],$arPublish['day'][$item_id],$arPublish['year'][$item_id]);
+					if($publish_date >strtotime(date('Y-m-d H:i')))
+					{
+						$arData['is_live'] = 0;
+					}
+					 $arData['publish_time'] = mysqlNow($publish_date);                
+				}
+
+				break;
+			case 'unapprove':
+				$arData['approved'] = 0;
+				$arData['is_live'] = 0;
+				break;
+			case 'delete':
+				$arData['approved'] = 0;
+				$arData['is_live'] = 0;
+				break;
+		}
+
+		update_query(mvtv,$arData,array(id=>$item_id ));
+
+		$obContent = new Content(11,$item_id);
+		$obContent->setVideoMeta();
+
+	}
+	location($bounceback.urlencode($msg));
+	exit;
+}
+else
+{
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+?>

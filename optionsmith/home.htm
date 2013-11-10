@@ -1,0 +1,201 @@
+<?php
+global $HTPFX,$HTHOST,$IMG_SERVER;
+session_start();
+if($_SERVER['REQUEST_URI'])
+{
+        $postArr = getKeyVal('id',$_SERVER['REQUEST_URI']);
+}
+$selected_alert=$postArr['id'];
+$sqlOptionDate = "select ss.id, IF(ss.publish_date!='0000-00-00 00:00:00',ss.publish_date,ss.date) AS pubDate FROM ss_alerts ss where type = 'alert' and id = '".$selected_alert."'";
+$resOptionDate = exec_query($sqlOptionDate,1);
+$currentDate = date('Y-m-d g:i a');
+$smithPostDate = $resOptionDate['pubDate'];
+$dateDiff = date_difftime($smithPostDate,$currentDate);
+$dateDiffVal = intval($dateDiff['d']);
+$olderThanYr='0';
+if($dateDiffVal>=365){
+	$olderThanYr='1';
+}
+if(!$_SESSION['Optionsmith']  && $olderThanYr=='0')
+{
+	$param="";
+	if($_SESSION['SID'])
+	{
+		$param ="?email=".$_SESSION['EMAIL']."&first_name=".$_SESSION['nameFirst'];
+	}
+    header( "Location:  http://mvp.minyanville.com/optionsmith-landing-page-navbar/".$param);
+}
+$pageName = "sshome";
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","rightColumn","nav","minyanville","optionsmith","subscription");
+include("../_header.htm");
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/layout/dbconnect.php");
+include_once("$D_R/lib/layout_functions.php");
+include_once("$D_R/lib/ss/_ss_config.php");
+include_once("$D_R/lib/ss/_home_lib.php");
+include_once("$D_R/lib/ss/_ss_design_lib.php");
+include_once("$D_R/lib/ss/_search_lib.php");
+include_once("$D_R/lib/_module_design_lib.php");
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+include("../admin/ss/ss_classes/class_Performance.php");
+include_once("../admin/ss/ss_classes/class_ytdreturn.php");
+include_once("$D_R/lib/_auth.php");
+include_once("$D_R/lib/ss/_news.php");
+global $transobj,$ytdobj;
+$_SESSION['checkoutViacart'] = 'checkoutViacart';
+$ytdobj=new YTDRET();
+$transobj=new Qtransaction();
+$modules = getModules();
+$performanceobj=new Performance();
+$USER=new user();
+$loginid = $USER->id;
+$loginoption = $USER->is_option();
+$objSubViewer = new subViewer();
+$selected_alert=$postArr['id'];
+build_ss_lang($pageName);
+$home=1;
+$getresult=getOptionsSmithname();
+$contribid =$getresult['id'];
+$oid = obejctid('ss_alert');
+$objContent = new Content('Flexfolio',$aid);
+$getpageId=getpageNamess($pageName);
+$pageId=$getpageId['id'];
+
+if(!isset($_SESSION['SID']))
+{
+	loginRedirection();
+}
+else
+{
+	if(!$loginoption)
+	{
+	echo '<script>alert("Please register for Option Smith. ");</script>';
+	location($HTPFXSSL.$HTHOST."/subscription/register/");
+	exit;
+	}
+}
+if($_REQUEST['trial'] !='hard'){ ?>
+
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/optionsmith/Video/swfobject.js"></script>
+<? } ?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div class="left_contant" >
+
+ <script language="javascript" type="text/javascript">
+function docKeyDown1(oEvent){ // controls keyboard navigation
+var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+var intKeyCode = oEvent.keyCode;
+var inc;
+if(intKeyCode==13) {
+   if($F("optionsearch")){
+	searchalert('optionsearch','<?=$contribid?>','optionsearch','<?=$oid?>');
+	}
+}
+if(intKeyCode==17){	inc=0;}
+if (inc==0){
+	if(intKeyCode==65 || intKeyCode==97 )	{
+		return(false);   //in case of IE & firefox1.5
+	}
+}
+
+
+
+}
+document.onselectstart=new Function("return false");
+document.onmousedown=new Function("return false");
+document.oncontextmenu=new Function("return false");
+document.onkeydown=docKeyDown1;
+
+function disableclick()
+{
+	document.onmousedown=new Function("return false");void(0);
+}
+function enableclick()
+{
+	document.onmousedown=new Function("return true");void(0);
+}
+</script>
+		<div class="option_container_home" >
+			<div class="page_title"><h1>Optionsmith</h1></div>
+			<?=showBreadCrum($breadcrum); ?>
+			<div class="subscriptionsponsorship_optionsmith"></div>
+			<? include_once("$D_R/optionsmith/ss_header.htm"); ?>
+				<div class="option_main_content"  style="display: block;" id="folio1">
+					<table width="98%" border="0" cellspacing="0" cellpadding="0">
+					  <tr>
+						<td width="20%" valign="top" align="center">
+						<div class="quint_name"><img src="<?=$IMG_SERVER?>/images/redesign/stevesmith_image.jpg" border="1" width="73px" height="78px" />
+							<div >steve smith</div>
+						</div>
+						</td>
+						<td valign="top">
+							<?php
+								if($selected_alert){
+									displayRecentAlert($selected_alert);
+								}else{
+									displayRecentAlert(NULL);
+								}
+							?>
+						</td>
+					  </tr>
+					</table>
+				</div><!--Recent views start from here--><!--- This is recent views from Q for  logged in User page-->
+				<div class="option_views_container"><?recentArticles($loginoption,$contribid)?></div>
+		</div>
+</div>
+<!--left contaner end here-->
+<!--right contaner start from here-->
+<div class="right_contant" >
+
+	<div class="right_common_container_smith"><?= renderPageModules($pageId,'optionsmith intro') ?></div>
+        <div class="right_cooper_cart_container">
+			<div class="right_common_container">
+				<?
+				echo $performanceobj->datadisplayperformance_home($loginoption,$home);   ///display for all users
+				?>
+			</div>
+		 </div>
+
+         <!---OptionSmith performance block end here--->
+
+				<div class="search_alert_cooper">
+						<table width="300" border="0" cellpadding="3" cellspacing="0">
+							<tr><td colspan="2" align="center"><h2>alerts search</h2> </td>
+							<tr>
+								<td align="center" ><input name="optionsearch"  id ="optionsearch" class="quint_alert_input" type="text"  onmouseover="enableclick();return true;"  /></td>
+								<td valign="top"><a href="#"><img src="<?=$IMG_SERVER?>/images/redesign/go.jpg" vspace="6" border="0" onclick="searchalert('optionsearch','<?=$contribid?>','sshome','<?=$oid?>');"/></a></td>
+							</tr>
+							<tr><td colspan="2" align="center"><a href="#" onclick="searchalert('optionsearch','<?=$contribid?>','sshome','<?=$oid?>');" class="go_to_archive">go to archive</a></td></tr>
+						</table>
+
+				</div>
+			<div class="right_common_container"><? recentAlerts($selected_alert); ?> </div>
+			<!---Recent alert block end here--->		<!---A/V archive start from here--->
+		<? echo renderPageModules($pageDetail['id'],'Bottom Right Module'); ?>
+
+<!--Rss and Article alert start from here-->
+<table width="100%" border="0" cellspacing="5" cellpadding="0" align="left">
+  <tr>
+    <td><img src="<?=$IMG_SERVER?>/images/rss_logo.jpg" /></td>
+    <td class="quick_links"><a href="<?=$HTPFX.$HTHOST?>/rss/">add rss feed</a></td>
+    <td><img src="<?=$IMG_SERVER?>/images/article_alert_logo.jpg" /></td>
+    <td class="quick_links">
+       <?
+        echo  '<a href="'.$HTPFX.$HTHOST.'/subscription/register/controlPanel.htm">free article alerts</a>';
+       ?>
+		</td>
+  </tr>
+</table>
+
+<!--Rss and Article alert start from here-->
+
+</div>
+<!--right contaner end here-->
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

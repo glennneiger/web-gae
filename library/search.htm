@@ -1,0 +1,119 @@
+<?php
+$page_id=16;
+$pageName='archive';
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville");
+checkQueryString();
+$q=$_POST['q'];
+if(!$q){
+	$q=$_GET['q'];
+}
+if(empty($_GET['txtTicker'])){
+	$txtTicker=$q;
+}
+$title=$_POST['title'];
+if(!$title){
+	$title=$_GET['title'];
+}
+$title=stripslashes($title);
+$q=stripslashes($q);
+
+$p=intval($p);
+$offset=($p*$SEARCH_PAGESIZE);
+if(($p||$category_id||$conrib_id) && !isset($q))$q="";//set $q so search results show
+$q=lc($q);
+$pattern = array('(', ')');
+$replacement = array('', '');
+if(isset($txtTicker))
+{
+$qstock=str_replace($pattern,$replacement, $txtTicker);
+$qresult=is_stock($qstock);
+}
+if($qresult){
+    session_start();
+    global $_SESSION;
+    $referer_url=parse_url($_SESSION['referer']);
+    list($subdomain, $domain, $domaintype) = explode(".", $referer_url['host']);
+    if($domain!="ameritrade")
+        header("Location: http://finance.minyanville.com/minyanville?Page=QUOTE&Ticker=".$qstock,TRUE,301);
+    else
+        header("Location: http://finance.minyanville.com/minyanville?Page=QUOTE&referrer=ameritrade&Ticker=".$qstock,TRUE,301);
+  exit;
+}
+$contrib_id=$_POST['contrib_id'];
+if((!$contrib_id)&&($_POST['send']!=='1')){
+	$contrib_id=$_GET['contrib_id'];
+}
+if($_GET['oid']){
+	$object_type=$_GET['oid'];
+}else{
+	$object_type=0;
+}
+include_once("$D_R/lib/config/_seo_config.php");
+include("../_header.htm");
+include_once("$D_R/lib/_content_design_lib.php");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$D_R/lib/_exchange_config.php");
+include_once("$D_R/lib/_exchange_lib.php");
+//include_once("$D_R/lib/google_adsense/GoogleAdsense.php");
+$subscription_id=$_SESSION['SID'];
+global $cm8_ads_MediumRectangle;
+$bannernameMR=$cm8_ads_MediumRectangle;
+
+$mo=$_POST['mo'];
+if((!$mo)&&($_POST['send']!=='1')){
+	$mo=$_GET['mo'];
+}
+
+$day=$_POST['day'];
+if((!$day)&&($_POST['send']!=='1')){
+	$day=$_GET['day'];
+
+}
+$year=$_POST['year'];
+if((!$year)&&($_POST['send']!=='1')){
+	$year=$_GET['year'];
+}
+
+$search=$_POST['search'];
+if(!$search){
+	$search=$_GET['search'];
+}
+
+build_lang($pageName);
+$searchmsg=$lang['archive_search'];
+
+$searchArchive = $_GET['searchArchive'];
+if($searchArchive==''){
+	$searchArchive = 1;
+}
+?>
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+ <?php
+        $p=$_GET['p'];
+        $offset=$_GET['p'];
+		    ?>
+			<div id="showdesignsearch">
+	   		<?
+				showSearchDesign($q,$contrib_id,$mo,$day,$year,$search,$showtabs,$object_type,$offset,$subscription_id,$searchmsg,$title,$searchArchive);
+	   		?>
+	   	</div>
+			<div class="search_result_container"><? CM8_ShowAd("468x15");?></div>
+				<div id="searchcontent">
+				<?
+				showContentDesign($q,$contrib_id,$mo,$day,$year,$search,$showtabs,$object_type,$offset,$p,$subscription_id,$searchmsg,$title,$searchArchive);
+
+			?>
+			</div>
+
+    <div align="left" id="contentsearch"></div>
+ </div>
+<!--left contaner end here-->
+<?php
+$arrRightCols	=	array('show_ads','sponsoredlinks','show_mostpopular','show_markets','show_rss_emailalert');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

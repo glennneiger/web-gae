@@ -1,0 +1,30 @@
+<?	$HEADER="/space.gif";
+	$errors=array(
+		400=>"There was a syntax error in your url request",
+		401=>"You are not allowed in that area.",
+		402=>"Not Used (Payment Granted)",
+		403=>"That url is invalid",
+		404=>"Couldn't find that page",
+		500=>"We're experiencing server problems",
+		501=>"Not Implemented",
+		502=>"Overloaded. Try again later.",
+		503=>"Gateway Timeout."
+	);
+	if(in_array($QUERY_STRING,array_keys($errors))){
+		$e=$errors[$QUERY_STRING];
+	}elseif(!$e){
+		$e="There was an error with your request";
+	}
+
+?>
+<table width=100% height=100%><TR><TD align=center>
+	<table>
+	<TR>
+	<TD style="font-size:200px">?</td>
+	<TD style="font-family:arial">Sorry. <?=str_replace("\\","",$e)?></TD>
+	</TR>
+	<table>
+
+
+</TD></TR></table>
+

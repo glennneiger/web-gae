@@ -1,0 +1,41 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+if(intval($id)&&$POSTBACK){
+	del_query("subscription","id",$id);
+	del_query("addr_billing", "user_id",$id);
+	del_query("addr_shipping", "user_id",$id);
+	del_query("cc", "user_id",$id);
+	del_query("comments", "user_id",$id);
+	update_query("subscription_keys",array(user_id=>0),array(user_id=>$id));
+	location($PHP_SELF.qsa(array(error=>"The user, <b>$id</b>, was removed.")));
+	exit;
+}
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+	<title>Delete Subscriber</title>
+<link rel="stylesheet" href="_style.css">
+<script src="/_script.js"></script>
+</head>
+
+<body onload=window.focus() style="border:0px">
+<img src="assets/headerlogo.gif" border=0>
+<br><br>
+<div class=adminheader>
+Delete subscriber
+</div>
+<hr />
+<?if($error){?><div class=error><?=strip($error)?><?}?></div>
+This completely removes the user based on their database ID number. Specifically, it removes subscription info, cc info, billing and shipping addresses, and any comments that have been made about the user. <b>USE WITH EXTREME CAUTION!</b>
+<form method="post" action="<?=$PHP_SELF?>">
+<table>
+<TR>
+<TD>ID <?input_numsonly("id"," ",4,4)?></TD>
+<TD><input type="submit" value="submit"></TD>
+</TR>
+</table>
+</form>
+</body>
+</html>

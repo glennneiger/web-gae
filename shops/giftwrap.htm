@@ -1,0 +1,47 @@
+<?
+$SECTION="shops";
+$PAGE="giftwrap";
+$pageName ="shops";
+$HEADER="/assets/checkoutbanner.jpg";
+$contrib_id=1;
+$cat_id=5;
+
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","rightColumn","nav","minyanville");
+include("../_header.htm");
+$store=new StoreDisplay();
+//$cart is created in the _header.php file- needed for persistent cart msg
+$cart->setLastProductUrl();
+$prod_id=$store->prod_id;
+$cat_id=$store->cat_id;
+?>
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+	<div class="shop_main_container">
+		<div  class="footer_common_title">Shopping<br /></div>
+
+		<table id="home-news" cellpadding="0" cellspacing="0" border="0" width="100%" border="0">
+		<tr><td clas="articleBodyshops">
+<?if($store->catHasProducts($cat_id) && $cart->num_items){?>
+			<div>
+		<?$store->displayAllProducts("$STORE_TEMPLATE_DIR/store.altprods.tmpl.php")?>
+	</div>
+<?}else{?>
+				<div class="slimpadding">
+		Packaging options aren't available <?if(!$cart->num_items){?> for your order <?}?>.
+	</div>
+<?}?>
+
+	</td>
+			</tr>
+
+		</table>
+	</div>
+</div>
+<?php
+$arrRightCols	=	array('show_video','show_industrybrains','show_mostpopular','email_alert','show_rss_emailalert','show_localguides');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

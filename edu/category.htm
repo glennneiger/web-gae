@@ -1,0 +1,32 @@
+<?php
+global $D_R;
+session_start();
+
+$url = explode('?', $_SERVER['REQUEST_URI']);
+$articleArr = getKeyVal('p',$url[0]);
+$page = $articleArr['p'];
+$url = explode('/p/', $url[0]);
+$url = $url[0];
+
+switch($url)
+{
+	case (preg_match('/^\/edu\/how-to-trade\/?$/', $url) ? true : false):
+		$include_url = '/edu/eduTrade.htm';
+	break;
+	case (preg_match('/^\/edu\/trading-videos\/?$/', $url) ? true : false):
+		$include_url = '/edu/eduVideo.htm';
+	break;
+	case (preg_match('/^\/edu\/personal-finance\/?$/', $url) ? true : false):
+		$include_url = '/edu/eduFinance.htm';
+	break;
+	case (preg_match('/^\/edu\/how-to-invest\/?$/', $url) ? true : false):
+		$include_url = '/edu/eduInvest.htm';		
+	break;
+	default:
+		$include_url = '/edu/index.htm';
+	break;
+
+}
+include_once($D_R.$include_url);
+?>
+

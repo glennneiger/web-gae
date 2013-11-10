@@ -1,0 +1,59 @@
+<?php 
+global $HTPFX,$HTHOST,$IMG_SERVER;
+$pageName = "semsofttrial_welcome";
+$trackname=$_GET['trackname'];
+$pageJS=array('config','jquery','global');
+$pageCSS=array("global","nav");
+include("$D_R/_header.htm");
+?>
+<link href="<?=$HTPFX.$HTHOST?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
+<div class="container">
+                <div class="welcome-box" style="float:left;margin-bottom:24px;">
+                    <div class="col-01">
+                        <img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/trialEmblem_14.png" height="213" width="442" alt="" border="0" />
+                        <div class="details">
+                            <p>Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com?subject=Buzz And banter 14-Day Trial Inquiry" target="_blank">support@minyanville.com</a> or <font class="ltBlueTxt">212-991-9357.</font></p>
+                            <p>And please remember, to prevent any disruption of your free trial subscription after your 14-day trial, you may register for a full monthly, quarterly or annual subscription by <a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/" target="_blank">clicking here</a> or calling <font class="ltBlueTxt">212-991-9357.</font></p>
+                        </div>
+                    </div>                    
+                    <div class="col-02">
+                        <ul class="callToAction clearfix">	
+                            <li class="buzz-logo">
+                                <img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/buzzlogo_gray.png" height="23" width="169" alt="" border="0" />
+                            </li>
+                            <li class="launch-buzz">
+                                <a class="launch-buzz-btn" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');">Launch The Buzz</a>
+                            </li>
+                        </ul>
+                        <img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/buzzScreens.png" height="319" width="450" alt="" border="0" />
+                    </div>
+                </div>
+            </div>	
+           <br />
+<?php
+//$googleAdVars = explode("-",$trackname);
+//googleAdWordTracking($googleAdVars['0'], $googleAdVars['1']);
+?>
+<!-- Start Google Code for SEMBUZZ Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1039530399;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "mUHTCLXTvAIQn_PX7wM";
+var google_conversion_value = 0;
+if (1) {
+  google_conversion_value = 1;
+}
+/* ]]> */
+</script>
+<script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1039530399/?value=1&amp;label=mUHTCLXTvAIQn_PX7wM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- End Google Code for SEMBUZZ Conversion Page -->
+<? include("$D_R/_footer.htm"); ?>

@@ -1,0 +1,72 @@
+<?
+$page="library";
+$handler="glossary_mod.htm";
+include("$ADMIN_PATH/_header.htm");
+$id= $_GET['id'];
+$error= $_GET['error'];
+if(!$AD->getPerm("glossary_edit")){
+	admin_error();
+}
+foreach(get_dictionary() as $row){
+	if($row[id]==$id){
+		$pagedata=$row;
+	}
+	$list[$row[id]]=$row[name];
+}
+
+
+?>
+<script>
+function deleteIt(){
+	if(confirm("Are you sure you want to remove this?")){
+		var frm=document["theform"];
+		frm["deleteit"].value="1";
+		frm.submit();
+	}
+}
+</script>
+<br><br>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+
+<div class=adminheader>Minyanville Dictionary</div>
+
+<BR>
+
+<table width=600 align=center>
+<TR>
+<form method=get action=<?=$PHP_SELF?>>
+<TD align=center colspan=2>Select a dictionary term to edit<br>
+	<select name="id" onchange="this.form.submit()">
+	<option value="">--New Dictionary Term--
+	<?foreach($list as $rowid=>$name){
+		$sel=($rowid==$id?" selected":"");
+	?><option value="<?=$rowid?>"<?=$sel?>><?=$name?>
+	<?}?>
+	</select>
+</TD>
+</form>
+
+</TR>
+<form method="post" action="<?=$handler?>" name="theform">
+<?input_hidden("id")?>
+<?input_hidden("deleteit",0)?>
+<TR>
+<TD align=right><b>Dictionary Term</b>: </TD>
+<TD><?input_text("glossary[name]",$pagedata[name],"","","style=width:100%")?></TD>
+</TR>
+<TR valign=top>
+<TD align=right><b>Definition</b>:</TD>
+<TD><?rich_editor("glossary[value]",$pagedata[value],"100%",200)?></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD align=center>
+	<input type="submit" value="save"> 
+	<input type="button" value="cancel" onclick="location.replace(location.href)"> 
+	<input type="button" value="remove dictionary term" onclick="deleteIt()">
+ </TD>
+</TR>
+</table>
+</form>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

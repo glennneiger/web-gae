@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/admin/qp/qp_classes/class_transaction.php");
+include_once("$D_R/admin/qp/qp_classes/class_ytdreturn.php");
+global $transobj;
+$transobj=new Qtransaction(1);
+$productName="subFlexfolio";
+$trialtype="SoftTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+$_SESSION['setSessionReferal'] =  $_SERVER['HTTP_REFERER'];
+//set google referal if user is coming from Google with param from = google
+ setSessionReferal($_REQUEST['from'], $_SERVER['HTTP_REFERER']);
+
+	if($_GET['from']){
+		$from=$_GET['from'];
+	}else{
+		$from=substr($_SERVER['HTTP_REFERER'],7);
+	}
+$pcode = (isset($_REQUEST['pcode']))? trim($_REQUEST['pcode']):'Enter Promo Code (Optional)';	
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+$pageName = "flexfolio_softtrial";
+$objPage= new Page($pageName);
+$pageMetaData=$objPage->getMetaData();
+ if(strtolower($from) == 'google' ){
+	$refererSourceId ='google';
+}elseif(strtolower($from) == 'yahoo' ){
+	$refererSourceId ='yahoo';
+}elseif(strtolower($from) == 'bing' ){
+	$refererSourceId ='bing';
+}else{
+	$refererSourceId='';
+}
+?>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$pageMetaData['title']?>-Minyanville</title>
+<meta name="description" content="<?=$pageMetaData['description']?>" >
+<meta name="keywords" content="<?=$pageMetaData['keywords']?>">
+<!-- google anaytics  code -->
+
+
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/min/ibox.1.1-min.js" type="text/javascript"></script>
+<link href="<?=$HTPFX.$HTHOST?>/css/flexfolioSoft.css" rel="stylesheet" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/soft_trials.1.4.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/qp/swfobject.js"></script>
+</head>
+
+<body>
+<!--FlexFolio main start from here-->
+<center>
+<div class="FlexSoftMAin">
+
+<table cellpadding="0" cellspacing="0" border="0">
+<tr><td>
+<!--Main body start from here-->
+<div class="FlexSoftMAininner">
+<div class="FlexfolioHeader">
+<img src="<?=$IMG_SERVER?>/images/flexfolioTrial/flexfolioSofttrialheader.jpg"  border="0" alt="Flex Folio by quint tatro" />
+</div>
+<!--Left Content start from here-->
+<div class="left_cont_Flex">
+
+<div class="FlexFolio_soft_titleMain">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="FlexFolio_soft_title">
+Trading is an art, not science and flexibility is one of the individual's greatest assets.
+<h2>Quint has been exhibiting his knack for winning stock picks and incredible flexibility through the Buzz and Banter, and now Minyanville is proud to bring you the FLEXFOLIO by Quint Tatro. </h2>
+</div></td>
+    <td valign="top"><span class="QuintImage">
+<img src="<?=$IMG_SERVER?>/images/flexfolioTrial/quint_image.jpg" alt="Quint Tatro" border="0" />
+<span>quint tatro</span>
+</span>
+</td>
+  </tr>
+</table>
+
+
+
+
+</div>
+
+
+<div class="FlexFreeTrialBoxMain">
+<div class="FlexFreeTrialBox">
+
+<div class="FlexFreeTrialBoxLeft">
+<h1>14 day free trial</h1>
+<div class="product_text"><!--Lorem Ipsum is simply dummy text of the printing and typesetting industry.--></div>
+</div>
+
+<div class="FelxFreeTrialBoxRight">
+<form action="" method="get">
+
+<input id="fname" name="fname" type="text" value="Enter First Name" onfocus="javascript:if(this.value=='Enter First Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('fname',this.value,'Enter First Name');" tabindex="1" />
+<input id="lname" name="lname" type="text" value="Enter Last Name" onfocus="javascript:if(this.value=='Enter Last Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('lname',this.value,'Enter Last Name');" tabindex="2" />
+<input id="uid" name="uid" type="text" value="Enter Email" onfocus="javascript:if(this.value=='Enter Email') this.value=''; return false;" onblur="javascript:chkSpaceNull('uid',this.value,'Enter Email');" tabindex="3" />
+<input name="pwd_t" id="pwd_t" style="display:;" type="text" onfocus="convertTextToPass('pwd_t','pwd','password');"  value="Password" class="search_input_box_pass" tabindex="4" />
+
+<input name="pwd" id="pwd" style="display:none;" type="password" onblur="javascript:checkPassNull('pwd_t','pwd');" value="" class="search_input_box_pass" tabindex="4" />
+
+<input id="repwd_t" name="repwd_t" style="display:;" type="text" onfocus="convertTextToPass('repwd_t','repwd','password');" value="Re-Enter-Password" class="search_input_box_pass" tabindex="5" />
+<input id="repwd" name="repwd" style="display:none;" type="password" onblur="javascript:checkPassNull('repwd_t','repwd');"  value="" class="search_input_box_pass" tabindex="5" />
+<input id="promocode" name="promocode" type="text" value="<?=$pcode ?>" onfocus="javascript:if(this.value=='Enter Promo Code (Optional)') this.value=''; return false;" onblur="javascript:chkSpaceNull('promocode',this.value,'Enter Promo Code (Optional)');" tabindex="6" />
+<div class="flexfolioerrmsg" id="errmsg">&nbsp;</div><div style="float:right;"><img src="<?=$IMG_SERVER?>/images/flexfolioTrial/submitTrial.jpg" onclick="Javascript:validateSoftTrial('flexfolio','14','<?=$trackname;?>','<?=$refererSourceId?>');" alt="Submit" align="right"  style="cursor:pointer; padding-right:21px;" tabindex="7" /></div>
+</form>
+</div>
+</div>
+</div>
+
+
+
+<!--Article area start from here-->
+<div class="FlexArticleMain">
+<h1>This real time alert based product follows an actual portfolio that Quint is trading.</h1>
+
+<div class="Flex_window_trial_Main">
+<div class="Flex_window_trial_boxRight">
+<ul>
+  <li><span class="cooper_head">Get email alerts </span> as Quint makes each trade</li>
+  <li><span class="cooper_head">Detailed analysis and rationale </span>for each trade</li>
+  <li><span class="cooper_head">Access </span>to Flexfolio holdings, closed positions and performance</li>
+  <li><span class="cooper_head">Weekly review of all positions </span>in both a written summary and audio visual presentation</li>
+  <li>Choose to<span class="cooper_head"> follow all or a handfull of trades </span>that meet your risk tolerence and personal guidelines</li>
+  <li>Study the <span class="cooper_head">audio visual presentations  </span>to see what Quint is looking for and learn how to spot opportunities on your own</li>
+  </ul>
+</div>
+</div>
+
+</div>
+<!--Article area Ends here-->
+
+
+
+
+<div class="flexfolio_main_cart_container">
+
+<table width="100%" align="center" border="0" cellpadding="0" cellspacing="3" class="add_to_cartFlexfolio">
+<tr>
+<td width="50%" class="flexfolio_recurring">Monthly</td>
+<td width="1px" rowspan="3"><img src="<?=$IMG_SERVER?>/images/flexfolioTrial/cart_divider.jpg" width="1" height="70" /></td>
+<td width="50%"class="flexfolio_recurring">Annual</td>
+</tr>
+<tr>
+<td>$<?=$viaProducts['FlexfolioMonthly']['price']?></td>
+<td>$<?=$viaProducts['FlexfolioAnnual']['price']?></td>
+</tr>
+<tr>
+<td><a style="cursor:pointer;"><img src="<?=$IMG_SERVER?>/images/flexfolioTrial/BuyNow.jpg" alt="add to cart" onclick="checkcart('6','5','SUBSCRIPTION')" border="0" /></a></td>
+<td><a style="cursor:pointer;"><img src="<?=$IMG_SERVER?>/images/flexfolioTrial/BuyNow.jpg" alt="add to cart" onclick="checkcart('9','5','SUBSCRIPTION')" border="0" /></a></td>
+</tr>
+</table>
+</div>
+
+<div class="AddtocartFlexmain">
+<h1>Get <span>Flexfolio</span> Now!</h1>
+<span><a style="cursor:pointer;"  href="#"><img src="<?=$IMG_SERVER?>/images/flexfolioTrial/signUptrial.jpg"  onclick ="javascript:signup();" alt="Sign up for 14 day trial" border="0"  vspace="10"/></a></span>
+</div>
+
+<div class="ContactmainFlex">
+<p>Questions? Contact us at 212-991-9357 or</p> <span><a href="mailto:support@minyanville.com">support@minyanville.com</a></span>
+</div>
+
+<div class="common_content_dis">
+Quint Tatro is president and founder of Tatro Capital, LLC, an investment management firm, as well as managing member over a multi-strategy investment fund.  The FlexFolio contains Mr. Tatro's own opinions, and none of the information contained therein constitutes a recommendation by Mr. Tatro or Minyanville that any particular security, portfolio of securities, transaction or investment s trategy is suitable for any specific person.  Mr. Tatro will not advise you personally concerning the nature, potential, value or suitability of any particular security, portfolio of securities, transaction, investment strategy or other matter. All information contained within the FlexFolio product is impersonal and not tailored to the investment needs of any specific person. Do not email Mr. Tatro seeking personalized investment advice, which he cannot provide.  Mr. Tatro's past results are not necessarily indicative of future performance.  The performance represented here is for informational purposes only, and should not be construed as an offer or solicitation of an offer to sell or buy any security. Please keep in mind that this Portfolio does not necessarily account for the different risk tolerances, investment objectives, and other criteria used by individual investors when making an investment decision. You are encouraged to conduct your own research and due diligence, and to seek the advice of a qualified securities professional before you make any investment.
+</div>
+
+
+</div>
+<!--Left Content Ends here-->
+
+<!--Right Content start from here-->
+
+<div class="right_Video_Flex">
+<script type="text/javascript">	addLoadEventQunintVideo(movieload,1,300,280,'container');	</script>
+                 <div id="container"></div>
+</div>
+
+
+<div class="right_cont_Flex">
+
+<div class="right_common_container">
+<?php $transobj->datadisplayperformance_home(0,1);?>
+<!--
+<div class="Flex_common_head"><h2>flexfolio performance</h2></div>
+<div>
+<table width="95%" cellspacing="5" cellpadding="0" border="0" align="right" class="Flexquint_sub_heading">
+  <tbody><tr>
+    <td>Original cost</td>
+    <td>$ 100,000.00</td>
+  </tr>
+  <tr>
+    <td>Current Value of Flexfolio</td>
+    <td>$ 101,922.88</td>
+  </tr>
+  <tr>
+    <td>Flexfolio Total Average Return</td>
+    <td>1.92 %</td>
+  </tr>
+  <tr>
+     <td>2009 YTD Return </td>
+     <td>11.38 %</td>
+  </tr>
+  <tr>
+    <td>S&P 500</td>
+    <td>-33.78 %</td>
+  </tr>
+  <tr>
+    <td>Nasdaq</td>
+    <td>-23.12 %</td>
+  </tr>
+  <tr>
+    <td class="quint_small_heading" colspan="2">Since Inception 03/03/2008</td>
+  </tr>
+</tbody></table>
+</div>
+-->
+</div>
+
+
+
+
+</div>
+<!--Right Content Ends here-->
+
+</div>
+</td>
+</tr>
+</table>
+<!--Main body Ends here-->
+
+
+
+
+
+
+
+
+</div>
+<!--Flexfolio main Ends here-->
+<div class="TrialFooter"><img src="<?=$IMG_SERVER?>/images/flexfolioTrial/trialFooter.jpg" hspace="1" /></div>
+<?php
+$profileid=1;
+//googleanalytics($profileid,$trackname);
+googleanalytics();
+?>
+</center>
+</body>
+</html>

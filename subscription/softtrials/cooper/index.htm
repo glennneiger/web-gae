@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+session_start();
+global $D_R,$IMG_SERVER;
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/_includes.php");
+global $viaProducts,$HTHOST,$HTPFX,$D_R,$IMG_SERVER;
+$productName="subCooper";
+$trialtype="SoftTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+$_SESSION['setSessionReferal'] =  $_SERVER['HTTP_REFERER'];
+
+
+if($_GET['from']){
+	$from=$_GET['from'];
+}else{
+	$from=substr($_SERVER['HTTP_REFERER'],7);
+}
+$pcode = (isset($_REQUEST['pcode']))? trim($_REQUEST['pcode']):'Enter Promo Code (Optional)';
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+$pageName = "cooper_softtrial";
+$objPage= new Page($pageName);
+$pageMetaData=$objPage->getMetaData();
+
+ if(strtolower($from) == 'google' ){
+	$refererSourceId ='google';
+}elseif(strtolower($from) == 'yahoo' ){
+	$refererSourceId ='yahoo';
+}elseif(strtolower($from) == 'bing' ){
+	$refererSourceId ='bing';
+}else{
+	$refererSourceId='';
+}
+?>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$pageMetaData['title']?>-Minyanville</title>
+<meta name="description" content="<?=$pageMetaData['description']?>" >
+<meta name="keywords" content="<?=$pageMetaData['keywords']?>">
+<!-- google anaytics  code -->
+
+
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/min/ibox.1.1-min.js" type="text/javascript"></script>
+<link href="<?=$HTPFX.$HTHOST?>/css/cooperSoft.css" rel="stylesheet" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/soft_trials.1.4.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script language="javascript">
+function cooperbio() {
+window.open(host + "/subscription/softtrials/cooper/cooperbio.htm","print","width=750,height=400,top=50,left=200,resizable=yes,toolbar=no,scrollbars=no");
+}
+</script>
+</head>
+
+<body >
+<center>
+<div class="CooperSoftMAin" >
+<table cellpadding="0" cellspacing="0" border="0">
+<tr><td>
+<div class="CooperSoftMAininner">
+<div class="CooperHeader">
+<img src="<?=$IMG_SERVER?>/images/cooperTrial/cooperSofttrialheader.jpg"  border="0" alt="Cooper's Daily Market Report" />
+</div>
+
+<div class="left_cont_buzz">
+<div class="Cooper_soft_title">
+Learn the trading style JEFF COOPER has been using to beat the market for over 20 years!
+<h2>Jeff Cooper is recognized as one of the smartest traders on the Street. Now you can learn why. </h2>
+</div>
+
+
+<div id="signup" class="CooperFreeTrialBoxMain">
+<div class="CooperFreeTrialBox">
+
+<div class="CooperFreeTrialBoxLeft">
+<h1>14 day free trial</h1>
+<div class="product_text"><!--Lorem Ipsum is simply dummy text of the printing and typesetting industry.--></div>
+</div>
+
+<div class="CooperFreeTrialBoxRight">
+<form action="" method="get">
+<input id="fname" name="fname" type="text" value="Enter First Name" onfocus="javascript:if(this.value=='Enter First Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('fname',this.value,'Enter First Name');" tabindex="1" />
+<input id="lname" name="lname" type="text" value="Enter Last Name" onfocus="javascript:if(this.value=='Enter Last Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('lname',this.value,'Enter Last Name');"tabindex="2" />
+<input id="uid" name="uid" type="text" value="Enter Email" onfocus="javascript:if(this.value=='Enter Email') this.value=''; return false;" onblur="javascript:chkSpaceNull('uid',this.value,'Enter Email');" tabindex="3" />
+<input name="pwd_t" id="pwd_t" style="display:;" type="text" onfocus="convertTextToPass('pwd_t','pwd','password');"  value="Password" class="search_input_box_pass" tabindex="4" />
+<input name="pwd" id="pwd" style="display:none;" type="password" onblur="javascript:checkPassNull('pwd_t','pwd');" value="" class="search_input_box_pass" tabindex="4" />
+<input id="repwd_t" name="repwd_t" style="display:;" type="text" onfocus="convertTextToPass('repwd_t','repwd','password');" value="Re-Enter-Password" class="search_input_box_pass" tabindex="5" />
+<input id="repwd" name="repwd" style="display:none;" type="password" onblur="javascript:checkPassNull('repwd_t','repwd');"  value="" class="search_input_box_pass" tabindex="5" />
+<input id="promocode" name="promocode" type="text" value="<?=$pcode ?>" onfocus="javascript:if(this.value=='Enter Promo Code (Optional)') this.value=''; return false;" onblur="javascript:chkSpaceNull('promocode',this.value,'Enter Promo Code (Optional)');" tabindex="6" />
+<div class="coopererrmsg" id="errmsg">&nbsp;</div><div style="float:right;"><img src="<?=$IMG_SERVER?>/images/cooperTrial/submitTrial.jpg" onclick="Javascript:validateSoftTrial('cooper','14','<?=$trackname;?>','<?=$refererSourceId?>');" alt="Submit" align="right"  style="cursor:pointer; padding-right:21px;" tabindex="7" /></div>
+</form>
+</div>
+</div>
+</div>
+
+
+
+
+<div class="CooperArticleMain">
+
+<div class="CooperArticleMainLeft">
+
+<span class="cooper_Article_head">For over 20 years</span> Cooper has been an independent trader and author, and noted expert on short term day and swing trading techniques.<p><br/>
+In addition to getting access to Jeff's stock picks each trading day, he'll also teach you his approach to trading and finding high probability setups. So his report is not just an idea generator but an educational tool to help you to unlock the potential of this powerful trading methodology.</p>
+<br/><br/>
+<span class="cooper_Article_head">What's behind Jeff's Method?</span>
+<br/><br/>
+Jeff uses pattern recognition as well as time and price square outs from the Gann square of nine chart to find high probability trade set ups.
+</div>
+
+<div class="banter_window_trial_boxRight">
+<ul>
+  Specifically you'll get:
+  <li>Day trading setups poised for immediate follow through</li>
+  <li>Swing trading setups for larger  than average profit potential</li>
+  <li>Daily market commentary</li>
+  <li>Hit and Run strategy and methodology</li>
+  <li>Best setups to use in volatile  markets</li>
+  <li>Trade management  (entries/exits/stops)</li>
+  <li>Charts and graphs to help you understand<br/>All delivered in a style that is unique to Jeff alone.</li>
+  </ul>
+</div>
+
+
+</div>
+
+
+
+
+<div class="cooper_main_cart_container">
+
+<table width="100%" align="center" border="0" cellpadding="0" cellspacing="3" class="add_to_cartCooper">
+<tr>
+<td width="50%" class="cooper_recurring">Monthly</td>
+<td width="1px" rowspan="3"><img src="<?=$IMG_SERVER?>/images/buzzTrial/cart_divider.jpg" width="1" height="70" /></td>
+<td width="50%"class="cooper_recurring">Annual</td>
+</tr>
+<tr>
+<td>$<?=$viaProducts['CooperMonthly']['price']?></td>
+<td>$<?=$viaProducts['CooperAnnual']['price']?></td>
+</tr>
+<tr>
+<td><a style="cursor:pointer;"><img src="<?=$IMG_SERVER?>/images/cooperTrial/BuyNow.jpg" alt="add to cart" onclick="checkcart('11','4','SUBSCRIPTION')" border="0" /></a></td>
+<td><a style="cursor:pointer;"><img src="<?=$IMG_SERVER?>/images/cooperTrial/BuyNow.jpg" alt="add to cart" onclick="checkcart('13','4','SUBSCRIPTION')" border="0" /></a></td>
+</tr>
+</table>
+</div>
+
+<div class="Addtocartmaincooper">
+<h1>Get <span>Cooper</span> Now!</h1>
+<span><a style="cursor:pointer;"  href="#"><img src="<?=$IMG_SERVER?>/images/cooperTrial/signUptrial.jpg" onclick ="javascript:signup();" alt="Sign up for 14 day trial" border="0"  vspace="10"/></a></span>
+</div>
+
+
+
+<div class="Contactmain">
+<p>Questions? Contact us at 212-991-9357 or</p> <span><a href="mailto:support@minyanville.com">support@minyanville.com</a></span>
+</div>
+
+
+
+</div>
+
+
+
+<div class="right_cont_Buzz">
+
+<div class="RightCommonCooperContainer">
+<div class="cooper_books_trial_main">
+<div class="cooper_recent_trial_heading">Learn more about the techniques and strategies that Jeff has developed through the years to trade successfully.</div>
+<br/>
+<a href="http://www.invest-store.com/minyanville/cooper.html" target="_blank"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_1.jpg"/></a>
+<a href="http://www.invest-store.com/minyanville/cooper.html" target="_blank"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_2.jpg"/></a>
+<a href="http://www.invest-store.com/minyanville/cooper.html" target="_blank"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_3.jpg"/></a>
+<a href="http://www.invest-store.com/minyanville/cooper.html" target="_blank"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_4.jpg"/></a>
+<br/>
+<div class="cooper_Mainheading"> <a href="http://www.invest-store.com/minyanville/cooper.html" target="_blank"> CLICK HERE for Jeff's books & DVDs. </a> </div>
+</div>
+</div>
+
+<div class="RightCommonCooperContainer">
+<h1>Subscriber Testimonials</h1>
+First, I must say you are a legend in my book and I have high regards for your work as I have followed you for years. I want to thank you for your brilliant contributions you have made to the trading world and you have certainly had a profound impact on my career as a trader.
+<br />
+<i>- D. Hansen</i>
+<br /><br />
+When I embarked on trading I was not at all sure I could do well enough to make a living at it. Thanks to your suggestions and strategies I no longer have that doubt. My portfolio rose 13.88% in my first five days as a trader and would have risen considerably more if I hadn't tried a few of my own ideas that didn't work out! Henceforth, I'm going to stick to the script and to the ideas provided by your service. If I do, I know I will succeed. That's a good feeling.
+<br />
+<i>- Eich</i>
+<br /><br />
+Jeff, your commentaries just keep getting better. Today's was superb. I look forward to reading them more than the nightly picks which I make money on. You have a fascinating history.
+<br />
+<i>- M. Bradley</i>
+<br /><br />
+Jeff, I just wanted to send you a quick note to say that you rule. I have subscribed to some market publications in my life, but Minyanville and Daily Market Report is by far, hands down, the best. Keep up the good work! Warm regards,
+<br />
+<i>- J. Hopper</i>
+<br /><br />
+<h1><span style="font-family:Arial, Helvetica, sans-serif;background-repeat:no-repeat;margin:0px;font-size:14px;font-weight:normal;"><a style="font-family:Arial, Helvetica, sans-serif;background-repeat:no-repeat;margin:0px;font-size:14px;color:#265B8A;font-weight:bold;text-decoration:none;" href="javascript:cooperbio();">Click here</a> to read Cooper's Bio</a></span></h1>
+</div>
+
+</div>
+<!--Right Content Ends here-->
+</div>
+</td>
+</tr>
+</table>
+</div>
+<!--Main body Ends here-->
+
+<div class="TrialFooter"><img src="<?=$IMG_SERVER?>/images/cooperTrial/trialFooter.jpg"   /></div>
+</div>
+<!--Buzz main Ends here-->
+
+<?php
+$profileid=1;
+//googleanalytics($profileid,$trackname);
+googleanalytics();
+?>
+</center>
+</body>
+</html>

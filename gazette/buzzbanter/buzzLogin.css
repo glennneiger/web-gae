@@ -1,0 +1,125 @@
+/* CSS Document */
+
+body {
+	font-family:Arial, Helvetica, sans-serif;
+	margin: 0 0 0 0;
+	background-color: #cfecef;
+	color: #045279;
+	}
+
+.clear {clear:both;}
+.progress {
+	margin:40px auto;
+	width:100%;
+	text-align:center;
+	}
+
+#logoBar, #flashBar, #dropdownBar {position:relative;width:100%;}
+
+#logoBar {
+	height:52px;
+	background:transparent url(images/header_bg.gif) top left repeat-x;
+	text-align:center;
+	}
+
+#logoBar a img {
+	margin-top:7px;
+	width:120px;
+	height:41px;
+	border:none;
+	}
+
+#flashBar {
+	background:transparent url(images/flashbar_bg.gif) top left repeat-x;
+	}
+
+#flashLasso {width:300px; margin:0px auto;}
+
+.outerOuterBorder {
+	border: 1px solid #999;
+	}
+
+.innerOuterBorder {
+	border:1px solid #333;
+	}
+
+.loginbox {
+	width: 100%;
+	text-align:center;
+	margin:10px auto 0px auto;
+	height:115px;
+	overflow:auto;
+	}
+.error {color:red; font-size:11px;}
+.loginbox b {
+	font-size:14px;
+	}
+
+.inbtn {
+	width:67px;
+	height:21px;
+	white-space:nowrap;
+	cursor:pointer;
+	margin-top:3px;
+	}
+
+.mainLayer {
+	position: relative;
+	height:392px;
+	background-color:#04517a;
+	background-image: url(images/msgBox.gif);
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+.mainLayer-trial{
+	position: relative;
+	height:392px;
+	background-color:#04517a;
+	background-image: url(images/msgBox_trial.gif);
+	background-position: top center;
+	background-repeat: no-repeat;
+
+}
+
+.wrapper {
+	position:relative;
+	width:276px;
+	top:212px;
+	margin:0px auto 0px auto;
+	}
+
+.wrapper a img {
+	border: 0px solid black;
+	}
+	
+.leftPanel {float:left;}
+.rightPanel{float:right;}
+
+#bottomLinks {
+	position:relative;
+	height:20px;
+	background-color:#04517a;
+	text-align:center;
+	border-top:1px solid #999;
+	border-bottom:1px solid #333;
+	color:#ccc;
+	}
+
+#bottomLinks a, #bottomLinks a:visited {
+	text-decoration:none;
+	color:#ccc;
+	font-size:11px;
+	font-weight:bold;
+	}
+
+#footer {
+	font-size: 8px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-align:center;
+	background-color:#04517a;
+	color:#fff;
+	width: 100%;
+	height:17px;
+	padding:5px 0 0 0;
+	clear:both;
+	}

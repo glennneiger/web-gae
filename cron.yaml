@@ -1,0 +1,35 @@
+cron:
+- description: publish article on scheduled time
+  url: /admin/publish_article.php
+  schedule: every 2 minutes 
+  timezone: America/New_York
+    
+- description: Timed Publishing Dailyfeed
+  url: /admin/publish_dailyfeed.php
+  schedule: every 2 minutes 
+  timezone: America/New_York
+  
+- description: Timed Publishing Video
+  url: /admin/publish_video.php
+  schedule: every 2 minutes 
+  timezone: America/New_York      
+  
+- description: displayperformance
+  url: /admin/memcache_flush.php
+  schedule: every 1 hours
+  timezone: America/New_York
+  
+- description: truncateTodayBuzz
+  url: /admin/cronTruncateTodayBuzz.php
+  schedule: every day 09:00
+  timezone: America/New_York
+  
+- description: truncate_translog
+  url: /admin/truncate_translog.htm
+  schedule: every day 05:00
+  timezone: America/New_York 
+  
+- description: buzzDataPublish
+  url: /admin/robot.buzzcontentapi.php
+  schedule: every 2 minutes
+  timezone: America/New_York    

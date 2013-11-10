@@ -1,0 +1,16 @@
+<?include("$D_R/emails/_eml_header.htm")?>
+<br>
+<p>Dear <?=$fname?>,
+  <br>
+  <br>
+Thank you for joining Minyanville, the fastest  growing community in finance.</p>
+To activate your FREE two week trial, please <a href="<?=$HTDOMAIN?>/register/trial/trial_activate.htm?activateid=<? echo $_GET['code']; ?>" target="_blank"> CLICK HERE</a>
+<p>After activating your account, launch the Buzz &amp; Banter  by simply clicking the link on the left navigation bar. To login, use the  username (email) and password chosen during the registration.<br />
+  <br />
+We&rsquo;re glad you decided to visit the &lsquo;Ville and hope you stay. Please email us  at <a href="mailto:support@minyanville.com">support@minyanville.com</a> with  comments, questions or&hellip;praise!</p>
+<p>Welcome to the &lsquo;Ville<br>
+
+<?php
+$tracking_name = $tracking_name['_eml_trial_register'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?></p>

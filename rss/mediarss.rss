@@ -1,0 +1,49 @@
+<?
+global $D_R;
+include_once($D_R."/lib/feed/_design_lib.php");
+include_once($D_R."/admin/lib/_contributor_class.php");
+$objContrib= new contributor();
+$currentFilter=$_GET['from'];
+if(!$maxItemLimit || $maxItemLimit>500){
+	$maxItemLimit=15;
+}
+$type = trim(strtolower($_GET['type']));
+
+if(isset($_GET['type']) && $_GET['type']!='')
+{
+	if($type == 'articles' or $type == 'article')
+	{
+		header('Content-type: text/xml');
+		$feed_type = 1;			// Media feed for articles only
+		$objFeedView= new feedViewer($feed_type);
+		$objFeedView->displayMediaRSS($maxItemLimit,$currentFilter);
+	}
+	elseif($type == 'dailyfeed')
+	{
+		header('Content-type: text/xml');
+		$feed_type = 18;		// Media feed for Dailyfeed only
+		$objFeedView= new feedViewer($feed_type);
+		if(isset($_GET['topic']) && $_GET['topic'] != '')
+		{
+			$topic	= trim($_GET['topic']);
+			$objFeedView->displayDailyfeedMediaRSS($maxItemLimit,$topic,NULL,$currentFilter);
+		}
+		else
+		{
+			$objFeedView->displayDailyfeedMediaRSS($maxItemLimit,'',NULL,$currentFilter);
+		}
+	}
+	else
+	{
+		echo "Please Specify the accurate type!";
+	}
+}
+else
+{
+	header('Content-type: text/xml');
+	$feed_type = 1;			// Media feed for articles only
+	$objFeedView= new feedViewer($feed_type);
+	$objFeedView->displayMediaRSS($maxItemLimit,$currentFilter);
+}
+
+?>

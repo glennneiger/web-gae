@@ -1,0 +1,36 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$D_R/admin/_authenticate.htm");
+
+if(!$AD->getPerm("subscribers_all")){//not allowed to edit subscriptions
+	admin_error();
+	exit();
+}
+
+if(!$refer=base64_decode($refer))
+	$refer="subs.htm";
+
+if(!$id){
+	location($refer.qsa(array(error=>"Couldn't remove. Didn't provide a subscription id")));
+	exit();
+}
+/*
+del_query("subscription","id",$id);
+del_query("subscription_ps","subid",$id);
+del_query("subscription_trans","subscription_id",$id);
+del_query("subscription_keys","user_id",$id);
+*/
+
+$subsid[id]=$id;
+
+if($type==1){
+	$subs[is_block]=1;
+	update_query("subscription",$subs,$subsid);
+	location(urlqsa($refer,array(error=>"The subscription was blocked")));
+}
+else{
+	$subs[is_block]=0;
+	update_query("subscription",$subs,$subsid);
+	location(urlqsa($refer,array(error=>"The subscription was unblocked")));
+}
+?>

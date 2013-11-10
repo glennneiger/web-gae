@@ -1,0 +1,168 @@
+<?php
+session_start();
+
+//CheckMobile('18','');
+$pageName = "dailyfeed";
+ $pageId=141;
+
+$item_table	=	'daily_feed';
+$df_item_id	=	'18';
+global $mobile_itemType,$mobile_itemID;
+$mobile_itemType="18";
+$mobile_itemID="";
+$mvPremiumArr = getKeyVal('tid,source,cid,category,tag,p,id',$_SERVER['REQUEST_URI']);
+include_once($D_R."/admin/lib/_dailyfeed_data_lib.php");
+include_once($D_R."/lib/_content_data_lib.php");
+include_once($D_R."/lib/config/_dailyfeed_config.php");
+include_once($D_R."/lib/_dailyfeed_design_lib.php");
+include_once($D_R."/lib/_bitly_lib.php");
+include_once($D_R."/lib/_article_design_lib.php");
+include_once($D_R.'/lib/config/_cache_config.php');
+include_once($D_R."/lib/MemCache.php");
+include_once($D_R."/lib/config/_article_config.php");
+include_once($D_R.'/lib/_disqus_lib.php');
+include_once($D_R."/lib/disqus/disqusapi/disqusapi.php");
+include_once($D_R.'/lib/_misc.php');
+$objCache= new Cache();
+global $dailyfeedLandingItems,$dailyfeedTopicInterval,$cm8_ads_1x1_Text;
+$objDailyfeed 	=	new Dailyfeed("daily_feed","");
+
+$objContent 	= 	 new Content();
+$oid 			= 	 $objContent->contentType;
+$pageJS=array("config","registration","jquery","iboxregistration","creditcard","nav","redesign","scriptaculous",'dailyfeed','ajax','friends','zoomimage','bitly');
+$pageCSS=array("global","layout","rightColumn","nav","dailyfeed","zoomimage","fontStylesheet");
+$topic=trim(($mvPremiumArr['tag']=="" ? $_GET['tag'] : $mvPremiumArr['tag']));
+$source=trim(($mvPremiumArr['source']=="" ? $_GET['source'] : $mvPremiumArr['source']));
+$cid=($mvPremiumArr['cid']=="" ? $_GET['cid'] : $mvPremiumArr['cid']);
+$offset=($mvPremiumArr['p']=="" ? $_GET['p'] : $mvPremiumArr['p']);
+$tid=($mvPremiumArr['tid']=="" ? $_GET['tid'] : $mvPremiumArr['tid']);
+$category=($mvPremiumArr['category']=="" ? $_GET['category'] : $mvPremiumArr['category']);
+if($topic){
+	$metatext=str_replace("/","",$topic);
+	$textval="TAG";
+}elseif($source){
+	$metatext=str_replace("/","",$source);
+	$textval="SOURCE";
+}
+elseif($cid){
+	$metatext=$objDailyfeed->getAuthor($cid);
+	$textval="AUTHOR";
+}elseif($tid){
+    $resultval=$objDailyfeed->getTicker($tid);
+	$metatext=$resultval['stocksymbol'];
+	$textval="TICKER";
+}
+
+include("../_header.htm");
+
+
+global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$bannername=$cm8_ads_Button_160x30;
+$feedViewer 	=	new dailyfeedViewer();
+
+$p=($mvPremiumArr['p']=="" ? $_GET['p'] : $mvPremiumArr['p']);
+// rearrange $offset for proper pagination.
+if ($p=="" ) $offset=0;
+if ($p>0) $offset--;
+
+////////////////////////////////////////////
+if($p=="0" || $p=="")
+{
+$feedDataArr=$objCache->getDailyFeedListCache($dailyfeedLandingItems,$topic,$offset,$source,$cid,$tid,$category);
+}
+else
+{
+$feedDataArr=$objDailyfeed->getDailyFeedList($dailyfeedLandingItems,$topic,$offset,$source,$cid,$tid,$category);
+}
+
+$countPerPage	=	count($feedDataArr);
+$userid = $_SESSION['SID'];
+if(isset($userid) && $userid !="") {
+$show_df_news_signup = checkuser_dfemail_subscribed($userid);
+}
+else {
+$show_df_news_signup = 0;
+}
+ $threadid	=	$feedId;
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/Articles.1.9.js" type="text/javascript"> </script>
+<div class="shadow">
+	<div id="content-container">
+	<div id="article-left">
+	<div id="dailyfeed-landing-content">
+	<div style="float:left;">
+	<div>
+	</div>
+	</div>
+	<div style="clear:both;"></div>
+
+<div id="homepage-top" >
+<div class="feed-left-container">
+<?
+  $feedViewer->showImageDFImap($topic,$source);
+?>
+
+<div class="middle-df-part">
+<div class="TD_ad">
+	<?
+	if(!$_SESSION['AdsFree'] && $val == 0) { ?>
+	   <div class="text-ad-container-df">
+	   <span>
+		<?php CM8_ShowAd($cm8_ads_1x1_Text); ?>
+		</span>
+		</div>
+	<? } ?>
+</div>
+<?php
+
+if(count($feedDataArr)>0) {
+
+	$feedViewer->dailyfeedContent($feedDataArr);
+}
+
+?>
+</div >
+<?
+if($topic || $source || $cid || $tid){
+	$numrows=$objCache->getDailyFeedCountTopicSourceCache($dailyfeedLandingItems,$topic,$source,$cid,$tid,$category);
+}elseif($p=="0" || $p=="")
+{
+	$numrows=$objCache->getDailyFeedCountCache($dailyfeedLandingItems,$topic,$source,$cid,$tid,$category);
+}
+else
+{
+	$numrows=$objDailyfeed->getDailyFeedCount($dailyfeedLandingItems,$topic,$source,$cid,$tid,$category);
+}
+
+$feedViewer->showDailyFeedPagination($offset,$numrows,$dailyfeedLandingItems,$p,$dailyfeedpaginationno,$topic,$source,$cid,$tid,$category);
+?>
+</div>
+<!-- end shadow -->
+<div style="clear:both;"></div>
+</div>
+</div>
+	</div><!-- end article left -->
+<!-- Right Section -->
+
+<? // $feedViewer->dailyfeedRightModules(); ?>
+
+<!-- Right SEction End -->
+<?php
+$itemType=18;
+$arrRightCols	=	array('show_300x250','recommendation','mvTopsyTweet','most_commented','most_read','most_tickers','financial_product_guide','show_MediumRectangle_300x250');
+
+include($D_R."/_rightcolumn.htm");
+?>
+</div> <!-- end homepage-top -->
+</div>
+
+<div style="clear:both;"></div>
+<!-- Share this Code Start -->
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="
+http://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher: "c33749e3-a8dd-48d6-af73-7568c530a7f8",onhover: false}); </script>
+
+<!-- Share this Code End -->
+
+<? include("../_footer.htm"); ?>

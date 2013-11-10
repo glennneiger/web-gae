@@ -1,0 +1,205 @@
+<?php
+	header('Content-type: text/xml');
+	global $D_R,$HTPFX,$HTHOST,$articleAdTS;
+	include("$D_R/layout/dbconnect.php");
+	include_once("$D_R/lib/_misc.php");
+	include_once($D_R."/admin/lib/_article_data_lib.php");
+	include_once("$D_R/lib/config/_thestreet_config.php");
+	include_once("$D_R/lib/config/_rss_config.php");
+	include_once("$D_R/admin/lib/_contributor_class.php");
+	$objContrib= new contributor();
+	$currentFilter=$_GET['from'];
+	echo '<?xml version="1.0" encoding="utf-8" ?>' ;
+	echo '<rss version="2.0"
+			xmlns:content="http://purl.org/rss/1.0/modules/content/"
+			xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+			xmlns:dc="http://purl.org/dc/elements/1.1/"
+			xmlns:atom="http://www.w3.org/2005/Atom"
+			xmlns:tickersdata="http://www.minyanville.com/rss/tickerrss.htm?from=thestreet"
+			xmlns:tickersval="http://www.minyanville.com/rss/tickerrss.htm?from=thestreet"
+			xmlns:media="http://search.yahoo.com/mrss/">';
+
+	$sql = "select distinct articles.id id, articles.title, contributors.name author,articles.blurb , articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, has_bio, publish_date,date as 'creation_date', blurb, body, position, character_text,subsection_ids from articles, contributors where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1'";
+	
+	if($currentFilter){
+	    $contribFilterId=$objContrib->getExcludedPartnerId();
+		$sql .= " and contributors.id IN (SELECT CGM.contributor_id FROM contributor_groups_mapping CGM,
+contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($contribFilterId))";
+	}
+	$sql .= "  ORDER BY publish_date DESC LIMIT 0,15";
+
+	$results = exec_query($sql);
+	
+	if($results[0]['publish_date'] == '0000-00-00 00:00:00' || trim($results[0]['publish_date'])=='')
+	{
+		$lastbuilddate	=	$results[0]['creation_date'];
+	}
+	else
+	{
+		$lastbuilddate	=	$results[0]['publish_date'];
+	}
+	
+	$LBD= date("D, j M Y H:i:s",strtotime($lastbuilddate));
+	
+	?>
+	<channel>
+	<title>Minyanville</title>
+	<description>The Trusted Choice for the Wall Street Voice</description>
+	<link><?=$HTPFX.$HTHOST?>?from=thestreet</link>
+	<copyright><?=date("Y")?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
+	<ttl>1</ttl>
+	<lastBuildDate><?php echo $LBD;?> EDT</lastBuildDate>
+	<language>en</language>
+	<?php 
+	foreach($results as $recentArticlerow)
+	{
+	$partnerId	=	'c81e728d9d4c2f636f067f89cc14862c';
+	$articleId=$recentArticlerow['id'];
+	$title=mswordReplaceSpecialChars($recentArticlerow['title']);
+	$author=$recentArticlerow['contributor'];
+    $author=htmlentities($author, ENT_QUOTES);
+	$link=$HTPFX.$HTHOST.makeArticleslink($recentArticlerow['id']);
+	$articleKeyword=$recentArticlerow['keyword'];
+	$articleBlurb=$recentArticlerow['blurb'];
+	$partnerId	=	'c81e728d9d4c2f636f067f89cc14862c';
+	if($recentArticlerow['has_bio'] == 1)
+	{
+		$authorlink	=	$HTPFX.$HTHOST.'/gazette/bios.htm?bio='.$recentArticlerow['authorid'].'&from=theStreet';
+	}
+	else
+	{
+		$authorlink	=	$HTPFX.$HTHOST.'&from=theStreet';
+	}
+	$url=$HTNOSSLDOMAIN.makeArticleslink($articleId,$articleKeyword,$articleBlurb)."?from=theStreet";
+	$url=str_replace("https:","http:",$url);
+    	
+	if(!$articleBlurb){
+		$character_text=$recentArticlerow['character_text'];
+	}else{
+		$character_text=$articleBlurb;
+	}
+	//$character_text=htmlentities($character_text, ENT_QUOTES);
+	$guid	=	$HTNOSSLDOMAIN.makeArticleslink($articleId,$articleKeyword,$articleBlurb);
+	$guid	=	str_replace("https:","http:",$guid);
+	$articleLang	='en';
+	$sqlGetArticleThread = "select ex_thread.id threadId from articles, ex_thread where articles.id=ex_thread.content_id and ex_thread.content_table='articles' and articles.approved='1' and articles.is_live='1' and ex_thread.content_id=".$articleId;
+	$resGetArticles=exec_query($sqlGetArticleThread,1);
+	$articleThread	=	$resGetArticles['threadId'];
+	$commentRSS	=	$HTPFX.$HTHOST."/feed/getFeed.htm?feedType=comments&tid=".$articleThread."&idPartner=".$partnerId."&from=thestreet";
+	if($character_text!='')
+	{
+		foreach($articleAdTS as $key=>$value){
+				$patterns[$key]="/{".$key."}/";
+				$replacements[$key]=$articleAdTS[$key];
+		}
+		$desc=preg_replace($patterns,$replacements,$character_text);
+		$desc=htmlentities(strip_tags($desc,'ENT_QUOTES'));
+	}
+	else
+	{
+		$numWords = 100;	//limit the first 100 words for the descriptions
+		$articlebody="";
+		
+		
+		$articlebody=article_body_word_replace($recentArticlerow['body']);
+		
+		foreach($articleAdTS as $key=>$value){
+				$patterns[$key]="/{".$key."}/";
+				$replacements[$key]=$articleAdTS[$key];
+		}
+		$articlebody=preg_replace($patterns,$replacements,$articlebody);
+		
+		$link=$HTPFX.$HTHOST.makeArticleslink($recentArticlerow['id']);
+		$tempBody = htmlentities(strip_tags($articlebody,'ENT_QUOTES'));
+		$bodyArray = preg_split("/[\s,]+/",$tempBody);
+		for($i=0;$i<$numWords;$i++) {
+			$desc .= $bodyArray[$i] . " ";
+		}
+		if (count($bodyArray) > 100) {
+			$desc .= "...";
+		}
+	}
+	$desc	=	mswordReplaceSpecialChars($desc);
+	
+	
+	foreach($articleAdTS as $key=>$value){
+				$patterns[$key]="/{".$key."}/";
+				$replacements[$key]=$articleAdTS[$key];
+			}
+	$body=preg_replace($patterns,$replacements,$recentArticlerow['body']);
+	$content=mswordReplaceSpecialChars(htmlentities($body));
+	
+	/*$contentIntroductory =	"<a href='http://www.minyanville.com/buzzbanter?from=thestreet'>$author is a leading markets commentator, and writes daily on Buzz & Banter</a>";
+	$contentEnding		=	"Get $author 's Insights and commentary in real-time <a href='http://www.minyanville.com/buzzbanter?from=thestreet'> Click here now for a free trial of Buzz & Banter</a>";*/
+	
+	$contentIntroductory =	"<a href='http://www.minyanville.com/buzzbanter/?utm_source=thestreet&utm_medium=toptext&utm_campaign=buzzbanter'>$author is a leading markets commentator, and writes daily on Buzz & Banter</a>";
+	$contentEnding		=	"Get $author 's Insights and commentary in real-time <a href='http://www.minyanville.com/buzzbanter/?utm_source=thestreet&utm_medium=bottomtext&utm_campaign=buzzbanter'> Click here now for a free trial of Buzz & Banter</a>";
+	
+	$content	=	$contentIntroductory." ".$content." ".$contentEnding;
+	
+	
+	$stocksArr=make_stock_array($recentArticlerow['body']);
+	
+	//$tagobj		= new Exchange_Element();
+	$objArticle	= new ArticleData();
+	$gettag		= $objArticle->getTagsOnArticles($recentArticlerow['id'],'1');
+	$tagarray=array();
+    if(count($gettag)>0)
+    {
+    foreach($gettag as $tagvalue){
+	    $validatetag=is_stock($tagvalue['tag']);
+		if($validatetag['exchange']){
+	 	$tagarray[]=$tagvalue['tag'];
+		}
+
+	 }
+	}
+	$uniquestocks= make_stock_array(strip_tags($recentArticlerow['body']),$countstock="1");
+	$unique_stocks=array_unique(array_merge($tagarray,$uniquestocks));
+		
+	$uid=gmdate("Ymd",strtotime($date));
+	$uid="thestreet_".$articleFeedType.$uid.$recentArticlerow['id'];
+	?>
+	<item>
+	<title><?=htmlentities(strip_tags($title))?></title>
+	<link><?=htmlentities($url)?></link>
+	<?php
+		if($recentArticlerow['publish_date'] == '0000-00-00 00:00:00')
+		{
+			$display_date	=	$recentArticlerow['creation_date'];
+		}
+		else
+		{
+			$display_date	=	$recentArticlerow['publish_date'];
+		}
+	?>
+	<pubDate><?=date('D, j M Y H:i:s',strtotime($display_date)).'EST' ?></pubDate>
+	<guid isPermaLink="true"><?=htmlentities($guid)?></guid>
+	<description><![CDATA[<?=$desc?>]]></description>
+	<author>
+		<title><?=htmlentities(strip_tags($author)).', Minyanville.com' ;?></title>
+		<link><?=htmlentities($authorlink);?></link>
+	</author>
+
+	<content:encoded><![CDATA[<?=$content?>]]></content:encoded>
+	<tickersdata:tickers>
+	<?php
+	foreach($unique_stocks as $value) {
+	$getExchange=exec_query("select exchange from ex_stock where stocksymbol='".$value."'",1);
+	?>
+	<tickersval:ticker><![CDATA[<?=$getExchange['exchange'].':'.strtoupper($value)?>]]></tickersval:ticker>
+	<?php }?>
+	</tickersdata:tickers>
+	<wfw:commentRss><?=htmlentities($commentRSS)?></wfw:commentRss>
+	<?php
+	$i=0;
+	$arr = array();
+	$sqlGetCategory="SELECT name FROM section WHERE section_id IN (".$recentArticlerow['subsection_ids'].") ";
+	$resGetCategory=exec_query($sqlGetCategory);
+	foreach($resGetCategory as $category) { 
+	?>	
+	<category><![CDATA[<?=$category['name']?>]]></category>
+	<?php 	} ?>
+	</item>
+	<?php } ?>
+	</channel></rss>

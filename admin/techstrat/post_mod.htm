@@ -1,0 +1,189 @@
+<?
+session_start();
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$D_R/lib/techstrat/_techstratData.php");
+include_once("$D_R/lib/config/_techstrat_config.php");
+include_once("$D_R/lib/_misc.php");
+$objContent=new Content("techstrat_posts","");
+
+$cancreate=$AD->getPerm("techstrat_post");				//-------Check User accesss for page---------------
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+$objTechStartData= new techstartData("techstrat_posts");
+$post_id = $_REQUEST['post_id'];
+$post	=	$_POST['post'];
+$post['admin_id']=$_SESSION['AID'];
+//$post['publish_date']=mktime($_POST[hour],$_POST["minute"],0,$_POST[mo],$_POST[day],$_POST[year]);
+$post['publish_date']=strtotime($_POST[year]."-".$_POST[mo]."-".$_POST[day]." ".$_POST[hour].":".$_POST["minute"].":00");
+
+$bounceback="./posts.htm";
+$currentValue=$objContent->getTableData($post_id,"techstrat_posts");
+
+if(stristr($banter[image],"space.gif"))$banter[image]="";
+if(!count($_POST)){
+	location($bounceback.qsa(array(error=>"No changes were made",post_id=>$post_id,page=>$page)));
+	exit;
+}
+
+$currenttime=time();
+
+if($_POST['inputvalue']=='approve')
+{
+	$post[is_approved]=1;
+    $post['is_sent']=1;
+}
+else
+{
+	$post[is_approved]=0;
+}
+
+if($post['publish_date'] > $currenttime){
+	$post['is_live']=0;
+    $post['is_sent']=0;
+}else{
+	$post['is_live']=1;
+}
+
+$post['is_draft']=0;
+
+
+if(($_POST['inputvalue']=="draft") && ($_POST['inputvalue']!=="approve")){
+
+	$post['is_draft']="1";
+	$post['is_live']=0;
+	$post[is_approved]=0;
+}
+
+$verifyticker=$objTechStartData->getTechStartTickerStock($_POST['postticker']);
+if($verifyticker && $currentValue['is_approved']!=="1"){
+	$post['is_draft']=1;
+	$post['is_approved']=0;
+    $post['is_live']=0;
+}
+
+
+if($post['is_live'] ==0 && $_POST['syndicate']!=''){
+	$post_premium['is_live'] = 0;
+}elseif($post['is_live'] ==0 && $_POST['syndicate']==''){
+	$post_premium['is_live'] = 0;
+}elseif($post['is_live'] ==1 && $_POST['syndicate']!=''){
+	$post_premium['is_live'] = 1;
+}elseif($post['is_live'] ==1 && $_POST['syndicate']==''){
+	$post_premium['is_live'] = 0;
+}
+
+$post_premium['item_type'] = $objTechStartData->contentType;
+$post_premium['date'] = mysqlNow($post['publish_date']);
+
+
+$post[title]=addslashes(mswordReplaceSpecialChars(stripslashes($post[title])));
+$post[position]=addslashes(mswordReplaceSpecialChars(stripslashes($_POST[post]['position'])));
+$post[body]=addslashes(mswordReplaceSpecialChars(stripslashes($_POST[post]['body'])));
+$post[contrib_id]= $_POST[post]['contrib_id'];
+$post[category_id]= implode(",",$_POST[post]['category_id']);
+$post['publish_date']=mysqlNow($post['publish_date']);
+if($post_id){
+	if($_POST['inputvalue']=='delete'){
+		$post_remove["is_deleted"]=1;
+		$post_premium['is_deleted'] =1;
+		$objTechStartData->updateTechStartPost($post_remove,$post_id);
+		$objContent->removeUnapprovedItems($post_id,'techstrat_posts');
+		if($_POST['syndicate']){
+			$objContent->updatePremiumContent($post_premium,$post_id);
+		}
+		$objTechStartData->deleteTechStartTickers($id);
+		$objTechStartData->deleteTechStartTopics($id);
+		$err="The feed was removed";
+		unset($id);
+	}
+	else
+	{
+		$objTechStartData->updateTechStartPost($post,$post_id);
+		$premiumID = $objContent->getSyndicate($post_id,$objTechStartData->contentType);
+		if($_POST['syndicate']){
+			$objContent->updatePremiumContent($post_premium,$post_id);
+		}elseif($_POST['syndicate'] =='' && $premiumID!=''){
+			$objContent->deletePremiumContent($post_id,$objTechStartData->contentType);
+		}
+
+		if($_POST['postticker']){
+			$objTechStartData->setTechStartTickers($_POST['postticker'],$post_id);
+		}else{
+			$objTechStartData->deleteTechStartTickers($post_id);
+
+		}
+
+		if($_POST['posttopic']){
+			$objTechStartData->setTechStartTopic($_POST['posttopic'],$post_id);
+		}else{
+			$objTechStartData->deleteTechStartTopic($post_id);
+
+		}
+		$err="The post was updated";
+	}
+}
+else
+{
+	$post_id=$objTechStartData->insertPost($post);
+	if($post_id)
+	{
+		if($_POST['syndicate']){
+			$objContent->insertPremiumContent($post_premium,$post_id);
+		}
+		$objTechStartData->setTechStartTopic($_POST['posttopic'],$post_id);
+		$objTechStartData->setTechStartTickers($_POST['postticker'],$post_id);
+		$err="Your content was submitted";
+	}
+}
+if(!empty($post_id)){
+	if($_POST['inputvalue']=='approve')
+	{
+		if(!$verifyticker)
+        {
+			$sqlIsPublished="select id from content_seo_url where item_id='".$post_id."' and item_type='".$objTechStartData->contentType."'";
+			$resultIsPublished=exec_query($sqlIsPublished,1);
+			if(empty($resultIsPublished)){
+				$url=$objContent->getTechStratUrl($post_id);
+				$objContent->updateContentSeoUrl($post_id,$objTechStartData->contentType,$url);
+			}
+		}
+	}
+    $objContent->contentId = $post_id;
+    $objContent->setTechStartMeta();
+}
+
+/*Send email alert*/
+
+if($post['is_approved']=='1' && $post['is_live']=="1" && ($_POST['post']['is_sent']=="" || $_POST['post']['is_sent']=="0")){
+	/*Send email to subscribers using via*/
+           	global $techStratFromName,$techStratFromEmail, $techStratTemplate;
+			$from[$techStratFromEmail]= $techStratFromName;
+			$subject=trim(stripslashes($post['title']));
+			$msgfile="/tmp/spam_techstrat_".mrand().".eml";
+			$msghtmlfile="$D_R/assets/data/".basename($msgfile);
+			$msgurl=$techStratTemplate.qsa(array(id=>$post_id));
+			$mailbody=inc_web($msgurl);
+			include_once("$D_R/lib/_user_controller_lib.php");
+			$userObj=new user();
+			$result = $userObj->emailDetails($from,$subject,utf8_encode($mailbody),'TechStrat');
+			$err="Your content was submitted and an email was sent to subscribers.";
+
+}else{
+	if($_POST['post']['is_sent']=="1"){
+		$err="Your content was submitted.";
+    }
+}
+
+$updatedValue=$_POST;
+$action=$_POST['inputvalue'];
+$objContent->userAuditAlerts($post_id,$currentValue,$updatedValue,$action);
+
+if($verifyticker){
+	$err="Invalid ticker";
+}
+location($bounceback.qsa(array(post_id=>$post_id,error=>$err)));//redirect to the post they just made
+
+
+?>

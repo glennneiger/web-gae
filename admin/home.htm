@@ -1,0 +1,419 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+?>
+<br>
+<div class=adminheader>Minyanville.com Administration Area</div>
+<br>
+<table>
+<TR valign=top>
+<TD><?=spacer(20)?></TD>
+<TD nowrap>
+<?if($AD->getPerm($navpages[portfolio][perms])){?>
+<!--<a href="gazette.htm"><img src="assets/mv-gazettemain.gif" border=0 vspace=5 align=left></ant Portfolio Mangement</b><br><br>
+>-->
+<!-- <b>Active Investor Portfolio Mangement </b><br><br> -->
+
+		<?
+/*if($AD->getPerm("own_transaction")){?>
+
+<li><a href="qp/transaction.htm">Add Transaction</a></li>
+<li><a href="qp/edittransaction.htm">Edit Transaction</a></li>
+<li><a href="qp/QP_selltransaction.htm">Sell Transaction</a></li>
+<li><a href="qp/cashentry.htm">Initial Cash Entry</a></li>
+<br>
+<br>
+	<?}
+ if($AD->getPerm("alerts_all")){?>
+		<li><a href="qp/alerts.htm">Create/ Edit Alerts</a>
+		<li><a href="qp/approve.htm">Approve Alerts</a>
+		<br><br>
+<?}
+ if($AD->getPerm("blogs_all")){?>
+		<!--<li><a href="qp/blogs.htm">Create/ Edit Blogs</a><br>
+		<li><a href="qp/blogs_approve.htm">Approve Blogs</a>
+		<br><br>-->
+<? }
+?>
+<!--<li><a href="qp/mvtvupload.htm">Video Upload</a><br>
+                <li><a href="qp/mvtv_approve.htm">Video Approve</a>
+                <li><a href="qp/mvtvupdate.htm">Video Update</a><br>
+                <br><br>-->
+
+<?
+*/
+}
+/* for options smith*/
+if($AD->getPerm($navpages[option_smith][perms])){?>
+		<b>OptionSmith</b><br><br>
+
+		<?
+		if($AD->getPerm("ss_own_transaction")){?>
+
+		<li><a href="ss/transaction.htm">Add Transaction</a></li>
+		<?}
+		if($AD->getPerm("ss_initial_cash_entry")){?>
+		<li><a href="ss/cashentry.htm">Initial Cash Entry</a></li>
+
+		<?} ?>
+		<br>
+		<?
+		 if($AD->getPerm("ss_alerts_all")){?>
+				<li><a href="ss/alerts.htm">Create/ Edit Alerts</a>
+				<li><a href="ss/approve.htm">Approve Alerts</a>
+				<br><br>
+		<? }
+}
+
+/* for BMTP */
+
+if($AD->getPerm($navpages[bmtp][perms])){?>
+		<b>Bull Market Timer</b><br><br>
+		<?
+		 if($AD->getPerm("bmtp_alerts_all")){ ?>
+				<li><a href="bmtp/alerts.htm">Create/ Edit Alerts</a>
+		<? }
+		if($AD->getPerm("bmtp_alerts_manage")){?>
+				<li><a href="bmtp/approve.htm">Approve Alerts</a>
+				<br><br>
+		<? }
+}
+
+
+/***********/
+/* for Jack */
+if($AD->getPerm($navpages['jack']['perms'])){?>
+   <b>Lavery Insight</b><br><br>
+   <?
+   if($AD->getPerm("jack_articles")){ ?>
+   <li><a href="lavery/articles.htm">Create/ Edit Articles</a>
+			   <? }
+if($AD->getPerm("jack_approve")){?>
+   <li><a href="lavery/approve.htm">Approve Articles</a>
+   <br><br>
+<?
+}
+}
+/***** JACK ENDS ******/
+
+ if($AD->getPerm($navpages[cooper][perms])){?>
+	<b>Jeff Cooper Daily Market Report</b><br><br>
+	<?if($AD->getPerm(array("cp_articles", "articles_all", "articles_own"))){?>
+	<li><a href="cooper/articles.htm">Create/ Edit Articles</a>
+	<?}?>
+	<?if($AD->getPerm(array("cp_approve"))){?>
+	<li><a href="cooper/approve.htm">Approve Articles</a><br><br />
+	<?}?>
+<?}
+if($AD->getPerm($navpages[techstrat][perms])){ ?>
+	<b>TechStrat By Sean Udall</b><br><br>
+	<?
+   	if($AD->getPerm("techstrat_post")){ ?>
+   		<li><a href="techstrat/posts.htm">Create/ Edit Posts</a>
+	 <? }
+	if($AD->getPerm("techstrat_approve")){?>
+   		<li><a href="techstrat/approve.htm">Approve Posts</a>
+	<? } ?>
+	<?php if($AD->getPerm("techstrat_performance")){?>
+   		<li><a href="techstrat/performance.htm">Upload Performance</a><br /><br />
+	<? } ?>
+	<?php if($AD->getPerm("techstrat_add_transaction")){?>
+		<li><a href="techstrat/transaction.htm">Add Transaction</a></li>
+	<? } ?>
+	<?php if($AD->getPerm("techstrat_edit_transaction")){?>
+		<li><a href="techstrat/edittransaction.htm">Edit Transaction</a></li>
+	<? } ?>
+	<?php if($AD->getPerm("techstrat_sell_transaction")){?>
+		<li><a href="techstrat/selltransaction.htm">Sell Transaction</a></li>
+	<? } ?>
+	<?php if($AD->getPerm("techstrat_initial_cash_entry")){?>
+		<li><a href="techstrat/cashentry.htm">Initial Cash Entry</a></li>
+	<? } ?>
+
+	<br><br>
+<? }
+
+/****Peter Tchir's Fixed Income Report****/
+
+if($AD->getPerm($navpages[peterTchir][perms])){ ?>
+	<b>Tchir's Fixed Income Report</b><br><br>
+	<?
+   	if($AD->getPerm("peterTchir_alerts")){ ?>
+   		<li><a href="peter-tchir/alert.htm">Create/Edit Alerts</a></li>
+	 <? }
+	 if($AD->getPerm("peterTchir_approve")){?>
+		<li><a href="peter-tchir/approve-alert.htm">Approve Alerts</a></li>
+	<? }
+	if($AD->getPerm("peterTchir_heatmap")){?>
+		<li><a href="peter-tchir/featured-heatmap.htm">Heatmap</a></li>
+	<? } ?>
+	<br><br>
+<? }
+
+/****Keene on Option Income Report****/
+if($AD->getPerm($navpages[keeneOptions][perms])){ ?>
+	<b>Keene on Options</b><br><br>
+	<?
+   	if($AD->getPerm("keeneOptions_alert")){ ?>
+   		<li><a href="keene/alert.htm">Create/Edit Alerts</a></li>
+	 <? }
+	 if($AD->getPerm("keeneOptions_approve")){?>
+		<li><a href="keene/approve-alert.htm">Approve Alerts</a></li>
+	<? } ?>
+	<br><br>
+<? }
+
+/****Elliott Wave Insider****/
+
+if($AD->getPerm($navpages[elliottWave][perms])){ ?>
+	<b>Elliott Wave Insider</b><br><br>
+	<?
+   	if($AD->getPerm("elliotWave_alerts")){ ?>
+   		<li><a href="elliott-wave-insider/alert.htm">Create/Edit Alerts</a></li>
+	 <? }
+	 if($AD->getPerm("elliotWave_approve")){?>
+		<li><a href="elliott-wave-insider/approve-alert.htm">Approve Alerts</a></li>
+	<? }
+	 if($AD->getPerm("contrib_self") || $AD->getPerm("contrib_all")){?>
+		<li><a href="contributors.htm?page=gazette">Add Analyst</a></li>
+	<? } ?>
+	<br><br>
+<? }
+
+/****Trading Calendar****/
+
+if($AD->getPerm('add_trad_calen')){ ?>
+	<b>Trading Calendar</b><br><br>
+   		<li><a href="add_trad_calen.php">Change Stock</a></li>
+	<br><br>
+<? }
+
+
+/********************  For Pep & Fil ********************************/
+
+ if($AD->getPerm($navpages[pepfil][perms])){?>
+	<b>Pep & Fil Articles</b><br><br>
+	<?if($AD->getPerm(array("pepfil_articles"))){?>
+	<li><a href="pepfil/articles.htm">Create/ Edit Articles</a>
+	<?}?>
+	<?if($AD->getPerm(array("pepfil_approve"))){?>
+	<li><a href="pepfil/approve.htm">Approve Articles</a>
+	<?}?>
+	<?if($AD->getPerm(array("pepfil_performance"))){?>
+	<li><a href="pepfil/performance.htm">Upload Performance</a>
+	<?}?>
+	<br><br>
+	<br><br />
+<?}
+
+/********************* End Pep & Fil ********************************/
+/********/
+
+if($AD->getPerm($navpages[gazette][perms])){?>
+<b>Editing+Posting</b><br><br>
+<li><a href="articles.htm">Create/ Edit Articles</a>
+<li><a href="approve.htm">Approve Articles</a><br>
+<li><a href="locked_content.htm">Unlock Articles</a><br>
+<li><a href="slideshow.htm">Create/ Edit Slideshow</a><br>
+	<li><a href="approve_slideshow.htm">Approve Slideshow</a><br><br>
+
+	<li><a href="thestreet_approve.htm">Articles from TheStreet</a>
+	<br /><br />
+
+
+<?if($AD->getPerm("observer_approve") || $AD->getPerm("observer_move")){?>
+	<li><a href="observer/observer_approve.htm" target="_blank">Articles From Observer</a></li>
+	<?php } ?>
+<?if($AD->getPerm("chars_edit")){?>
+<!-- <br><li><a href="characters.htm?page=gazette">Edit Characters</a>  -->
+	<?}?>
+
+	<?if($AD->getPerm("contrib_self") || $AD->getPerm("contrib_all")){?>
+<li><a href="contributors.htm?page=gazette">Manage Contributing Authors</a><br>
+	<?}?>
+<!-- <b>Buzz and Banter</b><br> --><br>
+<li><a href="banter.htm">Create/ Edit Buzz and Banter</a>
+<li><a href="approvebanter.htm">Approve Buzz and Banter</a><br>
+<!-- Added new by anu -->
+<!-- <li><a href="editpage.htm?filename=/assets/data/mvil_promotion.html&page=gazette&title=Minyanville%3A%20Promotion%20Section">Edit Minyanville Promotion</a><br> -->
+<?  }
+	if($AD->getPerm("feed_edit_approve")){?>
+		<br>
+		<li><a href="feed.htm">Create/ Edit MV Premium</a>
+		<li><a href="approvefeed.htm">Approve MV Premium</a>
+        <li><a href="deletefeed.htm">Delete Comments</a>
+		<br>
+<? } ?>
+<!--Added for MVTV-->
+
+<br>
+
+	<!-- end -->
+		<? //} ?>
+<li><a href="upload_video.htm"> Video Upload</a><br>
+<li><a href="mvtv_approve.htm"> Video Approve</a>
+<li><a href="add_ticker.htm">Add Ticker</a><br>
+<? /*
+if($AD->getPerm("branded_logo")){?>
+<br><li><a href="brandedlogo.htm">Create/Edit Articles Branded Logo</a>
+<br><li><a href="buzzbrandedlogo.htm">Create/Edit Buzz Branded Logo</a>
+<?}
+*/
+?>
+        <br>
+        <br>
+
+<? // if($AD->getPerm("recover_post")){
+	if(!$AD->getPerm($navpages[gazette][perms])){?>
+		<b>Editing+Posting</b><br><br>
+	<? } ?>
+		<li><a href="recover_post.htm">Recover My Post</a><br>
+<? // } ?>
+
+
+        <?if($AD->getPerm('glossary_edit')){?>
+        <!--<a href="library.htm"><img src="assets/mv-librarymain.gif" border=0 vspace=5 align=left></a>-->
+        <br>
+        <b>Library</b><br>
+        <br>
+
+<li><a href="glossary.htm">MV. Dictionary</a>
+<!--<li><a href="editpage.htm?filename=/assets/data/rpfoundation.html&page=library&title=Ruby Peck Foundation Page">Ruby Peck</a>
+--><?}?>
+<br><br>
+<?if($AD->getPerm($navpages[company][perms])){?>
+	<!--<a href="company.htm"><img src="assets/mv-company.gif" border=0 align=left hspace=5></a>--><b>MV. Company Pages</b><br><br>
+	<li><a href="editpage.htm?filename=/assets/data/privacy.html&page=company&title=Privacy Statement">Privacy Statement</a>
+	<li><a href="editpage.htm?filename=/assets/data/substerms.html&page=company&title=Subscription Terms">Subscription Terms</a>
+	<li><a href="editpage.htm?filename=/assets/data/conflicts.html&page=company&title=Conflicts and Disclosures">Conflicts and Disclosures</a>
+<li><a href="editpage.htm?filename=/assets/data/disclaimers.html&page=company&title=Generic Disclaimer">Disclaimers</a>
+<BR clear="all">
+<li><a href="editpage.htm?filename=/assets/data/faqs.html&page=company&title=FAQs">FAQs</a>
+<li><a href="editpage.htm?filename=/assets/data/mvgeneral.html&page=company&title=General Information">General Information</a>
+<li><a href="editpage.htm?filename=/assets/data/mvaccount.html&page=company&title=Membership Account Information">Membership Account Information</a>
+<li><a href="editpage.htm?filename=/assets/data/bulletin.html&page=company&title=Bulletin Delivery">Bulletin Delivery</a>
+<li><a href="editpage.htm?filename=/assets/data/ambassador.html&page=company&title=Minyanville Ambassadors">Minyanville Ambassador</a>
+<?}?>
+</TD>
+<TD><?=spacer(200)?></TD>
+<TD>
+ <?if($AD->getPerm($navpages[townhall][perms])){?>
+<!--<a href="ourtown.htm"><img src="assets/mv-ourtownmain.gif" border=0 vspace=5 align=left></a>-->
+<b>Town Hall</b><br><br>
+<li><a href="editpage.htm?filename=/assets/data/history.html&page=townhall&title=Story of Minyanville">History of Minyanville</a>
+<li><a href="characters.htm">Character Bios</a>
+<?}?>
+<br><br>
+<?if($AD->getPerm("publish_worry") || $AD->getPerm("create_worry") || $AD->getPerm("approve_worry")){?>
+<b>Wall of worry</b><br>
+<br>
+	<li>
+    	<? if($AD->getPerm("create_worry")){ ?><b><a href="lloyds-wall-of-worry/worry-create.htm">Create a new Worry</a></b><? } ?>
+    </li>
+    <li>
+    	<? if($AD->getPerm("publish_worry")){ ?><b><a href="lloyds-wall-of-worry/worry-publish.htm">Create Wall of Worry</a></b><? } ?>
+    </li>
+	 <li>
+    	<? if($AD->getPerm("approve_worry")){ ?><b><a href="lloyds-wall-of-worry/approve.htm">Approve Worry</a></b><? } ?>
+    </li>
+	<br><br>
+<? } ?>
+<?if($AD->getPerm("edu_create") || $AD->getPerm("edu_approve")){?>
+<b>Education Center </b><br>
+<br>
+	<li>
+    	<? if($AD->getPerm($navpages[admintools][perms])){?><b><a href="layout/manage_pages.php?page=edu">Create/Edit Slider Image</a></b><? } ?>
+    </li> 
+	<li>
+    	<? if($AD->getPerm("edu_create")){ ?><b><a href="edu/edu-create.htm">Create/Edit Edu Post</a></b><? } ?>
+    </li>
+    <li>
+    	<? if($AD->getPerm("edu_approve")){ ?><b><a href="edu/edu-approve.htm">Approve Edu Post</a></b><? } ?>
+    </li>
+    <li>
+    	<? if($AD->getPerm("edu_create")){ ?><b><a href="edu/edu-glossary.htm">Create/Edit Glossary Term</a></b><? } ?>
+    </li>
+     <li>
+    	<? if($AD->getPerm("edu_create")){ ?><b><a href="edu/edu-product.htm">Add Product</a></b><? } ?>
+    </li>
+	<br><br>
+<? } ?>
+<b>MV. Shops Pages</b><br>
+<br>
+	<li><a href="editpage.htm?filename=/assets/data/order_confirmation.html&page=shops&title=Shops%3A%20Order%20Confirmation%20Email">Edit Emails</a><br>
+	<li><a href="editpage.htm?filename=/assets/data/order_thanks.html&page=shops&title=Shops%3A%20Order%20Confirmation%20Thanks%20Page">Edit Thank You Page</a><br>
+	<li><a href="editpage.htm?filename=/assets/data/shipping_info.html&page=shops&title=Shops Shipping Info">Edit Shipping Info</a> (appears on all shops pages)<br>
+	<li><a href="store/categories.php">Edit Categories</a><br>
+	<li><a href="store/products.php">Edit Products</a><br>
+	<li><a href="store/orders.php">Manage Orders</a><br>
+<br><br>  -->
+<?if($AD->getPerm($navpages[admintools][perms])){?>
+	<!--<a href="admin.htm"><img src="assets/mv-admin.gif" border=0 align=left hspace=5></a>--><b>Site Administration</b><br><br>
+	<?if($AD->getPerm(array("admin_users_all", "admin_users_self"))){?>
+	<li><a href="admin_users.htm">Administer Users</a><br>
+	<li><a href="email-digest/daily_digest.php">Daily Digest</a><br>
+	<!-- <li><a href="temp-gauge/temp_gauge.php">Temperature Gauge</a><br>  -->
+	<?}?>
+	<?if($AD->getPerm("company_acct_manage")){?>
+		<!-- <li><a href="company.accounts.htm">Manage Company Accounts</a><br>
+		<li><a href="buzzchannel_accounts.htm">Buzz Channel Accounts</a><br> -->
+	<?}?>
+	<?if($AD->getPerm("subscribers_all")){?>
+	<!--<li><a href="subs.htm">View Subscriptions</a><br>-->
+	<!-- <li><a href="exchange_subs.htm">View Exchange Subscriptions</a><br>  -->
+	<!--<li><a href="#" onclick="javascript:window.open('subs.add.htm');">Create New Subscriptions</a><br>-->
+<!--	<li><a href="subs.tmp.csv.htm">View Temporary Subscriptions</a><br>-->
+	<?}?>
+	<?if($AD->getPerm("ads_edit")){?>
+	<!--<li><a href="http://ads.minyanville.com" target="_blank">Manage Advertisements</a><br>-->
+	<?}?>
+	<?if(/*$AD->getPerm("archive")*/0){?>
+		<li><a href="archive.htm">Create a site archive</a><br>
+	<?}?>
+	<?if($AD->getPerm(qw("admin_users_all admin_users_self"))){?>
+	<!-- <li><a href="http://www.emailtransmit.com/subscribers/list_overview.php" target="_blank">Email Transit</a>  -->
+	<!--<li><a href="https://www.google.com/analytics/home/" target="_blank">Urchin Stats</a>-->
+	<?}?>
+	<li><a href="layout/manage_pages.php"><b>Layout Tool</b></a><br>
+	<li><a href="layout/manage_menu.php"><b>Manage Menu</b></a><br>
+	<!-- <li><a href="layout/manage_regis_funnel.htm"><b>Manage Registration Funnel</b></a><br>  -->
+<?}?>
+<?if($AD->getPerm("manage_metadata")){?>
+<li><a href="layout/manage_metadata.htm">Manage meta data</a>
+<?}?>
+<!-- <li><a href="<?=$HTPFX.$HTADMINHOST;?>/admin/leads.htm"><b>View Leads</b></a><br> -->
+<?if($AD->getPerm("view_registration")){?>
+<!-- <li><a href="view_registration.htm">View Registration Detail</a><br />  -->
+<?}?>
+<?if($AD->getPerm("download_product_subscriber_report")){?>
+<!-- <li><a href="subscriptionemaillist.htm">Download Subscription Reports</a><br /> -->
+ <? } ?>
+ <?if($AD->getPerm("fancybox_image_upload")){?>
+<!-- <li><a href="fancybox/fancybox_image_upload.htm">Activate mailchimp fancybox</a><br />  -->
+ <? } ?>
+ <?if($AD->getPerm("yahoo_dashboard")){?>
+<li><a href="yahoo_dashboard.htm">Yahoo Dashboard</a><br />
+ <? } ?>
+
+<br><br>
+<?if($AD->getPerm($navpages[admintools][perms])){?>
+	<b>Subscription Administration</b><br><br>
+	 <?if($AD->getPerm(qw("admin_users_all admin_users_self"))){?>
+	 	<?if($AD->getPerm("add_user")){?>
+	 	<li><a href="adduser.htm">Add User</a></li> <? } ?>
+	 	<?if($AD->getPerm("subscribers_all")){?>
+		<li><a href="subscribers.htm">Manage Subscriptions</a></li><? } ?>
+		<?if($AD->getPerm("add_plan")){?>
+		<li><a href="add_subscription_plan.htm">Add Subscription Plans</a></li><? } ?>
+		<?if($AD->getPerm("subscription_dashboard")){?>
+		<li><a href="subsciption-report-active.htm">View/Download Subscription Report</a></li><? } ?>
+		<?if($AD->getPerm("subscription_dashboard")){?>
+		<li><a href="marketing-dashboard.htm">Marketing Dashboard</a></li>
+		<li><a href="subscription-refund-report.htm">View/Download Refund Report</a></li>
+		<?  } ?>
+	 <? } ?>
+<? } ?>
+
+</td>
+</tr>
+</table>
+<?include("$ADMIN_PATH/_footer.htm")?>

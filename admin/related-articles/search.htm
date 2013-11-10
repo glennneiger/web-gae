@@ -1,0 +1,52 @@
+<?
+$articleid = $_GET['id'];
+$parentId = $_GET['parentId'];
+$authorid = $_GET['author'];
+
+$location = $_GET['location'];
+if ($location == 'searchBody') { 
+	$location = 'body';
+} else if ($location == 'searchTitle') {
+	$location = 'title';
+}
+
+function getArticlesRelatedLinks($keyword, $authorid, $location, $parentArticle) {
+	    $sql = "SELECT '1' AS item_type,id, date, title FROM articles WHERE ".$location." LIKE '%".$keyword."%'"; 
+        if($authorid != 'all')
+        {
+        	$sql .= " and contrib_id = '".$authorid."'";
+        }
+        $sql .= " UNION SELECT '18' AS item_type, id, creation_date AS DATE, title FROM daily_feed WHERE ".$location." LIKE '%".$keyword."%'"; 
+        if($authorid != 'all')
+        {
+        	$sql .= " and contrib_id = '".$authorid."'";
+        }
+        $sql .= " order by date desc";               
+	
+        $results=exec_query($sql);
+        //print_r($results);
+        //return $results;
+	
+        foreach ($results as $article) 
+        {
+            $date = $article['date'];                    
+            $title = str_replace("'", "&#146;", $article['title']);
+            $relatedId = $article['id'];
+		
+                echo "<li><a href='".$HTPFX.$HTHOST.getItemURL($article['item_type'],$relatedId)."'>".$title."</a><br>
+		<form action='/admin/related-articles/submit.php' method='post'>
+		<input type='hidden' name='parentId' value='".$parentArticle."' />
+		<input type='hidden' name='date' value='".$date."' />
+                <input type='hidden' name='title' value='".$title."' />
+                <input type='hidden' name='relatedId' value='".$relatedId."' />
+                <input type='hidden' name='item_type' value='".$article['item_type']."' />
+		<input type='submit'>
+		</form>
+		".$date
+		;
+        }
+}
+
+getArticlesRelatedLinks($articleid, $authorid, $location, $parentId);
+
+?>

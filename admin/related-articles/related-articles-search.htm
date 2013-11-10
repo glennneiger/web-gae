@@ -1,0 +1,37 @@
+<?
+$articleid = $_GET['id'];
+$authorid = $_GET['author'];
+$location = $_GET['location'];
+if ($location == 'searchBody') { 
+	$location = 'body';
+} else if ($location == 'searchTitle') {
+	$location = 'title';
+}
+
+function getArticlesRelatedLinks($keyword, $authorid, $location) {
+	
+        $sql = "SELECT id, date, title, keyword FROM articles WHERE ".$location." LIKE '%".$keyword."%' and contrib_id = '".$authorid."' order by date desc";
+        $results=exec_query($sql);
+        //print_r($results);
+        //return $results;
+	
+        foreach ($results as $article) {
+		$date = $article['date'];
+                $title =  $article['title'];
+                $relatedId = $article['id'];
+		$keyword = $article['keyword'];
+                echo "<li><a href='/articles/keyword/index/a/".$relatedId."'>".$title."</a> <a href='submitToRelated();'>Add</a><br>
+		<div class='article'>
+			<div id='title'>".$title."</div>
+			<div id='related-id'>".$relatedId."</div>
+			<div id='related-type'>mv</div>
+			<div id='related-keyword'>".$keyword."</div>
+		</div>
+		".$date
+		;
+        }
+}
+
+getArticlesRelatedLinks($articleid, $authorid, $location);
+
+?>

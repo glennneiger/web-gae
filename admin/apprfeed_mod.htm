@@ -1,0 +1,165 @@
+<?
+session_start();
+include_once("$D_R/lib/config/_dailyfeed_config.php");
+include_once($D_R.'/lib/_action.php');
+//include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$ADMIN_PATH/lib/_dailyfeed_data_lib.php");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$D_R/lib/_misc.php");
+include_once("$ADMIN_PATH/lib/_yahoo_lib.php");
+include_once($D_R.'/lib/config/_article_config.php');
+$bounceback="./approvefeed.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+$objremove= new Content("daily_feed","");
+$objDailyFeed= new Dailyfeed();
+$objYahoo	= new YahooSyndication();
+$objAction= new Action();
+$FEED_TABLE="daily_feed";
+
+$viewapproved = $_POST['viewapproved'];
+$approve = $_POST['approve'];
+$delarticle = $_POST['delarticle'];
+$publishdatefield = $_POST['publishdatefield'];
+
+if($viewapproved){
+	$is_live=0;
+}else{
+	$is_live=1;
+}
+
+
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="update daily_feed set is_deleted='1' WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	$objDailyFeed->deleteDailyFeedThread($keys);
+	$objDailyFeed->deleteTickers($keys);
+	/*remove deleted feed from object search*/
+	$objremove->removeUnapprovedItems($keys,$FEED_TABLE);
+	foreach ($delarticle as $k=>$v)
+	{
+	    $currentValue=$objremove->getTableData($k,"daily_feed");
+        $itemId=$k;
+        $updatedValue=$currentValue;
+        $action="Delete";
+        $objremove->userAuditAlerts($itemId,$currentValue,$updatedValue,$action);
+		$objAction->trigger('dailyFeedDataDelete',$k);
+	}
+}
+if(is_array($approve))
+{
+	$keys = implode(",",array_keys($approve));
+	$qry = "UPDATE daily_feed SET is_draft='0',is_approved='".($viewapproved?0:1)."',is_live='".$is_live."'";
+	$qry.=" WHERE find_in_set(id,'$keys') AND is_approved='".($viewapproved?1:0)."' LIMIT ".count($approve);
+
+    exec_query_nores($qry);
+    if($viewapproved=="0")
+    {
+    	$feed_arr=array_keys($approve);
+    	for($i=0;$i<count($feed_arr);$i=$i+1)
+        {
+        	$qry="Select DF.is_buzzalert,DF.is_live FROM daily_feed DF where DF.id='".$feed_arr[$i]."'";
+        	$result=exec_query($qry,1);
+        	if($result['is_buzzalert']=="1" && $result['is_live']!="1")
+            {
+            	$objDailyFeed->synidicateFeed($feed_arr[$i]);
+            }
+        }
+    }
+}
+	if($viewapproved=='1')
+	{
+		/*remove unapprove article from object search*/
+		$objremove->removeUnapprovedItems($keys,$FEED_TABLE);
+		$objDailyFeed->deleteDailyFeedThread($keys);
+		$objDailyFeed->deleteTickers($keys);
+		foreach ($approve as $k=>$v)
+		{
+            /*Insert in user_audit_alert table*/
+            $currentValue=$objremove->getTableData($k,"daily_feed");
+            $itemId=$k;
+            $updatedValue=$currentValue;
+            $action="UnApprove";
+            $objremove->userAuditAlerts($itemId,$currentValue,$updatedValue,$action);
+            $objAction->trigger('dailyFeedDataUpdate',$k);
+		}
+	}
+	else
+	{
+		foreach ($approve as $k=>$v)
+		{
+            /*Insert in user_audit_alert table*/
+            $currentValue=$objremove->getTableData($k,"daily_feed");
+            $itemId=$k;
+            $updatedValue=$currentValue;
+            $action="Approve";
+            $objremove->userAuditAlerts($itemId,$currentValue,$updatedValue,$action);
+			$chkSyn =	$objDailyFeed->getSyndicationValue($k);
+			if($chkSyn == '1' && $is_live == '1' && $viewapproved == '0')
+			{
+				$existSynd = getSyndication($k,'18','yahoo');
+				if($existSynd && $existSynd['id']!='')
+				{
+				}
+				else
+				{
+					$feed = $objDailyFeed->getFeedData($k);
+					$objYahoo->generateYahooXml($k,$feed,'Feeds','yahoo');
+				}
+			}
+		}
+	}
+/* set data in meta table and content seo*/
+if($is_live){
+	$feedarray=array();
+	$feedarray=explode(",",$keys);
+	foreach($feedarray as $fid)
+	{
+	     /* Check Feee is set as buzz alert then apply synidicateFeee function */
+		 $qry="Select DF.is_buzzalert FROM daily_feed DF where DF.id='".$fid."'";
+		 $result=exec_query($qry,1);
+         if($result['is_buzzalert']=="1")
+              {
+                    $chkBuzzFeed="select id from buzzbanter where login='(feed_automated)' and position='".$fid."' limit 1";
+                    $resultBuzzFeed=exec_query($chkBuzzFeed,1);
+                   if(!$resultBuzzFeed['id']){
+                    	$objDailyFeed->synidicateFeed($fid);
+                    }
+              }
+		 /* Check Feee is set as buzz alert then apply synidicateFeee function */
+		$obContent = new Content(18,$fid);
+	    $url = $obContent->getDailyFeedURL($fid);
+        $objremove->updateContentSeoUrl($fid,"18",$url);
+		$obContent->setDailyFeedMeta();
+		$objAction->trigger('dailyFeedDataUpdate',$fid);
+	}
+}
+if(is_array($approve))
+{
+	foreach ($approve as $k=>$v)
+	{
+		$objAction->trigger('dailyFeedDataUpdate',$k);
+	}
+}
+$objAction->trigger('dailyFeedListUpdate');
+
+if (count($delarticle))
+{
+location($bounceback.urlencode("The Posts were deleted"));
+exit();
+}
+if(!$viewapproved)
+{
+location($bounceback.urlencode("The Posts were changed"));
+
+}
+else
+{
+location($bounceback.urlencode("The posts were changed and are now not live on the site"));
+
+}
+exit;
+?>

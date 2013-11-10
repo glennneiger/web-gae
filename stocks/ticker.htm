@@ -1,0 +1,38 @@
+<?php
+/* Operative Configuration *****/
+$zone_name="ticker";
+$tile728x90=1;
+$tile120x30=5;
+$tile300x250=3;
+$tile160x600top=4;
+/* End Operative Configuration *****/
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav");
+$pageName = "ticker";
+include("../_header.htm");
+?>
+<script>
+jQuery(document).ready(function() {
+loadIframeTradCalen();
+});
+</script>
+
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div id="article-left">
+	<!--FINANCIAL CONTENT GOES HERE-->
+</div>
+<!--left contaner end here-->
+
+<!--right contaner start from here-->
+<?
+$bannernameMR="MediumRectangle_300x250_300x600";
+$arrRightCols	=	array('trading_calendar','show_art_300x250','daily_recap_module','show_mostpopular','recommendation','sponsoredlinks','show_MediumRectangle_Art_300x250','twitterWidget','show_markets','financial_product_guide','show_ads');
+include("../_rightcolumn.htm"); ?>
+
+</div>
+</div>
+<!--right contaner end here-->
+<? include("../_footer.htm"); ?>

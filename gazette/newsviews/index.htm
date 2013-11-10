@@ -1,0 +1,12 @@
+<?
+global $HTPFX,$HTHOST;
+$objCache= new Cache();
+$url=$HTPFX.$HTHOST.$objCache->getItemLink($_GET['id'],'1');
+if(!empty($url)){
+	header("HTTP/1.1 301 Moved Permanently");
+	header("Location: ".$url);
+}else{
+	header("HTTP/1.1 301 Moved Permanently");
+	header("Location: http://www.minyanville.com/");
+}
+?>

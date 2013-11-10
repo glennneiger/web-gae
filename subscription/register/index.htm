@@ -1,0 +1,120 @@
+<?php
+global $D_R,$IMG_SERVER,$HTPFX,$HTHOST,$recurlyApiKey,$privateKey,$CDN_SERVER;
+session_start();
+require_once($D_R.'/lib/recurly/recurly.php');
+include($D_R."/lib/config/_recurly_config.php");
+
+global $is_ssl,$closedPlans,$scriptPlanCodeArray;
+
+$pageName  = "subscription_product_registration";
+$pageJS=array("config","jquery","recurly","registrationFunnel","manageAccount");
+$pageCSS=array("ibox","global","reg_funnel","recurly");
+$planCode=$_REQUEST['planCode'];
+
+if(!$planCode){
+	Header( "Location: ".$HTPFX.$HTHOST."/subscription" );
+    exit;
+}
+if(array_key_exists($planCode,$closedPlans))
+{
+	$redirect_url = $closedPlans[$planCode];
+	Header( "Location: ".$redirect_url);
+    exit;
+}
+
+include_once($D_R."/lib/registration/_register_funnel_data_lib.php");
+include_once($D_R."/lib/registration/_register_funnel_design_lib.php");
+
+$objFunnelDesign = new registrationFunnelDesign();
+$objFunnelData = new registrationFunnelData();
+
+$result = $objFunnelData->getPlanDetails($planCode);
+if($result['plan_id']==''){
+	Header( "Location: ".$HTPFX.$HTHOST."/subscription/register/error.htm" );
+	exit;
+}
+include($D_R."/_header_no_nav.htm");
+
+if(array_key_exists($planCode,$scriptPlanCodeArray)){
+?>
+
+<!-- Secure Tag for Activity Group: minyanville_conversions, Activity: mv_conv, Type: Page Views, Code: JavaScript -->
+<!-- Start of DoubleClick Spotlight Tag: Please do not remove-->
+<!-- Activity name for this tag is:mv_conv -->
+<!-- Web site URL where tag should be placed:  -->
+<!-- Creation Date:12/11/2012 -->
+
+<SCRIPT language="JavaScript">
+var axel = Math.random()+"";
+var a = axel * 10000000000000;
+document.write('<IMG SRC="https://ad.doubleclick.net/activity;src=3790870;type=mv_conv;cat=mv_co962;ord='+ a + '?" WIDTH=1 HEIGHT=1 BORDER=0>');
+</SCRIPT>
+<NOSCRIPT>
+<IMG SRC="https://ad.doubleclick.net/activity;src=3790870;type=mv_conv;cat=mv_co962;ord=1?" WIDTH=1 HEIGHT=1 BORDER=0>
+</NOSCRIPT>
+<!-- End of DoubleClick Spotlight Tag: Please do not remove-->
+
+<?
+}
+
+Recurly_js::$privateKey = $privateKey;
+Recurly_Client::$apiKey = $recurlyApiKey;
+
+if($_SESSION['SID']==''){
+	$accountCode=$objFunnelData->getAccountCode();
+}else{
+	$accountCode=$_SESSION['SID'];
+}
+$signature = Recurly_js::sign(array('account'=>array('account_code'=>$accountCode),'subscription' => array('plan_code' =>$planCode)));
+
+if($_SESSION['SID']!=''){
+	try{
+		$account = Recurly_Account::get($_SESSION['SID']);
+		$account_code = $account->account_code;
+		$firstName = $account->first_name;
+		$lastName = $account->last_name;
+		$email = $account->email;
+		$companyName = $account->company_name;
+	}catch (Exception $e){
+
+	}
+
+	try{
+		$billing_info = Recurly_BillingInfo::get($_SESSION['SID']);
+		$firstNameBilling = $billing_info->first_name;
+		$lastNameBilling = $billing_info->last_name;
+		$address1 = $billing_info->address1;
+		$address2 = $billing_info->address2;
+		$city = $billing_info->city;
+		$zip = $billing_info->zip;
+		$state = $billing_info->state;
+		$country = $billing_info->country;
+		$cardNumber = $billing_info->last_four;
+		$phone = $billing_info->phone;
+	} catch (Exception $e){
+
+	}
+}else{
+	if(!empty($_POST)){
+		$email=$_POST['email'];
+		$firstName = $_POST['first_name'];
+		$lastName = $_POST['last_name'];
+		$phone = $_POST['phone_number'];
+	}
+}
+?>
+
+<div><input type="hidden" value="<?=$pageName;?>" id="pageName" name="pageName" /></div>
+<script src="<?=$CDN_SERVER;?>/js/trackingPixel.js" type="text/javascript"></script>
+
+<div id="reg_outer_container">
+	<? $obOuterTemplate->displayFunnelHeader(); ?>
+	<div id="reg_container">
+		<?php if($result['plan_group']=="keene"){
+			echo $objFunnelDesign->registrationFunnelV2($planCode,$accountCode,$email,$firstName,$lastName,$address1,$address2,$city,$zip,$state,$country,$phone); 
+		} else{
+			echo $objFunnelDesign->registrationFunnel($planCode,$accountCode,$email,$firstName,$lastName,$address1,$address2,$city,$zip,$state,$country,$phone); 
+		}?>
+		<?include_once($D_R."/_footer.htm");?>
+	</div>
+</div>

@@ -1,0 +1,2 @@
+Header add Access-Control-Allow-Origin "http://mvp.minyanville.com"
+Header add Access-Control-Allow-Origin "http://www.minyanville.com"

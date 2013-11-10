@@ -1,0 +1,159 @@
+/* CSS Document */
+html {margin:0}
+body {
+	background:#045279;
+	color:white;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	margin:0;
+	padding-top:5px;
+	padding-bottom: 15px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	}
+
+h1, h2, h3, h4, li, p {
+	font-size:12px;
+	padding:7px;
+	margin:0px;
+	}
+h1 {
+	font-size:20px;
+	color:#fff;
+	}
+	
+h2 {
+	color:#5BBEF0;
+	font-size:14px;
+	}
+
+h2.white {
+	color:#fff;
+	}
+	
+h3 {
+	color:#045279;
+	background:#fff;
+	font-size:14px;
+	line-height:1.2EM;
+	}
+
+h4 {
+	color: #5bbef0;
+	}
+	
+p {
+	line-height:1.3em;
+	}
+
+p.bottom {
+	color:#5bbef0;
+	text-align:center;
+	}
+p.second {
+	color:#5bbef0;
+	font-weight:normal;
+	}
+
+li {
+	line-height:1em;
+	margin:0 0 0 0;
+	padding:0 0 0 0;
+	}
+
+a, a:visited, a:hover, a:active {
+	color:white;
+	}
+	
+.style1 {color: #FFFFFF}
+
+.clear {clear:both;}
+
+#logoBar, #flashBar, #dropdownBar {position:relative;width:100%;}
+
+#logoBar {
+	height:52px;
+	background:transparent url(http://storage.googleapis.com/mvassets/images/header_bg.gif) top left repeat-x;
+	text-align:center;
+	}
+
+#logoBar a img {
+	margin-top:7px;
+	width:120px;
+	height:41px;
+	border:none;
+	}
+
+#flashBar {
+	background:transparent url(http://storage.googleapis.com/mvassets/images/flashbar_bg.gif) top left repeat-x;
+	}
+
+#flashLasso {width:300px; margin:0px auto;}
+
+.outerOuterBorder {
+	border: 1px solid #999;
+	}
+
+.innerOuterBorder {
+	border:1px solid #333;
+	}
+
+.inbtn {
+	width:67px;
+	height:21px;
+	white-space:nowrap;
+	cursor:pointer;
+	margin-top:3px;
+	}
+
+.mainLayer {
+	position: relative;
+	background-color:#04517a;
+	background-image: url(http://storage.googleapis.com/mvassets/images/msgBox.gif);
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+img.welcome {
+	width:422px;
+	height:490px;
+	float:left;
+	margin-top:10px;
+	margin-left:10px;
+	}
+
+
+.wrapper {
+	position:relative;
+	margin-left:450px;
+	}
+
+.wrapper a img {
+	border: 0px solid black;
+	}
+	
+.leftPanel {float:left;}
+.rightPanel{float:right;}
+
+#bottomLinks {
+	position:relative;
+	background-color:#04517a;
+	text-align:center;
+	border-top:1px solid #999;
+	border-bottom:1px solid #333;
+	color:#ccc;
+	margin-top:15px;
+	}
+
+#footer {
+	font-size: 8px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-align:center;
+	background-color:#04517a;
+	color:#fff;
+	width: 100%;
+	height:17px;
+	padding:5px 0 0 0;
+	clear:both;
+	}

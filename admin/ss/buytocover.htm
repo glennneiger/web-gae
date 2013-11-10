@@ -1,0 +1,235 @@
+<?
+$page="transaction";
+include_once("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/ss/_home_lib.php");
+$pageid=2;
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+include_once("$D_R/admin/ss/ss_classes/class_Optiontransaction.php");
+include_once("$D_R/lib/layout_functions.php");
+build_ss_lang($pageid);
+
+/*============set up permissions=================*/
+$performtransaction=$AD->getPerm("ss_own_transaction");//can't create anything
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+	admin_error("You're not allowed to use this page.");
+}
+
+$transobj=new Qtransaction();
+$optiontransobj= new optiontransaction();
+$objPortfolio = new optionPortfolio();
+
+if(!isset($mode))
+{
+	$mode='';
+}
+else if($shareqty!='')
+{
+	$stockoroption=$_GET['type'];
+
+	switch($mode)
+	{
+	case 'save':
+	{
+
+		# insert in ss_transaction
+		# insert in ss_sell_transaction
+		# update in ss_sell_transaction
+		// For Option
+		if($stockoroption=='option')
+		{
+
+			 global $contractqty;
+			 $creatdate=$transobj->formatdate2dbSTD($selldate);
+			 $creatdateconv=$creatdate." ".date('H:i:s');
+			 if(isset($btcarr)){unset($btcarr);}
+			 $btcarr=array();
+			 $btcarr['quote_id']=$quoteid_get;
+			 $btcarr['transaction_type']=3;
+			 $btcarr['creation_date']=$creatdateconv;
+			 $btcarr['quantity']=($shareqty*$contractqty);
+			 $btcarr['unit_price']=$price;
+			 $btcarr['description']=$notes;
+			 $btcarr['strike_price']=$strike_price;
+			 $btcarr['option_type']="$option_type";
+			 $btcarr['entity_type']='1';
+			 $btcarr['expirydate']=$expirydate;
+			 $btcarr['base_stock_symbol']=$base_stock_symbol;
+
+			 $insertid=insert_query("ss_transaction",$btcarr);
+			 $trsactionid=base64_decode(strrev($trsactionid));
+			 if(isset($insertid))
+			 {
+				 $memCacheDelete = new memCacheObj();
+				 $key="ssOpenPositiontrade";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssOpenPosition";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssDisplayPerformance";
+				 $memCacheDelete->deleteKey($key);
+				 $objPortfolio->updateOpenPositionRecords();
+
+			 $transactiondata_sell=array('sell_trans_id'=>$trsactionid,'buy_trans_id'=>$insertid,'creation_date'=>$creatdateconv,'entity_type'=>'1');
+			 $insertsellid=insert_query("ss_sell_transaction",$transactiondata_sell);
+
+			 if(isset($insertsellid)){
+				 $memCacheDelete = new memCacheObj();
+				 $key="ssOpenPositiontrade";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssOpenPosition";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssDisplayPerformance";
+				 $memCacheDelete->deleteKey($key);
+				 $objPortfolio->updateOpenPositionRecords();
+			 }
+
+			 if($shareqty==$orgssqty)
+			 {
+			 $req_update=array();
+			 $req_update['updation_date']=$creatdateconv;
+			 $req_update['trans_status']='done';
+			 $req_update['entity_type']='1';
+			 $ret_up=update_query('ss_sell_transaction',$req_update,array('sell_trans_id'=>$trsactionid,'buy_trans_id'=>'0'));
+			 if(isset($ret_up))
+			 {
+			 	 $memCacheDelete = new memCacheObj();
+				 $key="ssOpenPositiontrade";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssOpenPosition";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssDisplayPerformance";
+				 $memCacheDelete->deleteKey($key);
+				 $objPortfolio->updateOpenPositionRecords();
+			 }
+			 }else{}
+			 }
+		}
+		// For Stock
+		else if($stockoroption=='')
+		{
+			global $contractqty;
+			$creatdate=$transobj->formatdate2dbSTD($selldate);
+			$creatdateconv=$creatdate." ".date('H:i:s');
+			if(isset($btcarr)){unset($btcarr);}
+			$btcarr=array();
+			$btcarr['quote_id']=$quoteid_get;
+			$btcarr['transaction_type']=3;
+			$btcarr['creation_date']=$creatdateconv;
+			$btcarr['quantity']=$shareqty;
+			$btcarr['unit_price']=$price;
+			$btcarr['description']=$notes;
+			$btcarr['entity_type']='0';
+			$insertid=insert_query("ss_transaction",$btcarr);
+
+			$trsactionid=base64_decode(strrev($trsactionid));
+			if(isset($insertid))
+			{
+				 $memCacheDelete = new memCacheObj();
+				 $key="ssOpenPositiontrade";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssOpenPosition";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssDisplayPerformance";
+				 $memCacheDelete->deleteKey($key);
+				 $objPortfolio->updateOpenPositionRecords();
+
+
+				$transactiondata_sell=array('sell_trans_id'=>$trsactionid,'buy_trans_id'=>$insertid,'creation_date'=>$creatdateconv,'entity_type'=>'0');
+				$insertsellid=insert_query("ss_sell_transaction",$transactiondata_sell);
+				if(isset($insertsellid)){
+				 $memCacheDelete = new memCacheObj();
+				 $key="ssOpenPositiontrade";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssOpenPosition";
+				 $memCacheDelete->deleteKey($key);
+				 $key="ssDisplayPerformance";
+				 $memCacheDelete->deleteKey($key);
+				 $objPortfolio->updateOpenPositionRecords();
+
+				}
+				$sqlbtcqty="select sum(quantity)as total_buytocover from ss_transaction where id in (select buy_trans_id as id from ss_sell_transaction where sell_trans_id='$trsactionid' and buy_trans_id!=0 and status='1' and entity_type='0') and entity_type='0' and transaction_type='3' and status=1";
+				if(isset($searchfound)) unset($searchfound);
+				$searchfound=exec_query($sqlbtcqty);
+				if(count($searchfound)>0)
+				{
+					foreach($searchfound as $allresultexchg)
+					{
+						$totalbtc=$allresultexchg['total_buytocover'];
+					}
+				}else{}
+
+				if($shareqty==$orgssqty)
+				{
+					$req_update=array();
+					$req_update['updation_date']=$creatdateconv;
+					$req_update['trans_status']='done';
+					$req_update['entity_type']='0';
+					$ret_up=update_query('ss_sell_transaction',$req_update,array('sell_trans_id'=>$trsactionid,'buy_trans_id'=>'0'));
+					if(isset($ret_up))
+					{
+						 $memCacheDelete = new memCacheObj();
+						 $key="ssOpenPositiontrade";
+						 $memCacheDelete->deleteKey($key);
+						 $key="ssOpenPosition";
+						 $memCacheDelete->deleteKey($key);
+						 $key="ssDisplayPerformance";
+						 $memCacheDelete->deleteKey($key);
+						 $objPortfolio->updateOpenPositionRecords();
+					}
+				}else{}
+			}
+
+		}
+	echo "<script language='javascript'>";
+	echo "window.location.href='transaction.htm'";
+	echo "</script>";
+	break;
+	}
+} // end of switch($mode)
+}
+?>
+<?
+// Newly added
+$HTHOST=$HTADMINHOST;
+$STOCKACTBJSSCRIPT=$HTPFX.$HTHOST."/js/stock_actb.js";
+$ACTB_COMMONJSSCRIPT=$HTPFX.$HTHOST."/js/actb_common.js";
+// Newly added
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/datetimepicker.js" type="text/javascript"></script>
+<script src="<?php echo $STOCKACTBJSSCRIPT; ?>" language="javascript" type="text/javascript"></script>
+<script src="<?php echo $ACTB_COMMONJSSCRIPT; ?>" language="javascript" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/sstransaction.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/optiontransaction.1.2.js" type="text/javascript"></script>
+</head>
+<body>
+<?
+$str=base64_decode(strrev($tranautoid));
+$autoidup=$str;
+$type=$_GET['type'];
+?>
+   <table border=0 style="border-left:0px solid #cccccc; padding:0px;margin:0px; border-top:0px solid #cccccc; border-bottom:0px solid #cccccc;  border-right:0px solid #cccccc; padding:0px;margin:0px;" align="left" cellpadding="0" cellspacing="0" width="900px">
+    <tr>
+	<td width="95" ><!--<img src="<?=$IMG_SERVER?>/images/quint_images/quint-photo.gif" />--></td>
+	<td width="195"  class="quintportfolio"><!--QUINT Portfolio--></td>
+	<td width="646"  class="steveoptiontd" align="right"><a href="transaction.htm" style="text-decoration:none;">Add / View Transactions</a>&nbsp;&nbsp;&nbsp;&nbsp;<!--<a href="edittransaction.htm">Edit Transactions</a>-->&nbsp;&nbsp;&nbsp;&nbsp;<a href="option_sell.htm" style="text-decoration:none;">Sell Transaction</a></td>
+	</tr>
+	<tr>
+	<td colspan="3">&nbsp;</td>
+	</tr>
+	<tr><td width="100%" colspan="3">
+	<? if($type=='option'){echo $optiontransobj->buytocover($autoidup);}else{echo $transobj->buytocover($autoidup);}?></td></tr>
+	<tr>
+	<td colspan="3" align="left">&nbsp;</td></tr></table>
+<?
+$profileid=1;
+$tracking_name=$page;
+//googleanalytics($profileid,$tracking_name);
+googleanalytics();
+universalGoogleAnalytics();
+?>
+</body>
+</html>

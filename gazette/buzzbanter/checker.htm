@@ -1,0 +1,17 @@
+<?
+include("$DOCUMENT_ROOT/lib/_includes.php");
+include("$DOCUMENT_ROOT/../buzzandbanter.com/web/lib/_bb.php");
+//--check to see if something new has been posted since $last. if so reload parent window
+if(!($last=intval($last))){
+	location("$PHP_SELF?last=".time());
+	exit();
+}
+
+?>
+<?if(bb::hasNewerPosts($last)){?>
+	<script>
+	top.location.replace(top.location.href);
+	</script>
+	<?exit()?>
+<?}?>
+<meta http-equiv="refresh" content="30" />

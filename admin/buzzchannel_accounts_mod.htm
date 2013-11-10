@@ -1,0 +1,109 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<!-- saved from url=(0022)http://internet.e-mail -->
+<!-- saved from url=(0022)http://internet.e-mail -->
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+
+
+
+$new = $_POST['new'];
+$s_date_mo = $_POST['s_date_mo'];
+$s_date_day = $_POST['s_date_day'];
+$s_date_year = $_POST['s_date_year'];
+$e_date_mo = $_POST['e_date_mo'];
+$e_date_day = $_POST['e_date_day'];
+$e_date_year = $_POST['e_date_year'];
+$admin_client_new = $_POST['admin_client_new'];
+
+$bounceback="./buzzchannel_accounts.htm?error=";
+
+/*========removing users==================*/
+/*if(is_array($deluser)){
+	$delids=implode(",",array_keys($deluser));
+		// Delete All assoicated users?
+		// XXX FIX ME
+
+	if(1) {
+		//remove admin accounts
+		$qry="DELETE from corp_bc where find_in_set(id,'$delids') LIMIT ".count($deluser);
+		exec_query_nores($qry);
+		$qry_admin=
+		"DELETE from admin_users_bc where find_in_set(client_id,'$delids') and supervisor='1' LIMIT ".count($deluser);
+		exec_query_nores($qry_admin);
+	}
+
+	 else{
+		echo "CAN'T REMOVE Accounts WHO with users!<br>";
+		flush();
+	}
+}*/
+/*===========creating a new user===============*/
+if($new[corp_login] && $new[corp_password] ){
+	$new[start_date]=sprintf("%4d-%02d-%02d",$s_date_year,$s_date_mo,$s_date_day);
+	$new[expire_date]=sprintf("%4d-%02d-%02d",$e_date_year,$e_date_mo,$e_date_day);
+	$qry="SELECT id FROM corp_bc WHERE LOWER(corp_login)='".lc($new[corp_login])."' ";
+
+	if(!num_rows($qry)){
+
+		$id=insert_query("corp_bc",$new);
+
+		  /**** verifying whether the admin user name exists or not***/
+
+			   $admin_client_new[client_id]=$id;
+
+			   $feat_qry="Select id from admin_features_bc ";
+			   $dbobj_feat=new dbobj($feat_qry);
+			   while($row_feat=$dbobj_feat->getRow())
+				{
+					 $feat[]=implode(",",$row_feat);
+					 $admin_feat=implode(",",$feat);
+				 }
+
+				$admin_client_new[feature_ids]=$admin_feat;
+				$admin_client_new[suspend]=0;
+			    $admin_client_new[supervisor]=1;
+
+			    $admin_id=insert_query("admin_users_bc",$admin_client_new);
+
+			   $contributor_client[user_id]=$admin_id;
+			   $contributor_client[name]=$admin_client_new[name];
+			   $contributor_client[client_id]=$admin_client_new[client_id];
+
+			   insert_query("contributors_bc",$contributor_client);
+
+
+	}else{
+		$error="${new[corp_login]} is already being used!";
+	}
+
+}
+
+/*==========updating existing users==============*/
+foreach($corp as $c){
+	$id=$c[id];
+
+	$old_user=exec_query("SELECT * FROM corp_bc WHERE id='$id'",1);
+	//username changed. make sure it's not taken already
+	if($old_user[corp_login]!=$c[corp_login]){
+		$qry="SELECT id FROM corp_bc WHERE LOWER(corp_login)='".lc($c[corp_login])."'";
+		if(num_rows($qry)){
+			$error.="can't change <b>${old_user[corp_login]}</b> to <b>${c[corp_login]}</b>!<br>";
+			continue;
+		}
+	}
+
+	update_query("corp_bc",$c,array(id=>$id));
+
+	$a=$admin_client[$id];
+	update_query("admin_users_bc",$a,array(client_id=>$id,supervisor=>1));
+
+	$contri[name]=$a[name];
+	update_query("contributors_bc",$contri,array(user_id=>$a[id]));
+
+
+
+}
+
+/*==========redirect back==========================*/
+location($bounceback.urlencode($error));
+?>

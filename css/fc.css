@@ -1,0 +1,567 @@
+<style>
+
+/* Global CSS Styles */
+.fc * {
+ padding:0px; 
+ border:0px; 
+ margin:0px; 
+ color: inherit;
+ background-color: inherit;
+}
+.fc, .fc TABLE, .fc TD, .fc INPUT, .fc SELECT {
+ font-family:Arial,Helvetica,sans-serif;
+ font-size:11px;
+}
+.fc SELECT {
+ background-color:#FFFFFF;
+ border: 1px solid #CDCDCD;
+}
+.fc IMG {
+ display:block;
+}
+.fc TD {empty-cells: show;}
+/* END Global CSS */
+
+.fc TD.label {font-weight: bold}
+.fc .data {color:#000000; text-align: left; vertical-align:middle; font-weight: bold}
+.fc SPAN.lastprice {font-size: 17px}
+.fc A , .fc A.data {
+ font-weight: bold;
+ text-decoration: none;
+ color: #0A2B54;
+}
+.fc A:hover {
+ text-decoration: none;
+}
+.fc .row TD, .fc .row1 TD, .fc .row2 TD {border-bottom:0px; background-color:#FFFFFF; padding: 6px 3px
+}
+.fc .row2 TD {background-color:#EFEFEF;}
+.fc .rowheader {background-color: #FFFFFF}
+.fc .fcinside {width:100%;}
+.fc .fcinside .row IMG.chart {margin-top:8px; margin-bottom:8px;}
+.fc .horzline { height: 0px; empty-cells: collapse;}
+.fc .box {border-width: 0px;}
+.fc .tab {background-color: #FFFFFF}
+.fc .activetab {background-color: #FFFFFF;}
+.fc .bicolor {color:#000000}
+
+.fc .fcchartimg, .fc IMG.chart {margin:8px 0px 8px 10px; }
+.fc .fcminichartimg { vertical-align: middle;}
+.fc .positive {color:green;}
+.fc .negative {color:red;}
+ .fc .header .timestamp, .fc .fcdate,.fc .date, .fc SPAN.source A, .fc DIV.channel A, .fc DIV.pubdate
+, .fc .title TD.exchange {color: #000000; font-weight: normal; font-size: 10px; text-align: left}
+
+.fc .title TD.exchange, .fc .header .timestamp {
+ font-family:Arial,Helvetica,sans-serif;
+ text-align:right;
+}
+
+
+.fc .header {
+ font-size:18px; 
+ font-family:"Times New Roman",Times,serif;
+ font-weight: bold; 
+ padding: 5px; 
+ color:#000; 
+ text-align:left;
+ text-tranform: uppercase;
+ display:table-cell !important;
+}
+
+.fc .headerborder {
+ border-bottom: solid 0px #888888;
+}
+.fc TH, .fc TH.data {
+ color: #000000;
+ padding: 5px;
+ font-size: 11px;
+ font-weight: bold;
+ border-top: 0px;
+ border-bottom: 0px solid #CDCDCD;
+ text-transform: capitalize;
+}
+.fc TH.subhead {
+ color:#000000;
+ border-top: 0px;
+ border-bottom: 1px solid #CDCDCD;
+}
+.fc TH.label {
+ text-align:left; 
+ padding:5px; 
+ border-bottom: 1px solid #CDCDCD;
+}
+.fc .subhead {
+ padding: 5px 5px 5px 5px;
+ font-style:italic;
+ font-weight: bold;
+ text-align:left;
+ text-transform:capitalize;
+}
+.fc TABLE.title {
+ margin:5px;
+}
+.fc .title TD {
+ font-size:24px; 
+ font-family:"Times New Roman",Times,serif;
+ color:#0A2B54;
+ padding:5px;
+ text-align:left;
+ text-transform:capitalize;
+}
+
+.fc .rowheader td {
+ font-size:10px;
+ font-weight: bold;
+ border-bottom:1px solid #CDCDCD;
+ background-color:#FFFFFF;
+ padding: 5px;
+ text-transform: capitalize;
+}
+
+.fc .fcuparrow {background: url('https://images.financialcontent.com/studio-5.0/arrows/minyanville/bull36x22.gif') no-repeat 0% 50%;font-size: 22px;padding-right: 14px;margin-right: 5px;}
+.fc .fcdownarrow {background: url('https://images.financialcontent.com/studio-5.0/arrows/minyanville/bear36x22.gif') no-repeat 0% 50%;font-size: 22px;padding-right: 14px;margin-right: 5px;}
+.fc .fcneutralarrow {background: url('https://images.financialcontent.com/studio-5.0/arrows/2/dash.gif'
+) no-repeat 0% 50%}
+
+/* CUSTOM MINYANVILLE CSS */
+.fc .minyanvilleimg .fcuparrow {background: url('https://images.financialcontent.com/studio-5.0/arrows/minyanville/bull.gif') no-repeat center;font-size: 90px;padding-bottom: 50px;padding-right: 0px;margin-right
+: 0px;}
+.fc .minyanvilleimg .fcdownarrow {background: url('https://images.financialcontent.com/studio-5.0/arrows/minyanville/bear.gif') no-repeat center;font-size: 90px;padding-bottom: 50px;padding-right: 0px;margin-right
+: 0px;}
+.fc .minyanvilleimg .fcneutralarrow {background: none}
+
+.fc .items .row2 TD{
+ background-color: #FFFFFF;
+}
+.fc .items TD.data {
+ font-family:"Times New Roman",Times,serif;
+ font-size: 18px
+}
+.fc .items TD.data A{
+ font-weight: normal;
+}
+.fc .items .morelink A{
+ font-weight: bold;
+ text-decoration: none;
+ color: #0A2B54;
+ font-family:Arial,Helvetica,sans-serif;
+ font-size:11px;
+}
+.fc .items TD.pubdate {
+ font-family:Arial,Helvetica,sans-serif !important;
+ font-size: 10px;
+}
+.fc .items SPAN.data A, .fc .items TD.channelname A{
+ font-weight: bold !important;
+ text-decoration: none;
+ color: #5693C9;
+ font-family:Arial,Helvetica,sans-serif;
+ font-size:11px;
+ text-transform: uppercase;
+}
+
+.fc .items IMG {display: none}
+
+.fc .attribution {
+ padding: 2px;
+ font-size: 10px;
+ text-align: right;
+ color: #808080;
+}
+.fc .morelink {
+ padding:5px 10px 5px 0px;
+ text-align:right;
+}
+.fc .morelink A {
+ font-weight: bold;
+ color:#0A2B54;
+ background-image: url(http://images.financialcontent.com/studio-5.0/media/icon_more.gif);
+ background-repeat: no-repeat;
+ background-position: 0px 2px;
+ padding-left: 10px;
+ text-decoration: none;
+}
+.fc .morelink A:hover {
+ background-image: url(http://images.financialcontent.com/studio-5.0/media/icon_more_over.gif);
+ text-decoration: none;
+}
+.fc .addwatchlistlink A {
+ background-image: url(http://images.financialcontent.com/studio-5.0/icons/icon_addwatch.gif );
+ background-repeat: no-repeat;
+ background-position: 0px 2px;
+ padding-left: 13px;
+ text-transform:capitalize;
+ font-weight:bold;
+ font-size:11px;
+
+}
+.fc .addwatchlistlink A:hover {
+ background-image: url(http://images.financialcontent.com/studio-5.0/icons/icon_addwatch_over.gif);
+}
+
+/* Nav links */
+.fc .navlinks {
+ text-align:left;
+ padding:4px 0px 0px 0px;
+ background-color:#FFFFFF;
+ line-height:20px;
+}
+.fc .navlinks A.nav {
+ font-weight: bold;
+ font-size:11px;
+ color:#0A2B54;
+ text-decoration:none;
+ text-transform:uppercase;
+ background-color:#FFFFFF;
+}
+.fc .navlinks A.nav:hover {
+ color:#0A2B54; 
+ text-decoration: underline;
+}
+.fc .navlinks A.active {
+ color:#0A2B54; 
+ text-decoration: underline;
+}
+.fc .divider {
+ font-weight:normal; 
+ color:#0A2B54;
+ margin:0px 5px;
+}
+/* END NAV LINKS*/
+
+/* SUBMENUS CSS*/
+.fc .submenus TD {
+ padding:3px 3px 3px 2px;
+ white-space: nowrap;
+}
+.fc .submenus TD A {
+ padding:4px;
+ font-size: 11px; 
+ font-weight: bold;
+ color:#888888;
+ text-decoration:none;
+ background: #F7F7F7;
+ border: 1px solid #CCCCCC;
+ margin: -1px;
+}
+.fc .submenus TD A:hover {
+ color:#000000; 
+ background: #EFEFEF;
+ border: 1px solid #CDCDCD;
+ margin: -1px;
+}
+.fc .submenus .active A, .fc .submenus .active A:hover {
+ border: 0px;
+ margin: 0px;
+ background: #CCCCCC;
+ color:#000; 
+ font-weight:bold;
+}
+.fc .submenus A.active {
+ color:#000000; 
+ background: #CCCCCC;
+ border: 1px solid #555555;
+ margin: -1px;
+}
+.fc .submenus .divider {
+ display:none;
+}
+
+/*nav forms and symbol lookup*/	
+.fc INPUT.text, .fc INPUT.ticker {
+ border: 1px solid #CDCDCD;
+ width: 75px;
+ font-weight: normal;
+ padding:1px;
+ background-color:#FFFFFF;
+}
+.fc INPUT.go, .fc INPUT.button {
+ font-size: 10px;
+ font-weight: bold;
+ color: #000000;
+ background-color: #CCCCCC;
+ border: 1px outset #222222;
+ padding:1px;
+ cursor:pointer;
+ cursor:hand;
+}
+.fc A.lookup {
+
+}
+.fc A:hover.lookup {
+
+}
+
+/* NEW tabbed detailed quote LINKS 2007*/
+.fc .fctabs {
+ border-bottom: solid 1px #888888;
+ margin-bottom:5px;
+ margin-top:10px;
+ padding-left:0px;
+ margin-left:1px;
+}
+.fc .fctabs .tab {
+ float:left;
+ margin-right:0px;
+ margin-left: -1px;
+ border: solid 1px #888888;
+ background-color: #EFEFEF;
+ padding: 5px 10px;
+ margin-bottom: -1px;
+}
+.fc .fctabs .activetab {
+ background-color:#FFFFFF;
+ border-bottom: solid 1px #FFFFFF;
+}
+.fc .fctabs .tab:hover {
+ background-color:#FFFFFF;
+ border-bottom: solid 1px #FFFFFF;
+}
+.fc .fctabs A.tab {
+ color: #666666;
+ font-size:11px;
+ cursor:pointer;
+ cursor:hand;
+ font-weight: bold;
+ text-decoration:none;
+ text-transform: uppercase;
+}
+.fc .fctabs A.activetab, .fc .fctabs A.tab:hover {
+ font-weight: bold;
+ color: #000000;
+ text-decoration: none;
+}
+.fc .fctabs A.tab:hover {
+ text-decoration: none;
+}
+
+/* END tabbed detailed quote LINKS*/
+
+/* Indexbrowser tabs */
+.fc .sectors .data BR {
+ margin-top:5px;
+}
+.fc .sectors .data .active {
+ text-decoration:underline;
+ background-color:#FFFFFF;
+}
+.fc .sectors .active {
+ background-color: #CCCCCC; 
+ border: 0px;
+}
+/* end tabs */
+
+/* Hover Box */
+.fc .newsHoverBox {
+ padding: 10px;
+ margin: 5px 0px 0px 35px;
+ border: 1px solid #000000;
+ background: #FFFFFF;
+}
+
+/* Channellist */
+.fc .channellist IMG {
+ display:inline;
+}
+.fc .channellist .image {
+ padding:10px;
+ text-align:center;
+}
+.fc .channellist .content {
+ padding:10px;
+}
+
+/* Mediachannel CSS */
+.fc .mediachannel IMG {
+ display:inline;
+ border:0px;
+}
+.fc .mediachannel .label {
+ font-weight:bold;
+ padding:0px;
+}
+.fc .mediachannel .sidebar {
+ float:left;
+ width:150px;
+ border:0px solid #CCCCCC;
+ margin-right:12px;
+ margin-bottom:12px;
+ margin-top:5px;
+ margin-left:0px;
+}
+.fc .mediachannel .image {
+ width:150px;
+ vertical-align:top;
+}
+.fc .mediachannel .title .data {
+ color: #CDCDCD;
+ font-weight: bold;
+ font-size:18px;
+ margin-bottom:5px;
+ margin-top:5px;
+}
+.fc .mediachannel .channel {
+ margin-bottom:0px;
+}
+.fc .mediachannel .channeltype,.fc .mediachannel .language {
+ margin-bottom:0px;
+}
+.fc .mediachannel .subbutton .rss {
+ padding-right:100px;
+}
+.fc .mediachannel .rssbutton .rss IMG {
+ margin-bottom:1px;
+ margin-top:-1px;
+ border:0px;
+}
+/* END Mediachannel */
+
+	
+/* BEGIN Mediasearch */
+.fc .mediasearch FORM {
+ padding:10px 0px 10px 0px;
+ margin:0px;
+}
+.fc .mediasearch INPUT.searchtxt {
+ border: 1px solid #CDCDCD;
+ width: 160px;
+ font-weight: normal;
+}
+
+.fc .mediasearch INPUT.button {
+ font-weight: normal;
+ color: #000000;
+ background-color: #CCCCCC;
+ border: 1px outset #222222;
+ cursor:pointer;
+ cursor:hand;
+}
+.fc .mediasearch SELECT {
+}
+/* END Mediasearch */
+
+/* NEW tabs for snapshot 2007*/
+.snapshot .fcsnaptabs {
+ border-bottom: 0px;
+ margin-top:5px;
+}
+.snapshot .fcsnaptabs .spacer {
+ padding-right:2px;
+ border-bottom: solid 1px #CDCDCD;
+ font-size:1px;
+}
+.snapshot .fcsnaptabs .tab {
+ padding:0px;
+ border:0px;
+ width:25%;
+}
+.snapshot .fcsnaptabs .tab A {
+  border: solid 1px #CDCDCD;
+ border-bottom: solid 1px #CDCDCD;
+ display:block;
+ background-color: #EFEFEF;
+ padding: 3px 10px 3px 10px;
+ color: #888888;
+ font-weight: bold;
+ text-decoration:none; 
+ cursor:pointer;
+ cursor:hand;
+ text-align:center;
+}
+.snapshot .fcsnaptabs .activetab A {
+ color: #000000;
+ background-color: #FFFFFF;
+ border: solid 1px #CDCDCD; 
+ border-bottom: solid 1px #FFFFFF;
+}
+.snapshot .fcsnaptabs A:hover{
+ color: #000000;
+ background-color:#FFFFFF;
+ border-bottom: solid 1px #FFFFFF;
+}
+/* END tabs snapshot */
+
+.snapshot .charts .data A {
+ font-weight: bold;
+ font-size: 13px;
+}
+.snapshot .charts .data {
+ font-weight: bold;
+ padding-left:5px;
+ padding-top:5px;
+ padding-bottom:0px;
+}
+.snapshot .charts IMG {
+ margin-left:auto;
+ margin-right:auto;
+ margin-top:5px;
+ margin-bottom:5px;
+ display:block;
+}
+.snapshot .morelink A {
+ margin-left:15px
+}
+
+/*get quote component within modules styles*/	
+.getquote H5 {
+ font-size:12px; 
+ font-weight: bold; 
+ padding: 5px; 
+ color:#000; 
+ text-align:left;
+ text-tranform: uppercase;
+ border-bottom: solid 1px #888888;
+}
+.getquote .box {
+ padding: 5px 0px 5px 5px;
+}
+
+/*Markets module - minimal height*/	
+.markets .label{
+ font-size:9px;
+ font-weight: bold;
+ color:#888888;
+ text-transform: capitalize;
+}
+.markets .quotes .data{
+ white-space: nowrap;
+ padding:2px;
+ margin:0px;
+}
+.markets .quotes .divider{
+ padding-left:4px;
+ padding-right:2px;
+}
+
+/*MARKETS2 module styles*/	
+.markets2 {
+ border: 0px;
+}   
+.markets2  .row2 TD, .markets2  .row1 TD{
+ background-color:#FFFFFF;
+ padding:1px;
+}  
+.markets2 TD{
+ text-align: left;
+ white-space:nowrap;
+ padding:0px;
+}  
+.markets2 .attribution {
+ display: none;
+ text-align:right;
+}
+
+/*Watchlist2 module styles*/
+.watchlist2 .row1 TD, .watchlist2 .row2 TD {padding:4px 2px 4px 2px;}
+
+
+/*inline article stock quote widget*/
+.stockquote .change {
+  display: none;
+}
+.stockquote A, .stockquote A:hover {
+  text-decoration: none;
+}
+
+</style>

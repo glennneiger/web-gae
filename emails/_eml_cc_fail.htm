@@ -1,0 +1,32 @@
+<?
+$HEADER="/assets/MAEimage.jpg";
+include("$D_R/emails/_eml_header.htm");
+?>
+
+<font color="#1E1648">
+      <h3>Subscription Problem</h3>
+</font>
+
+Your account will be disabled within 3 days from the date of this email.
+<br><br>
+Unfortunately we had problems charging your credit card correctly for your recent purchase from Minyanville.com. These problems could be caused by a mistake such as a mis-typed credit card number or an incorrect expiration date. It's also possible that your credit card may have expired or that there's insufficient balance on your card to process the charge.  
+<br><br>
+Please go to <a href="<?=$MANAGE_URL?>">manage account</a> located on the left of the site navigation window in the pink box and update your credit card information.  Your subscription	 will be cancelled unless your payment information is updated.
+<br><br>
+To update your card now, please <a href="<?=$MANAGE_URL?>">MANAGE ACCOUNT</a>. <br>
+(<i><?=$MANAGE_URL?></i>)
+<br><br>
+If you've forgotten your password, <a href="<?=$HTNOSSLDOMAIN?>/register/forgotpass.htm">please click here</a>. <br>
+(<i><?=$HTNOSSLDOMAIN?>/register/forgotpass.htm</i>)
+<br><br>
+We thank you for your interest in Minyanville.
+<br><BR>
+Sincerely,
+<br><br>
+MINYANVILLE SUPPORT TEAM
+<br>&nbsp;<br>&nbsp;
+
+<?php
+$tracking_name = $tracking_name['_eml_cc_fail'];
+?>	  
+<?include("$D_R/emails/_eml_footer.htm")?>

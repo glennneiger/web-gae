@@ -1,0 +1,34 @@
+<?
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Content-Type: text/plain");
+header("Pragma: nocache\n"); 
+header("cache-control: no-cache, must-revalidate, no-store\n\n");
+header("Expires: 0");
+//*** include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/ss/_ss_config.php");
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+
+$stocktransobj = new Qtransaction();
+
+/*============set up permissions=================*/
+//*** $performtransaction=$AD->getPerm("own_transaction");//can't create anything
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+//***	admin_error("You're not allowed to use this page.");
+}
+
+$textpass=$_POST['type'];
+$transtype=$_POST['transtype'];
+
+if($textpass=='update')
+{
+	echo $stocktransobj->updatetransaction('update',$_POST['optionnotes'],$_POST['optionunitprice'],$_POST['recordid'],$transtype,$_POST['quoteid']);
+}
+else if($textpass=='delete')
+{
+	/* this will delete the transaction based on $transtype */
+	echo $stocktransobj->updatetransaction('delete',$_POST['optionnotes'],$_POST['optionunitprice'],$_POST['recordid'],$transtype,$_POST['quoteid']);
+}
+?>

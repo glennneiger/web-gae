@@ -1,0 +1,168 @@
+<?
+global $_SESSION, $cm8_ads_MediumRectangle,$STORAGE_SERVER;
+$bannername =$cm8_ads_MediumRectangle;
+$referer_url=parse_url($_SESSION['referer']);
+list($subdomain, $domain, $domaintype) = explode(".", $referer_url['host']);
+?>
+<div class="right_contant" >
+<?
+if($Right_panel_mostpolupararticle=='true')
+{	// popular in ville  block start from here
+	echo renderPoluparArticle();
+	echo "<div style='clear:both;height:10px;'> </div>";
+}
+
+ if(($menu_section_id == 3 || $pageName=='email') and $domain!="ameritrade")
+ {
+ ?>
+ 	<div id='adCompanionBanner' class="right_ads"><? CM8_ShowAd($bannername) ;?>
+	<? // show_ads_operative($zone_name,$tile300x250,$ADS_SIZE['MediumRectangle'],"","");?></div>
+ <?
+ }
+
+ if(($Right_panel_video=='true' or $Right_panel_video=='') and ($domain!="ameritrade"))
+ {
+ 	if($pageName != "home" && $pageName != "ticker")
+	{
+		include_once($D_R."/lib/videos/_data_lib.php");
+		$objPlayer = new player();
+$objPlayer->showPlayer(NULL,NULL,"rightcolumn");
+		//$objPlayer->showPlayer(NULL,NULL,"rightcolumn",$disableAds=NULL,$forcedplay,$progId);
+	}
+}
+
+//if($pageName == "home"){
+?>
+<div id='adCompanionBanner' ><br /><? CM8_ShowAd($bannername) ;?></div>
+<?
+if($Right_panel_tickertalk =='true')
+{
+echo '<div style="margin-top:10px;margin-left:2px;float:left;">';
+	global $setTickerTalk,$D_R,$tickertalk_size;
+	$setTickerTalk = 1;
+	$tickertalk_size = 'medium';
+	include($D_R."/tickertalk/index.htm");
+echo '</div></div>'; // Extra Div has been closed here because embeding ticker talk was causing the issue with layout
+}
+
+if($Right_panel_financialcontent=='true' or  $Right_panel_financialcontent=='')
+{
+/*
+	//launch button area end here
+if($pageName=='ticker'){
+	echo renderFinancialContentFinanaceMvil();
+}else{
+	echo renderFinancialContent();
+}
+*/
+}
+if($Right_panel_right_ads=='true' or  $Right_panel_right_ads=='')
+{
+?>
+	<!--Ads block start from here-->
+	<div class="article-right-module-shadow">
+	<div class="article-right-module-header">
+			<h3><img src="/images/home_redesign/minyanville_marketplace_sidebar.jpg" alt="Minyanville Marketplace"></h3>
+	</div>
+	<div id="markets-partners">
+		<br />
+		<?
+		$objIndustryBrains = new industrybrains();
+		$objIndustryBrains->displayads($pageName,"300x250");
+		?>
+	</div>
+	</div>
+<?
+}
+
+if($Right_panel_buzz=='buzz')
+{
+ if($_REQUEST['trial'] !='hard') {
+		?>
+		<script type="text/javascript" src="http://objects.tremormedia.com/embed/js/embed.js"></script>
+		<script type="text/javascript" src="http://objects.tremormedia.com/embed/js/49cc40070d67c_p.js"></script>
+		<script type="text/javascript">
+		    var storage_server = '<?=$STORAGE_SERVER?>'; 
+			tmObj.set("VideoURL", storage_server+"/mvtv/videos/BB.flv");
+			tmObj.set("AutoPlay", "False");
+			tmObj.set("ContentType", "progressive");
+			tmObj.set("VideoTitle", "Buzz & Banter");
+			tmObj.set("ProgrammableAreaURL", "");
+			tmObj.start("49cc40070d67c");
+		</script>
+		<? }
+print '
+<table width="300" border="0" cellpadding="0" cellspacing="0" class="buzz_add_to_cart_box_right">
+<tr>
+ <td valign="top"  colspan="3" ><img src="http://storage.googleapis.com/mvassets/images/redesign/buzz_cart_header.jpg"  border="0" /></td>
+
+  </tr>
+      <tr>
+        <td class="buzz_recurring">'.$lang["Monthly"].'</td>
+        <td width="1px" rowspan="3" valign="bottom"><img src="http://storage.googleapis.com/mvassets/images/redesign/cart_divider.jpg" width="1" height="70" /></td>
+        <td  class="buzz_recurring">'.$lang["Annual"].'</td>
+      </tr>
+      <tr>
+        '.getProdSubPrice("buzzbanter","subscription").'
+      </tr>
+      <tr>
+       '.getaAddtoCartbtns_buzz("buzzbanter","add_to_cart.gif","subscription").'
+      </tr>
+    <tr>
+    <td colspan="3"><img src="http://storage.googleapis.com/mvassets/images/redesign/14day_freetrial_buzz.jpg" alt="14 Days Free Trail" border="0" /></td>
+    </tr>
+    </table>';
+
+}
+
+if($Right_panel_300_250_ads=='true')
+{
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+	echo '<div style="margin-top:10px;clear:both;width:100%;float:left;">';
+	CM8_ShowAd($bannernameMR);
+	echo '</div>';
+}
+
+if($Right_panel_polupararticle=='true' or  $Right_panel_polupararticle=='')
+{	// popular in ville  block start from here
+
+	echo renderPoluparArticle();
+}
+
+if($Right_panel_emailalertbox=='true' or $Right_panel_emailalertbox=='')
+{
+	$isloggedin=$_SESSION['LoggedIn'];
+	$userEmail = $_SESSION['email'];
+	$userid = $_SESSION['SID'];
+	if(isset($userid))
+	{
+		$isloggedin=1;
+	}
+	else
+	{
+		$isloggedin=0;
+	}
+
+	$targeturl='/subscription/register/controlPanel.htm';	// specify the targetUrl
+	echo emailAlert($isloggedin,$userEmail,$targeturl); // defined in _module_design_lib.phpfile
+}
+if($Right_panel_featuredprof=='true')
+{ /** Our professors block start from here **/
+	echo renderFeaturedProf($featuredProfId,1);
+}
+
+echo renderPageModules($pageDetail['id'],'Bottom Right Module');
+
+if($Right_panel_Rssemailalertbox=='true' or  $Right_panel_Rssemailalertbox=='')
+{
+	$targeturl='/subscription/register/controlPanel.htm'; // specify the targetUrl
+	displayRssEmailAlertbox($targeturl);
+}
+if(!$Right_panel_LocalGuide=='false')
+{
+	echo showDirectoryMbox();
+}
+?>
+</div>
+<!--right container end here-->

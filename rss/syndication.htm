@@ -1,0 +1,89 @@
+<?
+/* Operative Configuration *****/
+/* $zone_name="tickerrss";
+$tile728x90=1;
+$tile160x30=2;
+$tile300x250=3; */
+/* End Operative Configuration *****/
+$pageName = "articlelisting";
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav","minyanville");
+include("$D_R/_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+global $cm8_ads_1x1_Text,$cm8_ads_Button_160x30;
+?>
+
+<!--left contaner start from here-->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+<div class="rss_common_main">
+<div  class="footer_common_title" style="width:645px;">
+<table width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td>Minyanville RSS Feeds</td>
+			  </tr>
+			</table>
+<br /></div>
+	<div style="float:left;"><table cellpadding="0" cellspacing="0" width="90%" border="0" align="left">
+
+<table width=100% align=center cellpadding=0 cellspacing=0 border=0>
+<tr><td height=20><b>Extension: </b>Minyanville Syndication RSS.</td></tr>
+<tr><td height=20><b>Purpose: </b>Minyanville Syndication RSS allows content publishers to use Minyanville content in their CMS/publishing channel under the terms & conditions on their account</td></tr>
+<tr><td height=50><b>Namespace declaration:</b></td></tr>
+<tr><td>
+<b>xmlns:tickersdata</b>="http://www.minyanville.com/rss/syndication.htm"
+<br></td></tr>
+<tr><td>
+<b>xmlns:tickersvalue</b>="http://www.minyanville.com/rss/syndication.htm"
+</td></tr>
+<tr><td>
+<b>xmlns:syndications</b>="http://www.minyanville.com/rss/syndication.htm"
+</td></tr>
+<tr><td>
+<b>xmlns:portals</b>="http://www.minyanville.com/rss/syndication.htm"
+</td></tr>
+<tr><td height=30><b>Description:</b></td></tr>
+<tr>
+  <td height=30><p><strong>Tickerdata:</strong> Tickerdata element is designed to add all the tickers/stocks this content item is discussing into the element.</p>
+    <p><strong>TickersValue:</strong> This element can only be use with tickerdata and caontans single entry of each ticker symbol associated.</p>
+    <p><strong>Syndications</strong>: Syndication element covers all the portals this content is approved for.</p>
+    <p><strong>Portals:</strong> This element can only be use with Syndicatiuons and contains single entry for each portal this content is approved for.</p>
+    <p>&nbsp;</p></td>
+</tr>
+<tr><td height=30><p><b>Example:</b></p>
+    <p>&lt;item&gt;</p>
+    <p> &lt;title&gt; An Economic Accident Waiting to Happen&lt;/title&gt;</p>
+    <p> &lt;link&gt;http://www.minyanville.com/businessmarkets/articles/bernanke-interest-rates/3/19/2010/id/27366&lt;/link&gt;</p>
+    <p> &lt;guid isPermaLink=&quot;true&quot;&gt;http://www.minyanville.com/businessmarkets/articles/bernanke-interest-rates/3/19/2010/id/27366&lt;/guid&gt;</p>
+    <p> &lt;description&gt;&lt;![CDATA[Why does Bernanke want to keep the market party alive? ]]&gt;&lt;/description&gt;      </p>
+    <p>&lt;author&gt;Ron Coby&lt;/author&gt;      </p>
+    <p>&lt;content:encoded&gt;&lt;![CDATA[ On today&amp;amp;rsquo;s show, join Ron as he talks about how Federal Reserve Chairman Ben Bernanke&amp;amp;rsquo;s low interest rates are propping up the market.&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;But why does Bernanke want to keep the stock market party alive?  And is he planting the seeds for another financial crisis?&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;Click below to watch the video.&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;object height=&amp;quot;325&amp;quot; width=&amp;quot;400&amp;quot; classid=&amp;quot;clsid:D27CDB6E-AE6D-11cf-96B8-444553540000&amp;quot; codebase=&amp;quot;http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0&amp;quot;&amp;gt;  &amp;lt;param name=&amp;quot;movie&amp;quot; value=&amp;quot;http://www.minyanville.com/mvtv/player/MVTV.1.10.swf?vid=8360&amp;amp;amp;timestamp=1269009636&amp;amp;amp;vcatname=Specials&amp;amp;amp;autoplay=1&amp;amp;amp;cat=minyanville_main_site.audiovideo.home&amp;amp;amp;adserver=minyanville.checkm8.com&amp;quot; /&amp;gt;  &amp;lt;param name=&amp;quot;quality&amp;quot; value=&amp;quot;high&amp;quot; /&amp;gt;  &amp;lt;param name=&amp;quot;wmode&amp;quot; value=&amp;quot;transparent&amp;quot; /&amp;gt;&amp;lt;embed height=&amp;quot;325&amp;quot; width=&amp;quot;400&amp;quot; src=&amp;quot;http://www.minyanville.com/mvtv/player/MVTV.1.10.swf?vid=8360&amp;amp;amp;timestamp=1269009636&amp;amp;amp;vcatname=Specials&amp;amp;amp;autoplay=1&amp;amp;amp;cat=minyanville_main_site.audiovideo.home&amp;amp;amp;adserver=minyanville.checkm8.com&amp;quot; quality=&amp;quot;high&amp;quot; pluginspage=&amp;quot;http://www.macromedia.com/go/getflashplayer&amp;quot; type=&amp;quot;application/x-shockwave-flash&amp;quot;&amp;gt;&amp;lt;/embed&amp;gt;&amp;lt;/object&amp;gt;&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;The information on this website solely reflects the analysis of or opinion about the performance of securities and financial markets by the writers whose articles appear on the site. The views expressed by the writers are not necessarily the views of Minyanville Media, Inc. or members of its management. Nothing contained on the website is intended to constitute a recommendation or advice addressed to an individual investor or category of investors to purchase, sell or hold any security, or to take any action with respect to the prospective movement of the securities markets or to solicit the purchase or sale of any security. Any investment decisions must be made by the reader either individually or in consultation with his or her investment professional. Minyanville writers and staff may trade or hold positions in securities that are discussed in articles appearing on the website. Writers of articles are required to disclose whether they have a position in any stock or fund discussed in an article, but are not permitted to disclose the size or direction of the position. Nothing on this website is intended to solicit business of any kind for a writer's business or fund. Minyanville management and staff as well as contributing writers will not respond to emails or other communications requesting investment advice. &amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;Copyright 2009 Minyanville Media, Inc. All Rights Reserved.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt; ]]&gt;&lt;/content:encoded&gt;      </p>
+    <p>&lt;tickersdata:tickers&gt;
+      &lt;/tickersdata:tickers&gt;      </p>
+    <p>&lt;syndications&gt;      </p>
+    <p>&lt;portal&gt;Marketwatch&lt;/portal&gt;</p>
+    <p> &lt;portal&gt;Fox Business&lt;/portal&gt;      </p>
+    <p>&lt;portal&gt;MSN&lt;/portal&gt;      </p>
+    <p>&lt;/syndications&gt;      </p>
+    <p>&lt;wfw:commentRss&gt;http://www.minyanville.com/feed/getFeed.htm?type=comments&amp;tid=27778&lt;/wfw:commentRss&gt;</p>
+    <p>&lt;/category&gt;
+      &lt;category&gt;&lt;![CDATA[Markets]]&gt;&lt;/category&gt;</p>
+    <p> &lt;category&gt;&lt;![CDATA[Macro Outlook]]&gt;&lt;/category&gt;</p>
+    <p> &lt;/item&gt;
+                                                                        </p></td></tr>
+</table>
+
+</div>
+
+
+</div>
+</div>
+<!--left contaner end here-->
+<?
+$arrRightCols	=	array('show_video','show_adblade','show_mostpopular','email_alert','show_rss_emailalert','show_localguides');
+include("../_rightcolumn.htm");
+?>
+</div>
+</div>
+<? include("../_footer.htm"); ?>

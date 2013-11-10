@@ -1,0 +1,334 @@
+<?
+/*--page  authentication------*/
+global $D_R;
+include_once("$D_R/lib/_news.php");
+$contributor_id=$_GET['contributor_id'];
+$id=$_GET['id'];
+$page="gazette";
+include("$ADMIN_PATH/_header.htm");
+$pagedata[prof_id]='2';
+
+$cancreate=$AD->getPerm("cp_articles");
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+
+/*==========related article contributors list=============*/
+$contrib_query="select distinct CC.id,CC.name from cp_contributors CC,cp_articles CA where CC.id=CA.contrib_id  order by CC.name ";
+/*==========List of contributors===========*/
+$author_query="select id,name from cp_contributors";
+
+	if (isset($contributor_id))
+	{
+		// $contributor_id=$AD->userInfo[contrib_id];
+		$articlelist = "SELECT CA.category_ids,DATE_FORMAT(CA.date,'%m/%d/%Y %r')date,
+			CA.id,CA.title,CC.name,CA.contrib_id,CA.note,CA.body,CA.contributor
+			FROM cp_articles CA,cp_contributors CC
+			WHERE CA.contrib_id=CC.id and CC.id='".$contributor_id."'";
+		$articlelist.=" ORDER BY CA.date DESC limit 0,50";
+	}
+/*===========set up data for displaying article edit page=============*/
+	if($id!=""){
+		$pagedata = get_full_cp_article($id,0);
+		$pagedata[keyword]=str_replace("-",",",$pagedata[keyword]);
+	}
+	$handler = "./articles_mod.htm";
+
+	if(!$id || !count($pagedata) ){
+		$pagedata[body]="";
+		$pagedata[contributor]=$AD->userInfo[name];
+		$pagedata[contrib_id]=$AD->userInfo[contrib_id];
+		$pagedata[date]=mysqlNow();
+		$pagedata[udate]=time();
+		$pagedata[datefmt]=mysqlNow();
+		$pagedata[character_id]=0;
+		$pagedata[position]=$DEFAULT_NO_POS;
+		$pagedata[category_ids]=array();
+		$pagedata[is_public]=1;
+		$pagedata[is_featured]=0;
+		$pagedata[title]="";
+		$pagedata[is_live]=1;
+		$pagedata[position]="";
+		$pagedata[blurb]="";
+		$pagedata[keyword]="";
+		$pagedata[note]="";
+		$pagedata[character_text]="";
+		$pagedata[publish_date]="";
+		$pagedata[character_img_id]=0;
+		$pagedata[character_asset]="/space.gif";
+	//	$pagedata[prof_id]=$AD->userInfo[prof_id];
+		$ctrlstatus="disabled";
+	}
+	$pagedata[sent]=($pagedata[sent]?1:0);
+	$breakDateStr="n|j|Y|G|i";
+	list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,$pagedata[udate]));
+	if($y=="2000" || $y=="1969"){//invalid date
+		$datefield=array();
+	}else{
+		$datefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+	}
+?>
+<script>
+function deleteIt(){
+	if(confirm("Are you sure you want to delete this article?")){
+		var frm=document["articleForm"];
+		frm["deletearticle"].value=1;
+		frm.submit();
+	}
+}
+
+function sendmail(){
+	if(confirm("Are you sure you want to send this article to all your subscribers?")){
+		var frm=document["articleForm"];
+		frm["emailsend"].value=1;
+		frm.submit();
+
+	}
+}
+
+function Save(){
+	var err="";
+	var frm=document["articleForm"];
+
+	if(!trim(getValByName("articles[title]"))){
+		err+="Please give this article a title\n";
+	}
+	if(err.length){
+		alert(err);
+		return;
+	}
+	findObj("articleForm").submit();
+}
+
+function setFormSubmitMarker(frm,value)
+{
+    frm.submitname.value=value;
+}
+
+function setAutorName(frm,frmobj)
+{
+
+    if (frmobj.selectedIndex>0)
+    {
+        frm["articles[contributor]"].value=frmobj[frmobj.selectedIndex].text;
+    }
+    else
+    {
+        frm["articles[contributor]"].value="";
+    }
+}
+
+</script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
+<?if($AD->getPerm(array("cp_approve"))){?>
+	<a href="/admin/cooper/approve.htm">Approve Articles</a><br><br />
+<?}?>
+<br><br>
+<form method=get action="<?=$PHP_SELF?>">
+	<table align=center width=600 border=0>
+	<TR>
+		<TD>Select a contributor to view article:
+		<select name="contributor_id" onchange="setFormSubmitMarker(this.form,'contributor');this.form.submit();">
+		<option value="">--select contributor--</option>
+		<?
+		foreach(exec_query($contrib_query) as $row){
+				$sel=($contributor_id==$row[id]?" selected":"");
+				$disp=$row[name];
+				$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+			?>
+				<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+			<?}?>
+		</select>
+		</TD>
+	<TR>
+	<TR>
+		<TD>Select an article to Edit:
+			<select name="id" onchange="this.form.submit()">
+			<?if($cancreate){?><option value="">--New Article--</option><?}?>
+			<?
+			if (strlen($contributor_id)<>0)
+			{
+				foreach(exec_query($articlelist) as $row){
+					$sel=($id==$row[id]?" selected":"");
+					$disp=$row[name]." - ".$row[title]." (${row[date]})";
+					$style=" style='background:#".($row[contrib_id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+				?>
+					<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+				<?}
+			}?>
+			</select>
+		</TD>
+	</TR>
+	</table>
+	<input type="hidden" name="submitname" value="">
+</form>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<form method="post" action="<?=$handler?>" name="articleForm">
+	<?input_hidden("id")?>
+	<?input_hidden("articles[sent]",$pagedata[sent])?>
+	<?input_hidden("deletearticle",0)?>
+	<?input_hidden("emailsend",0)?>
+	<table align=center width=600 border=0>
+		<TR>
+			<TD width=1% align=right><label for="articles[title]"><b>Title1</b>:</label></TD>
+			<TD width=99%><?input_text("articles[title]",$pagedata[title],0,255," style='width:100%'")?></TD>
+		</TR>
+		<TR>
+			<TD align=right><label for="articles[contrib_id]"><b>Author</b>:</label></TD>
+			<TD width=99%>
+			<?//input_text("banter[author]",$pagedata[author],"","","style=width:100% onclick='this.select()'")?>
+
+				<select name="articles[contrib_id]" onchange="setAutorName(this.form,this)">
+			<option value="">--select author--</option>
+			<?
+			foreach(exec_query($author_query) as $row){
+					$sel=(trim($pagedata[contributor])==trim($row[name])?" selected":"");
+					$disp=$row[name];
+					$style=" style='background:#".($row[id]==$AD->userInfo[contrib_id]?"ffcccc":"")."'";
+				?>
+					<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+				<?}?>
+			</select>
+			<?input_hidden("articles[contributor]",$pagedata[contributor])?>
+			<?input_hidden("articles[publish_date]",$pagedata[publish_date])?>
+			<?input_hidden("articles[is_live]",$pagedata[is_live])?>
+			<?input_hidden("articles[prof_id]",$pagedata[prof_id])?>
+			<?
+			//input_hidden("articles[contrib_id]",$pagedata[contrib_id])
+			//input_text("articles[contrib_id]",$pagedata[contrib_id],0,255," style='width:100%'")
+			?>
+			</TD>
+		</TR>
+		<TR>
+			<TD align=right><b>Date</b>:</TD>
+			<TD>
+				<?if($edit_date){?>
+					<table cellpadding=0 cellspacing=0 border=0>
+					<TR>
+					<TD><?month_options("datefield[mo]",$datefield[mo])?></TD>
+					<TD><?day_options("datefield[day]",$datefield[day])?></TD>
+					<TD><?year_options("datefield[year]",$datefield[year],"",2002,date("Y")+3)?></TD>
+					<TD><?hour_options("datefield[hour]",$datefield[hour])?></TD>
+					<TD><?minute_options("datefield[min]",$datefield["min"])?></TD>
+					</TR>
+					</table>
+				<?}else{?>
+					<?=$pagedata[datefmt]?>
+				<?}?>
+				<?input_hidden("articles[date]",$pagedata["date"] );?>
+			</TD>
+		</TR>
+		<TR>
+			<TD align=right><strong>Featured Article</strong> </TD>
+			<TD>
+			<?
+			input_check("articles[is_featured]",$pagedata[is_featured]);
+			?></TD>
+		</TR>
+		<TR>
+			<TD valign=top align=right><label for="articles[blurb]"><b>Headline</b>:</TD>
+			<TD><textarea name="articles[blurb]" id="articles[blurb]" cols=50 rows=5 style="width:100%"><?=$pagedata[blurb]?></textarea></TD>
+		</TR>
+
+		<TR>
+			<TD width=1% align=right><label for="articles[keyword]"><b>Keyword</b>:</label></TD>
+			<TD width=99%><?input_text("articles[keyword]",$pagedata[keyword],0,255," style='width:100%'")?></TD>
+		</TR>
+		<TR valign=top>
+			<TD align=right><b>Entry</b>:</TD>
+			<TD align=left>
+			<?
+				//rich_editor("articles[body]", $pagedata[body],500,300,array(img_dir=>"/assets/articles"))
+				input_textarea("articles[body]",strip($pagedata[body]),"600");
+			?>
+			<script language="javascript">
+				showEditor('articles[body]',800,400);
+			</script>
+			</TD>
+		</TR>
+		<TR>
+			<TD><label for="articles[position]"><b>Position:</b></label></TD>
+			<TD><?input_text("articles[position]",$pagedata[position],0,255," style='width:100%'")?></TD>
+		</TR>
+		<tr>
+			<TD><label for="articles[note]"><b>Note:</b></label></TD>
+			<TD><?input_text("articles[note]",$pagedata[note],0,255," style='width:100%'")?></TD>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<b>Allow this article to be viewed for free</b>
+				<table cellpadding="0" cellspacing="0">
+					<tr>
+						<td><?input_radio("articles[is_public]",1,$pagedata[is_public])?></td>
+						<td><label for="articles[is_public]1">Yes</label></td>
+						<td><?input_radio("articles[is_public]",0,$pagedata[is_public])?></td>
+						<td><label for="articles[is_public]0">No</label></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+<?
+
+    /* $char_query="SELECT chi.id,concat(ch.name,' - ',chi.name)name,chi.asset
+					FROM cp_characters ch, cp_character_images chi
+					WHERE chi.character_id =ch.id and  chi.prof_id=ch.prof_id and ch.prof_id='$pagedata[prof_id]' ";  */
+		 $char_query="SELECT chi.id,concat(ch.name,' - ',chi.name)name,chi.asset
+					FROM cp_characters ch, cp_character_images chi
+					WHERE chi.character_id =ch.id and  chi.prof_id=ch.prof_id and ch.prof_id='2' ";
+	 $chardata=exec_query($char_query);
+	if($contributor_id){
+	 $pagedata[character_asset]=$chardata[0]['asset'];
+	}
+?>
+<script>
+chars=new Array();
+<?foreach($chardata as $row){?>
+	chars["<?=$row[id]?>"]="<?=$row[asset];?>";
+<?}?>
+
+function changeChar(frmObj){
+	var selid=frmObj[frmObj.selectedIndex].value;
+	if(!selid)return;
+	rollOver("swapper",chars[selid])
+}
+</script>
+<TR><TD colspan=2><hr size=1 width=100% color=black>
+<b>Character</b>:
+</TD></TR>
+<TR>
+<TD nowrap><label for="articles[character_text]"><b>Talk Bubble:</b></label></TD>
+<TD><?input_text("articles[character_text]",$pagedata[character_text],0,255," style='width:100%'")?></TD>
+</TR>
+
+	<TR>
+	<TD colspan=2 align=center>
+	<select name="articles[character_img_id]" onchange="changeChar(this)">
+			<option value="">--Select a character--
+			<?selectHashArr($chardata,"id","name",$pagedata[character_img_id])?>
+		</select><br>
+		<div class=border><img src="<?=$pagedata[character_asset]?$pagedata[character_asset]:"/space.gif"?>" border=0 name="swapper" width=126 height=140></div>
+
+<TR>
+			<TD colspan=2 align=center>
+				<hr width=100% size=1 color="#000000"><br>
+				<input type="button" value="Save" onclick="Save()">&nbsp;&nbsp;
+				<input type="button" value="Cancel" onclick="void(location.replace(location.href))">&nbsp;&nbsp;
+				<?if($candelete && $id){?><input type="button" value="Delete This Article" onclick="deleteIt()"><?}?>
+				<?if($sendemail && $id){?><input type="button" name="btnsendemail" value="Send Article in Email" onclick="sendmail()"><?}?>
+			   <? if($sendemail && $id)
+			   {
+				   $professor_details=get_prof_domain_name($AD->userInfo[prof_id]);
+				   $sitename=$professor_details[sitename];
+				   $prof_id=$AD->userInfo[prof_id];
+				?>
+				  <input type="button" value="Preview Template" onclick=window.open("/emails/_eml_single_article.htm?aid=<?=$id?>&prof_id=<?=$prof_id?>&sitename=<?=$sitename?>",'null',"width=590,height=500");> &nbsp;
+			  <? }
+			  ?>
+			</TD>
+		</TR>
+	</TABLE>
+</form>
+<? include("$ADMIN_PATH/_footer.htm")?>

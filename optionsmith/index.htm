@@ -1,0 +1,169 @@
+<?php
+session_start();
+if(!$_SESSION['Optionsmith'])
+{
+	$param="";
+	if($_SESSION['SID'])
+	{
+		$param ="?email=".$_SESSION['EMAIL']."&first_name=".$_SESSION['nameFirst'];
+	}
+    header( "Location:  http://mvp.minyanville.com/optionsmith-landing-page-navbar/".$param);
+}
+global $HTPFX,$HTHOST,$IMG_SERVER;
+$pageName = "sslanding";
+
+$USER=new user();
+$haveOptionsmith = $USER->is_option();
+
+if($haveOptionsmith)
+{
+header( "Location: ".$HTPFX.$HTHOST."/optionsmith/home.htm" );
+}
+
+$pageJS=array("config","mobileredirect","jquery","ibox");
+$pageCSS=array("ibox","global");
+include("$D_R/_header_no_nav.htm");
+
+
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+include("../admin/ss/ss_classes/class_Performance.php");
+
+global $transobj,$ytdobj;
+
+
+$performanceobj=new Performance();
+$performanceobj->calculatePerformance();
+
+$USER=new user();
+$loginoption = $USER->is_option();
+
+
+$arPD = getFreeTrailProductDetail('optionsmith','subscription');
+$arPD['product_name'] = 'subOptionSmith';
+$arPD['event_name'] = 'Landed';
+$arPD['product_type'] = 'Monthly';
+
+?>
+
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/fancyplayer/js/flowplayer-3.1.4.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/fancyplayer/js/jquery.fancybox-1.2.1.pack.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/fancyplayer/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/fancyplayer/js/fancyplayer.1.1.js"></script>
+<script type="text/javascript">
+
+	var videopath = "<?=$HTPFX.$HTHOST?>/js/fancyplayer/";
+	var swfplayer = videopath + "videos/flowplayer-3.1.5.swf";
+	var swfcontent = videopath + "videos/flowplayer.content-3.1.0.swf";
+	var swfcaptions = videopath + "videos/flowplayer.captions-3.1.4.swf";
+
+</script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/js/fancyplayer/css/jquery.fancybox.1.2.css" type="text/css" media="screen" />
+<link rel='stylesheet' href='<?=$HTPFX.$HTHOST?>/css/option_smith_lander.1.2.css' type='text/css' media='all' />
+<div id="os_outer_container"> <!--  Ends in _footer.htm -->
+<?
+$obOuterTemplate->displayLoginDiv();
+?>
+<div id="os_container">
+<div id="smith_mvp_logo">
+<div style="float:left;">
+<img style="cursor:pointer;" src="<?=$IMG_SERVER?>/images/optionsmith/os_mvp_hdr.jpg" class="freeimg" alt="" >
+ </div>
+ <div class="logo_border">&nbsp;</div>
+
+</div>
+
+<div id="os_left">
+
+<div id="os_left_top">
+<h1>Forge a Stronger Investment Strategy with OptionSmith</h1>
+
+<p>Let veteran options trader Steve Smith show you the way to reduce risk and boost your returns through the strategic use of options.</p>
+<p>Whether you already trade options or are looking for another tool to strengthen your portfolio, you can now benefit from Steve's experiences as a trader, market maker and successful newsletter author.</p>
+<p><a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">Start a subscription today risk free.</a></p>
+						</div>
+<div id="os_left_middle">
+<ul>
+<li style="margin-right:52px;">Learn How To <br /> Trade Options</li>
+<li style="margin-right:44px;">Learn Options <br /> Strategies</li>
+<li>Learn How to <br /> Reduce Risk</li>
+</ul>
+With a subscription to OptionSmith not only will you have access to Steve Smith's trades and portfolio, but you'll also learn about the various strategies behind each trade and how to use the power of options to reduce risk and increase profits.
+		</div>
+<div id="os_you_get">
+<h1>You Will Get</h1>
+<ul>
+<li><span>&raquo;</span>FREE 20 page Options Trading tutorial bonus report</li>
+<li><span>&raquo;</span>Email alerts every time Steve makes a trade</li>
+<li><span>&raquo;</span>Detailed analysis and rationale for each trade</li>
+<li><span>&raquo;</span>Trade management: (entries/exits/stops)</li>
+<li><span>&raquo;</span>Weekly review of all positions and a look at the week ahead</li>
+<li><span>&raquo;</span>The best strategies to use in volatile markets</li>
+<li><span>&raquo;</span><div style="width:410px;float:left;">Access to the OptionSmith portfolio  holdings, closed positions and performance</div></li>
+</ul>
+<a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">
+                 <img style="cursor:pointer;" src="<?=$IMG_SERVER?>/images/optionsmith/startMySubscription_btn.gif" alt="" >
+                 </a>
+</div>
+<div id="your_option">
+Your OptionSmith subscription offers you the flexibility to subscribe monthly at the low price of just $39 per month or on an annual basis for just $349 per year - a <span class="green_text"><b>25% discount</b></span> to the monthly cost. Both come with our <span  class="green_text"><b>14 day money back guarantee</b></span> so there's no risk to signing up.
+    </div>
+<div id="subscription_today">
+<h1 class="green_text"> <img src="<?=$IMG_SERVER?>/images/optionsmith/checkMark_img.jpg" alt="subscribe today">
+<u><a class="green_text" href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">Subscribe today</a></u> and try OptionSmith risk free.</h1>
+Minyanville Media stands behind our products and our guarantee. If for any reason you are not 100% satisfied with <i>OptionSmith</i>, simply notify us within the first 14 days of your subscription for a full refund. Guaranteed.
+Call us at <span class="blue-text">212-991-9357</span> or email <a class="blue-text" href="mailto:support@minyanville.com">support@minyanville.com</a>. Benefit from your subscription risk free, satisfaction guaranteed or your money back.
+</div>
+
+		 </div>
+
+<div id="os_right">
+<div id="smith_video">
+
+    <a href="<?=$IMG_SERVER?>/images/optionsmith/os_videoStill.jpg" name="<?=$HTPFX.$HTHOST;?>/optionsmith/Video/OpSmithFinal.flv" title="OptionSmith" class="video_link captions" rel="gallery"><img src="<?=$IMG_SERVER?>/images/optionsmith/os_videoStill.jpg" width="300" height="155" alt="OptionSmith Video" /></a>
+
+				</div>
+<div id="smith_free_trial">
+ <a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">
+                 <img style="cursor:pointer;" src="<?=$IMG_SERVER?>/images/optionsmith/os_yes_btn.gif" class="freeimg" alt="" >
+                 </a>
+</div>
+<div id="money_back_seal">
+<div class="seal_text">
+<a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">Start your subscription today and receive our 14 day money back guarantee. If you're not 100% satisfied with your OptionSmith subscription, simply contact us within 14 days and receive a full refund - guaranteed.</a>
+</div>
+</div>
+
+<div id="smith_performance">
+<h1>Portfolio Performance</h1>
+<ul>
+<li><span>+<?=$performanceobj->TotAvgReturn?>%</span> Total Average Return</li>
+<li><span>+39.47%</span> 2010 Return</li>
+<li><span>+27.57%</span> 2011 Return</li>
+<li><span>+<?=$performanceobj->YTDAvgReturn?>%</span> YTD <?=date("Y");?> Return </li>
+</ul>
+
+</div>
+<div id="smith_limited_offer">
+    <div>
+    <div style="float:left;">
+    <img style="cursor:pointer;" src="<?=$IMG_SERVER?>/images/optionsmith/bonusStarburst_img.jpg" class="bonus" alt="" >
+    </div>
+    <div class="offer-text"><h1 class="green_text">Limited time offer*</h1> Sign up for an OptionSmith Subscription and get our Options Trading tutorial report absolutely FREE.</div>
+    </div>
+    <div class="free_report">
+    Written by John Succo, one of the most respected options traders on Wall Street, this 20 page report will teach new options traders all you need to know and provide experienced options traders with an even  <br />better
+    <img style="cursor:pointer;padding:0px 0 8px 8px;" src="<?=$IMG_SERVER?>/images/optionsmith/os_report_img.jpg" class="Report" alt="" align="right">
+     understanding of options complexities.
+
+    <br/><br/>It's yours <span class="green_text"><b>FREE</b></span> when you <a class="limited_free_signup" href="<?=$HTPFXSSL.$HTHOST?>/subscription/register/" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">sign up for an OptionSmith subscription.</a>
+    </div>
+</div>
+
+</div>
+
+<?
+$obOuterTemplate->footerSupportText();
+?>
+
+</div>
+<? include("../_footer.htm"); ?>

@@ -1,0 +1,60 @@
+<?
+    $USER= new user();
+	$serverip=$_SERVER['REMOTE_ADDR'];
+		$blockiplist=checkblockip();  /*Field discard from subscription*/
+	if(!$USER->isAuthed){
+		location($page_config['login']['URL'].'?from='.$pageName);
+	}
+	/* code commented, now all users have default exchange*/
+	/* elseif(!$USER->is_exchangeuser()){
+		location($page_config['welcome']['URL'].'?from='.$pageName);
+	} */
+	if(($_SESSION['SID']) && ($_SESSION['EID'])){
+		build_lang($pageName);
+		$exchange_servicequery="select es.id as id from ex_services es where es.serviceid='all_services'";
+		$exchange_serviceresult=exec_query($exchange_servicequery,1);
+		//echo $exchange_query;
+		if(count($exchange_serviceresult)>0){
+			$user_serviceid=$exchange_serviceresult['id'];
+		}
+		$exchange_prevresult=check_exprevilages($USER->id,$user_serviceid);
+		if($exchange_prevresult)
+		{	
+			$chk='true';
+			$chkmsg=$lang['comment_prevmsg'];
+		}
+		else
+		{
+			$chk='';
+			$chkmsg='';
+		}
+//ends previlages here	
+	
+// class to be applied for non selected exchange tab in exchange header
+$tabselected['home']='exchange_tab';
+$tabselected['discussion']='exchange_tab';
+$tabselected['profile']='exchange_tab';
+$tabselected['friends']='exchange_tab';
+$tabselected['setting']='exchange_tab';
+
+/********************************************************* 
+    class to be applied for selected exchange tab in exchange header
+    $exPage=home for request page
+    $exPage=discussion for discussion pages
+    $exPage=profile for profile pages
+    $exPage=friends for friends pages
+    $exPage=setting for settings pages
+**********************************************************/
+$tabselected[$exPage]='exchange_tab_selected';								
+?>
+<div class="exchange_bar">
+<div class="<?=$tabselected['home'] ?>"><a href="<?=$page_config['home']['URL']?>">Home</a></div>
+<div class="<?=$tabselected['discussion'] ?>"><a href="<?=$page_config['main_discussion']['URL'];?>">discussions</a></div>
+<div class="<?=$tabselected['profile'] ?>"><a href="<?=$page_config['profile']['URL']?>?userid=<?=$_SESSION['SID']?>">profile</a></div>
+<div class="<?=$tabselected['friends'] ?>"><a href="<?=$page_config['friends']['URL'];?>">friends</a></div>
+<div class="<?=$tabselected['setting'] ?>"><a href="<?=$page_config['privacy']['URL']?>">settings</a></div>
+</div>
+
+<?
+	 }
+?>

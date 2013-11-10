@@ -1,0 +1,33 @@
+<?
+
+$title="";
+$homepage=1;
+$SECTION=$PAGE="ourtown";
+$HEADER="/space.gif";
+$HEADERBGCLASS="fallheader2";
+$CENTERBGCLASS="fallcenter2";
+$LOGO="$IMG_SERVER/assets/home-logo2.jpg";
+include("$D_R/_header.htm");
+$xmldata = urlencode("/getxml.htm?page=homepage");
+?>
+<style>
+.hometile,.rightside{
+	background-color:#8AA961;
+	background-image:url("<?=$IMG_SERVER?>/assets/ourtownxmasslice.gif");
+	background-repeat:repeat-x;
+	background-position:0 -2;
+}
+.rightside{background-color:#88CC72}
+#banneradcontent{
+	left:111px;
+	top:15px;
+}
+</style>
+<div class="hometile">
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="818" height="432">
+<param name="movie" value="/assets/swf/ourtown_xmas.swf">
+<param name="quality" value="high">
+<param name="bgcolor" value="#88CC72">
+<embed src="/assets/swf/ourtown_xmas.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" bgcolor="#88CC72" type="application/x-shockwave-flash" width="818" height="432">
+</embed></object></div><br><?=spacer(614)?>
+<?include("$D_R/_footer.htm");?>

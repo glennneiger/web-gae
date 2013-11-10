@@ -1,0 +1,32 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+$bounceback="./glossary.htm";
+
+$id= $_POST['id'];
+$glossary= $_POST['glossary'];
+$deleteit= $_POST['deleteit'];
+
+if(!count($_POST)){
+	location($bounceback.qsa(array(error=>"No changes were made",id=>$id)));
+	exit;
+}
+
+
+if(!$id){
+	insert_query("dictionary",$glossary);
+	$id=exec_query("select id from dictionary WHERE name='$name'",1,"id");
+	location($bounceback.qsa(array(error=>"The term was created",id=>$id)));
+	exit;
+}else{
+	if($deleteit){
+		del_query("dictionary","id",$id);
+		location($bounceback.qsa(array(error=>"The glossary term was removed"),"*"));
+		exit;
+	}
+	update_query( "dictionary", $glossary, array(id=>$id) );
+	location($bounceback.qsa(array(error=>"Your changes were saved",id=>$id)));
+	exit;
+}
+
+
+?>

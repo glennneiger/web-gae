@@ -1,0 +1,83 @@
+<?php
+session_start();
+global $D_R;
+$videoArr = getKeyVal('mvtv,video',$_SERVER['REQUEST_URI']);
+$category = ($videoArr['mvtv']=="" ? $_GET['cat'] : $videoArr['mvtv']);
+$category = ($category=="" ? $videoArr['video'] : $category);
+include_once($D_R."/lib/layout_functions.php");
+include_once($D_R."/lib/_article_design_lib.php");
+include_once($D_R."/lib/videos/_data_lib.php");
+
+$objPlayer = new player();
+$catName=strtolower($category);
+switch($catName){
+	case 'hoofyandboo':
+		$catName=strtolower("HOOFY & BOO");
+                $pageName='hoofyboo';
+		break;
+        case 'toddharrisontv':
+		$catName=strtolower("TODD HARRISON TV");
+                $pageName='toddharrisontv';
+		break;
+        case 'popbiz':
+		$catName=strtolower("POP BIZ");
+                $pageName='popbiz';
+		break;
+        case 't3live':
+		$catName=strtolower("T3 Live");
+                $pageName='t3live';
+		break;
+	case 'specials':
+		$catName=strtolower("Specials");
+                $pageName='specials';
+		break;	
+	default:
+	        $catName=strtolower("HOOFY & BOO");
+                $pageName='hoofyboo';
+	break;
+}
+
+
+global $cm8Server;
+$cm8cat=getCheckmateCat($pageName);
+$cm8cat=$cm8cat['cm8cat'];
+
+$pageJS=array("config","registration","iboxregistration","nav","search","ajax","Articles");
+$pageCSS=array("global","rightColumn","nav","minyanville","video");
+
+include("../_header.htm");
+?>
+
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/buzz/includes/AnchorPosition.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/friends.js" type="text/javascript"></script>
+<!--script for share this start-->
+<!-- Div holding share this end -->
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div id="article-left">
+<?=showBreadCrum($breadcrum); ?>
+
+<!--Audio left content start from here-->
+<div style="padding-top:5px;" class="left_contant_audio">
+<!---Combo tabs start from here-->
+<div class="combo_main_container_cat">
+	<div id="combo_tab" class='combo_tab_main_content' style="text-align:center;">
+		<? include_once($D_R."/mvtv/videotabscat.php");?>
+	</div>
+</div>
+
+<div style="clear: both;"></div>
+	</div>
+</div>
+<!--left contaner end here-->
+<?
+$page_name = 'audiovideo';
+$bannernameMR="MediumRectangle_300x250_300x600";
+$arrRightCols	=	array('show_mostpopular','show_ads','show_industrybrains');
+include("../_rightcolumn.htm"); ?>
+<!--right contaner end here-->
+<!--right contaner end here-->
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

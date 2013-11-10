@@ -1,0 +1,143 @@
+/* CSS Document */
+.pClass{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	padding:10px 10px 6px 0px;
+	color:#404040;
+}
+
+.adFreeBanner{
+	width:940px;
+	float:left;	
+	margin:10px 22px;
+}
+
+.adFreeContent{
+	width:940px;
+	float:left;
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/adFreeBg.jpg);
+	background-repeat:repeat-y;
+	margin:10px 22px;
+}
+
+.adFreeTopImage{
+	width:940px;
+	float:left;
+	margin:0px;
+	padding:0px;
+}
+
+.adFreeBootomImage{
+	width:940px;
+	float:left;
+	margin:0px;
+	padding:0px;
+}
+
+.adFreeContentText{
+	width:604px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	padding:0px 10px 0px 16px;
+	color:#404040;
+}
+
+.adFreeTextImage{
+	width:292px;
+	float:left;
+	padding:0px 10px 5px 0px;
+}
+
+.adFreeText1{
+	width:292px;
+	float:left;
+	font:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bold;
+	color:#404040;
+	padding:10px 10px 7px 0px;
+}
+
+.adFreeImage1{
+	width:261px;
+	float:right;
+	padding:5px 27px 0 0;
+}
+
+.adFreeFooter{
+	width:940px;
+	float:left;	
+	margin:10px 22px 20px 22px;
+}
+
+.adFreeFooter1{
+	width:300px;
+	float:left;
+	margin-right:10px;
+}
+
+.adFreeFooter2{
+	width:300px;
+	float:left;
+	margin:0 10px;
+}
+
+.adFreeFooter3{
+	width:300px;
+	float:left;
+	margin-left:10px;
+}
+
+.adFreeFooterBoldText{
+	width:275px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	color:#103c61;
+	white-space:nowrap;
+	margin-bottom:6px;
+}
+
+.adFreeFooterText{
+	width:275px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:normal;
+	color:#113c5f;
+}
+
+	
+.adFreeGreenText{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	color:#41812a;
+	font-weight:bold;
+}
+
+.adFreeBlueBoldText{
+	font:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bold;
+	color:#113c5f;
+}
+
+.adFreeText{
+	width:940px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	padding:0px 5px;
+	height:174px;
+}
+
+.freeBoldText{
+	font:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	color:#113c5f;
+}
+
+	

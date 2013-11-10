@@ -1,0 +1,79 @@
+<?
+global $D_R,$HTPFX,$HTHOST,$IMG_SERVER;
+include_once("$D_R/admin/_authenticate.htm");
+include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/config/_products_config.php");
+global $viaProductsName;
+
+$cancreate=$AD->getPerm("subscription_dashboard");				//Check User accesss for page
+if(!$cancreate){
+	admin_error("You're not allowed to use this page.");
+}
+$currentYear = date('Y');
+?>
+
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/adminManageSubscription.1.3.css">
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/admin/_style.1.3.css">
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/min/jquery-ui-datepicker.1.1.css" type="text/css" media="all" />
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/adminManageSubscription.1.4.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( "#fromDate" ).datepicker({
+		dateFormat: "yy/mm/dd",
+		yearRange: "2012:<?=$currentYear?>",
+		changeMonth: true,
+		changeYear: true,
+		showOn: "button",
+		buttonImage: "<?=$IMG_SERVER?>/images/datepicker/calendar_icon.png",
+		buttonImageOnly: true,
+		buttonText: 'Choose Date'
+	});
+	$( "#toDate" ).datepicker({
+		dateFormat: "yy/mm/dd",
+		yearRange: "2012:<?=$currentYear?>",
+		changeMonth: true,
+		changeYear: true,
+		showOn: "button",
+		buttonImage: "<?=$IMG_SERVER?>/images/datepicker/calendar_icon.png",
+		buttonImageOnly: true,
+		buttonText: 'Choose Date'
+	});
+});
+</script>
+
+<div class="subReportMain">
+	<div class=adminheader>View/Download Refund Report</div><br>
+
+	<div class="refundSearchBox">
+		<div class="refundSearchLabel">Search Filter</div>
+		<div class="reportError" id="reportError">&nbsp;</div>
+		<div class="refundSearchFilters">
+			<div class="serchBase">Product<span class="required_symbol">&nbsp;</span><br>
+				<select name="product" id="product" class="selectProduct">
+					<option value="0">-- Select Product --</option>
+					<? foreach($viaProductsName as $key=>$val){
+					    if($_GET['product']==$key){
+						 	echo '<option id='.$key.' value='.$key.' selected >'.$val.'</option>';
+					    } else {
+						 	echo '<option id='.$key.' value='.$key.'  >'.$val.'</option>';
+					    }
+					} ?>
+				</select>
+			</div>
+			<div class="serchBaseMiddle">From<span class="required_symbol">*</span><br>
+				<input type="text" id="fromDate">
+			</div>
+			<div class="serchBaseMiddle">To<span class="required_symbol">*</span><br>
+				<input type="text" id="toDate">
+			</div>
+		</div>
+		<div class="refundBttnDiv"><input type="button" value="View" class="goBttn" onClick="javascript:generateRefundReport('viewRefundReport','0','','','yes');" /><input type="button" value="Download" class="dwnloadBttn" onClick="javascript:generateRefundReport('exportRefundReport','','','','');" /></div>
+	</div>
+	<div style="clear:left;"></div>
+	<div class="refundSummaryContent" id="summaryContent">&nbsp;</div>
+	<div class="recordCount" id="recordCount">&nbsp;</div>
+	<div style="clear:left;"></div>
+	<div class="reportContent" id="reportContent">&nbsp;</div>
+</div>

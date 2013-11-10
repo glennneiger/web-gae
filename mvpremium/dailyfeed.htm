@@ -1,0 +1,151 @@
+<?php
+session_start();
+
+$feedcache= new Cache();
+$feedData 	= $feedcache->getDailyfeedCache(parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH));
+
+
+$feedId=$feedData->id;
+global $mobile_itemType,$mobile_itemType;
+$mobile_itemType="18";
+$mobile_itemID=$feedId;
+//CheckMobile('18',$feedId);
+global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle,$HTPFX;
+global $dailyfeedLandingItems,$dailyfeedTopicInterval,$ad_author_id,$ad_author;
+
+$ad_author = urlencode($feedData->contributor);
+$ad_author_id = $feedData->ContId;
+
+include_once($D_R."/lib/_content_data_lib.php");
+include_once($D_R."/admin/lib/_dailyfeed_data_lib.php");
+include_once($D_R."/lib/_content_data_lib.php");
+include_once($D_R."/lib/config/_dailyfeed_config.php");
+include_once($D_R."/lib/_dailyfeed_design_lib.php");
+include_once($D_R."/lib/_article_design_lib.php");
+include_once($D_R.'/lib/config/_article_config.php');
+$pageName = "dailyfeed_article";
+$df_title=$feedData->title;
+$feed_is_live = $feedData->is_live;
+
+$objfeed = new dailyfeedViewer();
+$objDailyfeed 	=	new Dailyfeed();
+$tickerArr = $feedcache->getTickersCache($feedId,'18',$feed_is_live);
+
+if(!$feedData->id){
+	set_sess_vars('notFound','1');
+	location($HTPFX.$HTHOST);
+	exit;
+}
+$disqusArticleId=$feedData->id;
+$disqusTableName="daily_feed";
+$disqusItemType="18";
+$titleFeed = $feedData->title;
+if(!$feedData->is_live && empty($_SESSION['AMADMIN'])){
+	set_sess_vars('notFound','1');
+	location($HTPFX.$HTHOST);
+	exit;
+}
+
+
+	$item_table = 'daily_feed';
+	$pageName = "dailyfeed_article";
+	$objContent 	= 	new Content($item_table,$feedId);
+	$noDefaultLoad=TRUE;
+	$pageJS=array("prototype","config","jquery","nav","redesign",'dailyfeed','zoomimage','mobileredirect','global');
+	$pageCSS=array("global","layout","rightColumn","nav","dailyfeed","zoomimage","fontStylesheet");
+	$show_canonical="1";
+	include("../_header.htm");
+
+ $bannernameMR =$cm8_ads_MediumRectangle;
+ $bannername=$cm8_ads_Button_160x30;
+ $gaTrackingAuthor = $feedData->contributor;
+ $userid = $_SESSION['SID'];
+
+  $fullUrl = "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'];
+  $url = $_SERVER['REQUEST_URI'];
+  global $ga_account_id,$ga_profile_id,$ua_profile_id;
+
+?>
+<script type="text/javascript">
+function trackTSClick(linkOut,url,label)
+{
+	try {
+	    pageTracker._trackEvent("Link Outs","Click",label);
+	    setTimeout('document.location = "' + url + '"', 100)
+  	}catch(err){}
+}
+</script>
+<style>
+.st_plusone_vcount div
+{
+margin-top:0px !important;
+}
+</style>
+<!--Body Section Start -->
+<div class="shadow">
+	<div id="content-container">
+	<div> <!-- Extra Div introduced in order to implement share this on left side -->
+	<div id="article-left">
+    <div id="homepage-content">
+<!-- Left Body Section Start-->
+<div id="homepage-top"  style="margin-left:10px;border-bottom:none;">
+<?
+  $objfeed->showImageDFImap();
+?>
+<div class="middle-df-part" itemscope itemtype="http://schema.org/Article" >
+<?
+$objfeed->showHotTopic();
+?>
+<?php $objfeed->detailStoryContentBlock($feedId,$feedData,$commentTotal="",$fullUrl); ?>
+
+<div id="bottom-module-container" style="float:left">
+<?=$objfeed->outbrainWidget($_SERVER['SCRIPT_URL']);?>
+</div>
+<div style="clear: both;"></div>
+<!-- comment box starts-->
+<?php $objAcrticle = new articleViewer(); ?>
+<div id="fbcomment_layout">
+<div id="fb_seo">
+<?php $objAcrticle->FbcommentSEO(); ?></div>
+<?php
+
+$objAcrticle->fbcommentLayout();
+
+?>
+</div>
+<!-- <div id="disqus_thread" class="disqusComment"></div>  -->
+<!-- comment box ends-->
+</div>
+</div> <!-- end homepage-top -->
+<!--Left Body Section End-->
+<div style="clear:both;"></div>
+	</div>
+	</div><!-- article left ends-->
+<!-- FEED RIGHT -->
+<?
+$itemType=18;
+$arrRightCols	=	array('show_300x250','recommendation','mvTopsyTweet','most_commented','most_read','most_tickers','financial_product_guide','show_MediumRectangle_300x250');
+include($D_R."/_rightcolumn.htm");
+
+?>
+<!-- FEED RIGHT END-->
+	</div>
+</div> <!-- content-container-->
+</div> <!-- end  -->
+
+<?php
+/*if($feedData->is_live)
+{
+	try {
+		setItemTracking($feedId,"18");
+	}
+	catch (Exception $e)
+	{
+		// Do nothing
+	}
+}*/
+include("../_footer.htm"); ?>
+<script>
+makeLinksNewWindow('maincontainer_dailyfeed');
+
+</script>

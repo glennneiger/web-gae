@@ -1,0 +1,191 @@
+<?
+global $D_R,$HTPFX,$HTHOST;
+if(is_array($_POST['lead'])){
+	include_once($D_R."/lib/subscription/_lead.php");
+	$objLead = new lead();
+	$leadId=$objLead->setLead($_POST['lead']);
+	$trackingName = 'welcome-schwab';
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="<?=$HTPFX.$HTHOST;?>/css/schwab.1.1.css" type="text/css" rel="stylesheet" />
+<title>Special Offer for Minyanville Readers Courtesy of Charles Schwab</title>
+<script src='<?=$HTPFX.$HTHOST;?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
+<script src='<?=$HTPFX.$HTHOST;?>/js/leads.js' type='text/javascript' ></script>
+<script src='<?=$HTPFX.$HTHOST;?>/js/ibox_registration.1.20.js' type='text/javascript' ></script>
+</head>
+<body>
+<div id="header" class="container">
+<a href="/"><img class="minyanville-logo" src="<?=$IMG_SERVER;?>/images/schwab/minyanvilleLogo.gif" name="Minyanville Logo" alt="Minyanville" /></a>
+</div>
+<div class="container">
+<form name="registration" id="registration" action="<?=$_SERVER['PHP_SELF'];?>" method="post">
+<div style="478px;float:left;">
+<div id="radioes">
+<p id="offer-heading"> YES! Please start my FREE 3-Month subscription to the
+product selected  below.</p>
+<div id="premium-product1" class="pp-container" ><input type="radio" name="lead[product]" value="Buzz & Banter" checked />Buzz &amp; Banter</div>
+<p id="pp-description" class="pp-container" >Real-time trading ideas and insights from 30 professional traders across multiple asset classes including equities, ETFs, fixed income and more.</p>
+<div id="premium-product2" class="pp-container" ><input type="radio" name="lead[product]" value="Grail ETF & Equity Investor" /> Grail ETF &amp; Equity Investor</div>
+<p id="pp-description" class="pp-container" >Ron Coby &amp; Denny Lamson use their proprietary indicator to identify early trend changes in ETFs and share their trades with subscribers.</p>
+<div id="premium-product3" class="pp-container" ><input type="radio" name="lead[product]" value="Jeff Cooper Market Report" /> Jeff Cooper's Market Report</div>
+<p id="pp-description" class="pp-container" >Market analysis with day &amp; swing trading setups from expert trader Jeff Cooper.</p>
+<div id="premium-product4" class="pp-container" ><input type="radio" name="lead[product]" value="FlexFolio Trade Alerts" /> FlexFolio Trade Alerts</div>
+<p id="pp-description" class="pp-container" >An equity portfolio traded by Quint Tatro. Email alerts with every trade.</p>
+<div id="premium-product5" class="pp-container" ><input type="radio" name="lead[product]" value="The Stock Playbook" />The Stock Playbook</div>
+<p id="pp-description" class="pp-container" >Daily video detailing Dave Dispennette's trading strategy &amp; portfolio. Dave looks at stocks making new highs, earnings plays, stocks under $10 and more.</p>
+<!--<div id="premium-product5" class="pp-container" ><input type="radio" name="lead[product]" value="OptionSmith" /> OptionSmith by Steve Smith</div>
+<p id="pp-description" class="pp-container" >Steve Smith's options portfolio, trade alerts, strategies and analysis.</p>
+--><p id="offer-details" class="pp-container">*Offer is not valid on a premium subscription you are currently subscribed to nor to a product you've been enrolled in within the last 30 days. Individual Investors qualify for a 3-month trial subscription. Industry Professionals qualify for a 1-Month trial subscription. Offer only valid one time per household. <!--Only qualified applicants will receive three months.
+Qualified applicants are defined as those with valid contact and address information  with over
+$100,000 in investable assets who make over 36 trades per year. Non-qualified applicants will
+receive one free month to the subscription they choose.--></p>
+<p id="pp-disclaimer" class="pp-container">The content subscriptions made available above are materials prepared by
+Minyanville.  Minyanville is not affiliated with Charles Schwab &amp; Co., Inc (Member
+<a href="http://www.sipc.org/" target="_blank">SIPC</a>).  Schwab is not responsible for, and does not provide, edit or endorse any of
+the content found in these subscriptions or any other Minyanville content.
+Minyanville is wholly responsible for any of its content and features.</p>
+</div>
+</div>
+<div style="float:right;">
+<div id="info-form">
+<? if($leadId>0){ ?>
+<div class="login-box-name" style="width:300px;text-align:left;height:300px;">Thank You for submitting your information. Your application is under review. You will receive a welcome email as soon as your subscription is activated. <br /><br /><a href="<?=$HTPFX.$HTHOST;?>" style="color:#FFFFFF;text-decoration:underline;">Click here to go back to Minyanville.</a></div>
+<? }else{ ?>
+<img id="pls-mssg"  src="<?=$IMG_SERVER;?>/images/schwab/pleaseMssg.png" name="Please fill in all information
+to receive your FREE Subscription." alt="Please fill in all information
+to receive your FREE Subscription." width="309" height="34" style="border:0px solid red;margin:0px;padding:0px;" />
+<div id="error" style="height:15px;color:red;margin:0px;padding:0px;border:0px solid blue;"></div>
+<div class="login-box-name">First Name*</div><div class="input-field"><input name="lead[fname]" id="lead[fname]" class="form-login" title="First Name" value="" size="30" maxlength="100" /></div>
+<div class="login-box-name">Last Name*</div><div class="input-field"><input name="lead[lname]" id="lead[lname]"  class="form-login" title="Last Name" value="" size="30" maxlength="100" /></div>
+<div class="login-box-name">Email Address*</div><div class="input-field"><input name="lead[email]" id="lead[email]" class="form-login" title="Email" value="" size="30" maxlength="100" /></div>
+<div class="login-box-name">Street Address*</div><div class="input-field"><input name="lead[addr]" id="lead[addr]"  class="form-login" title="Address" value="" size="30" maxlength="250" /></div>
+<div class="login-box-name">City*</div><div class="input-field"><input name="lead[city]" id="lead[city]" class="form-login" title="City" value="" size="30" maxlength="100" /></div>
+<div id="state-label">State*</div>
+<div id="state-input-form">
+ <select name="lead[state]" id="lead[state]" size="1" name="states" style="font-size:10px;color: #000000; border: 1px outset #0066cc; background-color: #FFFFFF; margin-top: 1px; float:left; height:20px;">
+	<option value="AL">AL</option>
+	<option value="AK">AK</option>
+	<option value="AZ">AZ</option>
+	<option value="AR">AR</option>
+	<option value="CA">CA</option>
+	<option value="CO">CO</option>
+	<option value="CT">CT</option>
+	<option value="DE">DE</option>
+	<option value="DC">DC</option>
+	<option value="FL">FL</option>
+	<option value="GA">GA</option>
+	<option value="HI">HI</option>
+	<option value="ID">ID</option>
+	<option value="IL">IL</option>
+	<option value="IN">IN</option>
+	<option value="IA">IA</option>
+	<option value="KS">KS</option>
+	<option value="KY">KY</option>
+	<option value="LA">LA</option>
+	<option value="ME">ME</option>
+	<option value="MD">MD</option>
+	<option value="MA">MA</option>
+	<option value="MI">MI</option>
+	<option value="MN">MN</option>
+	<option value="MS">MS</option>
+	<option value="MO">MO</option>
+	<option value="MT">MT</option>
+	<option value="NE">NE</option>
+	<option value="NV">NV</option>
+	<option value="NH">NH</option>
+	<option value="NJ">NJ</option>
+	<option value="NM">NM</option>
+	<option value="NY">NY</option>
+	<option value="NC">NC</option>
+	<option value="ND">ND</option>
+	<option value="OH">OH</option>
+	<option value="OK">OK</option>
+	<option value="OR">OR</option>
+	<option value="PA">PA</option>
+	<option value="RI">RI</option>
+	<option value="SC">SC</option>
+	<option value="SD">SD</option>
+	<option value="TN">TN</option>
+	<option value="TX">TX</option>
+	<option value="UT">UT</option>
+	<option value="VT">VT</option>
+	<option value="VA">VA</option>
+	<option value="WA">WA</option>
+	<option value="WV">WV</option>
+	<option value="WI">WI</option>
+	<option value="WY">WY</option>
+</select>
+
+</div>
+<div id="zip-label">Zip*</div><div id="zip-form"><? input_numsonly("lead[zip]","","30","255","title='Zip code'  style=width:100px;height:18px;border: 1px solid #0066cc;");?></div>
+<div style="clear:both;"></div>
+<div class="login-box-name">Daytime Phone*</div><div class="input-field"><input name="lead[phone]" id="lead[phone]" class="form-login" title="Phone" value="" size="30" maxlength="2048" /></div>
+<div class="login-box-name">I am an*<br/> <div style="float:right" class="text_label_select">(select one)</div></div><div class="text_label">
+<input name="lead[investor_type]" type="radio" id="lead[investor_type]" checked="none" title="Phone" value="Individual Investor" size="30" maxlength="2048" /> Individual Investor<br />
+<input name="lead[investor_type]" type="radio" id="lead[investor_type]" title="Phone" value="Industry Professional" size="30" maxlength="2048" /> Industry Professional</div>
+<!--<div class="form-divider">
+<img src="<?=$IMG_SERVER;?>/images/schwab/formDiv.gif" alt="form-divider" name="divider" width="315"height="3" border="0" />
+</div>
+<div id="asset-list-div">
+<ul id="asset-list">
+  <li><input type="radio" name="lead[investableassets]" value="$0 - $99,999" /> $0 - $99,999</li>
+  <li><input type="radio" name="lead[investableassets]" value="$100,000 - $249,999" checked /> $100,000 - $249,999</li>
+  <li><input type="radio" name="lead[investableassets]" value="$250,000 - $499,999" /> $250,000 - $499,999</li>
+  <li><input type="radio" name="lead[investableassets]" value="$500,000 +" /> $500,000 +</li>
+  </ul>
+</div>
+<div id="login-box-asset-label">Investable Assets*</div>
+<div class="form-divider">
+<img src="<?=$IMG_SERVER;?>/images/schwab/formDiv.gif" alt="form-divider" name="divider" width="315"height="3" border="0" />
+</div>
+<div id="asset-list-div">
+<ul id="asset-list">
+  <li><input type="radio" name="lead[tradepermonth]" value=" 0 - 2" />0 - 2</li>
+  <li><input type="radio" name="lead[tradepermonth]" value="3 - 6" checked /> 3 - 6</li>
+  <li><input type="radio" name="lead[tradepermonth]" value="7 - 11" /> 7 - 11</li>
+  <li><input type="radio" name="lead[tradepermonth]" value="12 or more" /> 12 or more</li>
+  </ul>
+</div>
+<div id="login-box-trades-label">Online Trades <br />per Month*</div>
+--><div id="login-box-name-req">* Required Field</div>
+<div class="button">
+<input type="button" class="submit" onclick="validateLead();">
+</div>
+
+<div id="disclaimer">
+Minyanville will use the information you provide to activate your
+subscription and to communicate with you about its services. Minyanville
+will share the information you provide with Charles Schwab &amp; Co., Inc.
+Charles Schwab &amp; Co., Inc. and Minyanville are not affiliated.<br /><br />
+Please take a moment to read Minyanville's <a class="dis-link" href="<?=$HTPFX.$HTHOST;?>/company/privacy.htm" target="_blank">Privacy Policy.</a><br /><br />
+Charles Schwab &amp; Co., Inc. ("Schwab") will use the information you
+provide above to communicate with you and to provide more information
+about Schwab's products and services.<br /><br />
+<a class="dis-link" target="_blank" href="http://www.schwab.com/public/schwab/nn/legal_compliance/privacy?cmsid=P-2240827&lvl1=nn&lvl2=legal_compliance">Read more about online privacy at Schwab.</a>
+</div>
+<? } ?>
+</div>
+<div id="ttc-sponsorship">
+<img id="sponsored-img" src="<?=$IMG_SERVER;?>/images/schwab/sponsoredLabel.png" name="Sponsored By" alt="Sponsored By" width="192" height="25" />
+<img id="ttc-img" src="<?=$IMG_SERVER;?>/images/schwab/ttc_logo_01.png" name="Talk To Chuck, Charles Schwab" alt="Talk To Chuck, Charles Schwab" width="138" height="146" />
+</div>
+</div>
+</form>
+</div>
+<!--Analytics Start-->
+
+<?
+if(!empty($trackingName)){
+	googleanalytics("",$trackingName,1);
+}else{
+	googleanalytics();
+} ?>
+
+<!--Analytics End-->
+
+</body>
+</html>

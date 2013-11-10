@@ -1,0 +1,26 @@
+<?php 
+include("$ADMIN_PATH/_header.htm");
+include("$ADMIN_PATH/layout/layout_includes.php");
+?>	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<script type="text/javascript" src="../../js/layout.js"></script>
+<title>list Article Branded Logo</title>
+</head>
+<body>
+<form action="" name="module">	
+<table width="100%"  cellpadding="0" cellspacing="0" border="0" class="admin_container">	
+<tr class="admin_module_head">
+<td valign="middle"  align="left" class="admin_module_head">List Buzz Branded Logo</td>
+<td valign="middle"  align="left" class="admin_module_head" colspan="5">&nbsp;</td>
+<td valign="middle"  align="right"  class="admin_module_head"><a href="<?=$HTPFX.$HTHOST?>/admin/buzzbrandedlogo.htm" style="text-decoration:none">Create/Edit Buzz Branded Logo</a>
+</td>
+</tr>
+<tr>
+<td colspan="7" id="placeholder_modules"><? include("listbuzzbrandedlogo.php") ?><td>				
+</tr>	
+</table>
+</form>
+<? include("$ADMIN_PATH/_footer.htm"); ?>

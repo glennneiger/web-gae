@@ -1,0 +1,117 @@
+<?
+include_once("./_authenticate.htm");
+
+$id=$_POST['id'];
+$bounceback=$HTPFX.$HTHOST."/admin/contributors.htm";
+include_once($D_R."/lib/_image_rsync.php");
+
+if($_POST['cont']['name']!="")
+{
+    $cant_add = $_POST['cant_add'];
+    $page = $_POST['page'];
+    $file=$_FILES['bio_img'];
+    $group_ids = $_POST['group_ids'];
+    $id = $_POST['id'];
+    $meta = $_POST['meta'];
+    $user_id = $_POST['user_id'];  
+    $del = $_POST['del'];
+    
+    $cont = $_POST['cont'];
+    if($file['size']){
+            $imgname="/assets/bios/".str_replace(" ","_",$file[name]);
+            move_uploaded_file($_FILES['bio_img']['tmp_name'],"gs://mvassets".$imgname);
+            $cont[bio_asset]=$imgname;
+    }
+    
+    $thumbfile = $_FILES['small_bio_asset'];
+    if($thumbfile['size']){
+            $thumbimgname="/assets/bios/thumb/".str_replace(" ","_",$thumbfile[name]);
+            move_uploaded_file($_FILES['small_bio_asset']['tmp_name'],"gs://mvassets".$thumbimgname);
+            $cont[small_bio_asset]=$thumbimgname;
+    }
+    
+    $file2=$_FILES['logo_img'];
+    if($file2['size']){
+            $imgname="/assets/bios/".str_replace(" ","_",$file2[name]);
+            move_uploaded_file($_FILES['logo_img']['tmp_name'],"gs://mvassets/".$imgname);
+            $cont[logo_asset]=$imgname;
+    }
+    
+    $backparams=array(id=>$id,page=>$page,error=>"");
+    
+    if($cont[has_bio]=="on"){
+            $cont[has_bio]='1';
+    }
+    else{
+            $cont[has_bio]='0';
+    }
+    
+    if($cont[suspended]=="on"){
+            $cont[suspended]='1';
+    }
+    else{
+            $cont[suspended]='0';
+    }
+    $meta['author_name']=$cont['name'];
+    
+    if($id){
+            if(is_array($del)){
+                    foreach($del as $k=>$v)
+                    {
+                            $delArr = explode(":",$k);
+                            move_uploaded_file("gs://mvassets".$delArr[0],"gs://mvassets/temp/");
+                            $cont[$delArr['1']]="";
+                            
+                    }
+                    
+            }
+    
+            update_query("contributors",$cont,array(id=>$id));
+            del_query("contributor_groups_mapping","contributor_id",$id);
+            $meta['item_id']=$id;
+            $meta['item_type']="21";
+            $meta['author_id']=$id;
+            $meta['url']="/gazette/bios.htm?bio=".$id;
+            insert_or_update("ex_item_meta",$meta,array("item_id"=>$id,item_type=>'21'));
+            foreach($_POST['group_ids'] as $group){
+                    insert_query("contributor_groups_mapping",array("contributor_id"=>$id,"group_id"=>$group));
+            }
+            $error="The contributor ${cont[name]} is updated sucessfully!";
+    
+    }elseif(!$cant_add){//creating a new contributor
+            echo "Creating a new contributor. Please wait...";
+            $id=insert_query("contributors",$cont);
+            foreach($_POST['group_ids'] as $group){
+                    insert_query("contributor_groups_mapping",array("contributor_id"=>$id,"group_id"=>$group));
+            }
+            $meta['item_id']=$id;
+            $meta['item_type']="21";
+            $meta['author_id']=$id;
+            $meta['url']="/gazette/bios.htm?bio=".$id;
+            insert_query("ex_item_meta",$meta);
+            $backparams[id]=$id;
+            $error="Contributor ${cont[name]} was created!";
+    
+            //1over0 need to add this contributor to subscribers_to_contributors so that everyone gets this new contributors posts
+    
+    /*
+            $qry = "SELECT id as sid " .
+            " FROM subscription ";
+    
+    if (is_array($rows = exec_query($qry)))
+      foreach ($rows as $row)
+      {
+            insert_query(subscribers_to_contributors, array('sid'=>$row['sid'], 'cid'=>$id));
+            }
+    */
+    }
+}
+else
+{
+    $error = "Plese enter deatils in the fields";
+}
+header( "HTTP/1.1 301 Moved Permanently" );
+header( "Location: ".$bounceback."?id=".$id."&error=".$error);
+exit;
+
+?>

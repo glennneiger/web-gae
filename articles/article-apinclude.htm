@@ -1,0 +1,39 @@
+<?require_once($D_R.'/lib/ap/_view.php');?>
+
+<style>
+
+#ap-article-module { 
+	border: solid 1px  #083D70;
+	width:220px;
+	padding:10px;
+	font-size:13px;
+
+}
+
+#ap-article-module ul {
+	margin:10px 0px 10px 10px;;
+	padding:0;
+	
+}
+
+
+#ap-article-module ul li a {
+	color:#083D70;
+
+}
+
+#ap-article-module ul li span {
+	color:#999999;
+
+}
+
+</style>
+
+<div id="ap-article-module">
+<div class="ap-header"><img src="/images/hdr-breakingnews.gif"></div>
+	<ul>
+		<?$objapNewsView->showArticlesHome(5);?>
+	</ul>
+</div>
+</div>
+

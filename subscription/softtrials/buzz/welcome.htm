@@ -1,0 +1,100 @@
+<?php include("$D_R/_header_no_nav.htm");
+global $HTPFX,$HTHOST,$IMG_SERVER;
+$pageName = "semsofttrial_welcome";
+$trackname=$_GET['trackname'];
+$a=$_GET['a'];
+?>
+<link href="<?=$HTPFX.$HTHOST?>/css/footer-no-nav.css" rel="stylesheet" type="text/css" />
+<link href="<?=$HTPFX.$HTHOST?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
+<?
+if($a){ ?>
+<div class="welcomepage">
+Welcome <?=ucwords($_SESSION['nameFirst']); ?>,
+<br>
+		<br/><br/>
+		<div  id="Registrationstepfinish" ><strong>Thank you for registering with Minyanville!  Your account is now active.</strong>
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >To access any of the subscription products you registered for, just put your mouse over the green "Subscriptions & Products" tab on the upper right of this page and then click the product you'd like to access in the navigation bar.</div>	
+		<br/><br/>
+		<div  id="Registrationstepfinish" >You can also just click these links below.
+</div>		
+		<br/><br/>
+<div  id="Registrationstepfinish" >Buzz & Banter - <a style="cursor:pointer;" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');"><strong>Launch it now</strong></a> or<strong> click the black "Launch Buzz & Banter" button above.</strong></div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >Jeff Cooper's Daily Market Report - <a href="<?=$HTPFX.$HTHOST?>/cooper"><strong>View the latest reports</strong></a>.</div>
+		<br/><br/>
+
+
+		<div id="Registrationstepfinish" >OptionSmith by Steve Smith - <a href="<?=$HTPFX.$HTHOST?>/optionsmith"><strong>See Steve's most recent trades</strong></a>.		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >FlexFolio by Quint Tatro - <a href="<?=$HTPFX.$HTHOST?>/qp"><strong>See Quint's most recent trades</strong></a>.		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >The Lavery Insight - <a href="<?=$HTPFX.$HTHOST?>/laveryinsight"><strong>Read Jack's latest analysis </strong></a>.		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >Bull Market Timer - <a href="<?=$HTPFX.$HTHOST?>/bmtp"><strong>View Smita's presentation now.</strong></a>		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com">support@minyanville.com</a> or 212-991-9357		
+</div>
+<br/>
+</div>
+</div>
+
+<? }else{
+?>
+
+<div class="welcomepage">
+<br>
+<div class="container">
+			<div class="welcome-box">
+				<div class="col-01">
+					<img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/trialEmblem_14.png" height="213" width="442" alt="" border="0" />
+					<div class="details">
+						<p>Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com?subject=Buzz And banter 14-Day Trial Inquiry" target="_blank">support@minyanville.com</a> or <font class="ltBlueTxt">212-991-9357.</font></p>
+						<p>And please remember, to prevent any disruption of your free trail subscription after your 14-day trail, you may register for a full monthly or annual subscription by <a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/" target="_blank">clicking here</a> or calling <font class="ltBlueTxt">212-991-9357.</font></p>
+					</div>
+				</div>
+				
+				<div class="col-02">
+					<ul class="callToAction clearfix">	
+						<li class="buzz-logo">
+							<img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/buzzlogo_gray.png" height="23" width="169" alt="" border="0" />
+						</li>
+						<li class="launch-buzz">
+							<a class="launch-buzz-btn" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');">Launch The Buzz</a>
+						</li>
+					</ul>
+					<img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/buzzScreens.png" height="319" width="450" alt="" border="0" />
+				</div>
+			</div>
+		</div>	
+</div>
+<br/>
+</div>
+<?php
+}
+$googleAdVars = explode("-",$trackname);
+googleAdWordTracking($googleAdVars['0'], $googleAdVars['1']);
+?>
+<!----Bing Tracking Start---->
+<!----Bing Tracking Ends---->
+<!----Yahoo Tracking Start---->
+<SCRIPT language="JavaScript" type="text/javascript">
+
+window.ysm_customData = new Object();
+window.ysm_customData.conversion = "transId=,currency=,amount=";
+var ysm_accountid  = "1G2LU8GT7UDB9Q7R2JQDUP9ESM0";
+document.write("<SCR" + "IPT language='JavaScript' type='text/javascript' "
++ "SRC=//" + "srv3.wa.marketingsolutions.yahoo.com" + "/script/ScriptServlet" + "?aid=" + ysm_accountid
++ "></SCR" + "IPT>");
+
+</SCRIPT>
+<!----Yahoo Tracking Ends---->
+<div class="sembuzz-footer">
+<? include("$D_R/_footer_no_nav.htm"); ?>
+
+</div>

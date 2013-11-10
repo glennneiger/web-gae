@@ -1,0 +1,75 @@
+@CHARSET "UTF-8";
+.keeneMoreOptions{
+	float:left; 
+	width:600px;
+	margin:0px 0px 10px 0px;
+}
+.keeneLabel{
+	float:left; 
+	width:200px;
+}
+
+.alertEditLabel{
+	float:left; 
+	width:120px;
+	font-weight:bold;
+	margin:5px 0px 0px 0px;
+}
+
+.alertCreateLabel{
+	float:left; 
+	width:70px;
+	font-weight:bold;
+	margin:5px 0px 0px 0px;
+}
+
+.keeneMoreOptions input{
+	float:left; 
+	width:530px;
+}
+
+.keeneMoreOptions select{
+	float:left; 
+	width:480px;
+}
+
+.keeneErrorMsg{
+	float:left;
+	color:red;
+	font-weight:bold;
+	height:35px;
+	margin:0px 0px 0px 0px;
+}
+
+.keeneCreate{
+	float:left;
+	clear:both;
+	margin:20px 0px 0px 20px;
+}
+
+.keeneDate{
+	float:left;
+	width:290px;
+}
+
+.keeneAuthor{
+	float:right;
+	width:290px;
+}
+
+.keeneDate input, .keeneAuthor select{
+	float:left; 
+	width:220px;
+	margin:0px;
+	font-weight:bold;
+}
+
+.keeneMultiText{
+	float:left;
+	margin:48px 0px 0px 10px;	
+}
+
+.keeneBttn{
+	float:left;
+	margin:0px 200px;
+}

@@ -1,0 +1,34 @@
+<?php
+global $D_R,$HTPFX,$HTHOST,$pageName,$sectionName;
+session_start();
+
+$pageName="eduGlossary";
+include($D_R."/edu/eduHeader.htm");
+require_once($D_R."/lib/config/_edu_config.php");
+require_once($D_R."/lib/edu/_edu_data_lib.php");
+require_once($D_R."/lib/edu/_edu_design_lib.php");
+require_once($D_R."/lib/_article_design_lib.php");
+$pageJS=array("config","redesign","fancybox","edu");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","edu");
+$obOuterTemplate = new OuterTemplate($pageName); 
+$objEduData = new eduData('edu_alerts');
+$objEduDesign = new eduDesign();
+$objArticle = new articleViewer();
+loadjavascriptheader($pageCSS,$pageJS,'H',$noDefaultLoad);
+global $objEduData, $objEduDesign, $pageName, $objArticle;
+
+$sectionName="Glossary";
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<body>
+<div id="eduOuterContainer">
+	<?php echo $objEduDesign->displayEduHeader($sectionName);?>
+	<div class="eduContentContainer">
+		<div class="eduContainer">
+			<?php echo $objEduDesign->displayEduLeftGlossaryCol();?>
+			<?php echo $objEduDesign->displayEduRightCol();?>
+		</div>
+	</div>
+</div>
+</body>
+<?php require_once($D_R."/_footer.htm"); ?>

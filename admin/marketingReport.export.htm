@@ -1,0 +1,147 @@
+<?php
+global $D_R,$recurlyApiKey;
+set_time_limit ( 600*300 );
+
+$productName = $_GET['product'];
+$fromDate = $_GET['fromDate'];
+$toDate = $_GET['toDate'];
+
+// find months diffrenece	
+$dateFrom=date("Y-m-d",strtotime($fromDate));
+$dateTo=date("Y-m-d",strtotime($toDate));
+$date_diff=strtotime($dateTo)-strtotime($dateFrom);
+$monthDiff=floor(($date_diff)/2628000);
+if($monthDiff>6){
+    echo "Please select date range in between six months";
+    exit;	
+}
+
+$qryMarket = "SELECT productName, productTerm, productType, trialType, utmSource, utmContent, pageName, date, COUNT(pageName) AS cnt FROM registrationTrackingPixel AS rtp WHERE DATE_FORMAT(date,'%Y/%m/%d')>='".$fromDate."' AND DATE_FORMAT(date,'%Y/%m/%d')<='".$toDate."'";
+	if($productName!='0'){
+		$qryMarket .=" and productName='".$productName."'";
+	}
+	$qryMarket .=" GROUP BY pageName, utmSource, trialType, productType, productTerm,productName,date_format(date,'%Y-%m-%d') HAVING cnt>0 ORDER BY date ASC";
+        
+	$resMarket = exec_query($qryMarket);
+        
+if(!empty($resMarket) && count($resMarket)>0){
+$productArray = array();
+$i=0;
+
+foreach($resMarket as $value){
+	$value['date']=date('Y-m-d',strtotime($value['date']));
+	$productArray[$value['date']][$value['productName']][$value['utmSource']][$value['utmContent']][$value['productTerm']][$value['productType']][$value['trialType']][$value['pageName']]=$value['cnt'];
+	
+	switch($value['pageName']){
+		case 'Landing Page'	:
+			$value['date']=date('Y-m-d',strtotime($value['date']));
+			$landingPageCount[$value['productName']][$value['utmSource']][$value['utmContent']][$value['date']]+=$value['cnt'];
+			break;
+		case 'Step 2':
+			$value['date']=date('Y-m-d',strtotime($value['date']));
+			$step2Count[$value['productName']][$value['utmSource']][$value['utmContent']][$value['date']]+=$value['cnt'];
+			break;
+	}
+	
+}
+$key=0;
+
+foreach($productArray as $keyDate=>$prodDate){
+		foreach($prodDate as $productKey=>$val){
+                        $registrationPageCount="";
+                        $crossSellPageCount="";
+                        $welcomePageCount="";
+			$landingPageCountVal="";
+			$step2PageCountVal="";
+			foreach($val as $sourceKey=>$sourceRow){
+				foreach($sourceRow as $contentKey=>$contentVal){
+					foreach($contentVal as $termKey=>$termVal){
+						foreach($termVal as $typeKey=>$typeValue){
+							foreach($typeValue as $nftKey=>$nftValue){
+                                                        $countProdut=$countProdut+1;
+							$registrationPageCount="";
+							$crossSellPageCount="";
+							$welcomePageCount="";
+							foreach($nftValue as $keyCount=>$pageCountVal){
+								$dateValue=$keyDate;
+								
+			$landingPageCountVal="";
+			$step2PageCountVal="";
+			
+			if(array_key_exists($sourceKey,$landingPageCount[$productKey])){
+				foreach($landingPageCount[$productKey][$sourceKey] as $landingPageKey=>$landingPageVal){
+					
+					$landingPageCountVal=$landingPageVal[date('Y-m-d',strtotime($keyDate))];
+				}
+			}
+			
+			$step2PageCountVal="";
+			if(array_key_exists($sourceKey,$step2Count[$productKey])){
+				foreach($step2Count[$productKey][$sourceKey] as $step2CountKey=>$step2CountVal){
+					$step2PageCountVal=$step2CountVal[date('Y-m-d',strtotime($keyDate))];
+				}
+			}
+								
+							
+								switch($keyCount){
+									case 'subscription_product_registration':
+										$registrationPageCount=$pageCountVal;
+										break;
+									case 'cross_sell':
+										$crossSellPageCount=$pageCountVal;
+										break;
+									case 'subscription_product_welcome':
+										$welcomePageCount=$pageCountVal;
+										break;
+								}
+								
+			
+										
+							}
+                        if(!empty($productKey)){							
+							
+                            $reportContent[$key]['Product'] = $productKey;
+                            $reportContent[$key]['Term'] = $termKey;
+                            $reportContent[$key]['Type'] = $typeKey;
+                            $reportContent[$key]['FT/NFT'] = $nftKey;
+                            $reportContent[$key]['Source'] = urldecode($sourceKey);
+                            $reportContent[$key]['Placement'] = urldecode($contentKey);
+                            $reportContent[$key]['Landing Page'] = $landingPageCountVal;
+                            $reportContent[$key]['Step 2'] = $step2PageCountVal;
+                            $reportContent[$key]['Registration Page'] = $registrationPageCount;
+                            $reportContent[$key]['Cross-Sell'] = $crossSellPageCount;
+                            $reportContent[$key]['Welcome Page'] = $welcomePageCount;
+                            $reportContent[$key]['Day'] = date("d",strtotime($dateValue));
+                            $reportContent[$key]['Month'] = date("F",strtotime($dateValue));
+                            $reportContent[$key]['Year'] = date("Y",strtotime($dateValue));
+                            $reportContent[$key]['Month Year'] = date("F Y",strtotime($dateValue));
+                            $key=$key+1; 
+			}
+								
+								
+							}
+						}
+					}
+					
+				}
+				
+				
+			}
+			
+						
+		}
+}
+
+
+
+
+        
+	$fileName = 'marketingDashboard-'.$toDate.'-'.$fromDate.'.csv';
+
+	csv_header($fileName,"text/csv");
+	$datestr="%m/%d/%Y";
+	data2csv($reportContent);
+}else{
+	echo "No Record Found!";
+}
+?>

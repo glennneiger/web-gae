@@ -1,0 +1,27 @@
+<?php 
+if($_SERVER['HTTP_HOST']=="www.minyanville.com"){
+?>
+Sitemap: http://www.minyanville.com/sitemap.xml
+Sitemap: http://www.minyanville.com/news_sitemap.xml
+Sitemap: http://www.minyanville.com/buzz_news_sitemap.xml
+Sitemap: http://www.minyanville.com/dailyfeed_news_sitemap.xml
+
+User-agent: *
+Disallow: /admin/
+Disallow: /lib/
+Disallow: /js/
+Disallow: /css/
+Disallow: /errors/
+Disallow: /emails/
+Disallow: /layout/
+Disallow: /t1banter/
+Disallow: /print
+Disallow: /facebook/
+Disallow: /buyhedge/ticker/
+Disallow: /vzpolls/
+Disallow: /buzz/_*.php
+Disallow: /xd_receiver.htm
+<? }else{ ?>
+User-agent: * 
+Disallow: / 
+<? } ?>

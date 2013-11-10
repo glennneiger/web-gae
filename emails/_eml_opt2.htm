@@ -1,0 +1,15 @@
+<?
+$UNSUB=0;
+include("$D_R/emails/_eml_header.htm");
+?>
+
+<font color="#1E1648"> 
+      <h3><?=strip($title)?></h3>
+</font>
+<?=strip($body)?>
+
+
+<?php
+$tracking_name = $tracking_name['_eml_opt2'];
+?> 
+<?include("$D_R/emails/_eml_footer.htm")?>

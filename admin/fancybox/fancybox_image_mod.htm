@@ -1,0 +1,56 @@
+<?
+	$objCache = new Cache();
+	$bounceback="./fancybox_image_upload.htm";
+	if(!count($_POST)){
+		location($bounceback.qsa(array(error=>"No changes were made")));
+		exit;
+	}
+				$list_id=$_POST['listid'];
+				$table="fancybox_image";
+				$params['listid']=$list_id;
+				$params['listname']=$_POST['listname'];
+				$params['group_name']=addslashes($_POST['list_group_name']);
+				$params['group_id']=$_POST['group_id'];
+                $params['item_type']='1';
+                $params['is_active']='1';
+
+
+				$newimg=$_FILES[newimg];
+					if($newimg['name']){
+						$imgpath='assets/fancybox/'.$newimg['name'];
+						$params['imagename']=$imgpath;
+						$ncharpath=$imgpath;
+						copy($newimg[tmp_name],"$D_R/$ncharpath");
+						pushToImgServer($ncharpath);
+                                                $qrydata=exec_query("SELECT id FROM fancybox_image WHERE listid='$list_id'",1);
+                                                if($qrydata['id']){
+                                                    update_query($table,$params,array('listid'=>$list_id));
+                                                }else {
+                                                        $id=insert_query($table,$params,$safe=0);
+                                                        $msg=1;
+                                                }
+                                                if(!$id) $id=$qrydata['id'];
+					}else{
+
+                                            $getResult=exec_query("SELECT id FROM fancybox_image WHERE is_active='1' ",1);
+                                            /*set active list to inactive*/
+                                            $paramset['is_active']='0';
+                                            update_query($table,$paramset,array('id'=>$getResult['id']));
+                                            /*Set selected list to active*/
+                                            
+                                            $qrydata=exec_query("SELECT id FROM fancybox_image WHERE listid='$list_id'",1);
+                                            if($qrydata['id']){
+                                                    update_query($table,$params,array('listid'=>$list_id));
+                                                }else {
+                                                        $id=insert_query($table,$params,$safe=0);
+                                                        $msg=1;
+                                                }
+                                            if(!$id) $id=$qrydata['id'];
+                                            
+                                        
+                                        }
+            $objCache->setMailChimpCache();
+			location($bounceback.qsa(array(msg=>$msg,id=>$id)));
+			exit;
+
+?>

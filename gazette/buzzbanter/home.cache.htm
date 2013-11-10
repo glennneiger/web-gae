@@ -1,0 +1,112 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+
+$qry="SELECT *,date_format(date,'%r') mdate, UNIX_TIMESTAMP(date)udate
+	   FROM buzzbanter
+	   WHERE date_format(date,'%m/%d/%Y')=date_format('".mysqlNow()."','%m/%d/%Y')
+	   AND is_live='1'
+	   AND approved='1'
+	   AND show_in_app='1'
+	   ORDER BY date DESC";
+$db=new dbObj($qry);
+
+/*========alert window=============*/
+$b_filetime = filemtime($BANTER_ALERT_FILE);
+if($banter_lastalert!=$b_filetime){
+	mcookie("banter_lastalert",$b_filetime);
+	?>
+	<script>
+	if(getRegVar("banter_lastalert")!="<?=$b_filetime?>" ){
+		sysAlert("<?=base64_encode(read_file($BANTER_ALERT_FILE))?>","",1);
+		setRegVar("banter_lastalert","<?=$b_filetime?>");
+	}
+	</script>
+<?}?>
+
+<base target="_blank"/>
+<meta http-equiv="refresh" content="<?=minute(20)?>">
+<iframe src="checker.htm?last=<?=time()?>" style="width:1px;height:1px;display:none"></iframe>
+<center>
+<div id="header" style="-moz-user-select: none;">
+<div style="WIDTH:100%; position: relative;">
+<a href="http://<?=$HTTP_HOST?>/tradingradar/" target="_blank">Trading Radar</a>&nbsp;&nbsp;||&nbsp;&nbsp;
+<a href="http://<?=$HTTP_HOST?>/library/dictionary.htm" target="_blank">Dictionary</a>&nbsp;&nbsp;||&nbsp;&nbsp;
+<a href="http://<?=$HTTP_HOST?>/news_views/" target="_blank">News & Views</a>
+</div>
+<form action="http://finance.yahoo.com/q" method="GET" target="_blank">
+<input type=hidden name="partner" value="mv">
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+		<!-- <td width=40>&nbsp;
+		<script>
+		var snd = isInShell() ? getRegVar("sound") : 'on';
+		document.write('<img style="cursor:hand" onclick="toggleSound()" name="soundimg" id="soundimg" src="<?=$IMG_SERVER?>/gazette/buzzbanter/img/snd_'+snd+'.jpg" border=0>');
+		</script></td> -->
+		<td align="center">
+		<table border=0><tr><td colspan=2><img src="img/yahoo.gif" align=right></td></tr><tr><td><input type="text" name="s" style="width:80px; font:normal 10px arial;border:1px #000 solid"></td><td align="center">
+		<input type="image" src="img/button.gif" border=0 width="62" height="22" alt="Go" style="border:0px">
+	</td></tr></table>
+	</td>
+<!-- <td>&nbsp;<script>
+	var imgname="scroll_"+(getRegVar("autoscroll")=="top"?"on":"off")+".jpg";
+	document.write('<img alt="Use this feature to prevent or enable jumping to the newest post" name="imgauto" style="cursor:hand" onclick="toggleNoAutoScroll()" src="/gazette/buzzbanter/img/'+imgname+'" border=0 />');
+</script>
+</td> --> </table>
+</div>
+<DIV id="posts" style="border: 1px solid #aaa; OVERFLOW: auto; WIDTH:100%;height:74%;position:relative;-moz-user-select: none;">
+
+
+<?if($numrows=$db->numRows()){?>
+	<table width=100%>
+	<?while($row=$db->getRow()){
+		$has_image=is_file("$D_R${row[image]}");
+		$has_author=$row[author];
+		if(!$db->i){
+			$banter_lastmsg=$row[udate];
+		}
+	?>
+		<TR valign=top>
+		<?if($has_image || $has_author){?>
+			<TD width=1%>
+				<?if(is_file($img="$D_R$row[image]")){
+					list($w,$h)=getimagesize($img);
+					$w=ceil($w*.66);
+					$h=ceil($h*.66);
+				?>
+					<img src="<?=$IMG_SERVER?><?=$row[image]?>" border=0 width="<?=$w?>" height="<?=$h?>" style="FILTER: progid:DXImageTransform.Microsoft.Blur( PixelRadius=0,MakeShadow=false);" >
+				<?}?>
+				<?if($row[author]){?>
+				<div class="author"><b><?=$row[author]?></b></div>
+				<div class="chatdate"><?=$row[mdate]?></div>
+				<?}?>
+			</TD>
+		<?}?>
+		<TD width=99%<?if(!$has_image&&!$has_author){?> colspan=2<?}?>>
+		<div class="body"><?=strip($row[body])?></div>
+		</TD>
+		</TR>
+		<?if($row[position]){?>
+		<TR><TD colspan=2 class="error"><?=$row[position]?></TD></TR>
+		<?}?>
+		<TR><TD colspan=2><hr></TD></TR>
+	<?}?>
+	</table>
+	<?if($banter_lastmsg){?>
+		<script>
+
+
+		if(getRegVar("banter_lastmsg")!="<?=$banter_lastmsg?>"){
+			if(getRegVar("sound")=="on"){
+				document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="1" height="1"><param name="movie" value="img/beep.swf"><param name=quality value=high><param name="LOOP" value="false"><param name="PLAY" value="true"><embed src="img/beep.swf" width="1" height="1" loop="false" quality=high play="true" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash"></embed></object>');
+			}
+			flashTaskbar();
+			setRegVar("banter_lastmsg","<?=$banter_lastmsg?>");
+			newPost();
+		}
+		</script>
+	<?}?>
+<?}else{?>
+	<img src="<?=$IMG_SERVER?>/assets/characters/hoof_03.jpg" border=0 align=left> Nothing posted yet today.
+	<BR clear=all><br>&nbsp;<br>&nbsp;
+<?}?>
+</div>

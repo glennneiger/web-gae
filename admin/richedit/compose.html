@@ -1,0 +1,301 @@
+<HTML xmlns=ie>
+<?import namespace=ie implementation="seperator.htc" />
+<?import namespace=ie implementation="colorOptions.htc" />
+<STYLE>
+.buttons {height:25;width:25;margin-left:4;} 
+</style>
+
+<SCRIPT language=javascript>
+
+var szdocsource = "";
+
+
+function Init(){
+  element.document.execCommand("2D-Position");
+  element.document.execCommand("LiveResize");
+  element.document.execCommand("MultipleSelection");
+  alert("contentready")
+  
+  
+  with(element.style)
+  {
+  	marginTop = 30;
+  	marginTop = 0;
+  	marginLeft = 0;
+  	backgroundColor = "#EEEECC";
+  	border = "1 solid black";
+  }
+  
+
+  with(document.body.style)
+  {
+	padding = 2;
+  	width = element.document.body.clientWidth * 0.82;
+  	height = element.document.body.clientHeight * 0.6;
+  }
+  
+  editBox.content = false;
+  szdocsource = editBox.innerHTML;
+	
+}
+
+function font_nameChange()
+{
+  document.execCommand("FontName", false, fontBox[fontBox.selectedIndex].value);
+ 	editBox.content = false;
+ 	szdocsource = editBox.innerHTML;
+	editBox.focus();
+}
+
+function font_sizeChange()
+{
+  document.execCommand("FontSize", false, sizeBox[sizeBox.selectedIndex].value);
+  editBox.content = false;
+  szdocsource = editBox.innerHTML;
+	editBox.focus();
+}
+
+function setFocusToDocument()
+{
+	editBox.content = false;
+	szdocsource = editBox.innerHTML;
+	//editBox.focus();
+}
+
+
+function DoVertical()
+{
+	window.status = editBox.style.writingMode;
+	if (editBox.style.writingMode == 'tb-rl')
+	editBox.style.writingMode = 'lr-tb';
+		else
+	editBox.style.writingMode = 'tb-rl';
+	editBox.content = false;
+	szdocsource = editBox.innerHTML;
+	editBox.setActive();
+}
+
+function returnDS()
+{
+	szdocsource = editBox.innerHTML;
+	return szdocsource;
+}
+
+var activeateCount = 0;
+
+
+function editorKeyPress()
+{
+	editBox.content = true;
+}
+
+function editorActive()
+{
+	editBox.content = false;
+	szdocsource = editBox.innerHTML;
+}
+
+function setDocumentProperties(szIdentifier)
+{
+	
+	switch (szIdentifier)
+	{
+		case "Bold":
+			rVal = document.execCommand("Bold");
+			break;
+		case "Italic":
+			rVal = document.execCommand("Italic");
+			break;
+		case "Underline":
+			rVal = document.execCommand("Underline");
+			break;
+		case "StrikeThrough":
+			rVal = document.execCommand("StrikeThrough");
+			break;
+
+		case "JustifyLeft":
+			rVal = document.execCommand("JustifyLeft");
+			break;
+
+		case "JustifyCenter":
+			rVal = document.execCommand("JustifyCenter");
+			break;
+			
+		case "JustifyRight":
+			rVal = document.execCommand("JustifyRight");
+			break;
+
+		case "InsertUnorderedList":
+			rVal = document.execCommand("InsertUnorderedList");
+			break;
+
+		case "InsertOrderedList":
+			rVal = document.execCommand("InsertOrderedList");
+			break;
+
+		case "Outdent":
+			rVal = document.execCommand("Outdent");
+			break;
+
+		case "Indent":
+			rVal = document.execCommand("Indent");
+			break;
+		
+		case "Cut":
+			rVal = document.execCommand("Cut");
+			break;
+
+		case "Copy":
+			rVal = document.execCommand("Copy");
+			break;
+
+		case "Paste":
+			rVal = document.execCommand("Paste");
+			break;
+
+		case "SubScript":
+			rVal = document.execCommand("SubScript");
+			break;
+
+		case "SuperScript":
+			rVal = document.execCommand("SuperScript");
+			break;
+
+		case "InsertHorizontalRule":
+			rVal = document.execCommand("InsertHorizontalRule");
+			break;
+
+		case "FontColor":
+			rVal = document.execCommand("ForeColor",false,event.srcElement.selectedColor);
+			break;
+
+		case "BackColor":
+			rVal = document.execCommand("BackColor",false,event.srcElement.selectedColor);
+			break;
+
+	}
+	
+	setFocusToDocument();
+	
+}
+
+function button_mouse_over()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#bfbfbf";
+		borderTopColor = "white";
+		borderLeftColor = "white";
+		borderRightColor = "#dfdfdf";
+		borderBottomColor = "#dfdfdf";
+		borderWidth = 1.5;
+		borderStyle = "outset";
+	}
+	
+}
+
+function button_mouse_out()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#dfdfdf";
+		borderWidth = 0;
+		borderStyle = "none";
+	}
+}
+
+function button_down()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#bfbfbf";
+		borderWidth = 1.5;
+		borderStyle = "inset";
+	}
+}
+window.attachEvent("oncontentready",Init)
+</SCRIPT>
+
+<BODY topmargin=0 leftmargin=0>
+<div id=container style="width:99%;height:99%">
+	<div id=fileToolbar align=left style="postion:absolute;margin-left:2;margin-top:2;margin-right:2;padding:2;border: 2 outset #EEEECC;overflow:hidden;background-color:ivory" >
+		<span class=buttons unselectable="On"><img class=imgs unselectable="On" src="images\tool-cut.gif" onclick="setDocumentProperties('Cut')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span>
+
+		<span class=buttons unselectable="On"><img class=imgs unselectable="On" src="images\form-copy.gif" onclick="setDocumentProperties('Copy')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span>
+
+		<span class=buttons unselectable="On"><img class=imgs unselectable="On" src="images\paste.gif" onclick="setDocumentProperties('Paste')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span>
+
+		<span class=buttons unselectable="On" Title="Bold"><img class=imgs unselectable="On" src="images\form-bold.gif" onclick="setDocumentProperties('Bold')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span>
+		<span class=buttons unselectable="On" Title="Italic" onclick="setDocumentProperties('Italic')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-italic.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Underline" onclick="setDocumentProperties('Underline')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-under.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Strikethrough" onclick="setDocumentProperties('StrikeThrough')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-strike.gif"></span>
+
+		<span class=buttons unselectable="On" Title="SubScript" onclick="setDocumentProperties('SubScript')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_sub_script.gif"></span>
+
+		<span class=buttons unselectable="On" Title="SuperScript" onclick="setDocumentProperties('SuperScript')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_super_script.gif"></span>
+
+		<span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Align Left" onclick="setDocumentProperties('JustifyLeft')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-justify_left.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Align Center" onclick="setDocumentProperties('JustifyCenter')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-justify_center.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Align Right" onclick="setDocumentProperties('JustifyRight')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-justify_right.gif"></span>
+
+		<span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Unordered Bullets" onclick="setDocumentProperties('InsertUnorderedList')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-bullist.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Ordered Bullets" onclick="setDocumentProperties('InsertOrderedList')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-numlist.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Decrease Indent" onclick="setDocumentProperties('Outdent')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-deindent.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Increase Indent" onclick="setDocumentProperties('Indent')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-inindent.gif"></span>
+
+		<!-- <span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Vertical Text" onclick="DoVertical()" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_vertical.gif"></span>		 -->
+	</div>
+
+<!-- Formatting Tool Bar -->
+
+	<div id=formatToolbar align=left style="padding:2;margin-left:2;margin-right:2;border: 2 outset #EEEECC;overflow:hidden;width:100%;background-color:ivory" >
+		<span class=buttons unselectable="On" Title="Horizontal Line" onclick="setDocumentProperties('InsertHorizontalRule')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_line.gif"></span>		
+
+		<span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Font Color" onclick="javascript:fcolors.showPopUp()" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_font_color.gif"><ie:colorOptions id=fcolors oncolorSelected="setDocumentProperties('FontColor')"></ie:colorOptions></span>	
+	
+		<span class=buttons unselectable="On" Title="Background Color" onclick="javascript:bcolors.showPopUp()" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_fill_color.gif"><ie:colorOptions id=bcolors oncolorSelected="setDocumentProperties('BackColor')"></ie:colorOptions></span>		
+
+	<span style="margin-left:6" unselectable="On"><ie:seperator></ie:seperator></span>
+		<span style="position:relative;margin-left:6;top:-4" >
+			<!-- 	<select id=fontBox size=1 unselectable="On" onchange=font_nameChange()>
+				<option value="Arial">Arial
+				<option value="Courier">Courier
+				<option value="Garamond">Garamond
+				<option value="Tahoma">Tahoma
+				<option value="Times New Roman">Times New Roman
+				<option value="Verdana">Verdana
+			</select> -->
+
+			<select id=sizeBox size=1 unselectable="On" onchange=font_sizeChange()>
+				<option value=0>Size
+				<option value=1>1
+				<option value=2>2
+				<option value=3 selected=true>3
+				<option value=4>4
+				<option value=5>5
+				<option value=6>6
+				<option value=7>7
+			</select>
+		</span>
+	</div> 
+
+	<div id="editBox" contenteditable align=left style="font-family:Arial; padding:2;border:2 inset #dfdfdf;scrollbar-base-color:powderblue; overflow:auto" onkeypress="editorKeyPress()" onactivate="editorActive()">321321321
+	</div>
+	
+</div>
+
+

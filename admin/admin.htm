@@ -1,0 +1,55 @@
+<?
+$page="admintools";
+$allperms=array("admin_users_all",
+				"admin_users_self",
+				"subscribers_all",
+				"contrib_all",
+				"contrib_self",
+				"emails","ads_edit", "corp_admin");
+
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($allperms)){
+	admin_error();
+}
+?>
+<table align=center border=0>
+<TR>
+<TD nowrap><div class=adminheader>Admin Tools</div>
+<div style="padding:10px;width:400px">
+	<!--<img src="assets/mv-admin.gif" border=0 align=left hspace=5></a>--><b>Site Administration</b><br><br>
+	<?if($AD->getPerm(explode(" ","admin_users_all admin_users_self")) ){?>
+	<li><a href="admin_users.htm">Administer Users</a><br>
+	<?}?>
+	<?if($AD->getPerm("subscribers_all")){?>
+	<!--<li><a href="subs.htm">View Subscriptions</a><br>-->
+	<!--<li><a href="#" onclick="javascript:window.open('subs.add.htm');">Create New Subscriptions</a><br>-->
+	<?}?>
+	<?if($AD->getPerm(explode(" ","contrib_all contrib_self"))){?>
+	<li><a href="contributors.htm?page=admintools">Manage Contributing Authors</a><br>
+	<?}?>
+	<?if($AD->getPerm("emails")){?>
+	<!-- <li><a href="emails.htm">Send Emails</a> -->
+	<?}?>
+	<?if(/*$AD->getPerm("archive")*/0){?>
+	<li><a href="archive.htm">Create a site archive</a>
+	<?}?>
+	<?if($AD->getPerm("manage_metadata")){?>
+		<br><li><a href="layout/manage_metadata.htm">Manage meta data</a><br>
+	<?}?>
+	<BR clear=all><br>
+	<a href="/admin/glossary.htm">Manage Dictionary</a>
+</div></TD>
+<TD VALIGN=TOP nowrap>
+<div style="padding:10px;width:400px">
+	<br><br>
+	<!--<b>Corp Administration</b><br><br>
+	<?if($AD->getPerm("corp_admin")){?>
+	<li><a href="corp_accounts.htm">Corp Accounts</a><br>
+	<li><a href="buzzchannel_accounts.htm">Buzz Channel Accounts</a><br>
+	<?}?> -->
+</div>
+</TD>
+</TR>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

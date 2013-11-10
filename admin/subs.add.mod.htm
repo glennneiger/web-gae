@@ -1,0 +1,414 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$D_R/lib/_robots.php");
+include_once("$ADMIN_PATH/_authenticate.htm");
+
+if($_POST[dcr][mo]!="" && $_POST[dcr][day]!="" && $_POST[dcr][year]!="" && $_POST[dcr][hour]!=""){
+	//set disabled date
+	
+	$strDisabledDate=date("U",strtotime($_POST[dcr][year]."-".$_POST[dcr][mo]."-".$_POST[dcr][day]." ".$_POST[dcr][hour].":".$_POST[dcr]["minute"]));
+	//$strDisabledDate=date("U",mktime($_POST[dcr][hour],0,0,$_POST[dcr][mo],$_POST[dcr][day],$_POST[dcr][year]));
+	$subs[date_disabled]=$strDisabledDate;
+	$subs[notified_disabled]=1;
+	$subs[notified_disabled_warn]=1;	
+}
+else if($_POST[dcr][mo]=="" && $_POST[dcr][day]=="" && $_POST[dcr][year]=="" && $_POST[dcr][hour]==""){
+	//do nothing with disabled date
+}
+else{
+	//invalid disabled date
+	$errors[invalid_disabled_date]=1;
+}
+$robot=new Robot();
+$now=$robot->now;
+$subs[date]=$now;
+$subs[premium]='1';
+$subs[account_status]='enabled';
+$bounceback="subs.add.htm";
+
+//copy original posted data in a temporary data
+$csubs=$subs;
+
+$REFER_ERR_CHECK=0;
+
+//===== HANDLE SUBMITTED ERRORS =============
+//$sub_fields=qw("email password fname lname jobtitle agegroup address city ".($sub[country]=="United States"?"state ":""));
+//$errors=build_err_keys($sub_fields,$subs);
+
+if(email_taken($subs[email]))
+	$errors["email_taken_error"]=1;
+
+# check options selected
+$strType=$subs[type];
+$strCType=implode(",",$sub_ps[ctype]);
+$strPType=implode(",",$sub_ps[ptype]);
+ 
+
+ if($strCType=="newyear," || $strCType==",newyear") {
+ 		$strCType='newyear';
+ }
+ if($strCType=="trial," || $strCType==",trial") {
+ 		$strCType='trial';
+ }
+ if($strCType=="gift," || $strCType==",gift") {
+ 		$strCType='gift';
+ }
+ if($strCType==","){
+ 	$strCType="";
+ }
+  
+if(trim($strCType)!="" || trim($strPType)!="" || trim($strType)!=""){
+}
+else{
+	$errors["type_error"]=1;
+}
+
+
+if(count($errors)){
+	$errors[is_error]=1;
+	persist($bounceback.qsa($errors),array(spost=>serialize_post($_POST)));
+	exit();
+}
+
+if ($subs[type]) {
+	$mailflag=1;
+	//================= SET THE RECURRING CHARGE =========
+	
+	$subs[recurring_charge]="0.00";
+	
+	unset($subs[date_nextbill]);
+	unset($subs[date_billingstart]);
+
+	if(trim($strType)=="prem" || trim($strType)=="newyear") {
+		
+		$subs[recurring_charge]=getSubsTotal(&$subs);
+		
+		//=========== CC PRE-AUTH. robot handles trial period ============================
+		//trial period is done by robot
+		$result=$robot->capturePayment($subs);//capturepayment
+		
+		if(!$result[success]){
+			$errors["payment_error"]=1;
+			$errors["payment_message"]=$result[trans_msg];
+		}
+		
+		//---------------redirect new user back to fix cc errors (2nd pass)------------
+		if(count($errors)){
+			$errors[is_error]=1;
+			persist($bounceback.qsa($errors),array(spost=>serialize_post($_POST)));
+			exit();
+		}else{
+		 
+			$subs[date_billingstart]=($now+$robot->trialLength);//set the billing start date
+			$subs[date_nextbill]=$subs[date_billingstart];
+		}
+	}
+	//================= referral code stuff =========================================
+	
+	$credit_referrer=0;
+	if($referral_code=$_POST[referral_code]){
+		
+		include("$D_R/lib/class.peerremote.php");
+		$pr=new PeerRemote(0,0);
+		//---check referral code
+		$res = $pr->checkReferralCode($referral_code);
+		
+		if(is_array($res) && isset($res["errormsg"])){
+			$error=$res["errormsg"];//--error with the refeferral code
+			
+			if($REFER_ERR_CHECK){
+				persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+				exit();
+			}
+			
+		}
+		else{//--valid referral code
+			
+			$referral_token=$res;
+			
+			$addr=array(
+			email=>lc($subs[email]),
+			lastname=>$subs[lname],
+			firstname=>$sub[fname]
+			);
+			
+			$res=$pr->completeReferral($referral_token,$addr);
+			
+			if(is_array($res) && isset($res["errormsg"]) ){
+				
+				$error=$res["errormsg"];
+				
+				if($REFER_ERR_CHECK){
+					persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+					exit();
+				}
+			}
+			else{//---save referral code to db. referral token is useless after 30 mins
+				
+				$subs[promo_code]=$referral_code;
+				$credit_referrer=1;
+				$res=$pr->getReferrer(lc($sub[email]));
+				
+				if(valid_email($res)){//--credit referrer
+					incrementNextBillDateByEmail($res,month(1));
+				}elseif($REFER_ERR_CHECK){
+					$error=$res[errormsg];
+					persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+					exit();
+				}
+			}
+		}
+	}//--endif referral code
+}
+else
+{
+	$subs[type]='nonbuzz';
+	$subs[premium]='0';
+	$mailflag=0;
+}
+
+
+//============= credit card successfully preauthorized. create the user =========
+
+
+if(trim($strCType)!=''){ 
+	$subs[combo]=1;
+}
+else{ 
+	$subs[combo]=0;
+}
+
+$idsub=insert_query("subscription",$subs);
+
+
+// ---------Insert according to combo boxes selected by user 
+
+$subs[premium]='1';
+
+//$sub_fields=qw("email password fname lname jobtitle agegroup address city ".($sub[country]=="United States"?"state ":""));
+$subs[recurring_charge]="0.00";
+unset($subs[date_billingstart]);
+unset($subs[date_nextbill]);
+$subs[type]=$strCType;
+
+foreach(array_keys($sub_ps[ctype]) as $row_id){
+	if(trim($sub_ps[ctype][$row_id])!=""){
+		//$subs[type]= 'newyear';
+		if($sub_ps[ctype][$row_id]=="newyear"){
+		$subs[recurring_charge]=getSubsTotalCombo($subs,$row_id);
+		$result=$robot->capturePayment($subs);//capturepayment
+		if(!$result[success]){
+			$errors["payment_error"]=1;
+			$errors["payment_message"]=$result[trans_msg];
+		}
+		
+		//---------------redirect new user back to fix cc errors (2nd pass)------------
+		if(count($errors)){
+			$errors[is_error]=1;
+			persist($bounceback.qsa($errors),array(spost=>serialize_post($_POST)));
+			exit();
+		}else{
+			$subs[date_billingstart]=($now+$robot->trialLength);//set the billing start date
+			$subs[date_nextbill]=$subs[date_billingstart];
+		}
+		}
+		
+		$subs[combo]=1;
+		//================= referral code stuff =========================================
+		
+		$credit_referrer=0;
+		
+		if($referral_code=$_POST[referral_code]){
+			
+			include("$D_R/lib/class.peerremote.php");
+			
+			$pr=new PeerRemote(0,0);
+			
+			//---check referral code
+			$res = $pr->checkReferralCode($referral_code);
+			
+			if(is_array($res) && isset($res["errormsg"])){
+				
+				$error=$res["errormsg"];//--error with the refeferral code
+				
+				if($REFER_ERR_CHECK){
+					persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+					exit();
+				}
+			}else{//--valid referral code
+				
+				$referral_token=$res;
+				
+				$addr=array(
+					email=>lc($subs[email]),
+					lastname=>$subs[lname],
+					firstname=>$subs[fname]
+				);
+				
+				$res=$pr->completeReferral($referral_token,$addr);
+				
+				if(is_array($res) && isset($res["errormsg"]) ){
+					
+					$error=$res["errormsg"];
+					
+					if($REFER_ERR_CHECK){
+						persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+						exit();
+					}
+					
+				}else{//---save referral code to db. referral token is useless after 30 mins
+					
+					$subs[promo_code]=$referral_code;
+					$credit_referrer=1;
+					$res=$pr->getReferrer(lc($subs[email]));
+					
+					if(valid_email($res)){//--credit referrer
+						incrementNextBillDateByEmail($res,month(1));
+					}elseif($REFER_ERR_CHECK){
+						$error=$res[errormsg];
+						persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+						exit();
+					}
+				}
+			}
+		}//--endif referral code
+		
+		update_query("subscription",$subs,array(id=>$idsub));
+		
+		if($sub_ps[buzz][$row_id]==1){
+			unset($subs[subid]);
+			unset($subs[prof_id]);
+			unset($subs[combo_id]);
+			unset($subs[is_buzz]);
+			
+			$mailflag=1;
+			update_query("subscription",$sub,array(id=>$idsub));
+			$subs[is_buzz]=$sub_ps[buzz][$row_id];
+		}
+		
+		
+		
+		unset($subs[comment]);
+		$subs[subid]=$idsub;
+		$subs[prof_id]=0;
+		$subs[is_buzz]=1;
+		$subs[combo_id]=$row_id;
+		$id=insert_query("subscription_ps",$subs);
+		
+	}
+}
+	
+// ---------Insert according to options selected by user 
+$subs[subid]=$idsub;
+$subs[combo_id]=0;
+
+if(trim($strType)!="" || trim($strCType)!=""){
+	$subs[is_buzz]=1;
+}
+else{
+	$subs[is_buzz]=0;
+}
+	
+$subs[recurring_charge]="0.00";
+unset($subs[date_billingstart]);
+unset($subs[date_nextbill]);
+
+foreach(array_keys($sub_ps[ptype]) as $row_id){
+	
+	if(trim($sub_ps[ptype][$row_id])!=""){
+		
+		$subs[type]= $sub_ps[ptype][$row_id];
+		
+		if($sub_ps[ptype][$row_id]=='newyear' || $sub_ps[ptype][$row_id]=='prem'){
+			
+			$subs[recurring_charge]=getSubsTotalProf(&$subs,$row_id);
+			
+			$result=$robot->capturePayment($subs);//capturepayment
+			
+			if(!$result[success]){
+				$errors["payment_error"]=1;
+				$errors["payment_message"]=$result[trans_msg];
+			}
+			
+			//---------------redirect new user back to fix cc errors (2nd pass)------------
+			if(count($errors)){
+				$errors[is_error]=1;
+				persist($bounceback.qsa($errors),array(spost=>serialize_post($_POST)));
+				exit();
+			}else{
+				$subs[date_billingstart]=($now+$robot->trialLength);//set the billing start date
+				$subs[date_nextbill]=$subs[date_billingstart];
+			}
+			
+		}
+		
+		$subs[prof_id]=$row_id;
+		$subs[combo]=0;
+		//================= referral code stuff =========================================
+		
+		$credit_referrer=0;
+		
+		if($referral_code=$_POST[referral_code]){
+			
+			include("$D_R/lib/class.peerremote.php");
+			$pr=new PeerRemote(0,0);
+			//---check referral code
+			$res = $pr->checkReferralCode($referral_code);
+			
+			if(is_array($res) && isset($res["errormsg"])){
+				
+				$error=$res["errormsg"];//--error with the refeferral code
+				
+				if($REFER_ERR_CHECK){
+					persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+					exit();
+				}
+			}else{//--valid referral code
+				
+				$referral_token=$res;
+				
+				$addr=array(
+					email=>lc($subs[email]),
+					lastname=>$subs[lname],
+					firstname=>$subs[fname]
+				);
+				
+				$res=$pr->completeReferral($referral_token,$addr);
+				
+				if(is_array($res) && isset($res["errormsg"]) ){
+					$error=$res["errormsg"];
+					
+					if($REFER_ERR_CHECK){
+						persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+						exit();
+					}
+				}else{//---save referral code to db. referral token is useless after 30 mins
+					
+					$subs[promo_code]=$referral_code;
+					$credit_referrer=1;
+					$res=$pr->getReferrer(lc($subs[email]));
+					
+					if(valid_email($res)){//--credit referrer
+						incrementNextBillDateByEmail($res,month(1));
+					}elseif($REFER_ERR_CHECK){
+						$error=$res[errormsg];
+						persist($bounceback,array(error=>$error,spost=>serialize_post($_POST)));
+						exit();
+					}
+				}
+			}
+		}//--endif referral code
+		unset($subs[comment]);
+		
+		$id=insert_query("subscription_ps",$subs);
+		
+	}
+}
+
+$qry="select id from subscription order by id desc limit 0,1";
+$result=exec_query($qry);
+$id=$result[0][id];
+
+location("subs.edit.htm?id=$id");
+exit();
+?>

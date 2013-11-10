@@ -1,0 +1,42 @@
+<?
+$pageName = "articlelisting";
+$pageId="96";
+$noDefaultLoad=TRUE;
+$pageJS=array("config","nav",'prototype','global','mobileredirect','jquery','emailalert','dailyfeed');
+$pageCSS=array("global","rightColumn","nav","minyanville","homepage","articlelisting","fontStylesheet");
+include("../_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+include_once($D_R."/lib/config/_article_config.php");
+include_once($D_R."/lib/_article_design_lib.php");
+$objArticleViewer=new articleViewer();
+
+global $cm8_ads_1x1_Text,$productItemType;
+include_once($D_R.'/lib/config/_cache_config.php');
+include_once($D_R."/lib/MemCache.php");
+
+
+$email=$_SESSION['email'];
+if($email=="")
+			{
+	$email="Enter email";
+				}
+$userid = $_SESSION['SID'];
+
+	?>
+  
+	<?php
+  $objArticleViewer->subscriptionBar($email,$userid);
+					?>
+    <!--left container starts from here-->
+<?php
+    $objArticleViewer->ArticleListingPageLeft();
+?>
+<!--left contasner ends here-->
+  <?
+$arrRightCols=array('show_300x250','show_mostpopular');
+include("../_rightcolumn.htm"); ?>
+</div>
+</div>
+<?
+include("../_footer.htm");
+?>

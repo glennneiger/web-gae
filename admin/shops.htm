@@ -1,0 +1,24 @@
+<?
+$page="shops";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("shops_edit")){
+	admin_error("You're not allowed to view this page.");
+}
+?>
+<table align=center>
+<TR>
+<TD><div class=adminheader>Shops</div>
+<div style="padding:10px;width:400px">
+	<img src="assets/mv-shops.gif" border=0 align=left hspace=5></a><b>MV. Shops Pages</b><br><br>
+	<li><a href="shop.htm?cat_id=2">Spirited Sweets</a><br>
+	<li><a href="shop.htm?cat_id=1">Toddo's Toys</a><br>
+	<li><a href="shop.htm?cat_id=4">Harrison's Dept. Store</a><br>
+	<li><a href="shop.htm?cat_id=3">Gallery for the Arts</a><br><br>
+	<li><a href="editpage.htm?filename=/assets/data/shipping_info.html&page=shops&title=Shops Shipping Info">Edit Shipping Info</a> (appears on all shops pages)<br>
+	
+
+</div></TD>
+</TR>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

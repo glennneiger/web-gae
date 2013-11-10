@@ -1,0 +1,73 @@
+<?php
+global $D_R,$HTPFX,$HTHOST;
+include_once("$D_R/lib/email_alert/_lib.php");
+$pageName="forwardfriend";
+$noDefaultLoad=TRUE;
+$pageJS=array("config","jquery","dailydigest",'global','mobileredirect');
+$pageCSS=array("global","layout","minyanville","section","rightColumn","nav","registration");
+include($D_R."/_header.htm");
+include_once($D_R."/admin/lib/_article_data_lib.php");
+include_once("$D_R/lib/email_alert/_design_lib.php");
+$id = $_GET['id'];
+$objArticle = new ArticleData();
+$daily_digest = $objArticle->getDailyDigest($id);
+$subject = $daily_digest[0]['subject'];
+
+if($_POST['unsubscribe_hidden'] == 'clicked') {
+
+	send_unsubscribe_mail($_REQUEST['emailadd']);
+
+}
+
+if(isset($_GET['unsub_id'])) {
+
+	unSubscribe($_GET['unsub_id']);
+
+}
+?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div class="left_contant">
+<?if(!isset($_GET['unsub_id'])) { ?>
+<div class="unsubscribe_content">To forward to a friend please fill the information below</div>
+<? } ?>
+<div class="unsubscribe_error" id="unsubscribeErrorMsgs" style="width:100%; margin: -15px 0 15px 10px;
+    height:0px; padding:0px;"></div>
+<div class="unsubscribe_html_display">
+	<table>
+		<tbody>
+			<tr>
+				<td><span style="color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; width: 100px; margin-right: 20px;">Your Name<span style="color:red;"> *</span> </span></td>
+				<td><input type="text" tabindex="49" class="login_input_box" style="width:260px; margin-left: 8px;" value="Enter your name"  name="username" id="username" onclick="clean_text('username','Enter your name')"></td>
+			</tr>
+			<tr>
+				<td><span style="color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; width: 100px; margin-right: 20px;">Your email address<span style="color:red;"> *</span> </span></td>
+				<td><input type="text" tabindex="49" class="login_input_box" style="width:260px;margin-left: 8px;" value="Enter your email-address"  id="useremail" onclick="clean_text('useremail','Enter your email-address')" name="useremail"><br></td>
+			</tr>
+			<tr>
+				<td><span style="color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; width: 100px; margin-right: 20px;">Your Friend's email address<span style="color:red;"> *</span> </span></td>
+				<td><input type="text" tabindex="49" class="login_input_box" style="width:260px;margin-left: 8px;" value="Enter your friend email-address"  id="f_email" onclick="clean_text('f_email','Enter your friend email-address')" name="f_email"></td>
+			</tr>
+			<tr>
+				<td><span style="color: rgb(0, 0, 0); font-size: 13px; font-weight: bold; width: 100px; margin-right: 20px;">Comment </span></td>
+				<td><textarea tabindex="49" class="login_input_box" style="width:260px;margin-left: 8px;font-family: arial;" id="f_comment" onclick="clean_text('f_comment','Enter your comment')" name="f_comment">Enter your comment</textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2" ><input width="99" type="image" height="28" style="float: right;margin-top: 15px;"  id="sendmail" name="sendmail" src="<?=$IMG_SERVER;?>/images/daily_digest/forward.jpg" onClick="forwardmail('<?=$id;?>','<?=$subject;?>');"></td>
+
+			</tr>
+		</tbody>
+	</table>
+    </div>
+</div>
+<!--left contaner end here-->
+<?php
+$arrRightCols	=	array('show_300x250','show_mostpopular','recommendation','twitterWidget');
+include($D_R."/_rightcolumn.htm"); ?>
+  </div>
+  <!--Content contaner end here-->
+</div>
+<!-- shadow end -->
+<?php include($D_R."/_footer.htm"); ?>

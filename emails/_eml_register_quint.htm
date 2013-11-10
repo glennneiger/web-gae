@@ -1,0 +1,24 @@
+<?include("$D_R/emails/_eml_quint_header.htm");?>
+	  
+<!--/font-->
+
+ 
+Welcome to Minyanville's FlexFolio by Quint Tatro!  You have registered using email: <b><?=$_GET['uid'];?></b> and password: <b><?=$_GET['pwd'];?></b>.<br><br>
+As part of your subscription you:<br><br>
+* Will receive email alerts prior to each trade with Quints analysis and reasoning behind each move.<br>
+* Will receive a weekly roundup of all positions and a summary of the week's events.<br>
+* Can access the FlexFolio's open positions as well as closed positions at any time.<br>
+* Have access to detailed audio visual presentations explaining positions and Quint's strategy.<br>
+* Can access a full archive of past alerts as well as audio visual presentations.<br>
+
+<a href="<?=$HTPFX.$HTHOST?>/qp/index.htm"><p><strong>To get started, click here to access the FlexFolio.</strong></p></a>
+
+If you have any questions, please don't hesitate to contact Josh Sander at sander@minyanville.com or 212-991-9357.
+ 
+     <br ><br>
+
+<?php
+$tracking_name = $tracking_name['_eml_register_quint'];
+?>			
+<?include("$D_R/emails/_eml_footer.htm");?>
+

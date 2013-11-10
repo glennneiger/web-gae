@@ -1,0 +1,42 @@
+<?php
+global $D_R,$HTPFX,$HTHOST;
+include_once("$D_R/lib/registration/_register_funnel_data_lib.php");
+include_once("$D_R/lib/registration/_register_funnel_design_lib.php");;
+
+
+$registrationDesignObj = new registrationFunnelDesign();
+
+if(!$_POST['mod']){
+	include("$ADMIN_PATH/_header.htm");
+}
+
+
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin_register_funnel.js"></script>
+<?php
+$id='';
+if($_POST['save']){
+   $product = $_POST['productName'];
+   if(!empty($_POST['productName'])){
+        $productArr['recurly_plan_promotional_headline'] = addslashes(mswordReplaceSpecialChars(stripslashes(trim($_POST['product_heading']))));
+        $productArr['recurly_plan_feature_headline'] = addslashes(mswordReplaceSpecialChars(stripslashes(trim($_POST['product_feature_heading']))));
+	$productArr['recurly_plan_promotional_features'] = addslashes(mswordReplaceSpecialChars(stripslashes(trim($_POST['product_features']))));
+	$productArr['recurly_plan_promotional_desc'] = addslashes(mswordReplaceSpecialChars(stripslashes(trim($_POST['product_description']))));
+
+	$id=update_query('product',$productArr,array('subGroup'=>$product));
+   }
+}
+
+
+
+?>
+
+<div id="showlayout">
+	<? $registrationDesignObj->registrationPage($_GET['product'],$id); ?>
+</div>
+<div id="showdiv"></div>
+
+<? include("$ADMIN_PATH/_footer.htm"); ?>

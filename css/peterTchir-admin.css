@@ -1,0 +1,75 @@
+@CHARSET "UTF-8";
+.peterTchirMoreOptions{
+	float:left; 
+	width:600px;
+	margin:0px 0px 10px 0px;
+}
+.peterTchirLabel{
+	float:left; 
+	width:200px;
+}
+
+.alertEditLabel{
+	float:left; 
+	width:120px;
+	font-weight:bold;
+	margin:5px 0px 0px 0px;
+}
+
+.alertCreateLabel{
+	float:left; 
+	width:70px;
+	font-weight:bold;
+	margin:5px 0px 0px 0px;
+}
+
+.peterTchirMoreOptions input{
+	float:left; 
+	width:530px;
+}
+
+.peterTchirMoreOptions select{
+	float:left; 
+	width:480px;
+}
+
+.peterTchirErrorMsg{
+	float:left;
+	color:red;
+	font-weight:bold;
+	height:35px;
+	margin:0px 0px 0px 0px;
+}
+
+.peterTchirCreate{
+	float:left;
+	clear:both;
+	margin:20px 0px 0px 20px;
+}
+
+.peterTchirDate{
+	float:left;
+	width:290px;
+}
+
+.peterTchirAuthor{
+	float:right;
+	width:290px;
+}
+
+.peterTchirDate input, .peterTchirAuthor select{
+	float:left; 
+	width:220px;
+	margin:0px;
+	font-weight:bold;
+}
+
+.peterTchirMultiText{
+	float:left;
+	margin:48px 0px 0px 10px;	
+}
+
+.peterTchirBttn{
+	float:left;
+	margin:0px 200px;
+}

@@ -1,0 +1,90 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+
+/*============set up permissions=================*/
+$adminall=$AD->getPerm(array("admin_users_all", "shops_edit"));
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$adminall){
+	admin_error("You're not allowed to use this page.");
+}
+$filename = $_GET['filename'];
+$page = $_GET['page'];
+$title = $_GET['title'];
+$content = $_POST['content'];
+$draft = $_POST['draft'];
+$makelive = $_POST['makelive'];
+
+$files=array(
+	"AIM  Buddy Icons Copy"			 => "/assets/data/buddyicons.html",
+	"Conflicts and Disclosures Copy" => "/assets/data/conflicts.html",
+	"Privacy Policy"				 => "/assets/data/privacy.html",
+	"Terms of Use"					 => "/assets/data/terms.html",
+	"Ruby Peck Foundation Page"		 => "/assets/data/rpfoundation.html",
+	"Gazette: Special Announcements"	 => "/assets/data/gazette_announcements.html",
+	"Gazette: About the Minyanville Gazette" => "/assets/data/about_the_gazette.html",
+	"Shops: Shipping and Handling Copy"    => "/assets/data/shipping_info.html",
+	"Shops: Order Confirmation Email"=>"/assets/data/order_confirmation.html",
+	"Shops: Order Confirmation Thanks Page"=>"/assets/data/order_thanks.html",
+	"Minyanville: Promotion Section"=>"/assets/data/mvil_promotion.html"
+);
+
+if($filename){
+	$draftpath="gs://mvassets".dirname($filename)."/.".basename($filename);
+	if(!is_file($draftpath)) copy($D_R.$filename,$draftpath);  
+
+	if($content && ($draft || $makelive)){//post of data
+		$options = [ "gs" => [ "Content-Type" => "text/plain", "acl" => "public-read" ]];
+		$ctx = stream_context_create($options);
+		file_put_contents($draftpath, strip($content), 0, $ctx);
+		if($makelive){
+			file_put_contents("gs://mvassets".$filename, strip($content), 0, $ctx);
+			$error.=" - Your changes were posted live to the site.<br>";
+		}
+		if($draft){
+			$error.=" - Your changes were saved.<br>";
+		}
+	}else{
+		$content = file_get_contents($draftpath);
+	}
+}
+
+?>
+<br><br>
+<div class=adminheader><?=strip($title)?></div><br>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<center>
+<?if($filename){?>
+<table width=600 align=center>
+<TR>
+<TD align=center><form method="post" action="<?=$PHP_SELF.qsa()?>">
+<?input_hidden("filename")?>
+<?input_hidden("page")?>
+<?input_hidden("title")?>
+<?rich_editor("content",$content,400,400)?><br>
+
+<input type="submit" value="Make Live on Web Site" name="makelive"> &nbsp; 
+<input type="submit" value="Save Draft" name="draft"> &nbsp; 
+<input type="button" value="Cancel" onclick="location.replace(location.href)">
+</form>
+<?}else{?>
+	<form method="get" action="">
+	<?input_hidden("page")?>
+	<?input_hidden("title")?>
+	Select a Page to Edit:<br>
+	<select name="filename" onchange="this.form.submit()">
+	<option value="">--Choose a file to Edit--</option>
+	<?foreach($files as $label=>$path){
+		$sel=($filename==$path?" selected":"");
+	?><option value="<?=$path?>"<?=$sel?>><?=$label?></option>
+	<?}?>
+	</select>
+	</form>
+<?}?>
+
+</TD>
+</TR>
+</table>
+
+</center>
+<?include("$ADMIN_PATH/_footer.htm")?>

@@ -1,0 +1,360 @@
+<?
+global $HTPFX,$HTHOST,$ADS_SIZE,$IMG_SERVER;
+if(stristr($_SERVER['HTTP_HOST'],"buzzandbanter.com")){
+	location("http://$HTHOST/register/");
+	exit();
+}
+handle_ssl();
+session_start();
+
+/*
+if($_COOKIE['introad']!='1' && $pageName=='home')
+	include_once("_introad.htm");
+*/
+mcookie("PHPSESSID",session_id());
+$cart=new CartDisplay();
+ if(!$_SESSION['referer'])
+{
+	list($subdomain, $domain, $domaintype) = explode(".", $_SERVER['HTTP_REFERER']);
+	if($domain!="minyanville")
+	$_SESSION['referer']=$_SERVER['HTTP_REFERER'];
+}else{
+		list($subdomain, $domain, $domaintype) = explode(".", $_SESSION['referer']);
+}
+if($_GET['from']=="ameritrade")
+{
+	$_SESSION['referer']="http://www.ameritrade.com";
+	list($subdomain, $domain, $domaintype) = explode(".", $_SESSION['referer']);
+}
+if($_GET['from']=="msn")
+{
+$_SESSION['is_msn']=true;
+
+}
+if(strtolower($_GET['from'])=="google" || strtolower($_GET['from'])=="yahoo" || strtolower($_GET['from'])=="bing"){
+	$_SESSION['refererSourceId'] = $_POST['refererSourceId'];
+}
+//set google referal if user is coming from Google with param from = google
+setSessionReferal($_REQUEST['from'], $_SERVER['HTTP_REFERER']);
+/********** CHECK THE USER NAME FROM COOKIE START *******************/
+if(!$_SESSION['LoggedIn']){
+	if($_COOKIE['password'] && $_COOKIE['email'])
+	{
+		$user=new user();
+		if(($_COOKIE['password']!='') && ($_COOKIE['email']!=''))
+		{
+			if($_SESSION['sessautologin']=='') // $_SESSION['sessautologin'] set to 1 in Logout function
+			{
+				$isLoggedIn=$user->login(trim($_COOKIE['email']),trim($_COOKIE['password']),$_COOKIE['autologin']);
+			}
+		}
+	}
+}
+/********** CHECK THE USER NAME FROM COOKIE END *******************/
+$browser = '';
+$navigator_user_agent = ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) ? strtolower( $_SERVER['HTTP_USER_AGENT'] ) : '';
+if (stristr($navigator_user_agent, "msie"))
+{
+	$browser = 'msie';
+
+}
+elseif (stristr($navigator_user_agent, "gecko"))
+{
+	$browser = 'mozilla';
+
+}
+elseif (stristr($navigator_user_agent, "mozilla/4"))
+{
+	$browser = 'ns4';
+}
+
+if($_GET['frm']){
+	$pageName= $_GET['frm'];
+}
+include_once($D_R."/lib/_content_data_lib.php");
+$objPage= new Page($pageName);
+if($objContent->contentType)
+{
+	$pageMetaData=$objContent->getMetaData();
+}else{
+	$pageMetaData=$objPage->getMetaData();
+}
+$pageDetail=$objPage->getPageDetail();
+$objPage->build_lang();
+$userid= $_SESSION['SID'];
+//$AMADMIN = $_SESSION['AMADMIN'];
+//if($AMADMIN=='1')
+//{
+  // unset($_SESSION['SID']);
+  // session_destroy();
+//}
+
+$userobj = new user();
+//if(($userobj->user_id=='')&&($_SESSION['AMADMIN']==1))
+if(($userobj->user_id==''))
+{
+	$userid='';
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?
+if(!($pageName=='article_template' || strpos($_SERVER[REQUEST_URI],'register') || strpos($_SERVER[REQUEST_URI],'community')))
+{
+	if($pageName == "articlelisting"){ ?>
+	<meta http-equiv="refresh" content="300">
+	<? }else{ ?>
+		<meta http-equiv="refresh" content="900">
+	<? } ?>
+<? } ?>
+<head>
+
+<title><?=$pageMetaData['title']?>-Minyanville</title>
+<!-- Mets Data Starts --->
+<meta name="description" content="<?=$pageMetaData['description']?>" >
+<meta name="keywords" content="<?=$pageMetaData['keywords']?>">
+<!-- Meta Data Ends -->
+<!-- Ibox Files loaded First-->
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
+<?if ($pageName=="jack_home"){?>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/jack.1.6.css" type="text/css" />
+<? } if (($pageName=="bmtp_home")or($pageName=="bmtp_alert")) {?>
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/bmtp.1.4.css" type="text/css" />
+	<script src="<?=$HTPFX.$HTHOST?>/js/bmtp.js" type="text/javascript"></script>
+<?}?>
+
+<script src="<?=$HTPFX.$HTHOST?>/js/ibox.1.3.js" type="text/javascript"></script>
+<!-- Share This script for Daily Feed individual feeds-->
+<!-- <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#publisher=c33749e3-a8dd-48d6-af73-7568c530a7f8&amp;type=website&amp;buttonText=Share&amp;embeds=true"></script> -->
+<!-- Ibox Ends --->
+<!-- RSS Configuration Starts-->
+<? if($enableMediaRSS=='1')
+{
+?>
+<link rel="alternate" href="/rss/mvtv.rss" type="application/rss+xml" title="" id="gallery" />
+<script type="text/javascript"  src="http://lite.piclens.com/current/piclens.js"></script>
+<? }else{ ?>
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $HTPFX.$HTHOST; ?>/rss/minyanfeed.php" />
+<? }?>
+
+
+<!-- RSS Configuration Ends-->
+<!-- StyleSheets Starts -->
+<link href="<?=$HTPFX.$HTHOST?>/css/minyanville.1.52.css" rel="stylesheet" type="text/css" />
+<link href="<?=$HTPFX.$HTHOST?>/css/layout_main.1.24.css" rel="stylesheet" type="text/css" />
+<? if ($pageName=="sshome") {?>
+	<link href="<?=$HTPFX.$HTHOST?>/css/option_smith.1.6.css" rel="stylesheet" type="text/css" />
+<?}?>
+<!-- StyleSheets Ends -->
+<!-- JS Starts -->
+<!-- <script src="<?=$HTPFX.$HTHOST?>/js/registration_ajax_1.20.js" language="JavaScript" type="text/javascript"></script> -->
+<!-- google anaytics  code -->
+
+
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.3-min.js" type="text/javascript"></script>
+<!-- <script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js" type="text/javascript"></script>
+ --><? if($pageName=='home')
+{ ?>
+	<script src="<?=$HTPFX.$HTHOST?>/js/min/AC_RunActiveContent-min.js" type="text/javascript"></script>
+	<script src="<?=$HTPFX.$HTHOST?>/js/stepcarousel2.1.js" type="text/javascript"></script>
+
+	<script src="<?=$HTPFX.$HTHOST?>/js/slider/slider.1.12.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/coda-slider.1.8.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+
+<? } ?>
+<!-- <script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.2.js" type="text/javascript"></script>
+ --><script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/creditcard.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/email_alert.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script language="javascript"  type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/header.js" ></script>
+<!-- <script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script> -->
+<!-- <script src="<?=$HTPFX.$HTHOST?>/js/daily_feed.1.1.js" type="text/javascript"></script> -->
+<!--  <script type="text/javascript">jQuery.noConflict() ;</script> -->
+<!-- OpenX Configuration Starts-->
+<script language="javascript">
+<!--// <![CDATA[
+<?
+$path_info=pathinfo($_SERVER[PHP_SELF]); ?>
+  var OA_channel = '<?=substr($path_info[dirname],1)?>';
+// ]]>
+
+-->
+</script>
+<!-- <script src="<?=$HTPFX.$HTHOST?>/js/ads.js" type="text/javascript"></script> -->
+<!-- OpenX Configuration Ends-->
+<!-- Operative Configuration Starts-->
+<script language="Javascript" type="text/javascript">
+<!--
+var axel = Math.random() + "";
+var ord = axel * 1000000000000000000;
+//-->
+</script>
+
+<!-- Operative Configuration Ends-->
+<!-- JS Ends -->
+
+<?
+global $arMenuDetail;
+if($pageName=='article_template'){
+    $aid=$_GET['a'];
+	$secaid=getArticleSubsectionid($aid);
+	$pageaDetail['id']=$secaid['page_id'];
+	$pageDetail['id']=$pageaDetail['id'];
+	if($pageDetail['id']=="0"){
+		$pageDetail['id']="56";
+	}
+	$articlePagename=getArticlePagename($pageaDetail['id']);
+	if((trim($articlePagename['title'])=="LIFE & MONEY")||(trim($secaid['name'])=="LIFE & MONEY")){
+		$pageName="article_lifemoney";
+	}elseif((trim($articlePagename['title'])=="BUSINESS & MARKETS")||(trim($secaid[name])=="BUSINESS & MARKETS")){
+		$pageName="article_businessmarket";
+	}elseif((trim($articlePagename['title'])=="FAMILY & FINANCE")||(trim($secaid[name])=="FAMILY & FINANCE")){
+		$pageName="article_familyfinance";
+	}else{
+		$pageName="article_businessmarket";
+	}
+}
+	show_adds_checkmate($pageName);
+?>
+
+</head>
+ <?
+ if($userid) { ?>
+<script language="javascript">
+	window.onload=function(){
+		getYourAccount(hide=1);
+	}
+</script>
+<? } ?>
+<body>
+<!--Main div start from here-->
+<div align="center"><input type='hidden' id='logouttarget' name='logouttarget' value=''>
+<div class="main_div">
+<?php
+if($_GET['from'] == "msn")
+{
+?>
+<!-- MSN Money Logo Comes only when user Comes from MSN via articles: Start" -->
+ <div style="height:45px; border-bottom:3px solid #0066CC; background:#FFFFFF;">
+		<div style="float:left;" class="msnHeader">
+			<img border="0" src="http://logo.msn.com/as/shell/lg/pos/en-us_pos.gif" alt="MSN Logo" height="35" width="118" />
+			<a href="http://moneycentral.msn.com/" style="font-size:22px;">Money</a>
+		</div>
+		<div style="float:right;padding-top:15px;;padding-right:2px;"  class="msnHeader">
+			<a href="http://moneycentral.msn.com/">MSN Money Homepage</a>&nbsp;
+			<select id="navsel">
+					<option value="">More...</option>
+					<option value="http://moneycentral.msn.com/investor/home.asp">MSN Money Investing</option>
+					<option value="http://news.moneycentral.msn.com/newscenter/newscenter.aspx">MSN Money News Center</option>
+					<option value="http://moneycentral.msn.com/personal-finance/default.aspx">MSN Money Personal Finance</option>
+			</select>
+			<input type="button" value="Go" onClick="navigate()" style="background:#ffffff url(http://stc.msn.com/br/gbl/css/6/decoration/search.gif) 0px 45%;border:1px solid #2a5597;color:#07519a;font-size:11px;width:22px;"/>
+		</div>
+ 	</div>
+<!-- MSN Money Logo Comes only when user Comes from MSN via articles: End" -->
+
+<? } ?>
+<!--Top header Main div start from here-->
+<!-- checkmate js don't change the position -->
+<SCRIPT language="JavaScript" src="http://minyanvilledigital.checkm8.com/adam/cm8adam_1_call.js"></SCRIPT>
+<div class="header_main">
+<!--header div start from here-->
+<?
+ if($page_code=='index.htm')
+ {
+ // $Minyanville_logo_image = "<a href='#'><img src='".$IMG_SERVER."/images/redesign/spacer.gif' alt='Minyanville Logo' width='253px' height='107px'/></a>";
+
+ }
+ else
+ {
+ // $Minyanville_logo_image = "<a href='".$HTPFX.$HTHOST."'><img src='".$IMG_SERVER."/images/redesign/spacer.gif' alt='Minyanville Logo' width='253px' height='107px'/></a>";
+ }
+?>
+ <div class="main_header_bg_hardtrial"><!--<div class="mv_logo"><?=$Minyanville_logo_image ?></div> -->
+	  <?  if($pageName=='qphome')
+	  	{ echo '<div class="header_flexfolio_hardtrials"></div>';}
+	     else if ($pageName=="cooperhome") {echo '<div class="header_cooper_hardtrial"></div>';}
+		 else if ($pageName=="sshome") {echo '<div class="header_optionsmith_hardtrial"></div>';}
+		 else if (($pageName=="bmtp_home")or($pageName=="bmtp_alert")) {echo '<div class="header_bmtp"></div>';}
+		 else if ($pageName=="jack_home") {echo '<div class="header_jack_hardtrial"></div>';}
+		 else if ($pageName=="buzzbanter") {echo '<div class="header_buzzbanter_hardtrial"></div>';}
+		 else if($pageName=="SlideShow")
+		 {
+		 	/// echo '<div class="header_ads" id="slideshowadds" style="border-right-width: 0px;border-right-style: solid;border-right-color: #ffffff;border-left-width: 0px;border-left-style: solid;border-left-color: #ffffff;border-top-width: 0px;border-top-style: solid;border-top-color: #ffffff;border-bottom-width:0px;border-bottom-style: solid;">';
+				 // show_adds_iframe_checkmate($pageName,$cm8_ads_Leaderboard);
+			//echo '</div>';
+
+		  }elseif($pageName=="ticker"){ ?>
+         	//<div class="header_ads"><!-- FINANCIALCONTENT ADCODE 1 --></div>
+		<?  }
+		 else
+		 { global $cm8_ads_Leaderboard;
+		    $bannername=$cm8_ads_Leaderboard;
+			?>
+			<div class="header_ads"><? CM8_ShowAd($bannername); ?></div>
+        <? }?>
+</div>
+<!--header div end here-->
+
+<!--navigation div start from here-->
+
+<?
+
+$menu_section_item_count = count($arMenuDetail);
+foreach($arMenuDetail as $key => $value)
+{
+	if($value['selected'] == 1)
+	{
+		$menu_section_id = $key;
+		$menu_subsection_item_count = count($arMenuDetail[$key]['sub_menu']);
+		$i=0;
+		foreach($arMenuDetail[$key]['sub_menu'] as $subKey => $subValue)
+		{
+			$i++;
+			if($subValue[selected] == 1)
+			{
+				$menu_subsection_id = $i;
+			}
+		}
+	}
+}
+
+?>
+<!--Main sub nav end here-->
+<!--Control panel start from here-->
+<div style="display:none;" class="d">
+	<? if($userid) {
+		 controlPannel();
+	 }
+	 ?>
+</div>
+<!--Control panel end here-->
+ <!-- Gradient below subnavigation starts here // This div ends in _minyanville_footer.htm file -->
+ <input type="hidden" id="hidMenuSection" value="<?=$menu_section_id?>" />
+  <input type="hidden" id="hidMenuSubSection" value="<?=$menu_subsection_id?>" />
+   <input type="hidden" id="hidMenuSectionCount" value="<?=$menu_section_item_count?>" />
+    <input type="hidden" id="hidMenuSubSectionCount" value="<?=$menu_subsection_item_count?>" />
+
+<?
+if($pageName=="home")
+{
+echo renderFeatureModuleSlides();
+?>
+<script type="text/javascript">
+	_xMainFeature.init('main-feature','684');
+</script>
+<div class="featureVideoMain">
+<div class="video_screen">
+<?=displayTremorPlayer($pageName)?>
+</div>
+</div>
+<?
+}
+?>
+<div class="common_middle_container"  onmouseover="setTimeout('showSelectedPageMenu()',60000);">

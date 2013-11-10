@@ -1,0 +1,69 @@
+<?
+global $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+//expects $message in the querystring
+if($type=='video')
+{
+	$READ="View";
+}
+else
+{
+	$READ="READ";
+}
+
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<title><?= $subject ?></title>
+</head>
+<body bgcolor="#ffffff" color="#000000" link="#224E7A" vlink="#224E7A">
+
+<div style="width:524px;padding:14px 36px 36px;margin:1em auto;font:12px Arial,sans-serif;color:#000">
+
+  <div style="text-align:center">
+    <a href="<?=$HTNOSSLDOMAIN?>">
+      <img src="<?=$HTNOSSLDOMAIN?>/images/email/share/logo.gif" width="228" height="110" border="0" alt="Minyanville" /><br />
+      <img src="<?=$HTNOSSLDOMAIN?>/images/email/share/url.gif" width="135" height="12" border="0" alt="www.minyanville.com" style="margin-top:.75em" />
+    </a>
+  </div>
+
+  <div style="padding:1.5em 0 1em;text-align:center">
+  <strong><?= $from ?></strong> sent you this <?= $type ?><? if ($message) { ?> and this message<? } ?>:
+  </div>
+
+  <div style="padding:.5em 2.5em;background:#EBECEA;text-align:center;border:1px solid #000">
+    <? if ($message) { ?>
+      <div style="padding:0.5em 0;font-size:14px"><?= nl2br(htmlspecialchars($message)) ?></div>
+      <hr style="border:none;background:#000;color:#000;height:1px;width:75%" />
+   <? } ?>
+
+   <div>
+   <span style="font:bold 18px Times,serif;"><a href="<?= $HTNOSSLDOMAIN.$link ?>" style="text-decoration:none;"><span style="color:#224E7A"><?= $title ?></span></a></span><br />
+   <? if ($blurb) { ?><div style="padding-top:.5em"><?= $blurb ?>...</div><? } ?>
+   </div>
+
+   <div style="padding:.5em 0;font-size:14px;font-weight:bold;text-transform:uppercase"><a href="<?= $HTNOSSLDOMAIN.$link ?>" style="text-decoration:none"><span style="color:#224E7A"><img src="<?=$HTNOSSLDOMAIN?>/images/email/share/arrow_tan.gif" width="12" height="11" border="0" alt="" />  <?= $READ." ".$type ?></span></a></div>
+
+   <hr style="border:none;background:#000;color:#000;height:1px;width:75%" />
+
+   <div>
+     <span style="font-size:14px;line-height:28px;text-transform:uppercase"><strong>Free Two Week Trial To</strong></span><br />
+     <img src="<?=$HTNOSSLDOMAIN?>/images/email/share/ticker.gif" width="212" height="28" border="0" alt="Buzz &amp; Banter" /><br />
+     <span style="font:14px Times,serif;line-height:22px">Real-time insight and ideas on the<br />markets from 30 top professionals</span><br />
+     <span style="font-size:14px;font-weight:bold;text-transform:uppercase"><a href="<?= $HTNOSSLDOMAIN ?>/buzzbanter/" style="text-decoration:none"><span style="color:#224E7A"><img src="<?=$HTNOSSLDOMAIN?>/images/email/share/arrow_white.gif" width="12" height="11" border="0" alt="" /> Click Here</span></a></span>
+    </div>
+
+  </div>
+
+</div>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_share']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_share']);
+*/
+?></body>
+</html>

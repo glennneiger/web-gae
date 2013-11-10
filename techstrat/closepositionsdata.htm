@@ -1,0 +1,128 @@
+<?
+global $D_R,$HTHOST,$HTPFX;
+include_once($D_R."/admin/techstrat/techstrat_classes/class_transaction.php");
+include_once($D_R."/admin/techstrat/techstrat_classes/class_ytdreturn.php");
+include($D_R."/admin/techstrat/techstrat_classes/class_Performance.php");
+include_once($D_R."/lib/json.php");
+include_once($D_R."/lib/config/_techstrat_config.php");
+
+$pageName="techstrat_closeposition";
+# we will be passing subscription_id from session here
+global $transobj,$ytdobj,$contractqty;
+$transobj = new techstratTransaction();
+$ytdobj = new techstratYTDRET();
+$objjson = new Services_JSON();
+
+$dir = $_GET['dir'];
+$sort = $_GET['sort'];
+$start = $_GET['start'];
+$limit = $_GET['limit'];
+$callback = $_GET['callback'];
+
+$var = array();
+
+$qry="SELECT QT.id, QT.quote_id, QT.transaction_type, ES.companyname, ES.stocksymbol, QT.creation_date, QT.unit_price, QT.quantity, QT.description FROM techstrat_transaction QT, ex_stock ES WHERE QT.quote_id=ES.id AND (QT.transaction_type='1' OR QT.transaction_type='3') AND QT.status='1'";
+if($sort){
+	$qry.=" order by $sort $dir";
+}else{
+	$qry.=" order by stocksymbol,creation_date";
+}
+
+$numrows=num_rows($qry);
+
+$qry.=" limit $start,$limit";
+
+$result=exec_query($qry);
+
+
+$date_purchase=$transobj->techSellTrans();
+$date_purchasesellshort=$transobj->techSellTransForSellShort();
+$price_purchase=$transobj->techPurPriceTrans();
+$price_purchasebuytocover=$transobj->techPurPriceTransForBuyToCover();
+$unitprice_sortsell_arr=$transobj->techShortSellSalePrice();
+
+foreach($result as $postkey=>$postval){
+	$company=$postval['companyname'];
+	$ticker=$postval['stocksymbol'];
+
+	// sale date
+	if($postval['transaction_type']=='1'){
+		$dd=$postval['creation_date'];
+		$sale_date_get= date('m/d/Y',strtotime($dd));
+	} else {
+        $date_sortsell=$transobj->techDateSoldShortSell($postval['id']);
+		$sale_date_get=date('m/d/Y',strtotime($date_sortsell['creation_date']));
+	}
+
+	if($postval['transaction_type']=='1'){
+		$sale_price='$'.number_format($postval['unit_price'], 2, '.', ',');
+	} else {
+		$sale_price='$'.number_format($price_purchasebuytocover[$postval['id']], 2, '.', ',');
+	}
+
+	 // purchase date
+	if($postval['transaction_type']=='1'){
+		$purchase_date_get = date('m/d/Y',strtotime($date_purchase[$postval['id']]));
+		$date_open=$purchase_date_get;
+	} else {
+		$purchasedate_sortsell=$transobj->techCreationDateShortSell($postval['id']);
+		$purchase_datesort_get=date('m/d/Y',strtotime($purchasedate_sortsell['creation_date']));
+		$date_open=$purchase_datesort_get;
+	}
+
+	 if($postval['transaction_type']=='1'){
+		$purchase_price='$'.number_format($price_purchase[$postval['id']], 2, '.', ',');
+	 } else {
+		$unitprice_sortsell=$unitprice_sortsell_arr[$postval['id']];
+		$purchase_price='$'.number_format($unitprice_sortsell, 2, '.', ',');
+	}
+
+	if($postval['transaction_type']=='1'){
+		$noofshare=$postval['quantity'];
+	} else {
+		$noofshare='-'.$postval['quantity'];
+	}
+
+	if($postval['transaction_type']=='1'){
+		$purchase_amount=($postval['quantity']*$price_purchase[$postval['id']]);
+		$purchaseamount='$'.number_format($purchase_amount);
+	} else {
+		$sale_proceedsbuytocover=($unitprice_sortsell*$postval['quantity']);
+		$purchaseamount='$'.number_format($sale_proceedsbuytocover);
+	}
+
+	if($postval['transaction_type']=='1'){
+		$sale_proceeds=($postval['unit_price']*$postval['quantity']);
+		$saleproceeds='$'.number_format($sale_proceeds);
+	} else {
+		$purchase_amountbuytocover=($postval['quantity']*$price_purchasebuytocover[$postval['id']]);
+		$saleproceeds='$'.number_format($purchase_amountbuytocover);
+	}
+
+	if($postval['transaction_type']=='1'){
+		$gainloss=($sale_proceeds-$purchase_amount);
+		if(substr($gainloss,0,1)=='-'){
+			$gainloss_val='$'.number_format($gainloss);
+		} else {
+		   $gainloss_val='$'.number_format($gainloss);
+		}
+	} else {
+		// variable is wrong meaning = $purchase_amountbuytocover //=> means sale proceeds
+		// variable is wrong meaning = $sale_proceedsbuytocover //=> means btc purchase amout total
+		$gainlossbuytocover=($purchase_amountbuytocover-$sale_proceedsbuytocover);
+		$gainloss_val='$'.number_format($gainlossbuytocover, 2, '.', ',');
+	}
+
+	if($gainloss_val==""){
+		$gainloss_val='$'."0.00";
+	}
+
+	$data[]=array( "Companyname" =>$company,"ticker" =>$ticker,"creation_date" =>$sale_date_get,"unit_price"=>$sale_price,"Date Opened"=>$date_open,"Purchase Price"=>$purchase_price,"# of Shares"=>$noofshare,"Purchase Amount"=>$purchaseamount,"Sale Proceeds"=>$saleproceeds,"GainLoss"=>$gainloss_val);
+}
+$displaydata='{"totalCount":';
+$displaydata.='"'.$numrows.'"';
+$displaydata.=',"topics":';
+$displaydata.=$objjson->encode($data);
+$displaydata.='}';
+echo $callback."(".$displaydata.");";
+?>

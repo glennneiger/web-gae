@@ -1,0 +1,130 @@
+<?
+global $D_R;
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$ADMIN_PATH/ss/ss_classes/class_admin.php");
+$bounceback="./approve.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+$ALERT_TABLE = "ss_alerts";
+$objremove= new Content('ss_alert');
+$canmanage=$AD->getPerm("ss_alerts_manage");
+
+$viewapproved = $_POST['viewapproved'];
+$approve = $_POST['approve'];
+$atitle = $_POST['atitle'];
+$delarticle = $_POST['delarticle'];
+
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$canmanage){
+	admin_error("You're not allowed to use this page.");
+}
+
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="DELETE FROM $ALERT_TABLE WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	/*remove deleted article from object search*/
+	$objremove->removeUnapprovedItems($keys,"ss_alert");
+}
+if(!$viewapproved)
+{
+	if(is_array($approve))
+	{
+		foreach(array_keys($approve) as $article_id){
+			update_query($ALERT_TABLE,array(is_live=>'1'),array(id=>$article_id));
+		}
+	}
+}
+
+if(is_array($approve))
+{
+	$keys = implode(",",array_keys($approve));
+	$qry = "UPDATE $ALERT_TABLE SET approved='".($viewapproved?0:1)."'";
+	if(!$viewapproved)
+		$qry.=", date='".mysqlNow()."'";
+	$qry.="WHERE find_in_set(id,'$keys')
+		   AND approved='".($viewapproved?1:0)."'
+		  LIMIT ".count($approve);
+	exec_query_nores($qry);
+	if($viewapproved=='1'){
+		/*remove unapprove article from object search*/
+		$objremove->removeUnapprovedItems($keys,"ss_alert");
+	}
+
+
+	$keys= array_keys($approve);
+	if($viewapproved){
+		$is_live=0;
+	}else{
+		$is_live=1;
+	}
+
+	/* set data in meta table and content seo*/
+	if($is_live){
+
+		$feedarray=array();
+		$feedarray=explode(",",$keys[0]);
+
+		foreach($feedarray as $fid){
+			$objContent = new Content('ss_alert',$fid);
+			$url="optionsmith/post/id/".$fid;
+			$objContent->updateContentSeoUrl($fid,$objContent->contentType,$url);
+			$objContent->setOptionSmithMeta($fid);
+		}
+
+	}
+
+
+//final step in publishing process, flatten out alerts and mark as sent
+	if(!$viewapproved)//don't want to resend alerts
+        {
+		foreach(array_keys($approve) as $article_id)
+                {
+			$qry="SELECT id,title FROM $ALERT_TABLE WHERE id='$article_id' AND is_live='1'";
+			$alertTitle=exec_query($qry,1);
+			if(num_rows($qry))//alert hasn't been spammed yet
+                        {
+				update_query($ALERT_TABLE,array(sent=>1),array(id=>$article_id));
+
+			global $NOTIFY_JOURNAL_FROM_SS_NAME,$NOTIFY_JOURNAL_FROM_SS_EMAIL,$SPAM_EML_SINGLE_STEVE_ALERT_TMPL;
+			$subject=$alertTitle['title'];
+				//*** $msgfile="/tmp/spam_".mrand().".eml";
+			//*** $msghtmlfile="$D_R/assets/data/".basename($msgfile);
+	$msgurl=$SPAM_EML_SINGLE_STEVE_ALERT_TMPL.qsa(array(aid=>$keys[0]));
+
+			//write out file (Needs to be discussed)
+	$mailbody=inc_web($msgurl);
+	$from[$NOTIFY_JOURNAL_FROM_SS_EMAIL]=$NOTIFY_JOURNAL_FROM_SS_NAME;
+	/********** Send the email request start  **********/
+		 include_once("$D_R/lib/_user_controller_lib.php");
+		  $userObj=new user();
+		$result = $userObj->emailDetails($from,$subject,utf8_encode($mailbody),'optionsmith');
+	/********** Send the email request end **********/
+
+		}
+		}
+	}
+}
+//Change error message for deleted alerts.
+if (count($delarticle))
+{
+	location($bounceback.urlencode("The alerts were deleted"));
+	exit;
+}
+if(!$viewapproved)
+{
+	location($bounceback.urlencode("The alerts were changed"));
+}
+else
+{
+	location($bounceback.urlencode("The alerts were changed and are now not live on the site"));
+}
+exit;
+?>
+
+

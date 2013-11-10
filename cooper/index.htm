@@ -1,0 +1,356 @@
+<?
+session_start();
+global $D_R;
+include_once($D_R."/lib/_content_data_lib.php");
+
+if(!$_SESSION['Cooper'])
+{
+    header( "Location: http://mvp.minyanville.com/jeff-coopers-daily-market-report-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=cooper");
+}
+
+$pageName = "cooperhome";//1;
+
+$zoneIDSky = $SEC_TO_ZONE['hometop'];
+$zoneIDLeft = $SEC_TO_ZONE['homeleft'];
+$zoneIDRight = $SEC_TO_ZONE['homeright'];
+$zoneIDMiddle = $SEC_TO_ZONE['homemiddle'];
+$zoneIDBottom = $SEC_TO_ZONE['homebottom'];
+$zoneIDBottom2 = $SEC_TO_ZONE['homebottom2'];
+$zoneIDFooter = $SEC_TO_ZONE['homefooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['homefooter2'];
+
+
+//if($_REQUEST['trial']=='hard'){include("$D_R/_minyanville_hard_header.htm");}else{include("$D_R/_minyanville_header.htm");}
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","rightColumn","nav","minyanville","registration");
+include("$D_R/_header_no_nav.htm");
+//include("$D_R/_header.htm");
+
+include_once("$D_R/lib/_auth.php");
+
+$title= "index";
+$zoneID = $SEC_TO_ZONE[articlebar];
+global $ProfessorPerm,$HTPFXSSL,$HTHOST;
+
+$_SESSION['checkoutViacart'] = 'checkoutViacart';
+$user=new user();
+$loginid =  $user->id;
+$logincooper = $user->is_cooper();
+$objCooper = new Content('Cooper');
+$oid = $objCooper->contentType;
+$name="Jeffrey Cooper";
+$strProfessorId=get_contributor_id_byname($name);
+ ?>
+<script language="javascript" type="text/javascript">
+
+function startRefresh(secondcount)
+{
+	setTimeout("goRefresh();", secondcount * 1000);
+}
+function goRefresh()
+{
+try
+{
+
+	if(document.inForm.inField.value != "norefresh")
+	{
+
+		window.location.replace("/" + refreshqs);
+	}
+
+}
+catch(ex){}
+}
+var refreshqs = "";
+startRefresh(300);
+
+function docKeyDown1(oEvent){ // controls keyboard navigation
+var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+var intKeyCode = oEvent.keyCode;
+
+if(intKeyCode==13) {
+   if($F("coopersearch")){
+	searchalert('coopersearch','<?=$strProfessorId?>','cooperhome','<?=$oid?>');
+	}
+}
+}
+
+document.onkeydown=docKeyDown1;
+</script>
+<link rel='stylesheet' href='<?=$HTPFX.$HTHOST?>/css/cooper.1.1.css' type='text/css' media='all' />
+<div class="c_outer_container"> <!--  Ends in _footer.htm -->
+<?
+$obOuterTemplate->displayLoginDiv();
+?>
+	<!--Body area start from here-->
+
+	<div id="c-container">
+	<?php // echo showBreadCrum($breadcrum); ?>
+	<?if(!$loginid || !$logincooper){ ?>
+	<div style="padding-left: 15px; padding-top: 22px; padding-bottom: 13px;">
+	<!--  <img src="<?=$IMG_SERVER?>/images/subscription/mvp_logo.png">
+		 <img src="<?=$IMG_SERVER?>/images/subscription/cooper_logo_hdr.png">-->
+		 <img src="<?=$IMG_SERVER?>/images/subscription/jeffCooper_header_291x36.gif">
+		 <div class="c_line" >&nbsp;</div>
+	</div>
+	     <?}?>
+	<!--left contaner start from here-->
+
+	<div class="left_contant">
+
+	<!---Cooper main start from here-->
+	<div class="cooper_container" >
+	<?if(!$loginid || !$logincooper){
+
+	$arPD = getFreeTrailProductDetail('jeffcooper','subscription');
+	$arPD['product_name'] = 'subCooper';
+	$arPD['event_name'] = 'Landed';
+	$arPD['product_type'] = 'Monthly';
+
+	?>
+	<!--Cooper sub heading area start from here-->
+
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+	  <tr>
+	    <td colspan="2" class="cooper_sub_title">Learn the trading style JEFF COOPER has been using to beat the market for over 20 years! </td>
+	    </tr>
+	  <tr>
+	    <td colspan="2">Jeff Cooper is recognized as one of the smartest traders on the Street. Now you can learn why. </td>
+	    </tr>
+	  <tr>
+	    <td valign="bottom"><img src="<?=$IMG_SERVER?>/images/redesign/jeff_cooper_daily_market.jpg" alt="jeff cooper's daily market report" /></td>
+	    <td><table width="150" border="0" cellpadding="0" cellspacing="0">
+	      <tr>
+	        <td>
+	        <a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">
+	        <img style="cursor:pointer;" src="<?=$IMG_SERVER?>/images/subscription/cooper_14.jpg" class="freeimg" alt="" >
+	        </a>
+	        </td>
+	      </tr>
+	    </table></td>
+	  </tr>
+	</table>
+
+	<!--Cooper sub heading area end here-->
+
+	<!--Cooper Article area start from here-->
+	<div class="cooper_article_main">
+	<table width="590" align="left" border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+	  <td width="45%"  valign="top">
+	<span class="cooper_head">For over 20 years</span> Cooper has been an independent trader and author, and noted expert on short term day and swing trading techniques.<p><br />
+	In addition to getting access to Jeff's stock picks each trading day, he'll also teach you his approach to trading and finding high probability setups. So his report is not just an idea generator but an educational tool to help you to unlock the potential of this powerful trading methodology.</p>
+	<br /><br />
+	<span class="cooper_head">What's behind Jeff's Method?</span>
+	<br /><br />
+	Jeff uses pattern recognition as well as time and price square outs from the Gann square of nine chart to find high probability trade set ups.
+	</td>
+	 <td width="55%"  valign="top" >
+	 <div class="cooper_article_box">
+	  <ul>
+	  Specifically you'll get:
+	  <li>Day trading setups poised for immediate follow through</li>
+	  <li>Swing trading setups for larger  than average profit potential</li>
+	  <li>Daily market commentary</li>
+	  <li>Hit and Run strategy and methodology</li>
+	  <li>Best setups to use in volatile  markets</li>
+	  <li>Trade management  (entries/exits/stops)</li>
+	  <li>Charts and graphs to help you understand<br />All delivered in a style that is unique to Jeff alone.</li>
+	  </ul>
+	</div>	</td>
+	  </tr>
+	</table>
+	</div>
+	<!--Cooper Article area start from here-->
+
+	<!--Cooper register area start from here-->
+	<div class="cooper_register_box">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="text-align:center;">
+	  <tr>
+	    <td  class="common_contact" >
+			<a  href="<?=$HTPFXSSL.$HTHOST?>/subscription/register"  onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">Register now and get a<span class="buzz_head">&nbsp;14 DAY FREE TRIAL!<span></a>
+		</td>
+	    </tr>
+		<tr><td>
+
+		<table width="150" border="0" cellpadding="10" cellspacing="0" align="center">
+	      <tr>
+	        <td>
+	        <a href="<?=$HTPFXSSL.$HTHOST?>/subscription/register" onclick="return checkcart('<?=$arPD['subscription_def_id']?>','<?=$arPD['oc_id']?>','<?=$arPD['orderItemType']?>','<?=$arPD['product_name']?>','<?=$arPD['product_type']?>','<?=$arPD['event_name']?>');">
+	        <img style="cursor:pointer;" src="<?=$IMG_SERVER?>/images/subscription/cooper_free.jpg" class="freeimg" alt="" >
+	        </a>
+	         </td>
+	      </tr>
+	    </table>
+
+		</td></tr>
+
+	  <tr>
+	    <td  valign="bottom"><span class="common_contact">Questions? Contact us at 212-991-9357 or</span> <span class="cooper_links"><a href="mailto:support@minyanville.com">support@minyanville.com</a></span></td>
+	    </tr>
+	</table>
+
+	</div>
+	<!--Cooper register area end here-->
+	<?}else{
+	 $sql="select articles.id,articles.keyword,articles.blurb, contrib_id, title, date, contributor, contributors_ps.name author, character_text talkbubble from cp_articles articles INNER JOIN cp_contributors  contributors_ps ON articles.contrib_id=contributors_ps.id where articles.prof_id=2 and approved='1' and is_live='1' and is_featured='0' order by date desc limit 10";
+	 ?><div class="cooper_common_title">Daily Market Report</div>
+	 <?displayRecentHeadlinescooperlogged("News & Views",$sql,$zoneID);}
+	 echo '<br/>';
+	 ?>
+	<!--Cooper bio main start from here-->
+	<div class="cooper_bio_main">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+	  <tr>
+	    <td class="cooper_head">Cooper's Bio </td>
+	  </tr>
+	  <tr>
+	    <td>
+		After graduating from New York University, Jeff Cooper moved to Los Angeles where he and a partner started Dogtown Skates. Jeff began his trading career at Drexel Burnham in 1981 in Beverly Hills.
+
+	<p>&nbsp;</p><p>After a few years there, he left to work for his father's private hedge fund. In 1986, Jeff went out on his own choosing to trade exclusively for himself. After establishing a successful career as a private trader, he went on to write two best selling books: Hit and Run Trading, The Short-Term Trader's Bible, and Hit and Run Trading 2, Capturing Explosive Short-Term Moves In Stocks as well as a course, Jeff Cooper On Dominating The Day Trading Market.</p>
+
+	<br /><p>In addition to his books, Jeff has also released a DVD, Intra-Day Trading Strategies: Proven Steps to Trading Profits and a DVD course, Unlocking the Profits of the New Swing Chart Method (with David Reif) which presents the first unified market theory and a practical explanation of the Gann Square of Nine Calculator, one of the most powerful tools for forecasting time and price.</p>
+
+	<br /><p>After co-founding a financial markets internet site in 1999, Jeff moved on to write a column and a trading service at TheStreet.com until 2006.</p><br />
+
+
+	<p>Today, Jeff consults and trades for himself from his home in Malibu, California where he lives with his wife and daughter.</p>
+
+	<br />
+	Jeff welcomes comments and feedback at <span class="cooper_mail_links"><a href="mailto:cooper@minyanville.com">cooper@minyanville.com.</a></span>
+		</td>
+	  </tr>
+	</table>
+
+	</div>
+	<!--Cooper bio main start from here-->
+
+	</div>
+	<!---Cooper main end here-->
+
+	</div><!--left contaner end here-->
+
+	<!--right contaner start from here-->
+	<div class="right_contant" >
+
+	<!---Cart box start from here--->
+
+	<?if(!$loginid || !$logincooper){
+
+	echo '<div class="right_cooper_cart_container"> ';
+
+	if(count($_SESSION['viacart']['SUBSCRIPTION'])>0){
+
+	 echo   renderyourcart ($_SESSION['viacart']) ;
+
+	}
+
+	echo '</div>';
+	}
+	echo renderPageModules($pageDetail['id'],'Bottom Right Module');
+	?>
+
+	<!---Cart box block end here--->
+
+	<!--Cooper Books box start from here-->
+	<div class="right_common_container">
+	<div class="right_common_head">
+	<a href="http://www.invest-store.com/minyanville/cooper.html"><h2>cooper's books &amp; dvds</h2></a>
+	</div>
+	<div class="cooper_books_block_main">
+	<span class="cooper_common_heading">Learn more about the techniques and strategies that Jeff has developed through the years to trade successfully.</span>
+	<br />
+	<a href="http://www.invest-store.com/minyanville/cooper.html"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_1.jpg" /></a>
+	<a href="http://www.invest-store.com/minyanville/cooper.html"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_2.jpg" /></a>
+	<a href="http://www.invest-store.com/minyanville/cooper.html"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_3.jpg" /></a>
+	<a href="http://www.invest-store.com/minyanville/cooper.html"><img src="<?=$IMG_SERVER?>/images/redesign/dvd_4.jpg" /></a>
+	<br />
+	<!--<span class="cooper_small_heading">Since Inception 03/03/2008<br /></span>-->
+	<div class="cooper_recent_common_heading" > <a href="http://www.invest-store.com/minyanville/cooper.html"> CLICK HERE for Jeff's books & DVDs. </a> </div>
+	</div>
+
+	</div>
+	<!--Cooper Books box end here-->
+	<?if(!$loginid || !$logincooper){?>
+
+	<?=displayCoopertestimonials();?>
+	<!--Cooper Recent Report box start from here-->
+	<div class="right_common_container">
+	<div class="right_common_head">
+	<h2>recent reports</h2>
+	</div>
+	<div class="cooper_recent_report_block_main">
+	<?=displayRecentHeadlinescooper("News & Views","2",$zoneID,$logincooper)?>
+	</div></div>
+	<!--Cooper Recent Report box end here-->
+	<? }
+
+
+		if($loginid && $logincooper){
+			?>
+
+			<div class="search_alert_cooper" >
+			<table width="300" border="0" cellpadding="3" cellspacing="5" align="left">
+			  <tr>
+			  <td colspan="2" align="center"><h2>alerts search</h2> </td>
+			  <tr>
+				<td ><input name="coopersearch"  id ="coopersearch" class="quint_alert_input" type="text"     /></td>
+				<td valign="top"><a href="#"><img src="<?=$IMG_SERVER?>/images/redesign/go.jpg" border="0"   onclick="searchalert('coopersearch','<?=$strProfessorId?>','cooperhome','<?=$oid?>');"/></a></td>
+			  </tr>
+			  <tr><td colspan="2" align="center"><a href="#" onclick="searchalert('coopersearch','<?=$strProfessorId?>','cooperhome','<?=$oid?>');" class="go_to_archive">go to archive</a></td></tr>
+			</table>
+
+			</div>
+			<?}
+
+			?>
+
+	<!--Rss and Article alert start from here-->
+	<table width="100%" border="0" cellspacing="5" cellpadding="0" align="left">
+	  <tr>
+	  <tr>
+	    <td><img src="<?=$IMG_SERVER?>/images/rss_logo.jpg" alt="Rss" /></td>
+	    <td class="quick_links"><a href="<?$HTPFX.$HTHOST?>/rss/">add rss feed</a></td>
+	    <td><img src="<?=$IMG_SERVER?>/images/article_alert_logo.jpg" alt="Free article" /></td>
+	    <td class="quick_links" >
+
+		<?
+				echo  '<a href="'.$HTPFXSSL.$HTHOST.'/subscription/register/controlPanel.htm">free article alerts</a>';
+		?>
+	    </td>
+	  </tr>
+	</table>
+
+	<!--Rss and Article alert start from here-->
+
+
+
+
+	</div>
+	<!--right contaner end here-->
+	<?
+
+	$productName="subCooper";
+	$trialtype="HardTrial";
+	$producttype="";
+	$eventname="Landed";
+	$source=$_SERVER['HTTP_HOST'];
+	$keyword=$_GET['keyword'];
+		if($_GET['from']){
+			$from=$_GET['from'];
+		}else{
+			$from=substr($_SERVER['HTTP_REFERER'],7);
+		}
+	$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+	//if($_REQUEST['trial']=='hard'){include("$D_R/_minyanville_hard_footer.htm");}else{include("$D_R/_minyanville_footer.htm");}
+	?>
+	<?
+		$obOuterTemplate->footerSupportText();
+	?>
+	</div><!--Content contaner end here-->
+</div>
+<?
+    include("$D_R/_footer.htm");
+?>

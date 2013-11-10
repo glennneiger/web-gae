@@ -1,0 +1,378 @@
+<?
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Content-Type: text/plain");
+header("Pragma: nocache\n");
+header("cache-control: no-cache, must-revalidate, no-store\n\n");
+header("Expires: 0");
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/layout_functions.php");
+include_once("$D_R/lib/_includes.php");
+include_once("$D_R/lib/_auth.php");
+include_once("$D_R/lib/_db.php");
+include_once("$D_R/lib/ss/_ss_config.php");
+include_once("$D_R/admin/ss/ss_classes/class_transaction.php");
+$objPortfolio=new optionPortfolio();
+
+
+/*============set up permissions=================*/
+$performtransaction=$AD->getPerm("ss_own_transaction");//can't create anything
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$performtransaction){
+	admin_error("You're not allowed to use this page.");
+}
+
+$transobj=new Qtransaction();
+$textpass='';
+$textpass=$_GET['text_pass'];
+$type=$_POST['type'];
+$editaddform='';
+
+if($textpass=='save')
+{
+	$symbolval=$_GET['symbolval'];
+	$typeval=$_GET['typeval'];
+	$dateval=$_GET['dateval'];
+	$sharesval=$_GET['sharesval'];
+	$priceval=$_GET['priceval'];
+	$notesval=$_GET['notesval'];
+	$editaddform=$_GET['editaddform'];
+	$dateArray=explode('/',$dateval);
+	$date = $dateArray[2]."-".$dateArray[0]."-".$dateArray[1];
+	$datetime = $date." ".date('h:i:s');
+	$splitsymbolsArray=explode(',',$symbolval);
+	$firstsymbolname=$splitsymbolsArray['0'];
+	$splitsymbolsnameArray=explode(':',$firstsymbolname);
+
+	$getidfromstocks="select id from ex_stock where stocksymbol= trim('".$splitsymbolsnameArray[1]."') and exchange=trim('".$splitsymbolsnameArray[0]."')";
+	$allressym=exec_query($getidfromstocks);
+	if(count($allressym)>0)
+	{
+			foreach($allressym as $allresultsym)
+			{
+				$sid=$allresultsym['id'];
+			}
+	}
+	else if(count($allressym)==0)
+	{
+			# check the exchange validation frm local exchange table if exchange is listed go for yahoo otherwise return
+			$getidfromexchange="select id from ex_stock_exchange where exchange_name=trim('".$splitsymbolsnameArray[0]."')";
+			$allresexch=exec_query($getidfromexchange);
+			if(count($allresexch)>0)
+			{
+						foreach($allresexch as $allresultexchn)
+						{
+									$eid=$allresultexchn['id'];
+									if(isset($eid))
+									{
+										# Go for yahoo with only symbol name
+										$symbolname=trim($splitsymbolsnameArray[1]);
+										$getalldata=$transobj->getstockSymboldetails($symbolname,0);
+										if($getalldata==0)
+										{
+											# Yahoo returns invalid symbol
+											$msg="The symbol (\"$symbolname\") doesn't appear to be registered<BR></FONT>";
+											if($editaddform==''){echo $transobj->alltransaction($msg);}else if($editaddform=='edit'){echo $transobj->alltransactionediterr($msg);}
+											exit;
+										}
+										else
+										{
+											# Yahoo returns valid array without st.exchange name
+											# We will fetch this array and store in our local ex_stock table and will return the inserted id
+											$stocktabldata=array(stocksymbol=>$getalldata[0],exchange=>strtoupper(trim($splitsymbolsnameArray[0])),CompanyName=>addslashes(trim($getalldata[9])));
+											$sid=insert_query("ex_stock",$stocktabldata);
+											$memCacheDelete = new memCacheObj();
+											$key="ssOpenPositiontrade";
+											$memCacheDelete->deleteKey($key);
+											$key="ssOpenPosition";
+											$memCacheDelete->deleteKey($key);
+											$key="ssDisplayPerformance";
+											$memCacheDelete->deleteKey($key);
+										# Now the new symbol added in our db to reflect u hv to run the
+										$transobj->addinjsfile(); // here we are updaing the arry in js
+										$newmsg=1;
+										}
+									}
+						}
+			}//	if(count($allresexch)>0){
+			else
+			{
+				# The entered stock exchange name is not valid;
+				$msg="The stock exchange name entered is Invalid";
+				if($editaddform==''){echo $transobj->alltransaction($msg);}else if($editaddform=='edit'){echo $transobj->alltransactionediterr($msg);}
+				exit;
+			}
+		}//else if(count($allressym)==0){
+
+			// if sell then check whether its possible or not
+			if($typeval==1)
+			{
+				$getstockbuyarr=$transobj->getallbuystocks();
+				$totsahresbuyd=$getstockbuyarr[$sid];
+				// case when he never purchased
+				if($totsahresbuyd==0)
+				{
+							if($editaddform=='')
+							{
+								$msg="First Buy Then Sell";
+								echo $transobj->alltransaction($msg);
+							}
+							else if($editaddform=='edit')
+							{
+								echo $transobj->alltransactionediterr("First Buy Then Sell");
+							}
+							exit;
+				}
+				// case when he wants to sell more than purchased quantity
+				if($sharesval>$totsahresbuyd)
+				{
+								if($editaddform=='')
+								{
+									$msg="Sell Quantity must be less than Buy Quantity $totsahresbuyd - $sid ";
+									echo $transobj->alltransaction($msg);
+								}
+								else if($editaddform=='edit')
+								{
+									echo $transobj->alltransactionediterr("Sell Quantity must be less than Buy Quantity $totsahresbuyd - $sid ");
+								}
+								exit;
+				}
+			}
+			/*
+			Step 1: Insert into transaction table
+			Step 2: Delete Memcache
+			Step 3: Insert / Update Lot table
+			Step 4: Delete Memcache
+			Step 5: Insert into sell table if its Short Sell
+			*/
+
+			# Try to insert the transaction in transaction table
+			$transactiondata=array('quote_id'=>$sid,'transaction_type'=>$typeval,'creation_date'=>$datetime,'unit_price'=>$priceval,'quantity'=>$sharesval,'description'=>$notesval);
+			if($sid > 0)
+			{
+				$retstatus=insert_query("ss_transaction",$transactiondata);
+			}
+			if(isset($retstatus))
+			{
+					    // delete key for memcache
+ 	                      $memCacheDelete = new memCacheObj();
+						  $key="ssOpenPositiontrade";
+						  $memCacheDelete->deleteKey($key);
+						  $key="ssOpenPosition";
+						  $memCacheDelete->deleteKey($key);
+						  $key="ssDisplayPerformance";
+						  $memCacheDelete->deleteKey($key);
+						$objPortfolio->updateOpenPositionRecords();
+						$avg_unit_price=0.00;
+						if(isset($avgsharearr)) unset($avgsharearr);
+						$avgsharearr=$transobj->avgunitpricebysid($sid);
+						$avg_unit_price=$avgsharearr['up'];
+						$getstockbuyarr=$transobj->getallbuystocks();
+						$totbuyqty=0;
+						$totbuyqty=$getstockbuyarr[$sid];
+							# get the avg_unit_price of that symbol
+							# Try to insert / update in ss_user_portfolio table
+							# 1st check whether this symbol has any entry in that table
+							# If yes then update or insert the 1st entry
+
+						$sql_chk="select id from ss_user_portfolio where quote_id='$sid'";
+						$searchfound=exec_query($sql_chk);
+						if(count($searchfound)>0){
+						# Update
+						$transactiondata=array('quantity'=>$totbuyqty,'avg_unit_price'=>$avg_unit_price,'recent_trade_date'=>$datetime);
+						update_query("ss_user_portfolio",$transactiondata,array(quote_id=>$sid));
+							$memCacheDelete = new memCacheObj();
+							$key="ssOpenPositiontrade";
+							$memCacheDelete->deleteKey($key);
+							$key="ssOpenPosition";
+							$memCacheDelete->deleteKey($key);
+							$key="ssDisplayPerformance";
+							$memCacheDelete->deleteKey($key);
+							$objPortfolio->updateOpenPositionRecords();
+						}
+						else if((count($searchfound))==0)
+						{
+						#insert
+						$transactiondata=array(
+								quote_id=>$sid,
+								quantity=>$totbuyqty,
+								avg_unit_price=>$avg_unit_price,
+								purchase_date=>$datetime,
+								recent_trade_date=>$datetime
+								);
+							if($retstatus > 0){
+							  insert_query("ss_user_portfolio",$transactiondata);
+							  $memCacheDelete = new memCacheObj();
+							  $key="ssOpenPositiontrade";
+							  $memCacheDelete->deleteKey($key);
+							  $key="ssOpenPosition";
+							  $memCacheDelete->deleteKey($key);
+							  $key="ssDisplayPerformance";
+							  $memCacheDelete->deleteKey($key);
+								$objPortfolio->updateOpenPositionRecords();
+							}
+						}
+
+						# if sell short then enter in the sell table also
+						if($typeval=='2')
+						{
+							$shortselldata=array(sell_trans_id=>$retstatus,creation_date=>$datetime,trans_status=>'pending');
+							insert_query("ss_sell_transaction",$shortselldata);
+							$memCacheDelete = new memCacheObj();
+							$key="ssOpenPositiontrade";
+							$memCacheDelete->deleteKey($key);
+							$key="ssOpenPosition";
+							$memCacheDelete->deleteKey($key);
+							$key="ssDisplayPerformance";
+							$memCacheDelete->deleteKey($key);
+							$objPortfolio->updateOpenPositionRecords();
+						}
+					}// end of if(isset($retstatus))
+					if($editaddform==''){if($newmsg=='1'){
+					$app="<input type='hidden' id='txt' value='100'>";
+					}else{$app='';} echo $transobj->alltransaction().$app;}else if($editaddform=='edit'){echo $transobj->alltransactionedit();}
+}
+if($textpass=='next'){
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start+$transactioncnt;// in exchange just change newblogdiscusionsreply.htm
+	echo $transobj->alltransactionedit($start,$end);
+}
+if($textpass=='prev'){
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start-$transactioncnt;
+	echo $transobj->alltransactionedit($start,$end);
+}
+if($textpass=='nexttrans'){
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start+$transactioncnt;// in exchange just change newblogdiscusionsreply.htm
+	echo $transobj->alltransaction('',$start,$end);
+}
+if($textpass=='prevtrans'){
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start-$transactioncnt;
+	echo $transobj->alltransaction('',$start,$end,'','');
+}
+
+if($textpass=='seachstock'){
+	global $transactioncnt;
+	$exchangename=$_GET['exchangename'];
+	$serhsymname=$_GET['serhsymname'];
+	echo $transobj->getalldetailsofSymbol($exchangename,$serhsymname);
+}
+if($textpass=='cashentry'){
+	$amt=$_GET['amt'];
+	$idget=$_GET['idget'];
+	$msg=0;
+	$casharr=array();
+	if($idget==0){
+	$casharr['cash_amt']=$amt;
+	$casharr['creation_date']=mysqlNow();
+	$insertid=insert_query("ss_cash",$casharr);
+	if($insertid>0){
+		echo "<b><font color=green>Data Saved Successfully</font></b>";
+		$memCacheDelete = new memCacheObj();
+		$key="ssOpenPositiontrade";
+		$memCacheDelete->deleteKey($key);
+		$key="ssOpenPosition";
+		$memCacheDelete->deleteKey($key);
+		$key="ssDisplayPerformance";
+		$memCacheDelete->deleteKey($key);
+		$objPortfolio->updateOpenPositionRecords();
+		$msg=1;
+	}
+	}else{
+		$casharr['cash_amt']=$amt;
+		$casharr['updation_date']=date('Y-m-d h:i:s');
+		$updateid=update_query("ss_cash",$casharr,array(id=>$idget));
+		if($updateid>0){
+			echo "<b><font color=green>Data Updated Successfully</font></b>";
+			$msg=1;
+			$memCacheDelete = new memCacheObj();
+			$key="ssOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="ssOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="ssDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$objPortfolio->updateOpenPositionRecords();
+		}
+	}
+
+// storing values for divident/interest
+
+	$dividentamt=$_GET['dividentamt'];
+	$dividentidget=$_GET['dividentid'];
+	$dividentcasharr=array();
+	if($dividentidget==0){
+		$dividentcasharr['cash_amt']=$dividentamt;
+		$dividentcasharr['status']='2';
+		$dividentcasharr['creation_date']=mysqlNow();
+		$dividentinsertid=insert_query("ss_cash",$dividentcasharr);
+		if($dividentinsertid>0){
+			if($msg==0){echo "<b><font color=green>Data Saved Successfully</font></b>";}
+				$memCacheDelete = new memCacheObj();
+				$key="ssOpenPositiontrade";
+				$memCacheDelete->deleteKey($key);
+				$key="ssOpenPosition";
+				$memCacheDelete->deleteKey($key);
+				$key="ssDisplayPerformance";
+				$memCacheDelete->deleteKey($key);
+				$objPortfolio->updateOpenPositionRecords();
+		}
+	}else{
+		$dividentcasharr['cash_amt']=$dividentamt;
+		$dividentcasharr['updation_date']=date('Y-m-d h:i:s');
+		$dividentupdateid=update_query("ss_cash",$dividentcasharr,array(id=>$dividentidget));
+		if($dividentupdateid>0){
+			if($msg==0){echo "<b><font color=green>Data Updated Successfully</font></b>";}
+			$memCacheDelete = new memCacheObj();
+			$key="ssOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="ssOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="ssDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$objPortfolio->updateOpenPositionRecords();
+	}
+	}
+}
+if($textpass=='nextbtctrans')
+{
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start+$transactioncnt;// in exchange just change newblogdiscusionsreply.htm
+	echo $transobj->shortsellTransactionView('',$start,$end);
+}
+if($textpass=='prevbtctrans'){
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start-$transactioncnt;
+	echo $transobj->shortsellTransactionView('',$start,$end,'','');
+}
+if($type=='btcView')
+{
+	echo $transobj->shortsellTransactionView();
+}
+else if($type=='transView')
+{
+	/*
+	global $transactioncnt;
+	$start=$_GET['start'];
+	$end=$_GET['end'];
+	$start=$start-$transactioncnt;
+	*/
+	echo $transobj->alltransaction();
+}
+
+?>

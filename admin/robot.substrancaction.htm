@@ -1,0 +1,67 @@
+<?php
+set_time_limit(3600*60);//1 hour
+global $D_R;
+include_once("$D_R/lib/_via_data_lib.php");
+include_once("$D_R/lib/config/_via_config.php");
+$objVia= new Via();
+
+if($_SERVER['SERVER_NAME']=="www.minyanville.com"){
+	$i=0;
+	for($i=0;$i<1000000;$i=$i+10000){
+		$userTransDetails=$objVia->getSubscriptionTrancactionViaDetail($i,$i+10000);
+		foreach($userTransDetails as $key=>$val){
+			$params['customer_id'] = $val['customer_id'];
+        	$params['payment_seq'] = $val['payment_seq'];
+            $params['user_code'] = $val['user_code'];
+            $params['currency'] = $val['currency'];
+            $params['date_stamp'] = $val['date_stamp'];
+            $params['creation_date'] = $val['creation_date'];
+            $params['id_nbr'] = $val['id_nbr'];
+            $params['exp_date'] = $val['exp_date'];
+            $params['ref_nbr'] = $val['ref_nbr'];
+            $params['auth_code'] = $val['auth_code'];
+            $params['auth_date'] = $val['auth_date'];
+            $params['clear_date'] = $val['clear_date'];
+            $params['payment_clear_status'] = $val['payment_clear_status'];
+            $params['commission'] = $val['commission'];
+            $params['payment_type'] = $val['payment_type'];
+            $params['credit_card_info'] = $val['credit_card_info'];
+            $params['base_amount'] = $val['base_amount'];
+            $params['pay_currency_amoun'] = $val['pay_currency_amount'];
+            $params['transaction_reason'] = $val['transaction_reason'];
+            $params['transaction_type'] = $val['transaction_type'];
+            $params['payment_clear_method'] = $val['payment_clear_method'];
+            $params['realize_cash_when'] = $val['realize_cash_when'];
+            $params['pay_exchange_rate'] = $val['pay_exchange_rate'];
+            $params['is_reversed'] = $val['is_reversed'];
+            $params['status_noedit'] = $val['status_noedit'];
+            $params['processing'] = $val['processing'];
+            $params['customer_deposit_pay_amt'] = $val['customer_deposit_pay_amt'];
+            $params['credit_card_bill_customer_id'] = $val['credit_card_bill_customer_id'];
+            $params['credit_card_bill_address_seq'] = $val['credit_card_bill_address_seq'];
+            $params['refund_deposit_pay_amt'] = $val['refund_deposit_pay_amt'];
+            $params['ics_bank_def_id'] = $val['ics_bank_def_id'];
+            $params['cash_realized'] = $val['cash_realized'];
+            $params['deposit_transaction'] = $val['deposit_transaction'];
+            $params['is_ecommerce'] = $val['is_ecommerce'];
+            $params['is_recurring'] = $val['is_recurring'];
+            $params['max_settle_retries'] = $val['max_settle_retries'];
+            $params['cancel_itm_after_settle_retry'] = $val['cancel_itm_after_settle_retry'];
+            $params['payment_account_seq'] = $val['payment_account_seq'];
+            $params['needs_memo_post'] = $val['needs_memo_post'];
+            $params['id_nbr_last_four'] = $val['id_nbr_last_four'];
+
+			$id = insert_query('subscription_transaction_via',$params);
+			if($id){
+				echo $val['payment_seq'].' has been inserted successfully';
+			}
+		}
+	}
+}else{
+	echo "Please run this script from admin server.";
+}
+
+exit;
+
+
+?>

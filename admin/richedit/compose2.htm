@@ -1,0 +1,29 @@
+<?
+$attrs=array();
+foreach($_GET as $k=>$v){
+	$attrs[]="$k=\"$v\"";
+}
+$attrs=implode(" ",$attrs);
+?><HTML xmlns:ed>
+<?="<?"?>import namespace=ed implementation=editor.htc />
+
+<HEAD>
+      <TITLE>Compose</TITLE>
+</HEAD>
+
+
+<BODY style="margin:0px">
+
+<center>
+
+<!--[if gte IE 5.5]>
+<ed:mailEditor style="height:expression(document.body.offsetHeight);width:100%"  id="htmleditor" <?=$attrs?>/>
+<![endif]-->
+<![if ! gte IE 5.5]>
+<input type="text" style="height:100%;width:100%" >
+<![endif]>
+
+</center>
+
+</BODY>
+</HTML>

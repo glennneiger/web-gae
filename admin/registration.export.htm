@@ -1,0 +1,74 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+$offset			=	trim($_GET['offset']);
+$pagesize		=	trim($_GET['pagesize']);
+$search_by		=	trim($_GET['search_by']);
+$search_param	=	trim($_GET['search_param']);
+$column			=	trim($_GET['column']);
+$ordr			=	trim($_GET['ordr']);
+
+$sqlExportQry="SELECT SQL_CALC_FOUND_ROWS n.id ID, DATE_FORMAT(n.date,'%m/%d/%Y') 'Created', n.email 'MemberID', n.firstname 'FirstName', n.lastname 'LastName',concat(n.address1,n.address2) 'Address',n.city  'City',n.state 'State',n.zipcode 'ZipCode',n.country 'Country',n.phone 'Phone',n.product_id,n.last_step_performed 'LastStep' FROM new_registeration n ";
+if($search_by)
+{
+	$sqlExportQry.= " where instr(lower($search_by),lower('$search_param'))";
+}
+$sqlExportQry.=" ORDER BY $column $ordr";
+$sqlExportQry.=" LIMIT $offset,$pagesize ";
+$resultExportQry	=	exec_query($sqlExportQry);
+if(is_array($resultExportQry) && count($resultExportQry)>0)
+{
+	$arr	= array();
+	foreach($resultExportQry as $ind=>$row)
+	{
+
+		$arr[$ind]['ID']			=	$row['ID'];
+		$arr[$ind]['Created']		=	$row['Created'];
+		$arr[$ind]['MemberID']	=	$row['MemberID'];
+		$arr[$ind]['FirstName']	=	$row['FirstName'];
+		$arr[$ind]['LastName']	=	$row['LastName'];
+		$arr[$ind]['Address']		=	$row['Address'];
+		$arr[$ind]['City']		=	$row['City'];
+		$arr[$ind]['State']		=	$row['State'];
+		$arr[$ind]['ZipCode']		=	$row['ZipCode'];
+		$arr[$ind]['Country']		=	$row['Country'];
+		$arr[$ind]['Phone']		=	$row['Phone'];
+
+		$exp_prod	=	 explode(",",$row['product_id']);
+		$strProd	=	'';
+
+		foreach($exp_prod as $key=>$value)
+		{
+			$qryproduct="select product from product where subscription_def_id='".$value."'";
+			$getproduct=exec_query($qryproduct,1);
+			$strProd	=	$getproduct['Product'].",".$strProd;
+		}
+		$strProd	=	substr($strProd,0,-1);
+		$arr[$ind]['Product']	=	$strProd;
+
+		 if($row['last_step_performed'] =='1')
+		 {
+		 	$strLastStep	=	"Step 1";
+		 }
+		 elseif($row['last_step_performed'] =='2')
+		 {
+		 	$strLastStep	=	"Step 2";
+		 }
+		 elseif($row['last_step_performed'] =='3')
+		 {
+		 	$strLastStep	=	"Step 3";
+		 }
+		 else
+		 {
+		 	$strLastStep	=	"";
+		 }
+		 $arr[$ind]['LastStep']	=	$strLastStep;
+	}
+csv_header("registration.csv");
+$datestr="%m/%d/%Y";
+data2csv($arr);
+}
+else
+{
+	echo "No Record Found!";
+}
+?>

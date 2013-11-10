@@ -1,0 +1,77 @@
+<?php
+global $D_R,$HTHOST,$HTPFX;
+session_start();
+include_once($D_R."/lib/techstrat/_techstratDesign.php");
+include_once($D_R."/lib/techstrat/_techstratData.php");
+include_once($D_R."/lib/config/_techstrat_config.php");
+$objData= new techstartData();
+$objData->redirectLandingPage();
+Header( "HTTP/1.1 301 Moved Permanently" );
+Header( "Location: ".$HTPFX.$HTHOST."/techstrat/open-positions/" );
+exit;
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav","redesign","techstart");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","tsp","techstrat");
+$pageName="techstrat_performance";
+include("$D_R/_header.htm");
+$objTechStartDesign= new techstartDesign();
+$categoryName="Positions and Performance";
+?>
+<!-- <script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/techstrat_performance.js" language="javascript"></script> -->
+<script language="javascript">
+fetchTechStartObject('techstrat_performance','630','930','embed_object');
+</script>
+ <script language="javascript" type="text/javascript">
+function docKeyDown1(oEvent){ // controls keyboard navigation
+var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+var intKeyCode = oEvent.keyCode;
+var inc;
+if(intKeyCode==13) {
+   if($F("optionsearch")){
+	searchalert('optionsearch','<?=$contribid?>','optionsearch','<?=$oid?>');
+	}
+}
+if(intKeyCode==17){	inc=0;}
+if (inc==0){
+	if(intKeyCode==65 || intKeyCode==97 )	{
+		return(false);   //in case of IE & firefox1.5
+	}
+}
+
+
+
+}
+document.onselectstart=new Function("return false");
+document.onmousedown=new Function("return false");
+document.oncontextmenu=new Function("return false");
+document.onkeydown=docKeyDown1;
+
+function disableclick()
+{
+	document.onmousedown=new Function("return false");void(0);
+}
+function enableclick()
+{
+	document.onmousedown=new Function("return true");void(0);
+}
+</script>
+<div id="content-container">
+	<?=showBreadCrum($breadcrum); ?>
+    <div id="article-left">
+				<!-- Body content will display here -->
+
+                <div id="product_contr">
+                <? $objTechStartDesign->displayTechStartHeader($categoryName); ?>
+                <? $objTechStartDesign->displayPerformance(); ?>
+                </div>
+		</div><!-- Left side End -->
+        <div id="rght_mailsearch" class="konafilter">
+          <? $objTechStartDesign->displayRightColumn();?>
+		</div>
+</div>
+
+
+<div style="clear:both;"></div>
+<?
+include("$D_R/_footer.htm");
+?>

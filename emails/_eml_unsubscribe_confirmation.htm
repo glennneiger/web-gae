@@ -1,0 +1,126 @@
+<?
+global $is_ssl;
+include_once("$IMG_SERVER/lib/layout_functions.php");
+$UNSUB=1;
+$SECTION="digest";
+$datestr="%m/%d/%Y";
+
+$zone_name="mvalert";
+$tile728x90=1;
+$tile300x250=2;
+
+//$unsub_id = $_GET['unsub_id'];
+
+
+
+?>
+
+<? // This is the header ... which should be seperated into a new file if it is reused in another email. And ideally, we would share the subject variable with the calling script. ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Minyanville Article Digest for <?= date("F jS, Y") ?></title>
+<style type="text/css">
+body{margin:0px;}
+</style>
+<script language="Javascript" type="text/javascript">
+<!--
+var axel = Math.random() + "";
+var ord = axel * 1000000000000000000;
+//-->
+</script>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td><table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+       <td background="<?=$IMG_SERVER;?>/images/email_alert/backrd_img.jpg">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+          <tr>
+            <td width="23%" rowspan="2"><img src="<?=$IMG_SERVER;?>/images/email_alert/mv_logo.jpg" width="165" height="83" /></td>
+          </tr>
+          <tr>
+
+            <td align="right" style="vertical-align:bottom; padding-bottom:5px;padding-right:5px;">
+			<table border="0" cellspacing="8" cellpadding="2" >
+            <tr>
+            <td colspan="5" align="right"><a href="<?=$HTNOSSLDOMAIN?>/library/search.htm" style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;"><span style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;">Search Minyanville</span></a></td>
+            </tr>
+              <tr >
+
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/community/home.htm" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">My Exchange</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/news_views" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">News &amp; Views</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/customproducts" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Subscription Products</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/register/new/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Two Week Free Trial</span></a>&nbsp;</td>
+                <td align="right"><a href="<?=$HTNOSSLDOMAIN?>" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Sign up for Email Newsletter</span></a></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+          <tr>
+            <td>
+
+			<!-- START NEWS ITEM -->
+			<div style="border-bottom: 1px solid #DDDAD4;padding:18px 6px 18px 0px;">
+			<table cellpadding="0" cellspacing="0">
+			<tr>
+			<td valign="top" style="font:13px Arial, sans-serif;color:#333">
+			<span style="font:bold 18px Times, Times New Roman,
+			serif;color:#224E7A">Dear Member,</a></span></span>
+            <br /><br />
+            <span style="line-height:24px;"><span style="font:normal 14px;color:#036">You are receiving this because you have opted to unsubscribe from Minyanville's free emails.  If you did not request this, just ignore this email.
+            If you would like to unsubscribe, click this link below and you will stop receiving all Minyanville emails.</span></a>&nbsp;</span>
+            <br /><br />
+
+            <a href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm?unsub_id=<?echo $_GET['unsub_id'];?>" style="text-decoration:underline;"><span style="line-height:24px;"><span style="font:normal 14px;color:#036"><?=$HTNOSSLDOMAIN;?>/subscription/register/unsubscribe.htm?unsub_id=<?echo $unsub_id;?></span></a>
+            <br><br>
+            <span style="font:bold 15px Times, Times New Roman,
+			serif;color:#224E7A">
+            Thanks,<br>
+            Minyanville.            </td>
+			</tr></table>
+			</div>
+			<!-- END NEWS ITEM -->			</td>
+          </tr>
+
+
+        </table></td>
+      </tr>
+
+      <tr>
+        <td style="height:5px;"></td>
+      </tr>
+		<?
+			$articleqry="SELECT id,title from articles WHERE is_live='1' and approved ='1' and sent='1' and id<>'$id' order by date desc limit 0,3";
+			 $latestarticle=exec_query($articleqry);
+		?>
+	   <tr>
+					<td colspan="4" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise With Us</a></p>
+					  </div></center></td>
+		</tr>
+				<tr>
+						<td >&nbsp;</td>
+		</tr>
+    </table></td>
+  </tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+*/
+googleanalytics();
+?>
+</body>
+</html>

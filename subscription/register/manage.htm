@@ -1,0 +1,32 @@
+<?php
+global $D_R,$IMG_SERVER,$HTPFX,$HTHOST,$recurlyApiKey;
+session_start();
+$pageId='manage_setting';
+require_once($D_R.'/lib/recurly/recurly.php');
+include($D_R."/lib/config/_recurly_config.php");
+include_once ($D_R."/lib/registration/_manageAccountDesignLib.php");
+include_once ($D_R."/lib/_user_data_lib.php");
+include_once ($D_R."/lib/registration/_manageAccountDataLib.php");
+include_once ($D_R."/lib/registration/_register_funnel_data_lib.php");
+
+$objManageData= new manageAccountDataLib();
+$objManageData->checkUserLogin();
+
+$objUserData= new userData();
+
+Recurly_Client::$apiKey = $recurlyApiKey;
+
+$pageName  = "manage_setting";
+$pageJS=array("config","jquery","recurly","manageAccount","jquery");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","reg_funnel","recurly","manageAccount");
+include_once($D_R.'/_header.htm');
+$objDesign=new manageAccountDesignLib();
+//htmlprint_r($_SESSION);
+?>
+<div id="reg_outer_container">
+	<div class="manageAccountContainer">
+		<? $obOuterTemplate->displayFunnelHeader(); ?>
+		<div class="managePageContainer"><? $objDesign->displayManageAccount();?></div>
+		<? include($D_R."/_footer.htm");?>
+	</div>
+</div>

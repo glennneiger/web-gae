@@ -1,0 +1,11 @@
+<?
+//exepects $password in the querystring
+?>
+<?include("$D_R/emails/_eml_header.htm")?>
+Your minyanville.com password is <b><?=$_GET[password]?></b>.
+
+
+<?php
+$tracking_name = $tracking_name['_eml_forgotpass'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?>

@@ -1,0 +1,27 @@
+</DIV>
+<div id="footer" style="-moz-user-select: none;">
+<div id="appcopy" align="center">
+<div style="WIDTH:99%;">
+<a href="http://<?=$HTTP_HOST?>/gazette/buzzbanter/?date=<?=date("m/d/Y",time()-day())?>" target="_blank">Yesterday’s Buzz</a>&nbsp;&nbsp;||&nbsp;&nbsp;
+<!--<a href="http://<?=$HTTP_HOST?>/gazette/buzzbanter/home.htm?yesterday=1" target="_blank">Yesterday’s Buzz</a>&nbsp;&nbsp;||&nbsp;&nbsp;-->
+<a href="/company/contact.htm" target="_blank">Contact Us</a>&nbsp;&nbsp;||&nbsp;&nbsp;
+<a href="/company/disclaimers.htm" target="_blank">Disclaimers</a>&nbsp;&nbsp;||&nbsp;&nbsp;
+<a href="/library/search.htm" target="_blank">Archive</a>
+</div>
+</center>
+<br><?=spacer(1,2)?>
+
+© 2007 Minyanville Publishing and Multimedia, LLC. All Rights Reserved.
+</div>
+</div>
+<!-- google anaytics  code -->
+<script src="<?=$HTPFX;?>www.google-analytics.com/ga.js" type="text/javascript"></script>
+
+<?
+$profileid=1;
+//googleanalytics($profileid);
+googleanalytics();
+universalGoogleAnalytics();
+?>
+</body>
+</html>

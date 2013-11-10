@@ -1,0 +1,81 @@
+<?php include("$D_R/_minyanville_header.htm");
+global $HTPFX,$HTHOST;
+$pageName = "softtrial_welcome";
+$trackname=$_GET['trackname'];
+$a=$_GET['a'];
+if($a){ ?>
+<div class="welcomepage">
+Welcome <?=ucwords($_SESSION['nameFirst']); ?>,
+<br>
+		<br/><br/>
+		<div  id="Registrationstepfinish" ><strong>Thank you for registering with Minyanville!  Your account is now active.</strong>
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >To access any of the subscription products you registered for, just put your mouse over the green "Subscriptions & Products" tab on the upper right of this page and then click the product you'd like to access in the navigation bar.</div>	
+		<br/><br/>
+		<div  id="Registrationstepfinish" >You can also just click these links below.
+</div>		
+		<br/><br/>
+<div  id="Registrationstepfinish" >Buzz & Banter - <a style="cursor:pointer;" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');"><strong>Launch it now</strong></a> or<strong> click the black "Launch Buzz & Banter" button above.</strong></div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >Jeff Cooper's Daily Market Report - <a href="<?=$HTPFX.$HTHOST?>/cooper"><strong>View the latest reports</strong></a>.</div>
+		<br/><br/>
+
+
+		<div id="Registrationstepfinish" >OptionSmith by Steve Smith - <a href="<?=$HTPFX.$HTHOST?>/optionsmith"><strong>See Steve's most recent trades</strong></a>.		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >FlexFolio by Quint Tatro - <a href="<?=$HTPFX.$HTHOST?>/qp"><strong>See Quint's most recent trades</strong></a>.		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >The Lavery Insight - <a href="<?=$HTPFX.$HTHOST?>/laveryinsight"><strong>Read Jack's latest analysis </strong></a>.		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >Bull Market Timer - <a href="<?=$HTPFX.$HTHOST?>/bmtp"><strong>View Smita's presentation now.</strong></a>		
+</div>
+		<br/><br/>
+		<div  id="Registrationstepfinish" >Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com">support@minyanville.com</a> or 212-991-9357		
+</div>
+<br/>
+</div>
+</div>
+
+<? }else{
+?>
+
+<div class="welcomepage">
+<br>
+	<div align="left" class="active_account">
+		<p><strong>Thank you for registering for Minyanville, the fastest growing community in finance.</strong></p>
+		<br />
+		<p>Before you can begin to enjoy the benefits of your membership, we need to make sure you&lsquo;re a real person.</p>
+		<br />
+		<p>Momentarily you will receive an email with an activation link to the email address you registered with. <br />Click that and you&lsquo;ll have full access to your Minyanville membership.</p>
+		<br />
+		<p>Contact us at <a href="mailto:support@minyanville.com">support@minyanville.com</a> with any questions.</p>
+	</div>
+</div>
+<br/>
+</div>
+<?php
+}
+$googleAdVars = explode("-",$trackname);
+googleAdWordTracking($googleAdVars['0'], $googleAdVars['1']);
+?>
+<!----Bing Tracking Start---->
+<!----Bing Tracking Ends---->
+<!----Yahoo Tracking Start---->
+<SCRIPT language="JavaScript" type="text/javascript">
+
+window.ysm_customData = new Object();
+window.ysm_customData.conversion = "transId=,currency=,amount=";
+var ysm_accountid  = "1G2LU8GT7UDB9Q7R2JQDUP9ESM0";
+document.write("<SCR" + "IPT language='JavaScript' type='text/javascript' "
++ "SRC=//" + "srv3.wa.marketingsolutions.yahoo.com" + "/script/ScriptServlet" + "?aid=" + ysm_accountid
++ "></SCR" + "IPT>");
+
+</SCRIPT>
+<!----Yahoo Tracking Ends---->
+
+<? include("$D_R/_minyanville_footer.htm");
+?>

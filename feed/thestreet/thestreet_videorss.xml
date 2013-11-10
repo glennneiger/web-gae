@@ -1,0 +1,47 @@
+<?php
+	header('Content-type: text/xml');
+	global $D_R,$HTPFX,$HTHOST,$articleAdTS;
+	include("$D_R/layout/dbconnect.php");
+	include_once("$D_R/lib/_misc.php");
+	include_once("$D_R/lib/config/_thestreet_config.php");
+	echo '<?xml version="1.0" encoding="utf-8" ?>' ;
+	$sql_videos = "SELECT * FROM mvtv WHERE approved='1' and is_live='1' and publish_time < '".mysqlNow()."' order by id desc limit 1,15";
+	$results_videos = exec_query($sql_videos);	
+?>
+	<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" 
+        xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+	<title>Minyanville</title>
+	<link><?=$HTPFX.$HTHOST?>?from=thestreet</link>
+	<description>The Trusted Choice for the Wall Street Voice</description>
+<?php
+	foreach($results_videos as $id=>$videoitem)
+	{
+	$sqlCat			=	"select name from section where section_id=".$videoitem['cat_id'];
+	$resultCat 		= 	exec_query($sqlCat,1);	
+	$categoryName	=	$resultCat['name'];
+	
+	$title			=	mswordReplaceSpecialChars($videoitem['title']);
+	$url			= 	$HTPFX.$HTHOST.'/audiovideo/'.htmlentities($videoitem['id']).'?from=thestreet';
+	$description	= 	mswordReplaceSpecialChars($videoitem['description']);
+	foreach($articleAdTS as $key=>$value){
+				$patterns[$key]="/{".$key."}/";
+				$replacements[$key]=$articleAdTS[$key];
+	}
+	$videoDesc=preg_replace($patterns,$replacements,$description);
+	/*$contentEnding		=	"Get $categoryName 's Insights and commentary in
+real-time <a href='http://www.minyanville.com/buzzbanter?from=thestreet'>Click here now for a free trial of Buzz & Banter</a>";*/
+
+	$contentEnding		=	"Get $categoryName 's Insights and commentary in
+real-time <a href='http://www.minyanville.com/buzzbanter/?utm_source=thestreet&utm_medium=toptext&utm_campaign=buzzbanter'>Click here now for a free trial of Buzz & Banter</a>";
+	$videoDesc	=	$videoDesc." ".$contentEnding;
+?>
+	<item>
+		<title><![CDATA[<?=htmlentities($title)?>]]></title>
+		<link><?=$url?></link>
+		<media:description><![CDATA[<?=htmlentities($videoDesc)?>]]></media:description>
+		<media:thumbnail url="<?=htmlentities($videoitem['stillfile'])?>" />
+		<media:content type="video/x-flv" url="<?=htmlentities($videoitem['videofile'])?>" />
+	</item>
+   <?php  } ?>
+</channel></rss>

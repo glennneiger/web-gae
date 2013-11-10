@@ -1,0 +1,33 @@
+<?php
+global $D_R,$CDN_SERVER;
+include_once($D_R."/admin/lib/_article_data_lib.php");
+$objArticle = new ArticleData();
+$id=$_REQUEST['id'];
+switch($_REQUEST['action']){
+	case "setTemplate" :
+		 $arr['sel_article']=$_REQUEST['sel_article'];
+		 $arr['module1_detail']=addslashes(mswordReplaceSpecialChars(stripslashes($_REQUEST['module1_detail'])));
+		 $arr['module2_detail']=addslashes(mswordReplaceSpecialChars(stripslashes($_REQUEST['module2_detail'])));
+		 $arr['subject']=addslashes(mswordReplaceSpecialChars(stripslashes($_REQUEST['subject'])));
+		 $arr['id']=$_REQUEST['id'];
+		 $id = array();
+		 if($arr['id']=="")
+		 {
+		 	$daily_digest_id[id] = $objArticle->addTodaysDailyDigest($arr);
+		 	$id['id'] = $daily_digest_id[id];
+		 }
+		 else
+		 {
+		 	$daily_digest_id[id] = $objArticle->editTodaysDailyDigest($arr);
+	 		$id['id'] = $arr['id'];
+		 }
+		echo json_encode($id);
+	break;
+	case 'sendMail':
+		$arr['subject'] = $_POST['subject'];
+		$arr['id'] = $_POST['id'];
+		$daily_digest_id[id] = $objArticle->sendDailyDigest($arr);
+		echo json_encode($arr['id']);
+	break;
+}
+?>

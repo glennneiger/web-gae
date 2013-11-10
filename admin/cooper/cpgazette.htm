@@ -1,0 +1,25 @@
+<?
+$page="gazette";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("cp_articles cp_approve"))){
+	admin_error();
+}
+?>
+<table align=center>
+<TR>
+	<TD nowrap><div class=adminheader>Editing+Posting</div><br><br
+	<div style="padding:10px;width:400px">
+		<b>Articles</b><br><br>
+		<?if($AD->getPerm("cp_articles")){?>
+		<li><a href="articles.htm">Create/ Edit Articles</a>	
+		<?}?>
+		<?if($AD->getPerm("cp_approve")){?>
+		<li><a href="approve.htm">Approve Articles</a><br>
+		<?}?>
+		<br />
+	</div>	
+	</td>
+</tr>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

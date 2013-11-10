@@ -1,0 +1,176 @@
+<?php
+ini_set("max_execution_time",300);
+$pageName = "subscription_product_billing";
+$pageId='manage_setting';
+$pageJS=array("config","ibox","iboxregistration","creditcard","nav","registerProduct");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","registration");
+session_start();
+if(!isset($_SESSION['viaid']))
+{
+location("$HTPFXSSL$HTHOST/subscription/register/");
+}
+include_once($D_R.'/_header.htm');
+include_once($D_R.'/subscription/cart.php');
+include_once($D_R.'/lib/registration/_register_product_design_lib.php');
+include_once($D_R.'/lib/registration/_register_product_data_lib.php');
+include_once($D_R.'/lib/_module_design_lib.php');
+global $lang,$IMG_SERVER,$promoCodeSourceCodeNoFreeTrial,$viaOrderClassId,$viaMoneyBackClassId,$moneyBackSealText,$HTPFXSSL,$HTHOST;
+build_lang($pageId);
+/*add product from registration page url for new campaing*/
+$sdefid=$_GET['subdefid'];
+if($sdefid){
+	if(in_array($sdefid,$productdef)){
+		if(empty($_SESSION['viacart']['SUBSCRIPTION'])){
+			addToCartRegister($sdefid);
+			if($_GET['pcode']){
+				$getpcval="";
+				$getpcval=addToCartRegisterPromocode($_GET['pcode']);
+			}
+		}
+	}
+}
+
+$objVia=new Via();
+$_SESSION['viaServiceError'] = false;
+
+if($objVia->viaException!=''){
+	$_SESSION['viaServiceError'] = True;
+	global $viaMaintainenceMsg ;
+	echo "<script>alert(".$viaMaintainenceMsg.")</script>";
+	location("$HTPFXSSL$HTHOST/subscription/");
+}
+
+$userloggedin=0;
+
+// map get product id
+if($_GET['pid'] && !$_SESSION['viacart'] && !$_SESSION['viaid']){
+$objcart = new ViaCart('cart');
+$sdefid =$_GET['pid'];
+$pdata = getProdSubPriceVal($sdefid);
+$objcart->add_item($sdefid, $pdata['0']);
+}
+
+$_SESSION['checkoutViacart'] = '';
+
+
+
+//if cart is empty
+if(!$_SESSION['viaid'] && !$_SESSION['viacart']){
+	location("$HTPFXSSL$HTHOST/subscription/");
+}
+
+if(is_numeric($_SESSION['viaid']) && isset($_SESSION['viaid'])){
+	$userloggedin=1;
+}
+
+$objRegDesign= new regitrationProductDesign();
+$objRegData = new regitrationProductData();
+$navSelected1="bllng_nvg";
+$navSelected2="cart_nvgselected";
+$navSelected3="bllng_nvg";
+
+if(!isset($_SESSION['viaid']))
+{
+    $free_trial_products = "1";
+}elseif($_SESSION['promoCodeValue'] != ""){
+	$free_trial_products ="0";
+}
+else
+{
+   	$arOrderClassId = array();
+    foreach($_SESSION['products']['SUBSCRIPTION'] as $arProduct)
+    {
+        $arOrderClassId[] = $arProduct['orderClassId'];
+    }
+    
+    if(count($arOrderClassId))
+    {
+        foreach($_SESSION['viacart']['SUBSCRIPTION'] as $arSubProduct)
+        {
+        	$oc_id=$arSubProduct['oc_id'];
+            $orderStatus = $objVia->get_cancelled_order_status($_SESSION['viaid'],$oc_id);
+            if($orderStatus=="1")
+            {
+            	$free_trial_products ="0";
+                
+            }elseif(in_array($arSubProduct['oc_id'],$arOrderClassId)){
+            	$free_trial_products ="0";
+            }elseif((in_array($oc_id,$viaOrderClassId)) || (in_array($_SESSION['promoCodeSourceCode'], $promoCodeSourceCodeNoFreeTrial))){
+
+				$free_trial_products ="0";
+            	if(in_array($oc_id,$viaMoneyBackClassId))
+            	{
+            		$money_back_product = "1";
+            	}
+			}
+            else
+            {
+            	 $free_trial_products ="1";
+            }
+        }
+     }
+} 
+
+
+$objRegData->setProductArr();
+?> 
+<div class="shadow">
+    <div id="content-container">
+                <!-- Body content will display here -->
+		<div id="billing_panel">
+            <? echo $objRegDesign->regitrationHeader($navSelected1,$navSelected2,$navSelected3);?>
+
+        <!--Left Billing panel end -->
+     	<?
+        global $free_trial_products;
+        if($free_trial_products=="1") {
+        ?>
+        <div class="grey_text">* Your free trial will start immediately, but your credit card will only be charged after 14 days if you do not cancel your subscription. It will be charged monthly, quarterly or annually based on your selection. </div>
+        <? } else if($money_back_product=="1") {
+        ?>
+        <div class="grey_text">*Below please enter your billing information. If this is your first purchase of this subscription you are eligible for our 14 day money back guarantee. If you're not satisfied with the subscription for any reason just contact us within 14 day and receive a full refund. </div>
+        <? } ?>
+		<div class="bllng_content">
+		<div id="product-display"><? echo productPriceDisplay(); ?></div>
+            <div class="cont_info">
+				<? echo $objRegDesign->registrationBillingInfo($userloggedin); ?>
+				<? echo $objRegDesign->registrationCreditCardInfo($userloggedin); ?>
+				<? echo $objRegDesign->registrationCancellationPolicy(); ?>
+			<div class="bttn_nxtstep">
+			<div id="billingerror" class="erordiv_processing"></div>
+          		<a href="<?=$HTPFXSSL.$HTHOST;?>/subscription/register/submit/" onclick="billing_validate(); return false;" ><input type="image" src="<?=$IMG_SERVER?>/images/registration/bttn_nextstep.jpg" id="bill_next_en" onKeyPress="get_register_keys(event);" width="120" height="39" alt="Next Step" tabindex="18" /></a>
+                <input type="image" style="display:none;" src="<?=$IMG_SERVER?>/images/registration/bttngrey_nextstep.jpg" onKeyPress="get_register_submit_keys(event);" id="bill_next_ds" width="120" height="39" alt="Next Step" tabindex="18" /></a>
+      		</div><!--Next Step end -->
+			</div><!--Content end -->
+        </div>
+        </div>
+        <!--Left Billing panel end -->
+
+
+        <div id="yourcart_panel" class="konafilter">
+			<? echo renderyourcart($_SESSION['viacart'],'',$getpcval); ?>
+        </div><!--Rightside End -->
+        <? if($money_back_product =="1"){  ?>
+        <div id="money_back_seal">
+		<div class="seal_text">
+		<?=$moneyBackSealText;?>
+		</div>
+		</div>
+        <? }?>
+        <? echo $objRegDesign->registerationNeedHelp(); ?>
+    </div>
+</div>
+<?php
+$productName="subRegister";
+$trialtype="HardTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+	if($_GET['from']){
+		$from=$_GET['from'];
+	}else{
+		$from=substr($_SERVER['HTTP_REFERER'],7);
+	}
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+include($D_R."/_footer.htm"); ?>

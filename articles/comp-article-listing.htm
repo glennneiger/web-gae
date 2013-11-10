@@ -1,0 +1,244 @@
+<?
+/* Operative Configuration *****/
+/* $zone_name="articlelisting";
+$tile728x90=1;
+$tile160x30=2;
+$tile300x250=3; */
+/* End Operative Configuration *****/
+$pageName = "articlelisting";
+include("../_minyanville_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+global $cm8_ads_1x1_Text,$cm8_ads_WideSkyscraper_160x600;
+require_once($D_R.'/lib/ap/_danview.php');
+
+//variable for filtering
+if ($_GET['limit'] != "") {
+	$start = $_GET['limit'];
+	$end = $start +100;
+} else {
+	$start = 0;
+	$end = 100;
+}
+
+//query for 100 articles
+$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,
+		articles.position, contrib_id authorid, date, blurb, keyword,body, position, character_text from articles, contributors where
+		articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' ORDER BY date DESC LIMIT " . $start . "," . $end;
+$results = exec_query($sql);
+?>
+
+<!--left contaner start from here-->
+<div class="left_contant">
+<div class="rss_common_main">
+<div  class="footer_common_title" style="width:645px;">
+	<div id="article-listing-title">
+		List of Minyanville Articles
+	</div>
+
+	<div class="section_ads_main">
+       		<? $bannername=$cm8_ads_WideSkyscraper_160x600;
+		  	CM8_ShowAd($bannername); ?>
+	</div>
+
+</div>
+
+<style>
+#minyanville-article-header {
+	font-size:15px;
+	margin: 0px 0px 10px 0px;
+
+}
+
+.list-module-container {
+	width:640px;
+	border-bottom: 1px solid #cccccc;
+	min-height:470px;
+
+}
+
+#listing-rss {
+	font-weight:bold;
+
+}
+
+.listing-left-mod {
+	margin-top:10px;
+	width:300px;
+	float:left; 	
+}
+
+.listing-right-mod {
+        margin:40px 0px 0px 50px;
+        width:280px;
+        float:right;
+	background-color:#ededed;    
+}
+
+.ap-header {
+	color:#000000;
+	font-size:15px;
+	margin: 10px 0px 10px 10px;
+	font-weight:bold;
+
+}
+
+.listing-right-mod ul {
+	margin-left:10px;
+	border:none;
+	width:240px;
+}
+
+.listing-right-mod ul li {
+        margin-bottom:5px;
+}
+
+
+.listing-right-mod ul li span {
+	color:#939393;
+	font-size:11px;
+}
+
+.listing-right-mod ul li a {
+	font-size:13px;
+}
+
+.listing-date {
+	margin:10px 0px 10px 0px;
+
+}
+
+ul#articleList {
+	border:none;
+
+}
+
+ul#articleList li {
+	margin-bottom:5px;
+}
+
+ul#articleList li span {
+        color:#939393;
+	font-size:11px;
+}
+
+ul#articleList li span a {
+	font-size:11px;
+	text-decoration:none;
+}
+
+ul#articleList li span a:hover {
+	text-decoration:underline;
+
+}
+</style>
+
+	  <div id="listing-rss">
+        	Subscribe to minyanville article RSS: <a href="<?=$HTPFX.$HTHOST;?>/rss/"><?=$HTPFX.$HTHOST;?>/rss/</a>
+      	  </div>
+
+<div class="list-module-container">
+
+	<div class="listing-right-mod">
+		<div class="ap-header">Breaking News</div>
+			<ul>
+				<?$objapNewsView->showArticlesListings();?>
+			</ul>
+		</div>
+
+	<div class="listing-left-mod" >
+			<ul id="articleList">
+			<?
+            $i=0;
+			foreach ($results as $row )
+			{
+				if (($row['contributor'] != '') && ($row['contributor'] != $row['author']))
+				{
+					$row['author'] = $row['contributor'];
+				}
+
+				if ($currDate != date('M d',strtotime($row['date'])))
+				{
+					$currDate = date('M d',strtotime($row['date']));
+					if($i != 0)
+					{
+					?>
+					</ul>
+					</div><!-- end left mod -->
+					<? if ($i > 1 ) { ?>
+					<div style="clear:both;"></div>
+					 <? } ?>
+					<div class="listing-left-mod">
+					<ul id="articleList">
+					<? } ?>
+                    <div class="listing-date"><?= $currDate; if($domain!="ameritrade") {
+								?>
+
+                       (Sponsored By: <?
+					    $bannername=$cm8_ads_1x1_Text;
+					  	CM8_ShowAd($bannername); echo")"?>
+<? } ?></div>
+		<div id="minyanville-article-header">
+                        Minyanville Articles
+                </div>
+
+			<?	} ?>
+
+			<? if ($row['author'] == "Associated Press") { ?>
+                    <li><a href= <?= $pfx.makeArticleslink($row['id'],$row['keyword'],$row['blurb'])?>><?= $row['title']; ?></a><br><span>by <a><?= $row['author']; ?></a> at <?= date('g:i a',strtotime($row['date'])); ?></span></li>
+			<? } else { ?>
+                    <li><a href= <?= $pfx.makeArticleslink($row['id'],$row['keyword'],$row['blurb'])?>><?= $row['title']; ?></a><br><span>by <a href="/gazette/bios.htm?bio=<?= $row['authorid']; ?>"><?= $row['author']; ?></a> at <?= date('g:i a',strtotime($row['date'])); ?></span></li>
+			<? } ?>
+				<?
+        		$i++;
+         } ?>
+
+			</ul>
+
+	</div>
+
+                                                <!--div class="listing-right-mod">
+                                                        <div class="ap-header">AP Finance News</div>                                                               
+								<ul>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>                                                                                            <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                        <li><a href="#">Article Title goes here</a><br><span>2:15 pm</span></li>
+                                                                </ul>
+                                                </div-->
+<div style="clear:both;"></div>
+
+<div id="more-articles">
+                         More:
+                        <? if ($start > 0) { ?>
+                        <a href="<?= $PHP_SELF;?>?limit=<?=$start - 100;?>">Recent Articles</a> |
+                        <? } ?>
+                        <a href="<?= $PHP_SELF;?>?limit=<?=$end;?>">Past Articles</a>
+                        <br>
+                        <br>
+            <div id="rssinfo" <? if ($_GET['limit'] != "") { echo "style='display:none;'"; } ?>><br>
+                        </div>
+
+</div>
+
+</div>
+
+
+
+</div>
+</div>
+
+<!--left contaner end here-->
+<?
+$Right_panel_300_250_ads ='true';
+$Right_panel_right_ads=='true';
+$ib_tracking_zone="article";
+include("../_minyanville_right.htm");
+?>
+<?
+include("../_minyanville_footer.htm");
+?>

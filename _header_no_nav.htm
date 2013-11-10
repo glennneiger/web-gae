@@ -1,0 +1,173 @@
+<?
+global $HTPFX,$HTHOST,$ADS_SIZE,$IMG_SERVER,$D_R,$HTPFXSSL;
+include_once($D_R."/lib/_content_data_lib.php");
+include_once($D_R."/lib/MemCache.php");
+handle_ssl();
+session_start();
+mcookie("PHPSESSID",session_id());
+setAutoPlayCookie();
+setVisitorPageCount();
+if(strpos($_SERVER[REQUEST_URI],'store')){
+	$cart=new CartDisplay();
+}
+setReferer($_GET['from']);
+autoLogin();
+detectBrowser();
+$objPage= new Page($pageName);
+if(($_GET['from'] && strtolower($_GET['from'])=='thestreet') || ($_GET['utm_source'] && strtolower($_GET['utm_source'])=='thestreet'))
+{
+	$_SESSION['thestreet']	=	'1';
+}
+
+if($_GET['pcode'] && strtolower($_GET['pcode'])=='googlead'){
+	set_sess_vars("googleAdWordlead","1");
+}
+
+if($objContent->contentType)
+{
+	$pageMetaData=$objContent->getMetaData();
+    global $default_section;
+	if(!$pageMetaData['section'] && $objContent->contentType=='1'){
+		$pageMetaData['section']=$default_section;
+	}
+	$title=ucwords($pageMetaData['title']);
+	$section=ucwords(strtolower($pageMetaData['section']));
+	 $titleMetaData=$title;
+     if($pageName=='dailyfeed' || $pageName=='dailyfeed_article'){
+	 	$titleMetaData=$title.' | The Daily Feed | Minyanville.com';
+	 }else{
+		if(!empty($section))
+        {
+        $titleMetaData=$title.' | '.$section.' | Minyanville.com';
+        }
+	}
+
+ 	$pageMetaData['show_canonical']=$show_canonical;
+
+}else{
+
+	 if($pageName=='dailyfeed' || $pageName=='dailyfeed_article'){
+	 	$pageMetaData=$objPage->getMetaDataDailyFeed($metatext);
+	}elseif($pageName=="subscription_product_welcome"){
+		$pageMetaData=$objPage->getMetaDataRegWelcome($orderStatus);
+	}else{
+	    $pageMetaData=$objPage->getMetaData();
+	}
+    if($pageMetaData['title'] == "")
+    {
+    	$pageMetaData['title'] = $pageMeta['title'];
+        $pageMetaData['description'] = $pageMeta['description'];
+    }
+	$titleMetaData=$pageMetaData['title'];
+}
+
+$pageDetail=$objPage->getPageDetail();
+$objPage->build_lang();
+$userid= $_SESSION['SID'];
+$userobj = new user();
+if(($userobj->user_id==''))
+{
+	$userid='';
+} ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<?
+include_once("$D_R/lib/analytics/_googleweboptimizer.php");
+$objWebOpt = new googleWebOptimizer();
+$objWebOpt->version = $version;
+$objWebOpt->page_name = $pageName;
+$objWebOpt->webOptimizerControllerCode();
+?>
+<head>
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<title><?=mswordReplaceSpecialChars(html_entity_decode($titleMetaData))?></title>
+<!-- Mets Data Starts --->
+<meta name="description" content="<?=htmlentities(mswordReplaceSpecialChars($pageMetaData['description']));?>" >
+<meta name="keywords" content="<?=mswordReplaceSpecialChars($pageMetaData['keywords']);?>">
+<?
+if($pageMetaData['show_canonical']){
+	if($pageName=='dailyfeed' || $pageName=='dailyfeed_article'){
+        $canonical=$pageMetaData['url']==""?$pageMetaData['alias']:$pageMetaData['url'];
+	?>
+		<link rel="canonical" href="<?=$HTPFX.$HTHOST.$canonical;?>"/>
+		<? if($show_canonical) { // check to dislpay meta only on detail page ?>
+			<meta name="publication_date" content="<?=date('c',strtotime($pageMetaData['publish_date']));?>" />
+			<meta name="topic" content="<?=strtoupper($pageMetaData['topic']);?>" />
+			<meta name="resource" content="<?=$pageMetaData['resource']?>" />
+			<meta name="author" content="<?=$pageMetaData['author_name']?>" />
+	<?
+		}
+	}
+	else {
+		$canonical=$pageMetaData['alias']==""?$pageMetaData['url']:$pageMetaData['alias'];
+        if($pageName =='home')
+        {
+        	$canonicalPostFix ='/';
+        }
+    ?>
+		<link rel="canonical" href="<?=$HTPFX.$HTHOST.$canonical.$canonicalPostFix?>"/>
+	<?
+	}
+	?>
+		<meta name="robots" content="<?=$pageMetaData['robots']?>"/>
+	<?
+}
+
+$obOuterTemplate = new OuterTemplate($pageName); // lib/_outer_design_lib.php
+$obOuterTemplate->showFacebookMetaData($pageName,$pageMetaData);
+
+?>
+<!-- Meta Data Ends -->
+<!-- RSS Configuration Starts-->
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $HTPFX.$HTHOST; ?>/rss/minyanfeed.php" />
+<!-- RSS Configuration Ends-->
+
+<? loadjavascriptheader($pageCSS,$pageJS); ?>
+
+<?
+setCookieMVmobile();
+$poscellagility = strpos($_SERVER['HTTP_REFERER'],"m.minyanville.com");
+if(isset($_COOKIE['mvmobile']) || isset($_SESSION['ses_mvmobile']) || $poscellagility != 0)
+{
+// Do not redirect to mobile site
+}
+else
+{	?>
+	<script language="javascript">
+	  var url=getUrlMobile('<?=$feedId?>');
+	  if(url){
+	  redirectMobileSite(url);
+	  }
+	</script>
+	<?
+}
+
+?>
+
+<? kissMetricsTracking($pageName); ?>
+<!-- JS Ends -->
+<?
+global $arMenuDetail;
+if($pageName=='article_template'){
+    $aid=$_GET['a'];
+	$secaid=getArticleSubsectionid($aid);
+	$pageaDetail['id']=$secaid['page_id'];
+	$pageDetail['id']=$pageaDetail['id'];
+    $pageName=$secaid['article_pagename'];
+	if($pageDetail['id']=="0"){
+		$pageDetail['id']="56";
+	}
+}
+
+?>
+</head>
+
+<body><!--Minyanville Header Start--><div id="cart_message" style="top:350px;left:450px;border:1px solid #F9BE46;position:fixed;z-index:100;width:320px;height:180px;background-color:#F8EACF;display:none;"></div>
+<input type='hidden' id='logouttarget' name='logouttarget' value=''>
+	<div id="page-name" style="display:none;"><?=$pageName?></div>
+
+<!-- MSN Money Logo Comes only when user Comes from MSN via articles: End" -->
+
+<? $obOuterTemplate->displayMSN();?>

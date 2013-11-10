@@ -1,0 +1,22 @@
+<? 
+header("Content-Type: application/xml");
+header("Pragma: nocache\n"); 
+header("cache-control: no-cache, must-revalidate, no-store\n\n");
+header("Expires: 0");
+?>
+<adservercode>
+<advid>2</advid>
+<videoad>http://storage.googleapis.com/mvassets/mvtv/ads/TDameritrade/questions.flv</videoad>
+<videoclickthru>http://ad.doubleclick.net/clk;213086863;33868276;t?http://www.tdameritrade.com/o.cgi?DFAID=1&amp;a=XEC&amp;o=177&amp;p=/offer/special.html</videoclickthru>
+<duration>25</duration>
+<title>Your video will play shortly.</title>
+<DARTtrackstart></DARTtrackstart>
+<DARTtrackmid></DARTtrackmid>
+<DARTtrackend></DARTtrackend>
+<thrdptytrackstart></thrdptytrackstart>
+<thrdptytrackmid></thrdptytrackmid>
+<thrdptytrackend></thrdptytrackend>
+<companionad><A HREF="http://ad.doubleclick.net/jump/N3941.minyanville.com/B3477069.5;sz=300x250;ord=">
+<IMG SRC="http://ad.doubleclick.net/ad/N3941.minyanville.com/B3477069.5;sz=300x250;ord=" /></A></companionad>
+<companionclickthru>http://ad.doubleclick.net/clk;213086863;33868276;t?http://www.tdameritrade.com/o.cgi?DFAID=1&amp;a=XEC&amp;o=177&amp;p=/offer/special.html</companionclickthru>
+</adservercode>

@@ -1,0 +1,88 @@
+<?php
+global $D_R,$HTPFX,$HTHOST;
+session_start();
+if($_SESSION['keene']!="1"){
+  Header( "Location: http://mvp.minyanville.com/keene-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=keene");
+  exit;
+}
+$keeneArr = getKeyVal('p',$_SERVER['REQUEST_URI']);
+$p_offset = ($keeneArr['p']=="" ? $_GET['p'] : $keeneArr['p']);
+$pageName="keene";
+require_once($D_R."/lib/config/_keene_config.php");
+require_once($D_R."/lib/keene/_keene_data_lib.php");
+require_once($D_R."/lib/keene/_keene_design_lib.php");
+$pageJS=array("config","redesign","fancybox","keene");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","keene");
+include($D_R."/_header.htm");
+$objKeeneData = new keeneData('keene_alerts');
+$objKeeneDesign = new keeneDesign();
+global $objKeeneData, $objKeeneDesign, $pageName;
+if($_SERVER['REQUEST_URI'])
+{
+	$categoryNameArr = explode('/',$_SERVER['REQUEST_URI']);
+	$categoryName = $categoryNameArr[2];
+	if($categoryName=="")
+	{
+		$categoryName="trade-updates";
+	}
+}
+
+$p=0;
+$offset=0;
+if($p_offset){
+	$p=$p_offset;
+	$offset=$p_offset;
+}
+
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+
+<body>
+<script language="javascript" type="text/javascript">
+	function docKeyDown1(oEvent){ // controls keyboard navigation
+	var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+	var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+	var intKeyCode = oEvent.keyCode;
+	var inc;
+	if(intKeyCode==13) {
+	   if($F("optionsearch")){
+		searchalert('optionsearch','<?=$contribid?>','optionsearch','<?=$oid?>');
+		}
+	}
+	if(intKeyCode==17){	inc=0;}
+	if (inc==0){
+		if(intKeyCode==65 || intKeyCode==97 )	{
+			return(false);   //in case of IE & firefox1.5
+		}
+	}
+
+
+
+	}
+	document.onselectstart=new Function("return false");
+	document.onmousedown=new Function("return false");
+	document.oncontextmenu=new Function("return false");
+	document.onkeydown=docKeyDown1;
+
+	function disableclick()
+	{
+		document.onmousedown=new Function("return false");void(0);
+	}
+	function enableclick()
+	{
+		document.onmousedown=new Function("return true");void(0);
+	}
+	</script>
+
+<div id="keene_wrapper">
+	<?php echo $objKeeneDesign->displayKeeneHeader($categoryName);?>
+	<div class="clr"></div>
+	<div class="keene_contentPanel">
+		<?php echo $objKeeneDesign->displayKeeneCatLeft($categoryName,$offset,$p);?>
+		<?php echo $objKeeneDesign->displayKeeneRightCol();?>
+	</div>
+	<div class="clr"></div>
+</div>
+</body>
+
+<? include($D_R."/_footer.htm"); ?>

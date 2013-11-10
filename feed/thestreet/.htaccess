@@ -1,0 +1,7 @@
+AddType application/x-httpd-php .php .xml .rss
+
+AuthUserFile /home/sites/minyanville/web/feed/thestreet/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Minyanville Feeds"
+AuthType Basic
+require valid-user

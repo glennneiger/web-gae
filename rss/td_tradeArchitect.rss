@@ -1,0 +1,40 @@
+<?
+if($_POST['username']=='ameritrade' && $_POST['password']=='m5dOiKZx7kmIWyI'){
+	global $D_R;
+	include_once($D_R."/lib/feed/_design_lib.php");
+	include_once($D_R."/lib/config/_article_config.php");
+	include_once("$D_R/lib/config/_rss_config.php");
+	$maxItemLimit=$_REQUEST['maxItems'];
+	$feedType=$_REQUEST['idContentType'];
+	$accountid=$_REQUEST['account'];
+	$partnerId=$_REQUEST['idPartner'];
+	$currentFilter=$_REQUEST['from'];
+	$durationFilter=$_REQUEST['duration'];
+	$startTimeFilter=$_REQUEST['startTime'];	
+	$pattern = '/.{4}-[0,1].{1}-[0,1,2,3].{1}/';
+	if(!empty($startTimeFilter) and !(preg_match($pattern, $startTimeFilter, $matches)))
+	{
+		echo "We are sorry this is an invalid start date.";
+		exit;
+	}
+	if(!$partnerId){
+		echo "We are sorry this is an invalid partner information.";
+		exit;
+	}
+	/* Load Default values */
+	if(!$maxItemLimit || $maxItemLimit>500){
+		$maxItemLimit=25;
+	}
+	header('Content-type: text/xml');
+	echo "<?xml version='1.0' encoding='ISO-8859-1'?>";
+
+	$objCache = new Cache();
+	print $objCache->getFeedPartnerData($feedType,$partnerId,$maxItemLimit,$currentFilter,$durationFilter,$startTimeFilter);
+}else{
+	header("HTTP/1.1 403 Forbidden");
+	location("/errors/?code=403");
+	exit;
+}
+
+
+?>

@@ -1,0 +1,34 @@
+<?
+global $D_R;
+include_once("$ADMIN_PATH/_authenticate.htm");
+$bounceback="observer_articles.htm";
+include_once("$D_R/lib/_db.php");
+
+$edit_articles=$AD->getPerm("observer_edit");
+if(!$edit_articles){
+	admin_error();
+}
+
+$id				=	trim($_POST['article']);
+$article		=	array();
+$article['title']			=	addslashes(mswordReplaceSpecialChars(stripslashes($articles['title'])));
+$article['seo_title']		=	addslashes(mswordReplaceSpecialChars(stripslashes($articles['title'])));
+$article['character_text']	=	addslashes(mswordReplaceSpecialChars(stripslashes($articles['character_text'])));
+$article['contrib_name']	=	addslashes(mswordReplaceSpecialChars(stripslashes($articles['contrib_name'])));
+$article['body']			=	addslashes(mswordReplaceSpecialChars(stripslashes($articles['body'])));
+if($id=='')
+{
+		$id=insert_query("observer_articles",$article);
+		if($id)
+		{
+				$backparams=array(article=>$id,page=>$page,error=>'Article has been saved');
+		}
+}
+else
+{
+		update_query("observer_articles",$article,array("id"=>$id));
+		$backparams=array(article=>$id,page=>$page,error=>'Article has been updated');
+		
+}
+location($bounceback.qsa($backparams));
+?>

@@ -1,0 +1,341 @@
+/*Style start from here for cooper*/
+.c_outer_container{
+	margin: 0 auto;
+	padding: 0;
+	text-align: left;
+	width: 985px;
+} 
+
+.c_line{
+	border-bottom:1px solid #B2B2B2;
+    border-color: #B2B2B2;
+    float: right;
+    margin: 0px 15px 0px 0px;
+    padding-top: 15px;
+    width: 650px;
+}
+
+#os_support{
+    width: 950px;
+    margin: 20px 15px 0px 0px;
+}
+
+#os_desclaimer {
+    float: left;
+    font-size: 12px;  
+    font-weight: bold;
+    line-height: 12px;
+    margin: 0px 0px 0px 20px;
+    width: 285px;
+}
+
+#os_questions {
+    float: left;
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0 0 0 28px ;
+    width: 275px;
+}
+
+#os_customer_support {
+    float: left;
+    font-size: 12px;
+    line-height: 20px;
+    margin: 0 0 0 40px;
+    width: 300px;
+}
+
+#c-container{
+	border-width: 1px 0px 0px 0px;
+	background-color: white;
+	width: 985px;
+	min-height: 450px;
+	float: left;
+	border-right: 1px solid white;
+	border-bottom: 1px solid white;
+	border-left: 1px solid white;
+}
+.current_date
+{
+font-family: Arial, Helvetica, sans-serif;
+font-size: 10px;
+font-weight: normal;
+color: #323232;
+padding: 0px;
+clear: both;
+margin: 0px;
+text-align:center;
+text-transform:none;
+padding-bottom:10px;
+}
+.cooper_mail_links{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight: normal;
+color:#083d70;
+text-transform:none;
+}
+.cooper_mail_links a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+text-decoration:underline;
+color:#00314c;
+text-transform:none;
+}
+.cooper_links{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight: normal;
+color:#083d70;
+text-transform:none;
+}
+.cooper_links a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:normal;
+text-decoration:none;
+color:#083d70;
+text-transform:none;
+}
+
+.cooper_common_title{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:18px;
+color:#323230;
+clear:both;
+padding-bottom:10px;
+background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_title_bg.jpg);
+background-position:bottom;
+background-repeat:repeat-x;
+padding-top:10px;
+font-weight:normal;
+float:left;
+text-align:left;
+margin-bottom:10px;
+text-transform:uppercase;
+}
+.cooper_sub_title{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:28px;
+color:#2b5784;
+vertical-align:top;
+font-weight:normal;
+text-align:left;
+margin-bottom:10px;
+width:580px;
+text-transform:none;
+}
+.cooper_container{
+width:589px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#2f2f2f;
+float:left;
+clear:both;
+margin-left:15px;
+text-align:left;
+}
+.cooper_articles_container{
+width:589px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#2f2f2f;
+float:left;
+clear:both;
+margin-left:15px;
+text-align:left;
+}
+.cooper_articles_container a{
+text-decoration:none; 
+color:#083d70;
+}
+.cooper_articles_container img{
+border:none;
+}
+.common_contact{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+color:#0b0c0b;
+line-height:18px;
+font-weight:normal;
+}
+.common_contact a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+color:#0b0c0b;
+line-height:18px;
+font-weight:normal;
+}
+.right_cooper_cart_container{
+width:300px;
+margin-top:10px;
+float: left;
+clear:both;
+}
+.cooper_head{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight: normal;
+color:#000;
+text-transform:none;
+}
+.add_to_cart_box{
+width:150px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:30px;
+color:#FFFFFF;
+background-color:#2b86b2;
+font-weight:bold;
+text-align:center;
+line-height:20px;
+margin-top:10px;
+}
+.add_to_cart_box td{
+padding:2px;
+}
+.add_to_cart_box img{
+padding-top:2px;
+}
+
+.cooper_article_main{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+margin-top:15px;
+float:left;
+clear:both;
+line-height:20px;
+}
+.cooper_article_main img{
+border:none;
+}
+.cooper_article_box{
+background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_article_bg.jpg);
+background-position:top;
+background-repeat:repeat-x;
+padding-top:15px;
+width:285px;
+padding-left:15px;
+padding-right:15px;
+font-weight:bold;
+line-height:25px;
+color:#323232;
+float:right;
+padding-bottom:15px;
+background-color:#82b8d0;
+}
+.cooper_article_box ul{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+color:#323232;
+text-transform:none;
+}
+.cooper_article_box li{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:bold;
+color:#323232;
+line-height:25px;
+margin-left:16px;
+text-transform:none;
+}
+.cooper_register_box{
+text-align:center;
+clear:both;
+margin-left:65px;
+padding-top:15px;
+margin-top:10px;
+}
+
+.cooper_register_box img{
+border:0px;
+}
+.cooper_bio_main{
+margin-top:30px;
+float:left;
+line-height:20px;
+clear:both;
+}
+.cooper_books_block_main{
+padding-left:15px;
+text-align:left;
+clear:both;
+padding-top:15px;
+padding-bottom:10px;
+}
+.cooper_testimonial_main{
+padding-left:15px;
+text-align:left;
+clear:both;
+padding-top:15px;
+padding-bottom:10px;
+height:300px;
+overflow:auto;
+}
+
+.cooper_common_heading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#787876;
+font-weight:normal;
+line-height:20px;
+}
+.cooper_recent_common_heading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#787876;
+font-weight:normal;
+line-height:15px;
+}
+
+.cooper_recent_common_heading a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#787876;
+font-weight:normal;
+line-height:15px;
+}
+
+.cooper_market_heading {
+font-family:Arial, Helvetica, sans-serif;
+font-size:15px;
+color:#062f56; 
+font-weight: bold;
+text-align:left;
+line-height:20px;
+}
+.cooper_books_block_main a img{
+border:none;
+padding-top:10px;
+padding-bottom:10px;
+}
+.cooper_testimonial_main a img{
+border:none;
+padding-top:10px;
+padding-bottom:10px;
+}
+.cooper_small_heading{
+font-family: Arial, Helvetica, sans-serif;
+font-size:10px;
+color:#777775;
+font-style:italic;
+font-weight:normal;
+text-align:left;
+}
+.cooper_report_block_main{
+padding-left:15px;
+padding-bottom:10px;
+padding-right:10px;
+line-height:30px;
+text-align:left;
+padding-top:15px;
+}
+
+.cooper_recent_report_block_main{
+padding-left:15px;
+padding-bottom:10px;
+padding-right:10px; 
+text-align:left;
+padding-top:5px;
+}

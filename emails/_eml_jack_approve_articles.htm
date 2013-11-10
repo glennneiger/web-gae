@@ -1,0 +1,85 @@
+<?
+$UNSUB=1;
+$SECTION="digest";
+$datestr="%m/%d/%Y";
+$articleID=$_GET['aid'];
+$sitename=$_GET['sitename'];
+global $contributorsArray;
+$cid=$contributorsArray['jack'];
+$profid=$cid;
+$prof_lang=jack_build_lang($profid); // defined inside _misc.php
+$qry="SELECT a.id, a.id article_id,a.contrib_id,UNIX_TIMESTAMP(a.date)udate,a.date,a.title,
+		IF((LENGTH(a.blurb)<5), SUBSTRING(a.body,1,100) , a.blurb) blurb,c.name,c.name contributor,
+		concat('/articles/index.php','?a=',a.id)article_url
+		FROM
+			jack_articles a, contributors c
+		WHERE
+			a.contrib_id=c.id
+			and a.id in ($articleID)		  
+	        AND a.approved='1' AND a.sent='1' AND a.is_live='1' 
+	        ORDER BY a.date DESC";
+$qry = str_replace('FROM', ', a.character_text, c.bio_asset FROM',$qry);
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title><?=$prof_lang['Marketreport_email_Title'];?> <?= date("F jS, Y") ?></title>
+</head>
+
+<body color="#333333" bgcolor="#ffffff" link="#224E7A" vlink="#224E7A" active="#224E7A">
+<div style="width:563px;color;#333">
+<table width="563" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="95"><img src="<?=$IMG_SERVER;?>/images/redesign/cooper_email/mvillogo.gif" width="95" height="61" /></td>
+    <td background="<?=$IMG_SERVER;?>/images/redesign/cooper_email/bg_header.gif" style="background-repeat:repeat-x;text-align:center;font:20px Times, Times New Roman, serif;font-variant:small-caps" class="big" >&nbsp;<img src="<?=$IMG_SERVER.$prof_lang['Approve_Email_Title'];?>"></img></td>
+    <td width="83"><img src="<?=$IMG_SERVER;?>/images/redesign/cooper_email/weather.gif" width="83" height="61" /></td>
+  </tr>
+</table>
+<div style="padding:4px;text-align:center;font:12px Times, Times New Roman, serif;"><?= date("F j, Y") ?></div>
+<table width="563" cellpadding="0" cellspacing="0"><tr>
+<td width="418" valign="top">
+<? // end header ?>
+<!-- START NEWS ITEMS -->
+<?
+foreach(exec_query($qry) as $row)
+{?>
+<!-- START NEWS ITEM -->
+<div style="border-bottom: 1px solid #DDDAD4;padding:18px 6px 18px 0px;">
+<table border="0" cellpadding="0" cellspacing="0"><tr>
+	<td width="96" valign="top"><table width="96" cellpadding="0" cellspacing="0">
+	<tr><td><img src="<?=$IMG_SERVER?>/images/redesign/cooper_email/photo_article_top.gif" width="96" height="8" alt="" /></td></tr>
+	<tr><td background="<?=$IMG_SERVER?>/images/redesign/cooper_email/photo_article_middle.gif" style="padding:0px 8px 0px 10px;"><img src="<?=$IMG_SERVER?><? if ($row['bio_asset']) echo $row['bio_asset']; else echo "/images/redesign/cooper_email/nophoto_hoofyboo.jpg" ?>" width="78" height="78" alt="" /></td></tr>
+	<tr><td><img src="<?=$IMG_SERVER?>/images/redesign/cooper_email/photo_article_bottom.gif" width="96" height="12" alt="" /></td></tr>
+</table>
+<span style="font:13px Times, Times New Roman, serif; color:#3E648B"><?=$row[name]?></span>
+</td>
+<td width="12">&nbsp;</td>
+<td valign="top" style="font:11px Arial, sans-serif;color:#333">
+<span style="font:bold 18px Times, Times New Roman,
+serif;color:#224E7A"><a href="<?=$HTPFX.$sitename?><?=$row[article_url]?>"><?=$row[title]?></a></span><br />
+<span style="line-height:18px;"><?=date("h:ia",$row[udate])?></span><br />
+<? $_text = ($row['character_text'] == '') ? $row['blurb'] : $row['character_text']; echo strip_tags($_text,'<br>'); ?><br />
+<span style="line-height:24px;"><a href="<?=$HTPFX.$sitename?><?=$row[article_url]?>" style="text-decoration:none;"><img src="<?=$IMG_SERVER?>/images/redesign/cooper_email/arrow_circle_blue.gif" width="12" height="11" alt="=>" border="0" /> <span style="color:#036"><?=$prof_lang['Approve_Email_Read_Article_link'];?></span></a></span>
+</td>
+</tr></table>
+</div>
+<!-- END NEWS ITEM -->
+<?}?>
+<!-- END NEWS ITEMS -->
+<br />
+<!--<div style="background:#e5e7e4;padding:8px 6px;font:11px Arial, sans-serif;color:#333">-->
+</td>
+<td width="14">&nbsp;</td>
+</tr></table>
+
+<? //this is the footer... which also could be its own file ?>
+<div style="border-top:1px solid black;border-bottom:2px solid black;background:#E5E7E4;padding:6px 12px;font:10px Arial, sans-serif;">
+<span style="font:bold 12px Times, Times New Roman, serif;">More from Minyanville</span><br />
+<A href="<?=$HTPFX.$HTHOST?>/news_views/" style="text-decoration:none;"><span style="text-decoration:underline;color:#036;">News &amp; Views</span></a>&nbsp;&nbsp;&nbsp;&nbsp;<A href="<?=$HTPFX.$HTHOST?>/gazette/bios.htm" style="text-decoration:none;"><span style="text-decoration:underline;color:#036;">Prof. Bios</span></a>&nbsp;&nbsp;&nbsp;&nbsp;<A href="<?=$HTPFX.$HTHOST?>/customproducts/" style="text-decoration:none;"><span style="text-decoration:underline;color:#036;">Learn More About Buzz &amp; Banter</span></a>&nbsp;&nbsp;&nbsp;&nbsp;<A href="<?=$HTPFX.$HTHOST?>/register/" style="text-decoration:none;"><span style="text-decoration:underline;color:#036;">Two Week Free Buzz Trial</span></a>
+</div><table width="563" cellpadding="0" cellspacing="0"><tr>
+<td align="center" valign="top"><span style="font:11px Arial, sans-serif;color:#5d5d5d"><a href="http://www.minyanville.com"><img src="<?=$IMG_SERVER?>/images/redesign/cooper_email/mvil_logo_footer.JPG" alt="Minyanville" border="0" /></a></span></td>
+</tr></table>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?	include_once("$DOCUMENT_ROOT/lib/_includes.php");
+/*--generate
+
+set_time_limit(100000);
+foreach(range(0,199) as $i){
+	list($k1,$k2)=createMVGiftCode("1moCMP");
+	$ins=array(
+		reserved=>'1',
+		user_id=>'0',
+		key1=>$k1,
+		key2=>$k2
+	);
+	insert_query("subscription_keys",$ins);
+	echo "$i<br>";
+	flush();
+	sleep(1);
+	
+}*/
+
+
+//get
+
+$qry="SELECT * FROM subscription_keys WHERE user_id='0' AND MID(key1,1,6)='1moCMP'";
+csv_header("codes.csv");
+qry2csv($qry);
+
+
+
+
+
+?>
+
+

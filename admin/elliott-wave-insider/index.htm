@@ -1,0 +1,23 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("elliotWave_alerts elliotWave_approve"))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Elliott Wave Insider</div><br>
+	<div style="padding:10px;width:400px">
+		<div style="padding-left:20px;">
+			<?if($AD->getPerm("elliotWave_alerts")){ ?>
+   				<li><a href="alert.htm">Create/Edit Alerts</a></li>
+	 		<? }
+	 		if($AD->getPerm("elliotWave_approve")){?>
+				<li><a href="approve-alert.htm">Approve Alerts</a></li>
+			<? }
+			if($AD->getPerm("contrib_self") || $AD->getPerm("contrib_all")){?>
+				<li><a href="../contributors.htm?page=gazette">Add Analyst</a></li>
+			<? } ?>
+		</div><br/>
+		<br />
+	</div>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

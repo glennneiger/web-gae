@@ -1,0 +1,52 @@
+<?
+global $D_R,$feedLimit;
+include_once($D_R."/lib/config/_sitemap_config.php");
+session_start();
+if(!$_GET['type']){
+    $pageUrl = substr($_SERVER['REQUEST_URI'],1);
+    if($pageUrl=="news_sitemap.xml")
+    {
+	$type="articles";
+    }
+    else
+    {
+        $typeArr = explode("news_sitemap.xml",$pageUrl);
+        $type= trim(strtolower($typeArr[0]));
+    }
+   
+}else{
+	$type = trim(strtolower($_GET['type']));
+}
+if($type == 'mvpremium' || $type == 'dailyfeed')
+{
+	include_once($D_R.'/lib/feed/_googlenews_feed_lib.php');
+	include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
+	$obj= new googleFeed('daily_feed');
+	if($obj->type == 18)
+	{
+		$ret = $obj->displaySitemap($feedLimit,$obj->type);
+	}
+}
+elseif($type == 'articles')
+{
+	include_once($D_R.'/lib/feed/_googlenews_feed_lib.php');
+	$obj= new googleFeed('articles');
+	if($obj->type == 1)
+	{
+		$ret = $obj->displaySitemap($feedLimit,$obj->type);
+	}
+}
+elseif($type == 'buzz')
+{
+	include_once($D_R.'/lib/feed/_googlenews_feed_lib.php');
+	$obj= new googleFeed('buzzbanter');
+	if($obj->type == 2)
+	{
+		$ret = $obj->displaySitemap($feedLimit,$obj->type);
+	}
+}
+else
+{
+	echo "Please provide appropriate feed type!";
+}
+?>

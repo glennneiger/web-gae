@@ -1,0 +1,50 @@
+<?php
+global $D_R,$HTPFX,$HTHOST;
+session_start();
+if($_SESSION['keene']!="1"){
+  Header( "Location: http://mvp.minyanville.com/keene-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=keene");
+  exit;
+}
+$pageName="keeneSearchAlert";
+
+include_once($D_R."/lib/_content_data_lib.php");
+require_once($D_R."/lib/config/_keene_config.php");
+require_once($D_R."/lib/keene/_keene_data_lib.php");
+require_once($D_R."/lib/keene/_keene_design_lib.php");
+$pageJS=array("config","redesign","fancybox","keene");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","keene");
+include($D_R."/_header.htm");
+$objKeeneData = new keeneData('keene_alerts');
+$objKeeneDesign = new keeneDesign();
+global $objKeeneData, $objKeeneDesign, $pageName;
+
+$item_table = 'keene_alerts';
+$objContent = new Content($item_table,'');
+$show_canonical="1";
+global $objKeeneData, $objKeeneDesign, $pageName, $objContent;
+
+if($_GET['q']){
+	$search = trim($_GET['q']);
+	$searchType = 'text';
+}
+
+$p=0;
+$offset=0;
+if($_GET['p']){
+	$p=$_GET['p'];
+	$offset=$_GET['p'];
+}
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<body>
+<div id="keene_wrapper">
+	<?php echo $objKeeneDesign->displayKeeneHeader($sectionName);?>
+	<div class="clr"></div>
+	<div class="keene_contentPanel">
+		<?php echo $objKeeneDesign->displayKeeneSearch($search,$offset,$searchType,$p);?>
+		<?php echo $objKeeneDesign->displayKeeneRightCol();?>
+	</div>
+	<div class="clr"></div>
+</div>
+</body>
+<?php require_once($D_R."/_footer.htm"); ?>

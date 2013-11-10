@@ -1,0 +1,58 @@
+<?
+
+global $D_R,$HTHOST,$HTPFX,$IMG_SERVER;
+session_start();
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$pageName = "lloyds-wall-of-worry-landing"; 
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav","redesign","worry");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","wallofworry");
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_design_lib.php");
+
+$objWorryData = new worryData();
+$objWorryDesign = new worryDesign();
+
+if($_SERVER['REQUEST_URI'])
+{
+	$pubDateArr=explode('/',$_SERVER['REQUEST_URI']);
+//htmlprint_r($pubDateArr);
+	 $pubDate = strtolower($pubDateArr[3]."/".$pubDateArr[4]."/".$pubDateArr[5]);
+}
+
+ //$pubDate=$_GET['pubdate'];
+
+$wryResult = $objWorryData->getLatestWorry($pubDate);
+$wryCount = count($wryResult);
+if(!$wryResult){
+	header("HTTP/1.1 404 Not Found");
+    header("Status: 404 Not Found");
+	location("/errors/?code=404");
+	exit;
+}
+include_once($D_R."/_header.htm"); 
+
+?>
+	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.betterTooltip.1.2.js"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			jQuery('.tTip').betterTooltip({speed: 150, delay: 300});
+		});
+	</script>
+	<script type="text/javascript">jQuery.noConflict() ;</script>
+<div class="shadow">
+
+<div id="content-container">
+
+	<div class="wall-main">
+	
+		<?
+		
+		echo $objWorryDesign->displayWall($wryResult);
+		echo $objWorryDesign->displayRightColumn($pubDate,$wryCount);
+		?>
+	</div>
+</div>
+</div>
+<? include_once($D_R."/_footer.htm"); ?>

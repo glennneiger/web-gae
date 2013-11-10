@@ -1,0 +1,39 @@
+<?php
+set_time_limit(0);//1 hour
+global $D_R;
+include_once("$D_R/lib/_via_data_lib.php");
+include_once("$D_R/lib/config/_via_config.php");
+$objVia= new Via();
+
+
+if($_SERVER['SERVER_NAME']=="admin.minyanville.com"){
+   $qry="select id,email,via_id from subscription where via_id<>'0' and via_id not in (select viaid from subscription_cust_order_via) limit 5000";
+    
+    $getResult=exec_query($qry);
+    if(is_array($getResult)){
+   
+        foreach($getResult as $key=>$row){
+         $subId=$row['id'];
+            if(!empty($row['via_id'])){
+                    $viaId=$row['via_id'];
+                    $arrayFields = array('customerIds'=>$viaId,'orderStatus'=>'ALL','orderItemTypeList'=>'','bEmanagerIds'=>TRUE);
+                    $userDetails=$objVia->getCustomerSubInfoReq($viaId,$arrayFields);
+                    $getSubCustOrder=$userDetails->CustomerSubInfoReqResult->CustomerSubInfo->orders;
+                    $objVia->setSubscriptionCustOrder($getSubCustOrder,$subId);
+                    echo "<br>".'Record insert for via-id: '.$row['via_id'];
+            }
+            
+        }
+    
+    }
+
+}else{
+
+    echo "Please run this script from admin server.";
+
+}
+
+exit;
+
+
+?>

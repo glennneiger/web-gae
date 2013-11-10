@@ -1,0 +1,41 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+
+include_once("./_authenticate.htm");
+include_once("./_header.htm");
+
+?>
+<script>
+function toggleNoAutoScroll(imname){
+	var state=getRegVar("autoscroll");
+	state=(state=="top"?"bottom":"top");
+	setRegVar("autoscroll",state);
+	document.images["imgauto"].src="/gazette/buzzbanter/img/scroll_"+(state=="top"?"on":"off")+".jpg";
+	document.images["imgauto2"].src="/gazette/buzzbanter/img/scroll_"+(state=="top"?"on":"off")+".jpg";
+}
+</script>
+
+<?include("./home.cache.htm")?>
+<table width=100%>
+<TR>
+<TD width=1%>
+<script>
+document.write('<img style="cursor:hand" onclick="toggleSound()" name="soundimg" src="<?=$IMG_SERVER?>/gazette/buzzbanter/img/snd_'+getRegVar("sound")+'.jpg" border=0>');
+</script>
+</TD>
+<TD width=99%  align="right">
+<script>
+	document.write('<img alt="Use this feature to prevent or enable jumping to the newest post" name="imgauto" style="cursor:hand" onclick="toggleNoAutoScroll()" src="/gazette/buzzbanter/img/'+imgname+'" border=0 />');
+</script>	<!-- For educational use only --></TD>
+</TR>
+</table>
+
+
+<?include("./_footer.htm")?>
+<Script>
+/*document.onreadystatechange=function fnStartInit(){
+   if(document.readyState=="complete")
+   	if(obj=findObj("appcopy"))
+      	obj.scrollIntoView();
+}*/
+</SCRIPT>

@@ -1,0 +1,155 @@
+<?
+//include_once("$ADMIN_PATH/_authenticate.htm");
+include_once($D_R.'/lib/_exchange_lib.php');
+//include_once("../lib/email_alert/_lib.php");
+include_once("$D_R/admin/lib/_article_data_lib.php");
+include_once($D_R.'/lib/config/_article_config.php');
+include_once("$D_R/admin/lib/_contributor_class.php");
+include_once("$D_R/lib/_content_data_lib.php");
+include_once($D_R.'/lib/_convert_charset.class.php');
+$NewEncoding = new ConvertCharset('iso-8859-1', 'utf-8', 1);	//set to 1 for numeric entities instead of regular chars
+global $S4,$S5;
+$delarticle=array();
+$approve=array();
+$viewapproved=$_POST[viewapproved];
+$delarticle=$_POST[delarticle];
+$approve=$_POST[approve];
+
+$bounceback="./thestreet_approve.htm".qsa(array(error=>"-"));
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="UPDATE thestreet_articles SET is_deleted = '1' WHERE find_in_set(id,'$keys')";
+	exec_query_nores($qry);
+}
+
+
+if(is_array($approve))
+{
+	foreach($approve as $key=>$val)
+	{
+	  	 $sqlTSData 	= "select * from thestreet_articles where id=".$key;
+		 $resTSData		=  exec_query($sqlTSData,1);	
+		 if($resTSData && count($resTSData)>0)
+		 {
+			 	$title		=	htmlentities($resTSData['title'],ENT_QUOTES);
+		 		$sqlGetArticle="SELECT id from articles where title='".trim($title)."'";
+				$resTSArticle=exec_query($sqlGetArticle,1);
+				if(!($resTSArticle))
+				{
+					update_query('thestreet_articles',array(approved=>'1'),array(id=>$key));
+					
+					$objCont=new contributor();				
+					$article['title']   = htmlentities($resTSData['title'],ENT_QUOTES);
+					$contrName			= htmlentities($resTSData['contrib_name'],ENT_QUOTES);
+					$getContrbInfo		=	$objCont->getContributor($id=NULL,$contrName);
+					if($getContrbInfo && count($getContrbInfo)>0)
+					{
+						$contrib_name	=	$getContrbInfo['name'];
+						$contrib_id		=	$getContrbInfo['id'];
+					}
+					else
+					{
+						$cont = array();
+						$cont[name]	=	$contrName;
+						$cont[has_bio]	=	0;
+						$cont[suspended]	=	0;
+						$id=insert_query("contributors",$cont);
+						if($id)
+						{
+							$group_id	=	'5';
+							insert_query("contributor_groups_mapping",array("contributor_id"=>$id,"group_id"=>$group_id));
+						}
+						$contrib_id	=	$id;
+						
+					}
+					
+					$article['contrib_id']		=	$contrib_id;
+					$article['seo_title']		=	htmlentities($resTSData['title'],ENT_QUOTES);
+					$article['approved']		=	'0';
+					$article['sent']			=	'0';
+					$article['is_live']			=	'0';
+					$article['date']			=	date('Y-m-d H:i:s',strtotime($resTSData['date']));
+					$article['character_text']	=	htmlentities($resTSData['character_text'],ENT_QUOTES);
+					$body						=   trim($resTSData['body']);
+					$article['body']			=	addslashes($body);
+					$article['subsection_ids']	=	'49';
+					$article['contributor']		=	$contrName;
+					$article['layout_type']		=	'thestreet';
+					$article['keyword']			=	trim($resTSData['article_type']);
+					$arrTickers					= 	array();
+					$arrTickers					=	explode(",",trim($resTSData['tickers']));
+					if(empty($articleID))
+					{
+					
+							//htmlprint_r($article);
+							$id=insert_query("articles",$article);
+							$articleRevision['article_id']=$id;
+							$articleRevision['page_no']=1;
+							$articleRevision['revision_number']=1;
+							$articleRevision['body']=$article['body'];
+							$articleRevision['updated_by']='minyanville staff';
+							$articleRevision['updated_date']=mysqlNow();
+							//print_r($articleRevision);
+							if($articleRevision['body']!=""){
+								$revision_id=insert_query("article_revision",$articleRevision);
+							}
+						$objThread = new Thread();
+						$threadId=$objThread->post_thread($id);
+						if(empty($threadId)){
+							/*$this->error=1;*/
+							echo "There was an error while creating the discussion thread from this artcle. <br />Here are the details of the error:<br />".mysql_error();
+							return;
+						}
+							$obContent = new Content(1,$id);
+							$obContent->setArticleMeta();
+							insert_query("article_thestreet",array('article_id'=>$id,'thestreet_article_type'=>$resTSData['article_type']));
+							
+							setTSArticleTags($id,$arrTickers);
+					
+						}
+				}
+				else
+				{
+					location($bounceback.urlencode("Article Already Exist"));
+				}
+		}
+	} // End foreach	
+		
+	location($bounceback.urlencode("The articles were moved"));
+}
+
+function setTSArticleTags($id,$arrTickers)
+{
+		$sqlDelTags="delete from ex_item_tags where item_id='".$id."' and item_type='1'";
+		$resDelTags=exec_query($sqlDelTags);
+		foreach($arrTickers as $tag){
+			if(trim($tag)=="")
+					continue;
+			$sqlGetTag="SELECT id from ex_tags where tag='".trim($tag)."'";
+			$resGetTag=exec_query($sqlGetTag,1);
+			if(empty($resGetTag['id'])){
+				$isStock=is_stock(trim($tag));
+				$tagId=insert_query("ex_tags",array("tag"=>trim($tag),"type_id"=>count($isStock)));
+
+			}else{
+				$tagId=$resGetTag['id'];
+			}
+			$exItemTag['tag_id']=$tagId;
+			$exItemTag['item_id']=$id;
+			$exItemTag['item_type']='1';
+			insert_query("ex_item_tags",$exItemTag);
+		}
+	}
+
+
+if (count($delarticle))
+{
+location($bounceback.urlencode("The articles were deleted"));
+exit;
+}
+
+?>

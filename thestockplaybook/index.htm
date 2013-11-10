@@ -1,0 +1,56 @@
+<?php
+global $D_R,$HTHOST,$HTPFX;
+session_start();
+if(!$_SESSION['TheStockPlayBook'])
+{
+    header( "Location: http://mvp.minyanville.com/stock-playbook-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=thestockplaybook");
+    exit;
+}
+if($_SERVER['REQUEST_URI']=="/the-stock-play-book/")
+{
+      $v="2";
+}
+
+if(empty($_GET['v']) && $v==""){
+	header ('HTTP/1.1 301 Moved Permanently');
+  	header ('Location: /the-stock-play-book/');
+	exit;
+}
+
+$USER=new user();
+$isLogin = $USER->id;
+$hasTSP = $USER->is_theStockPlayBook();
+$hasTSPPremium=$USER->is_theStockPlayBookPremium();
+if($hasTSP || $hasTSPPremium){
+	header("Location:".$HTPFX.$HTHOST."/thestockplaybook/home.htm",TRUE,301);
+	exit;
+}
+include_once($D_R."/lib/thestockplaybook/_theStockPlaybookDesign.php");
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav","redesign");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","tsp");
+$pageName="thestockplaybook";
+include("../_header_no_nav.htm");
+
+$objTSPDesign= new theStockPlaybookDesign();
+?>
+<div class="tsp_outer_container"><!--  Ends in _footer.htm --> <?
+$obOuterTemplate->displayLoginDiv();
+?>
+<div class="tsp_container"><?
+$objTSPDesign->theStockPlayBookHeader();
+?>
+<div id="spb_container"><?
+$objTSPDesign->theStockPlayBookLeftContant();
+$objTSPDesign->theStockPlayBookRightContant();
+?>
+<div class="tsp_footer">
+<?
+$obOuterTemplate->footerSupportText();
+?>
+</div>
+</div>
+</div>
+<?
+include("../_footer.htm");
+
+?>

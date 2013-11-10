@@ -1,0 +1,387 @@
+@CHARSET "UTF-8";
+#content_iframe{
+	width:100%;
+	height:100%;
+}
+
+.main{
+	float:left;
+	width:955px;
+	margin:0px 20px 10px 20px;
+}
+
+.manage_required{
+	float:left;
+	font-weight:bold;
+}
+
+.required_symbol{
+	color:#FF0000;
+	font-size:16px;
+	font-weight:bold;
+}
+
+.subError{
+	color:#FF0000;
+	font-weight:bold;
+}
+	
+.innerDiv{
+	float:left;
+	width:900px;
+	margin:0px 0px 10px 0px;
+}
+
+.heading{
+	float:left;
+	width:200px;
+	font-weight:bold;
+}
+
+.innerDiv select{
+	float:left;
+}
+
+.innerDiv input{
+	float:left;
+	width:300px;
+}
+
+.editorPlan{
+	float:left;
+}
+
+.example{
+	float:left;
+	margin:0px 0px 0px 5px;
+}
+
+.bttn{
+	float:left;
+	width:900px;
+	margin:0px 0px 10px 0px;
+}
+
+.bttn input{
+	cursor:pointer;
+}
+
+/*******Subscriber Info***********/
+
+.usermain{
+	float:left;
+	width:955px;
+	margin:10px 20px 10px 20px;
+}
+
+.user_info{
+	float:left;
+	width:50%;
+}
+
+.product_info{
+	float:left;
+	width:100%;
+}
+
+.info_box{
+	float:left;
+	margin:0px 0px 10px 0px;
+}
+
+.info_label{
+	float:left;
+	width:100px;
+	font-weight:bold;
+}
+
+.info_box select{
+	float:left;
+}
+
+.info_box input{
+	float:left;
+	width:260px;
+}
+
+.user_info_label{
+	float:left;
+	width:50%;
+	font-weight:bold;
+	font-size:18px;
+	margin:0px 0px 10px 0px;
+}
+
+.user_product_label{
+	float:left;
+	width:300px;
+	font-weight:bold;
+	font-size:18px;
+}
+
+/* Subscription Report */
+.subReportMain{
+	float:left;
+	width:955px;
+	margin:0px 20px 20px 10px;
+}
+
+.subReportSearchBox{
+	float:left;
+	width:900px;
+	border:1px solid #fff;
+	border-radius:5px 5px 5px 5px;
+	background-color:#C0C0C0;
+}
+
+.subReportSearchLabel{
+	float:left;
+	clear:left;
+	font-weight:bold;
+	margin:5px 5px 0px 5px;
+}
+
+.searchFilters{
+	float:left;
+	width:890px;
+	margin:10px 5px 10px 5px;
+}
+
+.serchBase{
+	float:left;
+	width:223px;
+	margin:0px 18px 0px 0px;
+}
+
+.serchBaseMiddle{
+	float:left;
+	width:200px;
+	margin:0px 0px 0px 0px;
+}
+
+.serchBaseMiddleMarketingDashboard{
+	float:left;
+	width:223px;
+	margin:0px 0px 0px 0px;
+}
+
+.serchBaseTrial{
+	float:left;
+	width:100px;
+	margin:0px 40px 0px 0px;
+}
+
+.serchBaseTrial select{
+	float:left;
+	width:100px;
+	margin:4px 0px 0px 0px;
+}
+
+.serchTrialLast{
+	float:left;
+	width:100px;
+	margin:0px 0px 0px 0px;
+}
+
+.serchTrialLast select{
+	float:left;
+	width:100px;
+	margin:4px 0px 0px 0px;
+}
+
+.reportError{
+	color:#ff0000;
+	font-weight:bold;
+	text-align:center;
+	margin:5px 5px 0px 5px;
+}
+
+.goBttn{
+	cursor:pointer;
+	font-weight:bold;
+	margin:0px 10px;
+}
+
+.reportContent{
+	float:left;
+	width:955px;
+	/*border:1px solid #000000;
+	border-radius:5px 5px 5px 5px;*/
+	margin:10px 0px 10px 0px;
+}
+
+.reportHeadings{
+	float:left;
+	width:951px;
+	font-weight:bold;
+	font-size:16px;
+	background-color:#CEF6F5;
+}
+
+.reportData{
+	float:left;
+	width:951px;
+}
+
+.dwnloadBttn{
+	cursor:pointer;
+	font-weight:bold;
+}
+
+.recordCount{
+	width:190px;
+	float:left;
+	font-weight:bold;
+	margin:20px 10px 10px 0px;
+}
+
+.reportPagination{
+	cursor:pointer;
+	font-weight:bold;
+	font-size:14px;
+}
+
+.labelHeadingAsc{
+	width:100px;
+	height:28px;
+	cursor:pointer;
+	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_down.jpg') no-repeat 82px 8px;
+}
+
+.labelHeadingDesc{
+	width:100px;
+	height:28px;
+	cursor:pointer;
+	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_up.jpg') no-repeat 82px 8px;
+}
+
+.labelHeading{
+	width:80px;
+	height:28px;
+	cursor:pointer;
+}
+
+.labelHeadingNoSort{
+	width:80px;
+}
+
+.orderSpan{
+	float:right;
+	cursor:pointer;
+	margin:0px 5px 0px 0px;
+}
+
+.dataInfo{
+	float:left;
+	font-weight:bold;
+	margin:0px 10px 10px 0px;
+}
+
+.summaryWidth{
+	width:150px;
+	font-weight:bold;
+	border:1px solid grey;
+}
+.summaryWidthBlank{
+	width:30px;
+	border:1px solid grey;
+}
+.summaryContent{
+	width:900px;
+	margin:20px 0px 0px 0px;
+}
+
+.summaryWidthCount{
+	width:150px;
+	direction:rtl;
+	border:1px solid grey;
+}
+
+.summaryMiddleWidthHead{
+	width:100px;
+	font-weight:bold;
+	border:1px solid grey;
+}
+
+.summaryMiddleWidth{
+	width:50px;
+	direction:rtl;
+	border:1px solid grey;
+}
+
+.bttnDiv{
+	float:left;
+	margin:0px 384px 5px 384px;	
+}
+
+.selectProduct{
+	margin:4px 0px 0px 0px;	
+}
+
+/**** Refund Report *****/
+.refundSearchBox{
+	float: left;
+	width: 655px;
+	border: 1px solid white;
+	background-color: silver;
+	border-radius: 5px 5px 5px 5px;
+}
+
+.refundSearchLabel {
+	float: left;
+	clear: left;
+	font-weight: bold;
+	margin: 5px 5px 0px 15px;
+}
+
+.refundSearchFilters {
+	float: left;
+	width: 645px;
+	margin: 10px 5px 10px 15px;
+}
+
+.refundBttnDiv {
+	float: left;
+	width: 132px;
+	margin: 0px 254px 5px 254px;
+}
+
+.refundSummaryContent{
+	width:655px;
+	margin:20px 0px 0px 0px;
+}
+
+.refundSummaryWidth{
+	width:120px;
+	font-weight:bold;
+	border:1px solid grey;
+}
+
+.refundSummaryWidthCount {
+	width: 100px;
+	direction: rtl;
+	border: 1px solid grey;
+}
+
+.refundLabelHeading{
+	width:80px;
+	height:28px;
+	cursor:pointer;
+	padding:0px 5px 0px 5px;
+}
+
+.refundLabelHeadingDesc{
+	width:100px;
+	height:28px;
+	cursor:pointer;
+	padding:0px 0px 0px 5px;
+	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_up.jpg') no-repeat 82px 8px;
+}
+
+.refundLabelHeadingAsc{
+	width:100px;
+	height:28px;
+	cursor:pointer;
+	padding:0px 0px 0px 5px;
+	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_down.jpg') no-repeat 82px 8px;
+}

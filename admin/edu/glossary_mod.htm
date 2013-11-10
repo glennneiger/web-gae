@@ -1,0 +1,29 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+$bounceback="./edu-glossary.htm";
+
+if(!count($_POST)){
+	location($bounceback.qsa(array(error=>"No changes were made",id=>$id)));
+	exit;
+}
+
+$glossary = $_POST['glossary'];
+
+if($_POST['actionType']=='save'){
+	if($_POST['id']==''){
+		$id = insert_query("edu_glossary",$glossary);
+		location($bounceback.qsa(array(error=>"The term was created",id=>$id)));
+		exit;
+	}else{
+		update_query( "edu_glossary", $glossary, array(id=>$_POST['id']) );
+		location($bounceback.qsa(array(error=>"Your changes were saved",id=>$id)));
+		exit;
+	}
+}elseif($_POST['actionType']=='delete'){
+	del_query("edu_glossary","id",$_POST['id']);
+	location($bounceback.qsa(array(error=>"The glossary term was removed",id=>$_POST['id'])));
+	exit;
+}
+
+
+?>

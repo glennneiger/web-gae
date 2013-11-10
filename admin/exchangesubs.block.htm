@@ -1,0 +1,26 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+include_once("$D_R/admin/_authenticate.htm");
+
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+
+if(!$refer=base64_decode($refer))
+	$refer="exchangesubs.block.htm";
+
+if(!$id){
+	location($refer.qsa(array(error=>"Couldn't change. Didn't provide a subscription id")));
+	exit();
+}
+$subsid[id]=$_GET['id'];;
+	if($type==1){
+		$subs[is_blockip]=1;
+		update_query("subscription",$subs,$subsid);
+		location(urlqsa($refer,array(error=>"This IP has been blocked")));
+	}else{
+		$subs[is_blockip]=0;
+		update_query("subscription",$subs,$subsid);
+		location(urlqsa($refer,array(error=>"This IP has been unblocked")));
+	}
+?>

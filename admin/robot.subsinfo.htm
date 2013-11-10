@@ -1,0 +1,51 @@
+<?php
+set_time_limit(3600*60);//1 hour
+global $D_R;
+include_once("$D_R/lib/_via_data_lib.php");
+include_once("$D_R/lib/config/_via_config.php");
+$objVia= new Via();
+
+
+if($_SERVER['SERVER_NAME']=="admin.minyanville.com"){
+    $qry="select id,email,via_id from subscription where via_id<>'0' and via_id not in (select viaid from subscription_cust_info)";
+    
+    $getResult=exec_query($qry);
+    if(is_array($getResult)){
+   
+        foreach($getResult as $key=>$row){
+         $subId=$row['id'];
+            if($row['via_id']){
+                $getSql="select viaid from subscription_cust_info where viaid='".$row['via_id']."'";
+                $getSqlResult=exec_query($getSql,1);
+                if(empty($getSqlResult['viaid'])){
+                    $viaId=$row['via_id'];
+                    $arrayFields = array('customerIds'=>$viaId,'orderStatus'=>'ALL','orderItemTypeList'=>'','bEmanagerIds'=>TRUE);
+                    $userDetails=$objVia->getCustomerSubInfoReq($viaId,$arrayFields);
+                    $getSubCustInfo=$userDetails->CustomerSubInfoReqResult->CustomerSubInfo->customer;
+                    $getSubCustOrder=$userDetails->CustomerSubInfoReqResult->CustomerSubInfo->orders;
+                    $objVia->setSubscriptionCustIfo($getSubCustInfo);
+                    $objVia->setSubscriptionCustAddress($getSubCustInfo);
+                    $objVia->setSubscriptionCustOrder($getSubCustOrder,$subId);
+                    echo "<br>".'Record insert for via-id: '.$row['via_id'];
+                }else{
+                    echo "<br>".'Record already exist for via-id: '.$row['via_id'];
+                }
+                
+            }
+            
+            
+            
+        }
+    
+    }
+
+}else{
+
+    echo "Please run this script from admin server.";
+
+}
+
+exit;
+
+
+?>

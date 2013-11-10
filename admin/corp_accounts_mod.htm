@@ -1,0 +1,64 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+
+
+$bounceback="./corp_accounts.htm?error=";
+
+$corp = $_POST['corp'];
+$deluser = $_POST['deluser'];
+$new = $_POST['new'];
+$s_date_mo = $_POST['s_date_mo'];
+$s_date_day = $_POST['s_date_day'];
+$s_date_year = $_POST['s_date_year'];
+$e_date_mo = $_POST['e_date_mo'];
+$e_date_day = $_POST['e_date_day'];
+$e_date_year = $_POST['e_date_year'];
+
+/*========removing users==================*/
+if(is_array($deluser)){
+	$delids=implode(",",array_keys($deluser));
+		// Delete All assoicated users?
+		// XXX FIX ME
+	if(1) {
+
+		//remove admin accounts
+		$qry="DELETE from corp where find_in_set(id,'$delids') LIMIT ".count($deluser);
+		exec_query_nores($qry);		
+	}else{
+		echo "CAN'T REMOVE Accounts WHO with users!<br>";
+		flush();
+	}
+}
+/*===========creating a new user===============*/
+if($new[corp_login] && $new[corp_password] ){
+	$new[start_date]=sprintf("%4d-%02d-%02d",$s_date_year,$s_date_mo,$s_date_day);
+	$new[expire_date]=sprintf("%4d-%02d-%02d",$e_date_year,$e_date_mo,$e_date_day);
+	$qry="SELECT id FROM corp WHERE LOWER(corp_login)='".lc($new[corp_login])."'";
+	if(!num_rows($qry)){
+		$id=insert_query("corp",$new);
+	}else{
+		$error="${new[corp_login]} is already being used!";
+	}
+}
+
+/*==========updating existing users==============*/
+if(!empty($corp))
+{
+	foreach($corp as $c){
+	$id=$c[id];
+	$old_user=exec_query("SELECT * FROM corp WHERE id='$id'",1);
+	//username changed. make sure it's not taken already
+	if($old_user[corp_login]!=$c[corp_login]){
+		$qry="SELECT id FROM corp WHERE LOWER(corp_login)='".lc($c[corp_login])."'";
+		if(num_rows($qry)){
+			$error.="can't change <b>${old_user[corp_login]}</b> to <b>${c[corp_login]}</b>!<br>";
+			continue;
+		}
+	}
+	update_query("corp",$c,array(id=>$id));
+	}
+}
+
+/*==========redirect back==========================*/
+location($bounceback.urlencode($error));
+?>

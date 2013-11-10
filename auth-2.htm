@@ -1,0 +1,99 @@
+<?
+ob_start(); //For caching added
+global $_POST,$_COOKIE;
+session_start();
+session_cache_limiter('private');//this has to be after it's started
+session_set_cookie_params(10800,"/");
+include_once("lib/_auth.php");
+
+$refer = $_SERVER['HTTP_REFERER'];
+
+if($LOGOUT){
+	$USER=new user($_SESSION[EMAIL],$_SESSION[PASSWORD]);
+	//$USER->resetSession($KILL);
+	$USER->resetSession('1');
+	location($SIGNIN_URL);
+	exit();
+}else{
+	//login
+	//$refer=$refer?base64_decode($refer):$DEFAULT_URL;
+	//$refer=$refer?$refer:$DEFAULT_URL;
+	$refer=$pfx . "/";
+	list($e,$p)=array($_POST[email],$_POST[password]);
+	$USER = new user($e,$p);
+	$USER->resetAuthFields();//make curr user override existing
+	$USER->isDupeLogin();//updates authoritative user
+
+	// change for unsubscribe functionality for email alert
+	if($_GET['from']=="emailsetting"){
+		$refer=$pfx . "/subscription/register/controlPanel.htm";
+	}
+	
+	$loginquint = $USER->is_quint();
+	
+	if($loginquint){
+	set_sess_vars("EMAIL",$e);
+		set_sess_vars("PASSWORD",$p);
+		$url=substr($_SERVER['HTTP_REFERER'],26,4);
+		if($url=='/qp/'){
+			$refer = $_SERVER['HTTP_REFERER'];
+			location($refer);
+			exit();
+			}
+	}
+	
+	if($USER->isAuthed){
+		set_sess_vars("EMAIL",$e);
+		set_sess_vars("PASSWORD",$p);
+		if($USER->account_status=="disabled" && !$acctmod){
+		    $refer = $_SERVER['HTTP_REFERER'];  // change by Vijay
+			location($refer);
+			// $refer="/register/".convertUserType($USER->type)."/manage.htm";
+		}
+		if($_POST["setcookie"]){
+			mcookie("email",$e);
+			mcookie("password",$p);
+			mcookie("autologin",1);
+		}else{
+			mcookie("email");
+			mcookie("password");
+			mcookie("autologin");
+		}
+		if(isset($_POST['flag']) && trim($_POST['refer'])!='')
+		{
+			$refer=$_POST['refer'];
+		}
+		location($refer);
+		exit();
+	}
+	else if(!$USER->isActive)
+	{
+		$relative_url="/register/trial/account_inactive.htm";
+		header("Location: http://" . $_SERVER['HTTP_HOST']
+                   . rtrim(dirname($_SERVER['PHP_SELF']), '/\\')
+                   . "/" . $relative_url);
+	}
+	else if($USER->expired) {
+	 		$error='<HR>Your account has expired. To upgrade to a premium account, please fill out the form below or contact <a href=mailto:support@minyanville.com>support@minyanville.com</a><hr>';
+	}
+	else if($USER->notStarted) {
+		$error="This subscription isn't set to start until, please come back then, or create a new account<BR>\n";
+	}
+	if(!$USER->isAuthed){
+	    $url=substr($_SERVER['HTTP_REFERER'],-4);
+	    if($url=='?a=1'){ 
+			$refer = $_SERVER['HTTP_REFERER'];
+			
+		}else{		
+			$refer = $_SERVER['HTTP_REFERER'].''.'?a=1';
+
+		} 
+		location($refer);
+	}
+	set_sess_vars("EMAIL");
+	set_sess_vars("PASSWORD");
+	$rdir="/register/new/?email=$e&error=$error";
+	location($rdir);
+	unset($USER);
+}
+?>

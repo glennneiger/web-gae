@@ -1,0 +1,182 @@
+<?
+//phpAdServe zone ID
+
+$pageName = "cooperhome";
+$zoneIDSky = $SEC_TO_ZONE['articletop'];
+$zoneIDFooter = $SEC_TO_ZONE['articlefooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['articlefooter2'];
+$zoneIDBottom2 = $SEC_TO_ZONE['articlebottom2'];
+
+include_once("../lib/layout_functions.php");
+include_once("../_minyanville_header.htm");
+include_once("$D_R/lib/_auth.php");
+
+build_lang('cooperhome');
+global $ProfessorPerm,$lang;
+
+$USER=new user($_SESSION[EMAIL],$_SESSION[PASSWORD]);
+$ViaUSER=new Viauser($_SESSION[EMAIL],$_SESSION[PASSWORD]);
+
+$loginid = $USER->id;
+$strProfessorId =  getFlexfoliopageid('cooperhome');
+
+if(!$_SESSION['LoggedIn']){
+	echo '<div class="subs_common_middle_container" >
+	<div class="left_contant"><div class="cooper_container" ><font color="red">';
+	$url="$HTPFX$HTHOST/register/iboxindex.htm";$linkId="navlink";$label=$lang['Not_logged_In'];
+	echo iboxCall($linkId,$label,$url);
+	echo '</font></div></div></div>';
+
+
+} else{
+	$logincooper = $ViaUSER->is_cooper();
+	if(!$logincooper){
+		location("$HTPFX$HTHOST/register/manage_setting.htm");exit;
+	}
+}
+
+if (($_GET['a'] != "") && (is_numeric($_GET['a']))) {
+	$articleid = $_GET['a'];
+	$article = getArticlecooper($articleid);
+	if ($article != 0) {
+		$articleSet = true;
+	} else {
+		$articleSet = false;
+	}
+}
+
+//some old images will point to gazette/newsviews redirect this to articles/index.php
+$article['body'] = str_replace("gazette/newsviews/?id","articles/index/a",$article['body']);
+
+//those old links inside the body of the article shouldn't open in  a new window.
+//$article['body'] = str_replace("_blank","_self",$article['body']);
+
+$article['link'] = $HTNOSSLDOMAIN . makeArticleslink($article['id'],$article['keyword'],$article['blurb']);
+
+?>
+
+
+<!--<script language="javascript" type="text/javascript">
+function docKeyDown1(oEvent){ // controls keyboard navigation
+var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+var intKeyCode = oEvent.keyCode;
+var inc;
+if(intKeyCode==17){	inc=0;}
+if (inc==0){
+	if(intKeyCode==65 || intKeyCode==97 )	{
+		return(false);   //in case of IE & firefox1.5
+	}
+}
+
+}
+document.onselectstart=new Function("return false");
+document.onmousedown=new Function("return false");
+document.oncontextmenu=new Function("return false");
+document.onkeydown=docKeyDown1;
+
+function disableclick()
+{
+	document.onmousedown=new Function("return false");void(0);
+}
+function enableclick()
+{
+	document.onmousedown=new Function("return true");void(0);
+}
+</script>-->
+<!--Body area start from here-->
+<!--left contaner start from here-->
+<div class="subs_common_middle_container" >
+
+<?if($_SESSION['LoggedIn'] ){?>
+<div class="left_contant">
+
+<!---Cooper main start from here-->
+<div class="cooper_container" >
+<div class="cooper_common_title"><?= $article['title']; ?></div>
+<!--Cooper sub heading area start from here-->
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+  <tr>
+    <td colspan="2" class="cooper_sub_title"> </td>
+    </tr>
+  <tr>
+    <td colspan="2">
+			<?   echo displayAuthorLink($article['author'],$article['authorid']); ?>&nbsp;&nbsp;<?= $article['date']; 		?><a href="javascript:print(<?= $articleid; ?>);" target="_self"><img src="/images/icons/print-icon.gif" width="16" hspace="5" height="14" border="0"alt="Print" /> Print</a>
+	</td>
+    </tr>
+  	<tr><td> <?
+		if ($article['character_text'] != "") {	?>
+			<div class="balloonContainer"><table width="100%"><tr><td valign="middle" width="5%">
+			<img valign="bottom" src="<?= $IMG_SERVER . str_replace("characters","characters/",$article['imageURL']); ?>" width="70" height="77"></td>
+			<td valign=middle><?  howTalkBubble($article['character_text']); ?></td><?
+		}?>
+	</tr></table></div>
+
+      </td>
+	  </tr>
+    </table></td>
+  </tr>
+</table>
+
+<!--Cooper sub heading area end here-->
+
+<!--Cooper Article area start from here-->
+			<div class="cooper_article_main">
+			 <table width="590" align="left" border="0" cellspacing="0" cellpadding="0">
+			  <tr><td   valign="top"><?=$article['body'] ?></td> </tr>
+			  <tr><td   valign="top"><font color="red"><?= $article['position']; ?></font></td></tr>
+			  <tr><td   valign="top"><?=$article['disclaimer']; ?></td></tr>
+			</table>
+			</div>
+<!--Cooper Article area start from here-->
+
+<!--Cooper register area start from here-->
+
+
+
+</div>
+<!---Cooper main end here-->
+
+</div><!--left contaner end here-->
+
+<!--right contaner start from here-->
+<div class="right_contant"  >
+	<? prepareRelatedArticlesBox($article);
+	$oid = obejctid('Cooper');
+
+	if($_SESSION['LoggedIn']){
+		?><!--Cooper Recent Report box end here-->
+
+		<div class="search_alert">
+		<table width="300" border="0" cellpadding="3" cellspacing="5">
+		  <tr>
+		  <td colspan="2"><h2>alert search</h2> </td>
+		  <tr>
+			<td ><input name="coopersearch"  id ="coopersearch" class="quint_alert_input" type="text" /></td>
+			<td valign="top"><a href="#"><img src="<?=$IMG_SERVER?>/images/go.jpg" border="0" onclick="qpsearchalert('coopersearch','<?=$strProfessorId?>','qphome','<?=$oid?>');"/></a></td>
+		  </tr>
+		</table>
+
+		</div>
+		<?}?>	<!--Rss and Article alert start from here-->
+	<table width="100%" border="0" cellspacing="5" cellpadding="0" align="left">
+	  <tr>
+		<td><img src="<?=$IMG_SERVER?>/images/rss_logo.jpg" alt="Rss" /></td>
+		<td class="quick_links"><a href="<?$HTPFX.$HTHOST?>/rss/">add rss feed</a></td>
+		<td><img src="<?=$IMG_SERVER?>/images/article_alert_logo.jpg" alt="Free article" /></td>
+		<td class="quick_links"><?php
+			$url="$HTPFX$HTHOST/register/iboxindex.htm";$linkId="navlink";$label='free article alerts';echo iboxCall($linkId,$label,$url);?></td>
+	  </tr>
+	</table>
+
+	<!--Rss and Article alert start from here-->
+
+<?}?>
+</div>
+
+
+<!--right contaner end here-->
+
+
+<? include("$D_R/_minaynville_footer.htm");?>

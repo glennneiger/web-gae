@@ -1,0 +1,381 @@
+<?php
+global $HTPFX,$HTHOST,$D_R;
+include_once($D_R."/admin/_authenticate.htm");
+include_once($D_R."/lib/_misc.php");
+include_once($D_R."/lib/layout_functions.php");
+include_once($D_R."/lib/_content_data_lib.php");
+$bounceback=$HTPFX.$HTHOST."/admin/slideshow.htm";
+$obContent = new Content('slideshow');
+
+
+$slide = $_POST['slide'];
+$id = $_POST['id'];
+$slide_content = $_POST[slide_content];
+$pagetag = $_POST[pagetag];
+$deleteslideshow = $_POST['deleteslideshow'];
+$datefield = $_POST['datefield'];
+
+
+function image_upload($imagefile,$key){
+	  $imageLocation="/assets/slideshow/".str_replace(" ","_",$imagefile[0][name][slide_image][$key]);
+	  $gs_name = $newimg['tmp_name'];
+	  move_uploaded_file($gs_name,"gs://mvassets".$imgpath);
+	  return 1;
+}
+
+function thumbnail_upload($imagefile){
+ 	$imageLocation="/assets/slideshow/".str_replace(" ","_",$imagefile[0][name]);
+    $gs_name = $imagefile[0]['tmp_name'];
+	move_uploaded_file($gs_name,"gs://mvassets".$imageLocation);
+	return 1;
+}
+
+
+if(is_array($datefield) && $datefield[year]){
+	$date=time($datefield[hour],$datefield["min"],0, $datefield[mo],$datefield[day],$datefield[year]);
+	if($date==-1){
+		$date=$slide["date"];
+	}else{
+		$date=mysqlNow($date);
+	}
+	$slide["date"]=$date;
+}
+
+
+function is_slide_empty($slide,$slide_content,$id)
+{
+	global $D_R;
+	include_once("$D_R/lib/_news.php");
+
+   $bounceback=$HTPFX.$HTHOST."/admin/slideshow.htm";
+   $images[]=$_FILES;
+   for($var=1;$var<=$slide[total_slides];$var++)
+    {
+		$imgtype=$images[0][slide_content][type][slide_image][$var];
+
+	  	if($imgtype=="" || $imgtype=='image/gif' || $imgtype=='image/jpg' || $imgtype=='image/jpeg'|| $imgtype=='image/pjpeg' || $imgtype=='image/png' || $imgtype=='image/bmp' ){
+			//////////////////////
+		}
+		//if invalid image type is uploaded
+		else{
+			$msg="Upload Images only.";
+			header( "HTTP/1.1 301 Moved Permanently" );
+			header( "Location: ".$bounceback."?id=".$id."&error=".$msg."&contributor_id=".$slide['contrib_id']."&total_slides=".$slide[total_slides]);
+			exit;
+	   		/* persist("$bounceback".qsa(array(id=>$id,errorMsg=>$msg,contributor_id=>$slide['contrib_id'],total_slides=>$slide[total_slides]))
+			    ,array(spost=>serialize_post($_POST)));
+			   exit; */
+	  	}
+
+	  	if (($slide_content[body][$var]=="")||($slide_content[slide_title][$var]==""))
+	    {
+	    	$msg="One or more slides are missing title and/or body.";
+
+			header( "HTTP/1.1 301 Moved Permanently" );
+			header( "Location: ".$bounceback."?id=".$id."&error=".$msg."&contributor_id=".$slide['contrib_id']."&total_slides=".$slide[total_slides]);
+			exit;
+	 		/*  persist("$bounceback".qsa(array(id=>$id,errorMsg=>$msg,contributor_id=>$slide['contrib_id'],total_slides=>$slide[total_slides]))
+			    ,array(spost=>serialize_post($_POST)));
+			   exit; */
+	   }
+	 }
+
+ }
+//create thread object
+include_once($D_R.'/lib/_exchange_lib.php');
+$objThread = new Thread();
+
+if($id){
+
+	if($deleteslideshow){
+		del_query(slideshow,"id",$id);
+		del_query(slideshow_content,"slideshow_id",$id);
+        $obContent->removeUnapprovedItems($id,'slideshow');
+		header( "HTTP/1.1 301 Moved Permanently" );
+		header( "Location: ".$HTPFX.$HTHOST."/admin/approve_slideshow.htm?error=The Slideshow was deleted");
+		exit;
+	}else{
+	    $tagnames = $pagetag[tag];
+		$tagnames = $objThread->normalize_tag($tagnames);
+		$tagnames = $objThread->tag_space($tagnames);
+		//$tagname = $objThread->tag_length($tagnames);
+
+	    $pagedata = get_full_slideshow($id,0);
+	//	htmlprint_r($pagedata);
+
+		$pagedata_slides=get_full_slideshowcontent($id,0);
+		is_slide_empty($slide,$slide_content,$id);
+
+	//////////////////////// THUMBNAIL UPLOADING //////////////////////////////////////
+		$slidecontent[image][]=$_FILES[slide_thumbnail];
+		$imageStatus=thumbnail_upload($slidecontent[image]);
+		if($slidecontent[image][0][name]!=""){
+			$slide['slide_thumbnail']=$IMG_SERVER."/assets/slideshow/".$slidecontent[image][0][name];
+		}
+		unset($slidecontent[image]);
+	///////////////////////////////////////////////////////////////
+		update_query(slideshow,$slide,array(id=>$id));
+                $obContent->setSlideshowMeta($id);
+		  for($j=1;$j<=$pagedata[total_slides];$j++)
+				{
+					$slidecontent[slideshow_id]=$id;
+					$slidecontent[slide_title]=$slide_content[slide_title][$j];
+					$slidecontent[body]=$slide_content[body][$j];
+					$slidecontent[slide_no]=$j;
+
+					$slideid = $pagedata_slides[$j-1][id];
+
+					///////////////////////////////////////////////////////
+					$slidecontent[image][]=$_FILES[slide_content];
+					$imageStatus=image_upload($slidecontent[image],$j);
+					if($slidecontent[image][0][name][slide_image][$j]!=""){
+						$slidecontent[slide_image]=$IMG_SERVER."/assets/slideshow/".$slidecontent[image][0][name][slide_image][$j];
+					}
+					elseif($slide_content[slide_imagepath][$j]==""){
+						$slidecontent[slide_image]="";
+					}
+					else{
+						$slidecontent[slide_image]=$slide_content[slide_imagepath][$j];
+					}
+					unset($slidecontent[image]);
+					/////////////////////////////////////////////////////////
+					update_query(slideshow_content,$slidecontent,array(id=>$slideid));
+				 }
+
+			/**=================when a slide is newly added in an existing slideshow==================*/
+			if(($pagedata[total_slides]!=$slide[total_slides]) && ($slide[total_slides] >$pagedata[total_slides]))
+			 {
+			   for($j=$pagedata[total_slides]+1;$j<=$slide[total_slides];$j++)
+			    {
+				$slidecontent[slideshow_id]=$id;
+				$slidecontent[slide_title]=$slide_content[slide_title][$j];
+				$slidecontent[body]=$slide_content[body][$j];
+				$slidecontent[slide_no]=$j;
+
+				$slide_id=insert_query(slideshow_content,$slidecontent);
+				 }
+			 }
+			 /**=================when a slide is removed  in an existing slideshow==================*/
+		    elseif(($pagedata[total_slides]!=$slide[total_slides]) && ($slide[total_slides] < $pagedata[total_slides]))
+			 {
+			    for($j=$slide[total_slides];$j<$pagedata[total_slides];$j++)
+				 {
+				  $slideid = $pagedata_slides[$j][id];
+
+			     del_query(slideshow_content,"id",$slideid);
+				 }
+			  }
+			  		$tag = array();
+		$tags = array();
+		$pageitem=exec_query("SELECT id FROM ex_item_type WHERE item_table='slideshow'",1);
+
+		if($tagnames!=""){
+			$count=count($tagnames);
+			$searchtagqry = "select ex.tag as tag from ex_tags ex, ex_item_tags ext where ex.id = ext.tag_id and ext.item_id = '$id'";
+			$searchtagres=exec_query($searchtagqry);
+
+			foreach($searchtagres as $searchkey => $searchvalue)
+			{
+				for($i=0;$i<$count;$i++){
+
+					if (in_array($searchvalue[tag], $tagnames)){
+						//code to be build
+					}
+					else{
+
+						$newqry = "select id from ex_tags where tag='$searchvalue[tag]'";
+						$getids=exec_query($newqry);
+
+						foreach($getids as $getidkey => $getidval){
+							del_query("ex_item_tags", "tag_id", $getidval[id]);
+						}
+					}
+				}
+			}
+			foreach($tagnames as $tagkey => $tagvalue)
+			{
+
+				$extag=$objThread->tag_exists($tagvalue,$tags,$tag);
+
+				if ($extag==1){
+
+					$tagqry = "select id as tagid from ex_tags where tag='$tagvalue'";
+
+					foreach(exec_query($tagqry) as $tagqryrow){
+						$tagsid=$tagqryrow['tagid'];
+					}
+
+					$itemtagqry = "select id as tagid from ex_item_tags where tag_id='$tagsid' and item_id = '$id'";
+					$itemtagres=exec_query($itemtagqry);
+					$count=count($itemtagres);
+
+					if($count=='0'){
+						$tag[item_id] = $id;
+						$tag[item_type] = $pageitem[id];
+						$tag[tag_id] = $tagsid;
+						$exartid=insert_query("ex_item_tags", $tag);
+					}
+				}
+				else{
+
+					$exstock=$objThread->is_stock($tagvalue);
+
+					if ($exstock==1){
+						$tags[type_id] = '1';
+					}
+					else{
+						$tags[type_id] = '0';
+					}
+					$extagid=insert_query("ex_tags",$tags);
+					$tagqry = "select id as tagid from ex_tags where tag='$tagvalue'";
+
+					foreach(exec_query($tagqry) as $tagqryrow){
+						$tagsid=$tagqryrow['tagid'];
+					}
+
+					$itemtagqry = "select id as tagid from ex_item_tags where tag_id='$tagsid' and item_id = '$id'";
+					$itemtagres=exec_query($itemtagqry);
+					$count=count($itemtagres);
+
+					if($count=='0'){
+						$tag[item_id] = $id;
+						$tag[item_type] = $pageitem[id];
+						$tag[tag_id] = $tagsid;
+						$exartid=insert_query("ex_item_tags", $tag);
+					}
+				}
+			}
+		}
+		else{
+
+			$itemtagqry = "select id from ex_item_tags where item_id = '$id'";
+			$getids=exec_query($itemtagqry);
+
+			foreach($getids as $getidkey => $getidval){
+				del_query("ex_item_tags", "id", $getidval[id]);
+			}
+
+		}
+
+		$item_type_id=$objThread->get_object_type($itemtype);
+
+		$tags = $objThread->get_tags_on_objects($id, $item_type_id);
+
+		// Tag Entries
+		foreach($tags as $key=>$val){
+			$thread['tag_id']=$val[id];
+			$tagid=$thread['tag_id'];
+			$thread['item_id']=$threadid;
+			$thread['item_type']="4";
+			$threadTagqry = "select id from ex_item_tags where tag_id='$val[id]' and item_id = '$threadid[id]'";
+
+			$threadTagres=exec_query($threadTagqry);
+			$count=count($threadTagres);
+
+			if($count=='0'){
+				$thread['item_id']=$threadid[id];
+				$thread['tag_id']=$val[id];
+				$thread['item_type']="4";
+				$threadTag=insert_query("ex_item_tags", $thread);
+			}
+
+		}
+		$msg="The Slideshow was updated";
+	}
+}else{
+    is_slide_empty($slide,$slide_content,$id);//to check whether any slide is empty
+
+	//////////////////////// THUMBNAIL UPLOADING //////////////////////////////////////
+	 $slidecontent[image][]=$_FILES[slide_thumbnail];
+
+	$imageStatus=thumbnail_upload($slidecontent[image]);
+
+	if($slidecontent[image][0][name]!=""){
+		$slide['slide_thumbnail']=$IMG_SERVER."/assets/slideshow/".$slidecontent[image][0][name];
+	}
+	unset($slidecontent[image]);
+
+	///////////////////////////////////////////////////////////////
+	$id=insert_query('slideshow',$slide);
+
+	$no_of_slides=$slide[total_slides];
+	for($j=1;$j<=$no_of_slides;$j++)
+	{
+		$slidecontent[slideshow_id]=$id;
+		$slidecontent[slide_title]=$slide_content[slide_title][$j];
+		$slidecontent[body]=$slide_content[body][$j];
+
+		$slidecontent[slide_no]=$j;
+		//////////////////////////////////////////////////////////////
+		$slidecontent[image][]=$_FILES[slide_content];
+		$imageStatus=image_upload($slidecontent[image],$j);
+		if($slidecontent[image][0][name][slide_image][$j]!=""){
+			$slidecontent[slide_image]=$IMG_SERVER."/assets/slideshow/".$slidecontent[image][0][name][slide_image][$j];
+		}
+		unset($slidecontent[image]);
+		///////////////////////////////////////////////////////////////
+		$slide_id=insert_query(slideshow_content,$slidecontent);
+	 }
+
+
+ 	$tagnames = $pagetag[tag];
+	$tagnames = $objThread->normalize_tag($tagnames);
+	$tagnames = $objThread->tag_space($tagnames);
+
+	// $tagname = $objThread->tag_length($tagnames);
+    $tag = array();
+    $tags = array();
+	$pageitem=exec_query("SELECT id FROM ex_item_type WHERE item_table='slideshow'",1);
+	if($tagnames!=""){
+		foreach($tagnames as $tagkey => $tagvalue){
+			$extag=$objThread->tag_exists($tagvalue,$tags,$tag);
+
+			if ($extag==1){
+				$tagqry = "select id as tagid from ex_tags where tag='$tagvalue'";
+				foreach(exec_query($tagqry) as $tagqryrow){
+						$tag[tag_id]=$tagqryrow['tagid'];
+				}
+				$tag[item_id] = $id;
+				$tag[item_type] = $pageitem[id];
+				$strQry = "select tag_id from ex_item_tags where tag_id = $tag[tag_id] and item_id = $id";
+				$strResult = exec_query($strQry);
+				if(count($strResult)==0){
+					$exartid=insert_query("ex_item_tags",$tag);
+				}
+			}
+			else{
+
+				$exstock=$objThread->is_stock($tagvalue);
+				if ($exstock==1){
+					$tags[type_id] = '1';
+				}
+				else{
+					$tags[type_id] = '0';
+				}
+				$extagid=insert_query("ex_tags",$tags);
+		 		$tagsstr = "select id as tagid,tag,type_id from ex_tags where tag = '$tagvalue'";
+				$tagsres = exec_query($tagsstr);
+				foreach(exec_query($tagsstr) as $tagrow){
+					$tagid=$tagrow['tagid'];
+					$tag[tag_id] = $tagid;
+				}
+				$tag[item_id] = $id;
+				$tag[item_type] = $pageitem[id];
+
+				$strQry = "select tag_id from ex_item_tags where tag_id = $tag[tag_id] and item_id = $id";
+				$strResult = exec_query($strQry);
+				if(count($strResult)==0){
+					$exartid=insert_query("ex_item_tags",$tag);
+				}
+			}
+		}
+                $obContent->setSlideshowMeta($id);
+	}
+	$msg="The Slide show was created";
+}
+
+header( "HTTP/1.1 301 Moved Permanently" );
+header( "Location: ".$bounceback."?id=".$id."&error=".$msg."&contributor_id=".$slide['contrib_id']."&total_slides=".$slide[total_slides]);
+exit;
+
+?>

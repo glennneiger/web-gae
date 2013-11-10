@@ -1,0 +1,68 @@
+<?php
+global $is_ssl,$IMG_SERVER,$HTHOST,$HTNOSSLDOMAIN,$HTPFXSSL;
+include($D_R."/lib/elliott-wave-insider/_elliottWave_data_lib.php");
+$objElliotWaveData = new elliottWaveData('elliot_alert');
+
+$data = $objElliotWaveData->getElliottAlertDetails($id);
+$breakPos = strpos($data['body'],'<br /><br />');
+$words=explode(" ",$data['body'],51);
+
+unset($words[50]);
+if($breakPos>1){
+        $body = substr($data['body'],$breakPos);
+}else{
+        $body=implode(" ",$words);
+}
+$sql="select url from content_seo_url where item_id='".$id."' and item_type='30'";
+$url=exec_query($sql);
+$url=$url[0][url];
+$copyriteYear = date('Y');
+?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Elliott Wave Insider</title>
+</head>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
+<style>
+h1{
+padding: 0px;
+margin: 5px 0px 0px 0px;
+}
+h2{
+padding: 0px;
+margin: 5px 0px 0px 0px;
+}
+h3{
+padding: 0px;
+margin: 5px 0px 0px 0px;
+}
+</style>
+<body style="background-color:#fff; margin:0px 0px; padding:0px 0px; font-family:Arial, Helvetica, sans-serif;">
+<!--Start -->
+<center>
+<div style="width:600px; padding:10px 10px; text-align:left; line-height:18px;">
+    <!--Top Start -->
+	<div style="width:600px; float:left;">
+        <img src="<?=$IMG_SERVER?>/images/elliott-wave-insider/ewi_email-logo.jpg" align="left" width="172" height="54" />
+        <img src="<?=$IMG_SERVER?>/images/elliott-wave-insider/logo_mvil.gif" align="right" width="77" height="31" />
+    </div>
+    <!--Middle Start -->
+    <div style="float:left; background-color:#fafafa; border:1px solid #f3f3f3; padding:18px 18px; margin:15px 0px 0px 0px; width:600px;">
+    	<h1 style="float:left; font-size:20px; color:#333333; margin:0px 0px 10px 0px; padding:0px;width:600px;"><?=$data['title']?></h1>
+    	<div style="float:left; font-size:13px; padding:0px; margin:10px 0px;width:600px;"><?=$body?></div>
+        <center><a href="<?=$HTPFX.$HTHOST.$url?>"><img src="<?=$IMG_SERVER?>/images/peter-tchir/bttn-readmore.gif" style="margin:10px 0px;" width="200" height="42" /></a></center>
+    </div>
+    <!--Footer Start -->
+     <div style="float:left; font-size:11px; color:#737373; line-height:15px;">
+    	<p><i>Copyright &copy; <?=$copyriteYear;?> Minyanville Media, Inc., All rights reserved.</i></p>
+    </div>
+</div>
+</center>
+
+<!--End -->
+</body>
+</html>

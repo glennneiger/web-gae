@@ -1,0 +1,118 @@
+<?php
+$startin =1;
+$trackname = 'facebook';
+global $HTPFX,$HTHOST;
+?>
+<link href="<?=$HTPFX.$HTHOST?>/css/fb-connect.css" rel="stylesheet" type="text/css" />
+<div class="Fb_iboxmain" id="fb_mv_register">
+<div class="Mv_fbheader">
+<div class="Mv_fbheader_left">Just a few more things... </div>
+<div class="Mv_fbheader_right"><img src="http://storage.googleapis.com/mvassets/images/tickertalk/mv_Fb_connect.gif" align="left" hspace="10" alt="Minyanville Facebook Connect" border="0" />
+<a href="javascript:chkUserFb();"><img src="<?=$IMG_SERVER?>/images/tickertalk/closeLogin.jpg" border="0"  vspace="10" align="top"/></a>
+</div>
+</div>
+
+
+<div class="Common_rows">
+<div id="errmsg"  class="FB_ticker_error"></div>
+<div class="left">
+Enter Email
+<div class="signin_account"><a onclick="javascript:displayFBMVLogin(1);return true;">Have a Minyanville account already?</a></div>
+</div>
+<div class="right">
+<input type="text" name="email" id="email" value=""  tabindex="<?=$startin+1;?>">
+</div>
+</div>
+
+<div class="Common_rows">
+<div class="left">
+Create Password 
+</div>
+<div class="right">
+<input type="password" name="pwd" id="pwd" tabindex="<?=$startin+2;?>">
+</div>
+</div>
+
+<div class="Common_rows">
+<div class="left">
+Follow your Friends?<br />
+<div class="FB_title">
+(Friends on Facebook connected to Minyanville)
+</div>
+</div>
+<div class="right">
+<input type="checkbox" style="margin-left:0px;padding-left:0px;" name="followfrnd" id="followfrnd" checked="checked" tabindex="<?=$startin+3;?>" > 
+</div>
+</div>
+
+<div class="Common_rows">
+<div class="left">
+Send me Minyanville email alerts? 
+</div>
+<div class="right">
+<input type="checkbox" name="emailalert" id="emailalert" style="margin-left:0px;padding-left:0px;" checked="checked" tabindex="<?=$startin+4;?>" >
+</div>
+</div>
+<div class="Common_rows">
+<div class="left">
+Publish My Posts on Facebook
+</div>
+<div class="right">
+<input type="checkbox" name="publish_post" id="publish_post" style="margin-left:0px;padding-left:0px;" checked="checked"  tabindex="<?= $startin+5;?>" >
+</div>
+</div>
+
+<div class="Common_rows">
+<div class="left">
+I agree to the
+<span class="FB_terms">
+<a onclick="window.open('<?=$HTPFX.$HTHOST?>/community/exchange_register/Subscription-Agreement.html','terms','width=560,height=500,resizable=1,scrollbars=1')"  class="FB_title">Terms of Use</a></span>
+
+</div>
+<div class="right">
+<input type="checkbox" name="tc" id="tc" style="margin-left:0px;padding-left:0px;" checked="checked" tabindex="<?= $startin+6;?>" >
+
+<img src="<?=$IMG_SERVER?>/images/tickertalk/register_fb.gif" tabindex="<?= $startin+7;?>" onClick="validateFbUser('<?=$trackname?>');"  alt="Register" vspace="5" align="absmiddle"  style="padding-left:51px"  border="0"/>
+
+</div>
+</div>
+</div>
+
+
+<div id="fb_mv_login" class="Fb_iboxmain_login_outer" style="display:none;">
+<div class="Fb_iboxmain">
+<div class="Mv_fbheader">
+<div class="Mv_fbheader_left">Sign-in</div>
+<div class="Mv_fbheader_right"><img src="<?=$IMG_SERVER?>/images/tickertalk/mv_Fb_connect.gif" align="left" hspace="10" alt="Minyanville Facebook Connect" border="0" />
+<a onclick="javascript:chkUserFb();"><img src="<?=$IMG_SERVER?>/images/tickertalk/closeLogin.jpg" border="0"  vspace="10" align="top"/></a>
+</div>
+</div>
+
+
+<div class="Common_rows_login">
+<div id="errmsglogin"  class="FB_ticker_error"></div>
+<div class="left">
+Enter Email
+</div>
+<div class="right">
+<input type="text" name="fbuid" id="fbuid" value="" onclick="" tabindex="10">
+</div>
+</div>
+
+<div class="Common_rows_login">
+<div class="left">
+Enter Password 
+</div>
+<div class="right">
+<input type="password" name="fbpwd" id="fbpwd" tabindex="11">
+</div>
+</div>
+
+<div class="Common_rows_login">
+<div class="right">
+<img src="<?=$IMG_SERVER?>/images/tickertalk/Login_FBC.gif" tabindex="12" onClick="doFBLogin();"  alt="Login" vspace="5" align="absmiddle"  border="0"/>
+
+</div>
+</div>
+</div>
+</div>

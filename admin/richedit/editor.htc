@@ -1,0 +1,479 @@
+<HTML xmlns:ie>
+
+<?import namespace=ie implementation="seperator.htc" />
+<?import namespace=ie implementation="colorOptions.htc" />
+
+<public:component tagName=mailEditor>
+	<public:defaults style="cursor:default;" viewLinkContent/>
+	<public:attach event=oncontentready onevent=Init() />
+	<public:method name=getEditBox />
+	<public:method name=pasteCode />
+	<public:method name=getDocument />
+	<public:method name=getLinkSelection />
+	<public:property name=docsource get=returnDS put=setDS />
+</public:component>
+
+
+<STYLE>
+.buttons {height:25;width:25;margin-left:4;} 
+</style>
+
+<SCRIPT language=javascript>
+
+var htmlmode=true;
+var szdocsource = "";
+if(typeof(hideimage)=="undefined")
+	hideimage=false;
+
+function getEditBox(){
+	return editBox;
+}
+
+function getDocument(){
+	return document;
+}
+
+ function controlSelect(){
+  	event.srcElement.scrollIntoView(false)
+ }
+
+function Init(){
+  element.document.execCommand("2D-Position",false,false);
+  element.document.execCommand("LiveResize",false,false);
+  element.document.execCommand("MultipleSelection",false,false);
+
+  
+
+  
+  with(element.style)
+  {
+  	marginTop = 30;
+  	marginTop = 0;
+  	marginLeft = 0;
+  	backgroundColor = "#EEEECC";
+  	border = "1 solid black";
+	
+  }
+  editBox.ondragenter=function(){
+  	editBox.contentEditable=false;
+  }
+  editBox.ondragleave=function(){
+  	editBox.contentEdiable=true;
+  }
+  editBox.onclick=function(){
+  	editBox.contentEditable=true;
+  }
+
+  
+  with(document.body.style)
+  {
+	padding = 2;
+  	width = element.document.body.clientWidth * 0.82;
+  	height = element.document.body.clientHeight * 0.6;
+  }
+  
+  editBox.content = false;
+  try{
+	  editBox.style.height=(element.style.pixelHeight-document.all("tools").offsetHeight-10)
+  }catch(e){
+  	void(0);
+  }
+  szdocsource = returnDS();//editBox.innerHTML;
+	
+}
+
+function toggleHTML(){
+	if(htmlmode){
+		editBox.innerText=fixUrl(editBox.innerHTML);
+		htmlmode=false;
+		editBox.style.backGroundColor="#eee";
+	}else{
+		editBox.innerHTML=fixUrl(editBox.innerText);
+		htmlmode=true;
+	}
+		
+}
+
+function striphost(urlStr){
+	var loc="http://"+location.hostname;
+	if(location.port)loc+=":"+location.port
+	if(urlStr.indexOf(loc)>-1)
+		return urlStr.substring(loc.length);
+	return urlStr;
+}
+
+
+
+function makeLink(){
+	var txtlink=getLinkSelection();
+	window["urlVal"]=window["targetVal"]="";
+	if(!txtlink)return;
+	if(txtlink.tagName=="A"){
+		window["urlVal"]=striphost(txtlink.href);
+		if(txtlink.target)
+			window["targetVal"]=txtlink.getAttribute("target")
+	}
+	var lnk=window.showModalDialog("./link_dlg.htm",
+									window,
+									"dialogHeight:200px;dialogWidth:400px;status:0;resizable:1");
+	editBox.setActive();
+	if(typeof(lnk)=="undefined")return;
+	if(!lnk)return;
+	if(typeof(lnk["URL"])=="undefined")lnk["URL"]=0;
+	if(typeof(lnk["TARGET"])=="undefined" || typeof(lnk["target"])=="boolean")
+		lnk["TARGET"]=0;
+
+	document.execCommand("Unlink");//reset the link and rebuild it...bad as elements could be lost
+	if(!lnk["URL"])
+		return;
+	document.execCommand("CreateLink",false,lnk["URL"]);
+	txtlink=getLinkSelection();
+	if(lnk["TARGET"]){
+		txtlink.setAttribute("target",lnk["TARGET"],0);	
+	}
+}
+function uploadFile(){
+	var wnd=window.open("upload_dlg.htm","imgWnd","width=400,height=352,status=1,resizable=1,scrollbars=1");
+	
+}
+function getLinkSelection(){
+	var txtlink=document.selection.createRange();
+	if(!txtlink)return;
+	var txtlink=(document.selection.type=="Control")?txtlink.item(0):txtlink.parentElement();
+	if(document.selection.type=="Control"){
+		if(txtlink.parentNode.tagName=="A")txtlink=txtlink.parentNode;
+		if(txtlink.tagName=="A")return txtlink;
+	}
+	return txtlink;
+}
+
+function makeImage(){
+	if(typeof(img_dir)=="undefined")img_dir="";
+	var dlgUrl="img_dlg.htm?img_dir="+img_dir
+	var wnd=window.open(dlgUrl,"imgWnd","width=610,height=412,status=1,resizable=1,scrollbars=1");
+	
+}
+function pasteCode(code){
+	editBox.setActive();
+	var rng=document.selection;
+	if(typeof(rng)=="undefind" || rng==null)return;
+	if(rng.type=="Control")
+		rng.clear();
+	rng.createRange().pasteHTML(code);
+}
+
+function insertHR(){
+	pasteCode("&nbsp;<HR width=\"100%\" size=1>");
+}
+function editorPaste(){
+	pasteCode(window.clipboardData.getData("Text").replace(/\n/g,"<br>"));
+	return;
+	editBox.setActive();
+	var rng=document.selection;
+	if(rng==null)return;
+	rng=rng.createRange();
+	if(rng==null)return;
+	rng.pasteHTML(window.clipboardData.getData("Text").replace(/\n/g,"<br>"));
+}
+
+function font_nameChange(){
+  document.execCommand("FontName", false, fontBox[fontBox.selectedIndex].value);
+ 	editBox.content = false;
+ 	szdocsource = returnDS();//editBox.innerHTML;
+	//editBox.focus();
+}
+
+function font_sizeChange(){
+  document.execCommand("FontSize", false, sizeBox[sizeBox.selectedIndex].value);
+  editBox.content = false;
+  szdocsource = returnDS();//editBox.innerHTML;
+	//editBox.focus();
+}
+
+function setFocusToDocument(){
+	editBox.content = false;
+	szdocsource = returnDS();//editBox.innerHTML;
+	//editBox.focus();
+}
+
+
+function DoVertical()
+{
+	window.status = editBox.style.writingMode;
+	if (editBox.style.writingMode == 'tb-rl')
+	editBox.style.writingMode = 'lr-tb';
+		else
+	editBox.style.writingMode = 'tb-rl';
+	editBox.content = false;
+	
+	szdocsource = returnDS();	//editBox.innerHTML;
+	editBox.setActive();
+}
+
+function fixUrl(urlval){
+	var loc="http://"+location.hostname
+	if(location.port)
+		loc+=":"+location.port;
+	while(urlval.indexOf(loc)>-1){
+		urlval=urlval.replace(loc,"");
+	}
+	urlval=urlval.replace(/\/admin\/richedit\/?/g,"");
+	return urlval;
+}
+
+function returnDS(){
+	szdocsource = htmlmode?editBox.innerHTML:editBox.innerText;
+	return fixUrl(szdocsource);
+}
+
+function setDS(newContent){
+	if(!newContent)
+		newContent=fixUrl(editBox.innerHTML);
+	editBox.innerHTML=fixUrl(newContent);
+}
+
+var activeateCount = 0;
+
+
+function editorKeyPress(){
+	editBox.content = true;
+	editBox.contentEditable=true;
+}
+
+function editorActive(){
+	editBox.content = false;
+	szdocsource =returnDS();// editBox.innerHTML;
+}
+
+function setDocumentProperties(szIdentifier){
+	switch (szIdentifier)
+	{
+		case "Bold":
+			rVal = document.execCommand("Bold");
+			break;
+		case "Italic":
+			rVal = document.execCommand("Italic");
+			break;
+		case "Underline":
+			rVal = document.execCommand("Underline");
+			break;
+		case "StrikeThrough":
+			rVal = document.execCommand("StrikeThrough");
+			break;
+		case "JustifyLeft":
+			rVal = document.execCommand("JustifyLeft");
+			break;
+
+		case "JustifyCenter":
+			rVal = document.execCommand("JustifyCenter");
+			break;
+			
+		case "JustifyRight":
+			rVal = document.execCommand("JustifyRight");
+			break;
+
+		case "InsertUnorderedList":
+			rVal = document.execCommand("InsertUnorderedList");
+			break;
+
+		case "InsertOrderedList":
+			rVal = document.execCommand("InsertOrderedList");
+			break;
+
+		case "Outdent":
+			rVal = document.execCommand("Outdent");
+			break;
+
+		case "Indent":
+			rVal = document.execCommand("Indent");
+			break;
+		
+		case "Cut":
+			rVal = document.execCommand("Cut");
+			break;
+
+		case "Copy":
+			rVal = document.execCommand("Copy");
+			break;
+
+		case "Paste":
+			//rVal = document.execCommand("Paste");
+			editorPaste();
+			break;
+
+		case "SubScript":
+			rVal = document.execCommand("SubScript");
+			break;
+
+		case "SuperScript":
+			rVal = document.execCommand("SuperScript");
+			break;
+
+		case "InsertHorizontalRule":
+			rVal = document.execCommand("InsertHorizontalRule");
+			break;
+
+		case "FontColor":
+			rVal = document.execCommand("ForeColor",false,event.srcElement.selectedColor);
+			break;
+
+		case "BackColor":
+			rVal = document.execCommand("BackColor",false,event.srcElement.selectedColor);
+			break;
+		case "ToggleHTML":
+			toggleHTML()
+			break;
+		case "MakeLink":
+			makeLink();
+			/*rVal = document.execCommand("CreateLink",true);*/
+			break;
+			break;
+		case "InsImg":
+			makeImage();
+			break;
+		case "InsFile":
+			uploadFile();
+			break;
+
+	}
+	
+	setFocusToDocument();
+}
+
+
+
+function button_mouse_over()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#bfbfbf";
+		borderTopColor = "white";
+		borderLeftColor = "white";
+		borderRightColor = "#dfdfdf";
+		borderBottomColor = "#dfdfdf";
+		borderWidth = 1.5;
+		borderStyle = "outset";
+	}
+}
+
+function button_mouse_out()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#dfdfdf";
+		borderWidth = 0;
+		borderStyle = "none";
+	}
+}
+
+function button_down()
+{
+	src = event.srcElement;
+	with(src.style)
+	{
+		borderColor = "#bfbfbf";
+		borderWidth = 1.5;
+		borderStyle = "inset";
+	}
+}
+</SCRIPT>
+
+<BODY style="margin:0px;height:100%">
+<div id="container">
+	<span id="tools">
+	<div id=fileToolbar align=left style="postion:absolute;margin-left:2;margin-top:2;margin-right:2;padding:2;border: 2 outset #EEEEee;overflow:auto;" >
+		 <span class=buttons unselectable="On"><img class=imgs unselectable="On" src="images\tool-cut.gif" onclick="setDocumentProperties('Cut')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span>
+
+		<span class=buttons unselectable="On"><img class=imgs unselectable="On" src="images\form-copy.gif" onclick="setDocumentProperties('Copy')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span>
+
+		<span class=buttons unselectable="On"><img class=imgs unselectable="On" src="images\paste.gif" onclick="setDocumentProperties('Paste')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span> 
+
+		<span class=buttons unselectable="On" Title="Bold"><img class=imgs unselectable="On" src="images\form-bold.gif" onclick="setDocumentProperties('Bold')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()></span>
+		<span class=buttons unselectable="On" Title="Italic" onclick="setDocumentProperties('Italic')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-italic.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Underline" onclick="setDocumentProperties('Underline')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-under.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Strikethrough" onclick="setDocumentProperties('StrikeThrough')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-strike.gif"></span>
+
+		<span class=buttons unselectable="On" Title="SubScript" onclick="setDocumentProperties('SubScript')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_sub_script.gif"></span>
+
+		<span class=buttons unselectable="On" Title="SuperScript" onclick="setDocumentProperties('SuperScript')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_super_script.gif"></span>
+
+		<span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Align Left" onclick="setDocumentProperties('JustifyLeft')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-justify_left.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Align Center" onclick="setDocumentProperties('JustifyCenter')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-justify_center.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Align Right" onclick="setDocumentProperties('JustifyRight')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-justify_right.gif"></span>
+
+		<span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Unordered Bullets" onclick="setDocumentProperties('InsertUnorderedList')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-bullist.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Ordered Bullets" onclick="setDocumentProperties('InsertOrderedList')"onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-numlist.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Decrease Indent" onclick="setDocumentProperties('Outdent')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-deindent.gif"></span>
+
+		<span class=buttons unselectable="On" Title="Increase Indent" onclick="setDocumentProperties('Indent')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-inindent.gif"></span>
+
+		<!-- this seems to be breaking when it's surrounded by formatting tags <strong></strong><EM></EM> etc.
+<span class=buttons unselectable="On" Title="Horizontal Line" onclick="setDocumentProperties('InsertHorizontalRule')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_line.gif"></span>
+ -->
+ 	<span class=buttons unselectable="On" Title="Insert Link" onclick="setDocumentProperties('MakeLink')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images/form-link.gif"></span>
+
+ 
+	<span class=buttons unselectable="On" Title="Toggle HTML Mode" onclick="setDocumentProperties('ToggleHTML')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\form-html.gif"></span>
+
+
+	<span class=buttons unselectable="On" Title="Insert a Graphic" onclick="setDocumentProperties('InsImg')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out() style="display:expression(hideimage?'none':'')"><img class=imgs unselectable="On" src="images\tool-image.gif"></span>	
+
+	<span class=buttons unselectable="On" Title="Upload a file" onclick="setDocumentProperties('InsFile')" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool-file.gif"></span>	
+
+<!--
+		<span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Vertical Text" onclick="DoVertical()" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_vertical.gif"></span>		 -->
+	</div>
+
+<!-- Formatting Tool Bar -->
+<!-- 
+	<div id=formatToolbar align=left style="padding:2;margin-left:2;margin-right:2;border: 2 outset #EEEECC;overflow:"hidden";width:100" >
+	
+
+		<span unselectable="On"><ie:seperator></ie:seperator></span>
+		<span class=buttons unselectable="On" Title="Font Color" onclick="javascript:fcolors.showPopUp()" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_font_color.gif"><ie:colorOptions id=fcolors oncolorSelected="setDocumentProperties('FontColor')"></ie:colorOptions></span>	
+	
+		<span class=buttons unselectable="On" Title="Background Color" onclick="javascript:bcolors.showPopUp()" onmouseover=button_mouse_over() onmouseup=button_mouse_over() onmousedown=button_down() onmouseout=button_mouse_out()><img class=imgs unselectable="On" src="images\tool_fill_color.gif"><ie:colorOptions id=bcolors oncolorSelected="setDocumentProperties('BackColor')"></ie:colorOptions></span>	 -->	
+
+	<!-- <span style="margin-left:6" unselectable="On"><ie:seperator></ie:seperator></span>
+		<span style="position:relative;margin-left:6;top:-4" >
+			 	<select id=fontBox size=1 unselectable="On" onchange=font_nameChange()>
+				<option value="Arial">Arial
+				<option value="Courier">Courier
+				<option value="Garamond">Garamond
+				<option value="Tahoma">Tahoma
+				<option value="Times New Roman">Times New Roman
+				<option value="Verdana">Verdana
+			</select> 
+
+			<select id=sizeBox size=1 unselectable="On" onchange=font_sizeChange()>
+				<option value=0>Size
+				<option value=1>1
+				<option value=2 selected=true>2
+				<option value=3>3
+				<option value=4>4
+				<option value=5>5
+				<option value=6>6
+				<option value=7>7
+			</select>
+		</span>
+	</div>  -->
+</div>
+</span>
+	
+	<div id=editBox contenteditable align=left style="width:100%;height:100%;background-color:ivory; padding:2;border:2 inset #dfdfdf;overflow:auto;font-family:arial" onkeypress="editorKeyPress()" onactivate="editorActive()" onpaste="editorPaste()" oncontrolselect="controlSelect()">
+	</div>
+
+	</script>
+</BODY></HTML>
+

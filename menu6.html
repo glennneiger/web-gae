@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+
+<style type="text/css">
+<!--
+#Layer1 {
+	position:absolute;
+	left:145px;
+	top:61px;
+	width:286px;
+	height:142px;
+	z-index:1;
+	visibility: hidden;
+}
+.style1 {color: #3333CC}
+-->
+</style>
+
+<script type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+
+
+function MM_showHideLayers() { //v6.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+
+function MM_nbGroup(event, grpName) { //v6.0
+
+
+
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+  
+  
+ // alert();
+  
+
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+	  
+  } }
+
+}
+//-->
+</script>
+
+
+
+<style type="text/css">
+<!--
+#layermvpro {
+	position:absolute;
+	width:158px;
+	height:115px;
+	z-index:1;
+	left: 12px;
+	top: 51px;
+	background-color: #FFFFCC;
+}
+
+#menu{
+	position:relative;
+	z-index:1;
+	top:0;
+	left:0;
+	padding:2px;
+	margin:0px;
+	list-style:none;
+}
+
+li{
+	position:relative;
+	background-color:#ffffff;
+	/*border:1px solid black;*/
+	padding:2px;
+	margin:0px;
+	color:#000000;
+}
+
+.hover, ul li a:hover{
+	cursor:pointer;
+	background-color:#054b6f;
+	color:#FFffff;
+}
+li ul li.hover, li ul li.hover a:hover{
+	background-color:#fa7d50;
+}
+li a{
+	width:100%;
+}
+li a, li ul li a, li.hover ul li a{
+	text-decoration:none;
+	color:#000000;
+}
+li.hover a, li ul li.hover a{
+	color:#fffab5;
+	text-decoration:underline;
+}
+.dbMenu li{
+	float:left;
+	width:10em;
+}
+#News {
+	position:absolute;
+	left:276px;
+	top:63px;
+	width:167px;
+	height:159px;
+	z-index:2;
+	visibility: hidden;
+}
+#pro {
+	position:absolute;
+	left:145px;
+	top:59px;
+	width:121px;
+	height:85px;
+	z-index:3;
+	visibility: hidden;
+}
+#entertain {
+	position:absolute;
+	left:467px;
+	top:58px;
+	width:173px;
+	height:113px;
+	z-index:4;
+	visibility:hidden;
+}
+#community {
+	position:absolute;
+	left:668px;
+	top:58px;
+	width:146px;
+	height:113px;
+	z-index:5;
+	visibility:hidden;
+}
+#education {
+	position:absolute;
+	left:845px;
+	top:57px;
+	width:159px;
+	height:131px;
+	z-index:6;
+	visibility:hidden;
+}
+
+
+
+
+
+-->
+</style>
+</head>
+
+<body onload="MM_preloadImages('images/navigation_home_over.gif','images/navigation_mvpro_on.gif','images/navigation_mvpro_over.gif','images/navigation_newsviews_on.gif','images/navigation_newsviews_over.gif','images/navigation_entertainment_on.gif','images/navigation_entertainment_over.gif','images/navigation_community_on.gif','images/navigation_community_over.gif','images/navigation_education_on.gif','images/navigation_education_over.gif')">
+
+
+
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="13%">
+	<a href="javascript:;" target="_top" onclick="MM_nbGroup('down','group1','navigationhome','',1)" onmouseover="MM_nbGroup('over','navigationhome','images/navigation_home_over.gif','',1)" onmouseout="MM_nbGroup('out')" ><img src="images/navigation_home.gif" alt="Home" name="navigationhome" width="124" height="39" border="0" /></a></td>
+	
+    <td width="13%">
+	<a href="javascript:;" target="_top" onclick="MM_nbGroup('down','group1','navigationmvpro','images/navigation_mvpro_on.gif',1);MM_showHideLayers('pro','','show')" onmouseover="MM_nbGroup('over','navigationmvpro','images/navigation_mvpro_over.gif','',1)" onmouseout="MM_nbGroup('out')"><img src="images/navigation_mvpro.gif" alt="MVPRO" name="navigationmvpro" width="131" height="39" border="0" id="Image1"/></a></td>
+	
+	
+    <td width="87%"><a href="javascript:;" target="_top" onclick="MM_nbGroup('down','group1','navigationnewsviews','images/navigation_newsviews_on.gif',1);MM_showHideLayers('News','','show')" onmouseover="MM_nbGroup('over','navigationnewsviews','images/navigation_newsviews_over.gif','',1)" onmouseout="MM_nbGroup('out')"><img src="images/navigation_newsviews.gif" alt="News &amp; Views" name="navigationnewsviews" width="177" height="39" border="0" /></a></td>
+	
+	
+    <td width="87%"><a href="javascript:;" target="_top" onclick="MM_nbGroup('down','group1','navigationentertainment','images/navigation_entertainment_on.gif',1); MM_showHideLayers('entertain','','show')" onmouseover="MM_nbGroup('over','navigationentertainment','images/navigation_entertainment_over.gif','',1)" onmouseout="MM_nbGroup('out')"><img src="images/navigation_entertainment.gif" name="navigationentertainment" width="201" height="39" border="0" /></a></td>
+	
+	
+    <td width="87%"><a href="javascript:;" target="_top" onclick="MM_nbGroup('down','group1','navigationcommunity','images/navigation_community_on.gif',1);MM_showHideLayers('community','','show')" onmouseover="MM_nbGroup('over','navigationcommunity','images/navigation_community_over.gif','',1)" onmouseout="MM_nbGroup('out')"><img src="images/navigation_community.gif" name="navigationcommunity" width="180" height="39" border="0" /></a></td>
+	
+	
+    <td width="87%"><a href="javascript:;" target="_top" onclick="MM_nbGroup('down','group1','navigationeducation','images/navigation_education_on.gif',1);MM_showHideLayers('education','','show')" onmouseover="MM_nbGroup('over','navigationeducation','images/navigation_education_over.gif','',1)" onmouseout="MM_nbGroup('out')"><img src="images/navigation_education.gif" name="navigationeducation" width="181" height="39" border="0" /></a></td>  
+
+	
+  </tr>
+  
+  
+</table>
+
+
+<div id="pro" style="width:170px; color:#064a6d; font-weight:bold;font-family:Arial, Helvetica, sans-serif;font-size:12px;">
+ <ul id="menu" class="dbMenu onMouse">
+  <li> <a href="#">Buzz &amp; Banter </a></li>
+  <li><a href="#">Premium Professor Product</a></li>
+  <li><a href="#">Enterprise Solution</a></li>
+ <li> <hr color="#000000" /></li>
+  
+  <li><img src="images/td.gif" /> </li>
+  </ul>
+
+</div>
+
+
+<div id="News" style="width:170px; color:#064a6d; font-weight:bold;font-family:Arial, Helvetica, sans-serif;font-size:12px;" >
+<ul id="menu" class="dbMenu onMouse">
+  <li> <a href="#">Archive</a></li>
+  <li><a href="#">Mailbags</a></li>
+  <li><a href="#">Personal Finance</a></li>
+  <li><a href="#">Trading Ideas</a></li>
+  <li><a href="#">Economy</a></li>
+ <li> <hr color="#000000" /></li>
+  
+  <li><img src="images/td.gif" /> </li>
+  </ul>
+</div>
+
+
+
+
+
+<!-- <a href="#" onclick="MM_showHideLayers('Layer1','','show')">drgjd</a>-->
+
+<!-- <a href="#" onclick="javascript:show();">hh</a>-->
+
+
+<div id="entertain" style="width:170px; color:#064a6d; font-weight:bold;font-family:Arial, Helvetica, sans-serif;font-size:12px;">
+  <ul id="menu" class="dbMenu onMouse">
+  <li> <a href="#">MVTV</a></li>
+  <li><a href="#">Cartoons</a></li>
+  <li><a href="#">OBS- Biz Briefs  - Data Watch</a></li>
+ 
+ <li> <hr color="#000000" /></li>
+  
+  <li><img src="images/td.gif" /> </li>
+  </ul>
+ 
+</div>
+
+<div id="community" style="width:170px; color:#064a6d; font-weight:bold;font-family:Arial, Helvetica, sans-serif;font-size:12px;"> <ul id="menu" class="dbMenu onMouse">
+  <li> <a href="#">EXchange</a></li>
+  <li><a href="#">Our Town</a></li>
+  <li><a href="#">Shops</a></li>
+ <li><a href="#">Professors</a></li>
+ <li><a href="#">MM/Events</a></li>
+ <li><a href="#">R.P</a></li>
+ <li><a href="#">Partners</a></li>
+ <li> <hr color="#000000" /></li>
+  
+  <li><img src="images/td.gif" /> </li>
+  </ul></div>
+
+<div id="education" style="width:170px; color:#064a6d; font-weight:bold;font-family:Arial, Helvetica, sans-serif;font-size:12px;"><ul id="menu" class="dbMenu onMouse">
+  <li> <a href="#">UMV</a></li>
+  <li><a href="#">Fun School Kaboose kids</a></li>
+  <li><a href="#">Dictionary</a></li>
+ <li><a href="#">Tutorial</a></li>
+
+ <li> <hr color="#000000" /></li>
+  
+  <li><img src="images/td.gif" /> </li>
+  </ul></div>
+</body>
+</html>

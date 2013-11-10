@@ -1,0 +1,113 @@
+<?
+
+$page="admintools";
+
+$allperms=array("corp_admin");
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($allperms)){
+	admin_error();
+}
+
+$user_query = "SELECT * FROM corp";
+
+$feature_data = exec_query("select id,name,intname from admin_features order by intname");
+$handler="./corp_accounts_mod.htm";
+
+
+
+?>
+
+<br><br>
+<div class=adminheader>Administer Corp Accounts</div><br>
+<div class="error"><?=$error?></div>
+Administer Minyanville.com Corp Accounts<br><br><br>
+<form name="corpacct" method=post action="<?=$handler?>">
+<table width=600 align=center bgcolor=#eeeeee border=0>
+<TR align=center bgcolor=#cccccc>
+<TD nowrap>ID:</TD>
+<TD nowrap>Full Name</TD>
+<TD nowrap>Email</TD>
+<TD nowrap>login</TD>
+<TD nowrap>Password</TD>
+<TD nowrap>Max accounts</TD>
+<TD nowrap>Active accounts</TD>
+<TD nowrap>Start Date</TD>
+<TD nowrap>Expire Date</TD>
+<TD nowrap>Delete</TD>
+
+</TR>
+<?foreach(exec_query($user_query) as $i=>$row){?>
+<TR valign=top align=center>
+<TD><?=$row[id]?><?input_hidden("corp[${row[id]}][id]",$row[id])?></TD>
+<TD><input type="text" name="corp[<?=$row[id]?>][corp_name]" value="<?=$row[corp_name]?>"></TD>
+<TD><input type="text" name="corp[<?=$row[id]?>][corp_email]" value="<?=$row[corp_email]?>"></TD>
+<TD><input type="text" name="corp[<?=$row[id]?>][corp_login]" value="<?=$row[corp_login]?>"></TD>
+<TD><input type="text" name="corp[<?=$row[id]?>][corp_password]" value="<?=$row[corp_password]?>"></TD>
+<TD><?input_numsonly("corp[${row[id]}][max_users]",$row[max_users],6,6)?></TD>
+<?
+$active_query = "select count(*) active_users FROM subscription  where corpuser='".$row[corp_login]."' and type='corp'"
+?>
+<TD><?echo exec_query($active_query, 1, "active_users")?></TD>
+<TD><?input_text("corp[${row[id]}][start_date]",$row[start_date],10,10)?></TD>
+<TD><?input_text("corp[${row[id]}][expire_date]",$row[expire_date],10,10)?></TD>
+<TD><input type="checkbox" name="deluser[<?=$row[id]?>]"></TD>
+</TR>
+<?}?>
+</table>
+<br><br><br>
+<center>
+<input type="submit" value="Save Changes" class=inbtn>
+</center><br>
+</form>
+
+<hr width=100% color=black size=1><br>
+<form name="corpacctnew" method=post action="<?=$handler?>">
+<table width=600 align=center border=0>
+<TR>
+<TD colspan=100>
+<div class=adminheader > Add New Corp Account</div>
+<table id="newtable">
+
+<TR>
+<TD align=right>Corperations's Full Name</TD>
+<TD><?input_text("new[corp_name]")?></TD>
+</tr>
+<TR>
+<TD align=right>Contact Email</TD>
+<TD><?input_text("new[corp_email]")?></TD>
+</TR>
+<TR>
+<TD align=right>login</TD>
+<TD><?input_text("new[corp_login]")?></TD>
+</TR>
+<TR>
+<TD align=right>Password</TD>
+<TD><?input_text("new[corp_password]")?></TD>
+</TR>
+<TR>
+<TD align=right>Max User Accounts</TD>
+<TD><?input_text("new[max_users]")?></TD>
+</TR>
+<TR>
+<TD align=right>Start Date</TD>
+<TD><?date_input(time(),"s_date", 2005)?></TD>
+</TR>
+<TR>
+<TD align=right> Expiration Date</TD>
+<TD><?date_input(time()+(30*24*3600), "e_date", 2005)?></TD>
+</TR>
+</TR>
+</TR>
+</table>
+
+</TD>
+</TR>
+</table>
+<br><br><br>
+<center>
+<input type="submit" value="Add" class=inbtn>
+</center><br>
+</form>
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

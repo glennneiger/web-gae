@@ -1,0 +1,87 @@
+<?
+include_once("$D_R/lib/_user_data_lib.php");
+$objUserData= new userData();
+
+
+if(!empty($_POST)){
+	if($_POST['id']!=''){					//update info
+		$chkForDuplicacy ="select id,via_id,email from subscription where id='".$_POST['id']."'";
+		$result=exec_query($chkForDuplicacy,1);
+		if ($result['email'] == $_POST['email']){
+			$message = updateInfo($_POST);
+		}else{
+			$emailQry = "select id,via_id,email from subscription where email='".$_POST['email']."'";
+			$emailResult=exec_query($emailQry,1);
+			if($emailResult['id']!=''){
+				$message = 'The email id which you are updating is already exists against Via id '.$emailResult['via_id'];
+			}else{
+				$message = updateInfo($_POST);
+			}
+		}
+	}else{									// insert user
+		$emailQry = "select id,via_id,email from subscription where email='".$_POST['email']."'";
+		$emailResult=exec_query($emailQry,1);
+		if($emailResult['id']!=''){
+			$message = 'The email id which you are adding is already exists against Account Code '.$emailResult['id'] ;
+		}else{
+			$message = insertInfo($_POST);
+		}
+	}
+}
+
+function updateInfo($postData){
+	$objUserData= new userData();
+	$params['email'] = $postData['email'];
+	$params['prefix'] = $postData['prefix'];
+	$params['fname'] = $postData['fname'];
+	$params['lname'] = $postData['lname'];
+	$params['password'] = $objUserData->encryptUserPassword($postData['password']);
+	$params['address'] = $postData['address'];
+	$params['address2'] = $postData['address2'];
+	$params['city'] = $postData['city'];
+	$params['state'] = $postData['state'];
+	$params['zip'] = $postData['zip'];
+	$params['country'] = $postData['country'];
+	$params['tel'] = $postData['phone'];
+	$updatedId = update_query("subscription",$params,array(id=>$postData['id']));
+	if($updatedId){
+		$strUpdate = 'User Information has been updated Successfully.';
+	}else{
+		$strUpdate = 'Nothing to update in User Information.';
+	}
+
+	return $strUpdate;
+}
+
+function insertInfo($postData){
+	$objUserData= new userData();
+	$params['email'] = $postData['email'];
+	$params['prefix'] = $postData['prefix'];
+	$params['fname'] = $postData['fname'];
+	$params['lname'] = $postData['lname'];
+	$params['password'] = $objUserData->encryptUserPassword($postData['password']);
+	$params['address'] = $postData['address'];
+	$params['address2'] = $postData['address2'];
+	$params['city'] = $postData['city'];
+	$params['state'] = $postData['state'];
+	$params['zip'] = $postData['zip'];
+	$params['country'] = $postData['country'];
+	$params['tel'] = $postData['phone'];
+	$insertId = insert_query("subscription",$params);
+	if($insertId){
+		$strUpdate = 'Subscriber has been added Successfully.';
+	}
+	if($postData['id']==''){
+		$insertId =$insertId;
+	}
+	return $strUpdate;
+}
+
+$bounceback = './subscribers.info.htm';
+if($insertId=="")
+{
+    $insertId = $_POST['id'];
+}
+location($bounceback.qsa(array(id=>$insertId,error=>$message)));
+
+?>

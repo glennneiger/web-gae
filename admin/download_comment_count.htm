@@ -1,0 +1,55 @@
+<?
+
+$start=$_GET['start'];
+$end=$_GET['end'];
+$type=$_GET['type'];
+
+function getCommentCount($start,$end,$type)
+{
+
+ if($type == 'date')
+ {
+ 	$start = date('Y-m-d',strtotime($start));
+    $end = date('Y-m-d',strtotime($end));
+    
+   $sql= "SELECT DATE(EP.created_on) as comment_date, COUNT(DATE(EP.created_on)) AS total_comment FROM ex_post EP 
+		WHERE EP.created_on >='".$start."' AND EP.created_on <='".$end."'
+		 GROUP BY DATE(EP.created_on)";
+ }
+ else
+ {
+ 	$start = date('Ym',strtotime($start));
+    $end = date('Ym',strtotime($end));
+    
+    $sql= "SELECT CONCAT(YEAR(EP.created_on),'-',MONTH(EP.created_on)) AS comment_date, COUNT(DATE(EP.created_on)) AS total_comment FROM ex_post EP 
+		WHERE EXTRACT(YEAR_MONTH FROM EP.created_on) >='".$start."' AND EXTRACT(YEAR_MONTH FROM EP.created_on) <='".$end."'
+		 GROUP BY EXTRACT(YEAR_MONTH FROM EP.created_on)";
+ }
+
+ return $results=exec_query($sql);
+
+}
+$arCount = getCommentCount($start,$end,$type);
+$total =0;
+$i =1;
+if($type == 'date')
+{
+	$stKey = 'Date';
+}
+else
+{
+	$stKey = 'Year Month';
+}
+foreach($arCount as $arValue)
+{
+     $arComment[$i][$stKey] = $arValue['comment_date'];
+     $arComment[$i]['Total_Comment'] = $arValue['total_comment'];
+    // $total +=$arValue['total_comment'];
+    $i++;
+}
+
+csv_header("comment_count.csv");
+$datestr="%m/%d/%Y";
+//ksort($arComment);
+data2csv($arComment);
+?>

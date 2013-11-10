@@ -1,0 +1,7 @@
+<?php
+	$truncateQuery="truncate table ex_item_tracking_view";
+	
+	$resruncateLogs=exec_query_logs($truncateQuery);
+	
+	echo "<br>"."Record truncated successfully.";
+?>

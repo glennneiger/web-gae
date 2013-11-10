@@ -1,0 +1,33 @@
+<?php
+global $CDN_SERVER,$HTPFX,$HTADMINHOST;
+$objArticle = new ArticleData();
+$articles = $objArticle->getDailyDigest('');
+?>
+<div class="dd_heading">
+	Daily Digest
+	<a href="<? echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/send_digest.php" style="text-decoration: none; cursor: pointer; float: right; padding-top: 5px;" >
+		<img src="<?php echo $IMG_SERVER;?>/images/daily_digest/Create-Daily-Digest.jpg"  name="btn_create" value="Create Daily Digest">
+	</a>
+</div>
+<table style="width:600px;">
+	<tbody>
+		<tr>
+			<th style="width: 300px; padding-bottom: 10px; padding-top: 20px; text-align:left;">Subject</th>
+			<th style="width: 150px; padding-top: 20px; padding-bottom: 10px;">Time </th>
+			<th style="width: 70px; padding-top: 20px; padding-bottom: 10px;">Edit </th>
+		</tr>
+		<?php
+		foreach($articles as $key=>$val)
+		{
+		?>
+			<tr>
+				<td style="width: 300px; padding-right: 20px; padding-bottom: 10px;"><?php echo $val['subject']; ?></td>
+				<td style="padding-right: 20px; padding-bottom: 10px; width: 150px; text-align: center;"><?php echo $val['sent_on']; ?></td>
+				<td style="padding-bottom: 10px; text-align: center; width: 70px;"><a style="text-decoration: none;cursor:pointer;" href="<? echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/send_digest.php?id=<?php echo $val['id']; ?>&edit=1"> <img src="<?php echo $IMG_SERVER;?>/images/daily_digest/edit.jpg" name="btn_edit" ></a></td>
+			</tr>
+		<?php
+		}
+		?>
+	</tbody>
+
+</table>

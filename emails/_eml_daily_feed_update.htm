@@ -1,0 +1,273 @@
+<?
+global $is_ssl,$D_R,$HTPFX,$HTHOST;
+include_once($D_R."/lib/layout_functions.php");
+include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
+include_once("$D_R/lib/ads/_indstrybrains_class.php");
+$pageName="dailyfeed_update";
+$objDailyfeed= new Dailyfeed();
+global $cm8_ads_Leaderboard,$cm8_ads_MediumRectangle,$cm8Server;
+$bannername=$cm8_ads_Leaderboard;
+$bannernameMR=$cm8_ads_MediumRectangle;
+
+$dfId=$_GET['id'];
+$objDailyFeed= new Dailyfeed();
+$dailyFeedResult=$objDailyFeed->getDailyFeed($dfId);
+$topicsURL=$objDailyFeed->getTopicsURL('daily_feed',$dfId);
+$readMoreURL=$objDailyFeed->getDailyFeedUrl($dfId);
+if($topicsURL && count($topicsURL)>0)
+ {
+  $i=0;
+  foreach($topicsURL as $key=>$row){
+	if($i>0){
+		$topicslink.=','.' '.'<a style="color:#C17134; text-decoration:none; font-size:11px; font-weight:bold;" href="'.$HTPFX.$HTHOST.'/dailyfeed/tag'.trim($row).'" target="_self">'.strtoupper($key).'</a>';
+	}else{
+	   $topicslink.='<a style="color:#C17134; text-decoration:none; font-size:11px; font-weight:bold;" href="'.$HTPFX.$HTHOST.'/dailyfeed/tag'.trim($row).'" target="_self">'.strtoupper($key).'</a>';
+	}
+		$i++;
+  }
+}
+
+?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Minaynville - <?=$dailyFeedResult[title]?></title>
+<style type="text/css">
+body{margin:0px;}
+</style>
+<? show_adds_checkmate($pageName); ?>
+<SCRIPT language="JavaScript" src="http://<?=$cm8Server;?>/adam/cm8adam_1_call.js"></SCRIPT>
+</head>
+<?
+if($dailyFeedResult['bio_asset'])
+{
+ $charimagepath=$IMG_SERVER.$dailyFeedResult['bio_asset'];
+ $dimension=' width="78" height="78" border="1"  style="border-color:#cccccc; margin-right:5px;" ';
+}
+else
+{
+ $charimagepath=$IMG_SERVER."/images/email_alert/MV.jpg";
+  $dimension=' width="82" height="82"  style="margin-right:5px;" ';
+}
+
+?>
+<body>
+<table width="100%" border="0" cellspacing="2" cellpadding="2" align="center">
+  <tr>
+    <td><table width="730" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+        <td style="vertical-align:middle;text-align:center;">
+        <A target="_blank" href="http://minyanville.checkm8.com/adam/ep/click/minyanville_main_site.mvalert/Leaderboard_728x90_970x66?cat=minyanville_main_site.mvalert">
+		<IMG src="http://minyanville.checkm8.com/adam/noscript?cat=minyanville_main_site.mvalert&format=Leaderboard_728x90_970x66" target="_blank" border=0></A>
+
+
+        <?//show_cm8_noscript_ad($pageName,$bannername,$profilevalue); ?>
+
+			<? // php show_ads_operative($zone_name,$tile728x90,$ADS_SIZE['LeaderBoard'],"","ist",0); ?>
+		</td>
+      </tr>
+      <tr>
+       <td background="<?=$IMG_SERVER;?>/images/email_alert/backrd_img.jpg">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+          <tr>
+            <td width="23%" rowspan="2"><a href="<?=$HTPFX.$HTHOST;?>"><img src="<?=$IMG_SERVER;?>/images/email_alert/mv_logo.jpg" width="165" height="83" border="0"/></a></td>
+          </tr>
+          <tr>
+
+            <td align="right" style="vertical-align:bottom; padding-bottom:5px;padding-right:5px;"><table border="0" cellspacing="8" cellpadding="2" >
+            <tr>
+            <td colspan="5" align="right"><a href="<?=$HTNOSSLDOMAIN?>/library/search.htm" style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;"><span style="color:#003366; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold;">Search Minyanville</span></a></td>
+            </tr>
+              <tr >
+
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/section/businessmarket/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Business & Markets</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/section/lifemoney/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Life & Money</span></a>&nbsp;</td>
+                <td ><a href="<?=$HTNOSSLDOMAIN?>/subscription/" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Subscription Products - Free Trial</span></a>&nbsp;</td>
+                <td align="right"><a href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm" style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><span style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:11px;">Free Email Newsletters</span></a></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td style="padding-top:5px;">
+
+				<a href="<?=$HTPFX.$HTHOST.$readMoreURL;?>" style="text-align:left; padding:0; color:#003366;font-size:28px; text-decoration:none; font-weight:bold;"><span style="text-align:left; padding:0; color:#003366;font-size:28px; text-decoration:none; font-weight:bold;"><font face="Times New Roman, Times, serif"><?=$dailyFeedResult['title']; ?></font><span></a>
+			</td>
+          </tr>
+          <tr>
+            <td>
+		<div id="tags" style="font-family: Arial, Helvetica, sans-serif;color:#003366;font-size:12px;font-weight:bold;padding-left:1px;">
+Tags: <span style="font-family:Arial, Helvetica, sans-serif;color:#c17134 ;font-size:12px;font-weight:bold;text-decoration:none;">
+						<?=$topicslink;?>
+			      </span>
+			</div>
+			</td>
+          </tr>
+          <tr> <td style="height:10px;"></td> </tr>
+          <tr>
+            <td valign="top">
+			<img src="<?=$charimagepath;?>" <?=$dimension;?> vspace="5" align="left"/><div style="width: 12px; float: left; height: 82px;"></div><span style="font-weight:normal; color:#cc6633; font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:bold;"><a style="color:#003366;" href="<?=$HTPFX.$HTHOST.'/gazette/bios.htm?bio='.$dailyFeedResult['ContId'];?>" target="_self">
+<?=$dailyFeedResult['contributor'];?></a></span>&nbsp;&nbsp;<span style="font-weight:normal; font-family:Arial, Helvetica, sans-serif; font-size:10px;"><?=date("F j, Y, g:i a", strtotime($dailyFeedResult['publish_date']))?>
+ </span> <p>
+			<span style="font-weight:normal; font-family:Arial, Helvetica, sans-serif; font-size:12px; ">
+			<?
+
+			$pcount=0;
+			$position;
+
+			$bodyAdd=substr($dailyFeedResult['body'], 1500);
+			$body=substr($dailyFeedResult['body'], 0, 1500);
+
+			if(strpos($bodyAdd,"<br>")!='')
+			{
+				$position[]=strpos($bodyAdd,"<br>");
+			}
+
+			if(strpos($bodyAdd,'<br />')!='')
+			{
+				$position[]=strpos($bodyAdd,'<br />');
+			}
+
+			if(strpos($bodyAdd,"</p>")!='')
+			{
+				$position[]=strpos($bodyAdd,"</p>");
+				$pcount++;
+			}
+
+			$position[]=strlen($bodyAdd);
+
+			sort($position);
+
+			$bodyAdd=substr($bodyAdd, 0, $position[0]);
+			echo $body.$bodyAdd."...";
+
+			if(trim($dailyFeedResult['body'])!='')
+			{
+				if($pcount==1)
+				{
+			?>
+				<a href="<?=$HTPFX.$HTHOST.$readMoreURL;?>">Read entire MV Premium</a></p>
+			<?
+				}
+				else
+				{
+			?>
+				<a href="<?=$HTPFX.$HTHOST.$readMoreURL;?>">Read entire MV Premium</a>
+			<?
+				}
+			}
+			?>
+
+			</span></td>
+          </tr>
+          <tr>
+            <td>
+			<table width=100% align=center cellpadding=0 cellspacing=0>
+          <tr>
+            <td valign=top width="40%">
+			<a href="<?=$HTPFX.$HTHOST.$readMoreURL;?>"><img src="<?=$IMG_SERVER;?>/images/DailyFeed/read_premium_email.jpg" width="145" height="27" vspace="5" border="0"/></a>				</td>
+			<td  width="70%">
+				<A target="_blank" href="http://minyanville.checkm8.com/adam/ep/click/minyanville_main_site.mvalert/1x1_Text?cat=minyanville_main_site.mvalert">
+				<IMG src="http://minyanville.checkm8.com/adam/noscript?cat=minyanville_main_site.mvalert&format=1x1_Text" target="_blank" border=0></A>
+			</td>
+		</tr>
+		</table></td>
+          </tr>
+        </table></td>
+      </tr>
+
+      <tr>
+        <td style="height:10px;"></td>
+      </tr>
+		<?
+			$feedQuery="SELECT id,title,body from daily_feed WHERE is_live='1' and is_approved ='1' and id<>'$dfId' and is_deleted='0' order by publish_date desc limit 0,3";
+			 $latestFeed=exec_query($feedQuery);
+		?>
+      <tr>
+        <td valign="top" style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top"><table width="100%" border="0" cellspacing="2" cellpadding="0">
+              <tr>
+                <td bgcolor="#1d85b6" style="font-family:Arial, Helvetica, sans-serif; color:#ffffff;"><table width="98%" border="0" cellspacing="2" cellpadding="2" align="center">
+                  <tr>
+                    <td style="font-size:28px;"><span style="font-size:28px;color:#ffffff;"><font font face="Times New Roman, Times, serif">Also in the 'Ville:</font></span></td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom:10px;">
+					<?
+					foreach($latestFeed as $row)
+					{
+					$latestFeedURL=$objDailyFeed->getDailyFeedUrl($row[id]);
+					?>
+					<p>
+					<a href="<?=$HTPFX.$HTHOST.$latestFeedURL;?>" style="font-family:Arial, Helvetica, sans-serif; color:#ffffff; font-size:13px; padding-bottom:10px;">
+					<span style="font-family:Arial, Helvetica, sans-serif; color:#ffffff; font-size:13px; padding-bottom:10px;">
+							<?=$row['title'];?>
+					</span>
+					</a>
+					</p>
+					<?
+					}
+					?>
+					</td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td style="height:5px;"></td>
+              </tr>
+              <tr>
+                <td style="border:#000000 solid 1px; ">
+<!-- Start IndustryBrains tag -->
+<img src="http://imglinks.industrybrains.com/imgct?sid=713&amp;ct=MINYANVILLE_HOMEPAGE_ROS&amp;tr=NEWSLETTER&amp;layt=2&amp;custarg=newMap" border="0" usemap="#ib_713_2"/>
+<map id="ib_713_2" name="ib_713_2">
+  <area shape="rect" coords="11,32,457,66" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=1" target="_blank"/>
+  <area shape="rect" coords="11,82,457,116" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=2" target="_blank"/>
+  <area shape="rect" coords="11,133,457,167" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=3" target="_blank"/>
+  <area shape="rect" coords="11,183,457,217" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=4" target="_blank"/>
+  <area shape="rect" coords="11,234,457,268" href="http://imglinks.industrybrains.com/imgclick?sid=713&amp;rqctid=5317&amp;pos=5" target="_blank"/>
+  <area shape="rect" coords="11,280,457,294" href="http://www.industrybrains.com/minyanville" target="_blank"/>
+</map>
+<!-- End IndustryBrains tag -->				</td>
+              </tr>
+            </table></td>
+            <td width="300px" valign="top"><table width="100%" border="0" cellspacing="2" cellpadding="0">
+              <tr>
+	            <td align="left" bgcolor="#FFFFFF" style="width:300px;vertical-align:middle; text-align:center;">
+	            <A target="_blank" href="http://minyanville.checkm8.com/adam/ep/click/minyanville_main_site.mvalert/MediumRectangle_300x250_300x600?cat=minyanville_main_site.mvalert">
+				<IMG src="http://minyanville.checkm8.com/adam/noscript?cat=minyanville_main_site.mvalert&format=MediumRectangle_300x250_300x600" target="_blank" border=0></A>
+				</td>
+              </tr>
+              <tr>
+                <td style="vertical-align:middle; text-align:center;" bgcolor="#FFFFFF">
+		</td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+	  <tr>
+	  	<td style="height:5px;"></td>
+	  </tr>
+
+	  <tr>
+					<td colspan="4" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/controlPanel.htm">Subscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/subscription/register/unsubscribe.htm">Unsubscribe</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise With Us</a></p>
+					  </div></center></td>
+		</tr>
+				<tr>
+						<td >&nbsp;</td>
+		</tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

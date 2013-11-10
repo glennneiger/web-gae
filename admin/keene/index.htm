@@ -1,0 +1,21 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("keeneOptions_alert keeneOptions_approve"))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Keene On Options</div><br>
+	<div style="padding:10px;width:400px">
+		<div style="padding-left:20px;">
+			<?if($AD->getPerm("keeneOptions_alert")){ ?>
+   				<li><a href="alert.htm">Create/Edit Alerts</a></li>
+	 		<? }
+	 		if($AD->getPerm("keeneOptions_approve")){?>
+				<li><a href="approve-alert.htm">Approve Alerts</a></li>
+			<? } ?>
+			<li><a href="sms-history.htm">SMS History</a></li>
+		</div><br/>
+		<br />
+	</div>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

@@ -1,0 +1,71 @@
+<?php
+header( "Location: http://mvp.minyanville.com/buzz-banter-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=buzz");
+exit;
+
+session_start();
+/* Operative Configuration *****/
+$zone_name="ticker";
+$tile728x90=1;
+$tile120x30=5;
+$tile300x250=3;
+$tile160x600top=4;
+/* End Operative Configuration *****/
+$pageName  = "buzzbanter";
+$version=$_GET['v'];
+if(!$version){
+	$version=1;
+}
+$pageJS=array("config","ibox","registration","iboxregistration");
+$pageCSS=array("ibox","minyanville","global","registration","buzz_lander");
+include_once("$D_R/lib/_auth.php");
+
+//if($_REQUEST['trial']=='hard'){include("$D_R/_minyanville_hard_header.htm");}else{include("$D_R/_minyanville_header.htm");}
+include($D_R."/_header_no_nav.htm");
+include_once($D_R.'/subscription/cart.php');
+
+
+if($_GET['scode'] && $_GET['scode'] == 'DIGIBUZZ')
+{
+$_SESSION['digibuzz'] = 1;
+}
+$_SESSION['checkoutViacart'] = 'checkoutViacart';
+build_lang('subscription_product');
+global $lang,$HTPFXSSL,$HTHOST;
+$user=new user();
+$loginid =  $user->id;
+
+$arProductDetail = getFreeTrailProductDetail('buzzbanter','subscription');
+$sub_def_id = $arProductDetail['subscription_def_id'];
+$oc_id = $arProductDetail['oc_id'];
+$orderItemType = $arProductDetail['orderItemType'];
+$productName = 'subBuzzBanter';
+$eventname ='Landed';
+?>
+<div id="buzz_outer_container">
+<? $obOuterTemplate->displayLoginDiv(); ?>
+<?
+if($version == '1')
+{
+include("version_two.htm");
+}
+else
+{
+include("version_one.htm");
+}
+?>
+<?
+$productName="subBuzzBanter";
+$trialtype="HardTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+	if($_GET['from']){
+		$from=$_GET['from'];
+	}else{
+		$from=substr($_SERVER['HTTP_REFERER'],7);
+	}
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+//if($_REQUEST['trial']=='hard'){include("$D_R/_minyanville_hard_footer.htm");}else{include("$D_R/_minyanville_footer.htm");}
+?>
+<?include("$D_R/_footer.htm");?>

@@ -1,0 +1,85 @@
+/* CSS Document */
+#buzzalert-left {
+	width:665px;
+	float: left;
+	background-color:#FFFFFF;
+	
+}
+
+#buzzalert-content {
+	background:#ffffff;
+	min-height:2433px;
+	padding:0px 27px 10px 20px;
+}
+
+#buzzalert-content h1 {
+	margin:0;
+	padding:0;
+	font-size: 24px;
+	color:#000000;
+}
+
+#buzzalert-byline {
+	color:#999999;
+	font-size:13px;
+	font-weight:bold;
+	margin-top:5px;
+}
+
+#buzzalert-byline a {
+	color:#01509d;
+	text-decoration:none;
+}
+
+#buzzalert-toolbox {
+	border: dotted #999999;
+	border-width: 1px 0px 1px 0px;
+	margin-top:5px;
+	font-size:12px;
+	padding:5px 0px 5px 0px;
+	color:#01509d;
+	font-weight:bold;
+	float:left;
+	width:615px;
+	text-align:right;
+}
+
+#buzzalert-body {
+	font-size:15px;
+	margin-top:10px;
+	width:610px;
+	overflow:hidden;
+	line-height:20px;
+}
+
+#buzzalert-body ul {
+	list-style-position: inside;
+}
+
+#buzzalert-body a {
+	text-decoration:none;
+    color:#01509d;
+}
+
+#buzzalert-body a:hover {
+	text-decoration:underline;
+}
+
+#buzzalert-dek {
+	color:#000000;
+	margin-top:5px;
+	font-size:13px;
+}
+#buzzalert-dek h2{
+	color:#000000;
+	font-size:16px;
+	font-weight:bold;
+	margin:0px;
+	padding:0px;
+	color:#006600;
+}
+
+.note-content{
+padding:10px 0px 10px 0px;
+
+}

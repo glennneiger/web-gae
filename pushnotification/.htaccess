@@ -1,0 +1,5 @@
+AuthUserFile /home/sites/minyanville/web/pushnotification/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Recurly Pushnotification"
+AuthType Basic
+require valid-user

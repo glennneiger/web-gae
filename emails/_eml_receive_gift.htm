@@ -1,0 +1,28 @@
+<?
+global $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+$UNSUB=0;
+include("$D_R/lib/_includes.php");
+$url="$HTNOSSLDOMAIN/register/gift/".qsa(array(email=>$email,key1=>$key1,key2=>$key2),"*");
+?>
+
+<font color="#1E1648">
+      <h3>Your friend has purchased you a gift subscription to Minyanville.com!</h3>
+</font>
+<a href="<?=$url?>">Click here</a>  to redeem your gift subscription:<br>
+(<span style="font-style:italic;font-size:9px"><?=$url?></span>)
+<br>
+<br>
+
+Registration Entry Code: <?=$key1?><br>
+Citizen Entry Pass Code: <?=$key2?>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_email_alert']);
+*/
+?>
+
+

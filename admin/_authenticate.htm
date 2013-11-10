@@ -1,0 +1,10 @@
+<?	session_start();
+	$AD = new admin($_SESSION["AUSER"],$_SESSION["APASS"]);
+	if(!$AD->isAuthed){
+		$err=qsa(array(error=>"You're not properly logged in.",refer=>refer(1)));
+		location("/admin/$err");
+		exit();
+	}
+	set_sess_vars("AUSER",$_SESSION["AUSER"]);
+	set_sess_vars("APASS",$_SESSION["APASS"]);
+?>

@@ -1,0 +1,27 @@
+<?
+global $D_R;
+include_once("$D_R/lib/_news.php");
+include("$ADMIN_PATH/_authenticate.htm");
+if(!$id){
+	echo "Nothing to view.";
+	exit;
+}
+
+$pagedata=get_full_article($id);
+
+?>
+By: <?=href("mailto:".$pagedata[email],$pagedata[contributor])?><br>
+Summary: <?=$pagedata[blurb]?><br>
+Date: <?=$pagedata[datefmt]?>
+<br>
+<P><?=$pagedata[body]?></P>
+<?if($pagedata[character_id]){?>
+	<img src="<?="$CHAR_PATH/icon-".$pagedata[asset_suffix]?>.gif"
+	  	alt="<?=$pagedata[character]?>" border=0 align=left>
+	<?=$pagedata[character_text]?>
+	<BR clear="all" />
+<?}?>
+<?if($pagedata[disclaimer_id]){?>
+<p><i><?=$pagedata[disclaimer]?></i></p>
+<?}?>
+

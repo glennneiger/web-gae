@@ -1,0 +1,66 @@
+<?php
+global $D_R,$HTPFX,$HTADMINHOST;
+$div_id = $_GET['id'];
+$edit_id = $_GET['edit_id'];
+$strip = $_GET['strip'];
+$text_id = $_GET['val'];
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Editor</title>
+<script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST;?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST; ?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST;?>/js/config.1.2.js"></script>
+<script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST;?>/admin/ckeditor/ckeditor.js"></script>
+<style>
+#content_iframe{
+width:580px;
+height:400px;
+}
+</style>
+</head>
+<body>
+	<textarea id="article_body" name="articles[body]"><?php echo strip($pagedata[body]) ?></textarea>
+	<script language="javascript">
+		showEditor('article_body',600,400);
+		var p_text = window.opener.getText('<?=$div_id;?>');
+		$("#article_body").val(p_text);
+		function removeHTMLTags(strInputCode)
+		{
+		 	 	strInputCode = strInputCode.replace(/&(lt|gt);/g, function (strMatch, p1){
+		 		 	return (p1 == "lt")? "<" : ">";
+		 		});
+		 		var strTagStrippedText = strInputCode.replace(/<\/?[^>]+(>|$)/g, "");
+		 		return strTagStrippedText;
+		}
+		function passdata(text)
+		{
+			if (text === '') {
+			   alert('Please enter some text');
+			}
+			else
+			{
+
+				var strip = '<?=$strip?>';
+				if(strip=="1")
+				{
+					var text = removeHTMLTags(text);
+					text = text.replace(/(<([^>]+)>)/ig,"");
+					text = text.replace ("<br>", " ");
+					text = text.replace ("</br>", " ");
+
+				}
+				window.opener.addHtml(text,'<?=$div_id;?>','<?=$edit_id;?>','<?=$text_id;?>');
+				window.close();
+			}
+		}
+
+	</script>
+	<center>
+		<input type="button" name="save" value="Ok" onClick="javascript: passdata(editor.getData());"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" name="cancel" value="Cancel" onClick="window.close();">
+	</center>
+</body>
+</html>

@@ -1,0 +1,62 @@
+/* CSS Document */
+
+#ibox_w{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index:2100;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	margin:0;
+	/* padding:0;  */
+	filter:alpha(opacity=0);
+	-moz-opacity: 0.0;
+	opacity: 0.0;
+}
+
+#ibox_progress {	
+	margin:0;
+	/* padding:0; */
+	position: absolute;
+	z-index:105;
+}
+
+#ibox_wrapper {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index:2100;
+	/* padding:0; */
+	border:0px solid #ffffff;
+	width:300px;
+	height:300px;
+	background-color:#ffffff;
+	/* padding-bottom:0; */
+	margin:0;
+	min-height:175px;
+}
+
+#ibox_content {
+	width:100%;
+	min-height:100%;
+	margin-bottom:0px;
+	position:relative;
+	top:0px;
+	left:0px;
+	border:1px solid #474749;
+	background-image:url(http://storage.googleapis.com/mvassets/images/redesign/login_box_bg.jpg);
+	background-repeat:repeat-x;
+}
+
+#ibox_footer_wrapper {
+	position:relative;padding:0;margin:0;top:0px;left:0px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+#ibox_wrapper 
+{
+min-height:180px; /* The text will appear red only in Safari and Google Chrome */
+}
+}

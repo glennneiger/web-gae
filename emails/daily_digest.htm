@@ -1,0 +1,794 @@
+<?php
+global $IMG_SERVER,$HTPFX,$HTHOST,$HTADMINHOST;
+$objArticle = new ArticleData();
+$articles = $objArticle->getTodaysArticleData();
+$objPerformance = new Performance();
+if($_GET['id']!="")
+{
+	$daily_digest = $objArticle->getDailyDigest($_GET['id']);
+	$daily_digest = $daily_digest[0];
+}
+$pageName="Daily_Digest_Email";
+?>
+<div id="mv-endOfDay-987654321">
+		<table style=" margin: 0 auto; border-collapse: collapse; border-width: 0;" align="center" border="0" cellpadding="0" cellspacing="0" width="768">
+			<tbody>
+
+				<!-- HEADER START -->
+				<tr valign="top">
+					<td valign="top">
+						<table style=" margin: 0 auto; font-family: Arial, Helvetica, sans-serif;" align="center" border="0" cellpadding="0" cellspacing="0" width="768">
+							<tbody>
+								<tr valign="top" style="height:86px;">
+									<td width="768" style="height:86px;">
+										<img src="<?php echo $IMG_SERVER; ?>/images/daily_digest/mvEndOfDay_leaderboard_placeholder.jpg" width="768" height="86" border="0" alt="" usemap="#mv_endOfDay_header_map_Map" style="display:block;" />
+										<map name="mv_endOfDay_header_map_Map">
+										<?php
+										if($_GET['id']=="")
+										{
+										?>
+											<area shape="rect" alt="" coords="483,6,749,59" target="_blank" />
+										<?php
+										}
+										else
+										{
+										?>
+											<area shape="rect" alt="" coords="483,6,749,59"  target="_blank" href="<?php echo $HTPFX.$HTHOST; ?>/subscription/register/forward_to_friend.htm?id=<?php echo $_GET['id']; ?>"/>
+										<?php
+										}
+										?>
+											<area shape="rect" alt="" coords="438,27,470,59" href="http://www.linkedin.com/company/minyanville-media-inc" target="_blank" />
+											<area shape="rect" alt="" coords="398,27,430,59" href="http://twitter.com/#!/Minyanville" target="_blank" />
+											<area shape="rect" alt="" coords="358,27,390,59" href="http://www.facebook.com/MinyanvilleMedia" target="_blank" />
+											<area shape="rect" alt="" coords="17,0,150,70" href="http://www.minyanville.com/" target="_blank" />
+										</map>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<!-- HEADER END -->
+
+				<!-- MAIN CONTENT START -->
+				<tr bgcolor="#ffffff" valign="top">
+					<td valign="top">
+						<table style=" background: #ffffff; margin: 0; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="768">
+							<tbody>
+								<tr valign="top">
+									<td bgcolor="#e7e7e7" valign="top" width="1"><br /></td>
+									<td bgcolor="#ffffff" valign="top" width="766">
+
+										<!-- LEADERBOARD ROW START -->
+										<table style=" background: #ffffff; margin: 0; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="766">
+											<tbody>
+												<tr valign="top">
+													<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+													<td bgcolor="#ffffff" valign="top" width="728" style="height: 90px;"><?=show_cm8_noscript_ad($pageName,"Leaderboard_728x90_970x66",NULL);?></td>
+													<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+												</tr>
+											</tbody>
+										</table>
+										<!-- LEADERBOARD ROW END -->
+
+										<!-- TICKER ROW START -->
+										<table style=" background: #ffffff; margin: 0; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="766">
+											<tbody>
+												<tr valign="top">
+													<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+													<td bgcolor="#ffffff" valign="top" width="728">
+
+														<!-- TICKER GRP START -->
+															<table  cellpadding="0" cellspacing="0" border="0" width="728" style=" color:#000000; font-family: Arial, Helvetica, sans-serif; font-size: 11px; border-top: 1px #e9eff2 solid; border-bottom: 1px #e9eff2 solid; margin: 10px 0 10px 0; padding: 5px 0 5px 0; width: 728px; ">
+																<tbody>
+																	<tr valign="top">
+																		<td bgcolor="#ffffff" valign="middle" id="ticker-title" style="padding: 2px 0 2px 0; font-weight: bold; color:#1a98e0; line-height: 11px;" width="54">Markets Snapshot</td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="20"><br /></td>
+
+																		<!-- TICKER DATA BOXES 1 START -->
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-name" style="padding: 2px 0 2px 0; color:#1a98e0; white-space:nowrap;"><a href="http://finance.minyanville.com/minyanville/quote?from=header&Symbol=SPX" style="color:#1a98e0; white-space:nowrap;" target="_blank">S&amp;P 500</a></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<?php
+																			$stock_SPX = $objPerformance->getCurrentStockValueArr('SPX');
+																		?>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-current-value" style="padding: 2px 0 2px 0; white-space:nowrap;"><?php echo $stock_SPX['Last']; ?></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-comparison" style="padding: 2px 0 2px 0; white-space:nowrap;color:<?php if($stock_SPX['ChangePercent']<0){ echo "#e0313d"; }else{ echo "#00AB3C"; }  ?>;"><?php echo $stock_SPX['ChangePercent']; ?>%</td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<td bgcolor="#e9eff2" valign="middle" class="vertical-div" width="1"><br /></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<!-- TICKER DATA BOXES 1 END -->
+
+																		<!-- TICKER DATA BOXES 2 START -->
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-name" style="padding: 2px 0 2px 0; color:#1a98e0; white-space:nowrap;"><a href="http://finance.minyanville.com/minyanville./quote?Symbol=1310%3A998313" style="color:#1a98e0; white-space:nowrap;" target="_blank">Dow Jones</a></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<?php
+																			$stock_DJI = $objPerformance->getCurrentStockValueArr('DJ:DJI');
+																		?>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-current-value" style="padding: 2px 0 2px 0; white-space:nowrap;"><?php echo $stock_DJI['Last']; ?></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-comparison" style="padding: 2px 0 2px 0; color:<?php if($stock_DJI['ChangePercent']<0){ echo "#e0313d"; }else{ echo "#00AB3C"; }  ?>;"><?php echo $stock_DJI['ChangePercent']; ?>%</td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<td bgcolor="#e9eff2" valign="middle" class="vertical-div" width="1"><br /></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<!-- TICKER DATA BOXES 2 END -->
+
+																		<!-- TICKER DATA BOXES 3 START -->
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-name" style="padding: 2px 0 2px 0; color:#1a98e0; white-space:nowrap;"><a href="http://finance.minyanville.com/minyanville./quote?Symbol=67%3A985336" style="color:#1a98e0; white-space:nowrap;" target="_blank">Nasdaq</a></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<?php
+																			$stock_NQ = $objPerformance->getCurrentStockValueArr(urlencode('NQ: COMP'));
+																		?>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-current-value" style="padding: 2px 0 2px 0; white-space:nowrap;"><?php echo $stock_NQ['Last']; ?></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-comparison" style="padding: 2px 0 2px 0; white-space:nowrap;color:<?php if($stock_NQ['ChangePercent']<0){ echo "#e0313d"; }else{ echo "#00AB3C"; }  ?>;"><?php echo $stock_NQ['ChangePercent']; ?>%</td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<td bgcolor="#e9eff2" valign="middle" class="vertical-div" width="1"><br /></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<!-- TICKER DATA BOXES 3 END -->
+
+																		<!-- TICKER DATA BOXES 4 START -->
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-name" style="padding: 2px 0 2px 0; color:#1a98e0; text-transform: uppercase; white-space:nowrap;"><a href="http://finance.minyanville.com/minyanville./quote?Symbol=995%3A274702" style="color:#1a98e0; white-space:nowrap;" target="_blank">GOLD</a></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<?php
+																			$stock_GOLD = $objPerformance->getCurrentStockValueArr(urlencode('$GOLD'));
+																		?>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-current-value" style="padding: 2px 0 2px 0; white-space:nowrap;"><?php echo $stock_GOLD['Last']; ?></td>
+																		<td bgcolor="#ffffff" valign="middle" class="spacer-col" width="10"><br /></td>
+																		<td bgcolor="#ffffff" valign="middle" class="ticker-comparison" style="padding: 2px 0 2px 0; color:<?php if($stock_GOLD['ChangePercent']<0){ echo "#e0313d"; }else{ echo "#00AB3C"; }  ?>;"><?php echo $stock_GOLD['ChangePercent']; ?>%</td>
+																		<!-- TICKER DATA BOXES 4 END -->
+
+																	</tr>
+																</tbody>
+															</table>
+														<!-- TICKER GRP END -->
+													</td>
+													<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+												</tr>
+											</tbody>
+										</table>
+										<!-- TICKER ROW END -->
+
+										<!-- NEWSLETTER TITLE START -->
+										<table style=" background: #ffffff; margin: 0; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="766">
+											<tbody>
+												<tr valign="top">
+													<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+													<td bgcolor="#ffffff" valign="top" width="728">
+													<?php
+													if($_GET['id']!="")
+													{
+													?>
+														<h1 style="color: #000000;width: 695px; font-size: 30px; letter-spacing: -1px; font-family: Arial, Helvetica, sans-serif; margin: 10px 0 14px 0;cursor:pointer;" id="subject" ><?php echo strip($daily_digest['subject']); ?></h1>
+													<?php
+													}
+													else
+													{
+													?>
+														<h1 style="color: #000000;width: 695px; font-size: 30px; letter-spacing: -1px; font-family: Arial, Helvetica, sans-serif; margin: 10px 0 14px 0;cursor:pointer;" id="subject" onclick="return popitup('<?php echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/editor.htm?id=subject&edit_id=edit_subject&strip=1&val=subj_h')" >Click here to enter heading</h1>
+													<?php
+													}
+													?>
+													</td>
+
+													<?php
+													if($_GET['edit']=="1")
+													{
+													?>
+														<td bgcolor="#ffffff" valign="top" width="19" onclick="return popitup('<?php echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/editor.htm?id=subject&edit_id=edit_subject&strip=1')" class="edit_subject"  id="edit_subject" >
+														Edit
+													<?php
+													}
+													else
+													{
+													?>
+														<td bgcolor="#ffffff" valign="top" width="19" class="edit_subject" id="edit_subject" >
+													<?php
+													}
+													?>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<!-- NEWSLETTER TITLE END -->
+
+										<table style=" background: #ffffff; margin-bottom: -15px; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="766">
+											<tbody>
+												<tr valign="top">
+													<!-- LT COLUMN GRP START -->
+													<td valign="top">
+														<table style=" background: #ffffff; margin: 0; padding:  0; font-family: Arial, Helvetica, sans-serif;" align="center" border="0" cellpadding="0" cellspacing="0" width="391">
+															<tbody>
+																<tr valign="top">
+																	<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+																	<td bgcolor="#ffffff" valign="top" width="356">
+
+																		<!-- BLUE HEADER MODULE 01 START -->
+																		<table cellpadding="0" cellspacing="0" border="0">
+																			<tbody>
+
+																				<!-- TOP CORNERS START -->
+																				<tr valign="top" style="height: 7px;">
+																					<td bgcolor="#004482" valign="top"  style="height: 7px;">
+																						<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_drkBlue_topCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr>
+																				<!-- TOP CORNERS END -->
+
+																				<!-- HEADLINE & SOCIAL MEDIA BTNS START -->
+																				<tr valign="top">
+																					<td bgcolor="#004482" valign="top">
+																					 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px;">
+																						<tbody>
+																							<tr valign="top">
+																								<td bgcolor="#004482" valign="top" width="7"><br /></td>
+																								<td bgcolor="#004482" valign="top" width="282">
+																								<h4 style=" color: #ffffff; letter-spacing: -1px; font-size: 13px; margin: 0;">Today's Financial Recap</h4>
+																								</td>
+																								<td bgcolor="#004482" valign="top" width="18" id="edit_1" class="edit"></td>
+																						</tr>
+																						</tbody>
+																					</table>
+																					</td>
+																				</tr>
+																				<!-- HEADLINE & SOCIAL MEDIA BTNS END -->
+
+																				<!-- BTM CORNERS START -->
+																				<tr valign="top" style="height: 7px;">
+																					<td bgcolor="#004482" valign="top" style="height: 7px;">
+																					 <img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_drkBlue_btmCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr>
+																				<!-- BTM CORNERS END -->
+
+
+																				<!-- MAIN COPY BOX START -->
+																				<tr valign="top">
+																					<td bgcolor="#004482" valign="top">
+																					 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px; font-size: 14px; line-height: 18px; border-width: 0; border-collapse: collapse;">
+																						<tbody>
+																							<tr valign="top">
+																								<td bgcolor="#e9eff2" valign="top" width="1" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="19" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" style=" border: 0; border-width: 0; border-collapse: collapse;">
+																									<p style=" border: 0; border-width: 0; border-collapse: collapse;" >
+																										<div class="module_detail" id="module1_detail" ><?php echo strip($daily_digest['module1_detail']);?></div>
+																										<?php
+																										if($_GET['id']=="" || $_GET['edit']=="1")
+																										{
+																										?>
+																											<a href="<?php echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/editor.htm?id=module1_detail&val=module_d2" onclick="return popitup('<?php echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/editor.htm?id=module1_detail')" >Click here to enter text</a>
+																										<?php
+																										}
+																										?>
+
+																									</p>
+																								</td>
+																								<td bgcolor="#fafdff" valign="top" width="19" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																								<td bgcolor="#e9eff2" valign="top" width="1" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																							</tr>
+																						</tbody>
+																					</table>
+																					</td>
+																				</tr>
+
+																				<tr valign="top"><!-- BTM CORNERS START -->
+																					<td bgcolor="#f9fdff" valign="top" style="height: 7px;">
+																						 <img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_liteBlue_btmCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr><!-- BTM CORNERS END -->
+
+																				<!-- MAIN COPY BOX END -->
+
+																			</tbody>
+																		</table>
+																		<!-- BLUE HEADER MODULE 01 END -->
+
+																		<!-- SPACER ROW 01 START -->
+																		<table cellpadding="0" cellspacing="0" border="0">
+																			<tbody>
+																				<tr valign="top">
+																					<td bgcolor="#ffffff" valign="top">
+																						<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/spacer.gif" width="356" height="20" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																		<!-- SPACER ROW 01 END -->
+
+																		<!-- BLUE HEADER MODULE 02 START -->
+																		<table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border-width: 0;">
+																			<tbody>
+
+																				<!-- TOP CORNERS START -->
+																				<tr valign="top">
+																					<td bgcolor="#004482" valign="top" style="height: 7px;">
+																						<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_drkBlue_topCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr>
+																				<!-- TOP CORNERS END -->
+
+																				<!-- HEADLINE & SOCIAL MEDIA BTNS START -->
+																				<tr valign="top">
+																					<td bgcolor="#004482" valign="top">
+																					 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px;">
+																						<tbody>
+																							<tr valign="top">
+																								<td bgcolor="#004482" valign="top" width="7"><br /></td>
+																								<td bgcolor="#004482" valign="top" width="282">
+																								<h4 style=" color: #ffffff; letter-spacing: -1px; font-size: 13px; margin: 0;">Tomorrow's Financial Outlook</h4>
+																								</td>
+																								<td bgcolor="#004482" valign="top" width="18" id="edit_2" class="edit" ></td>
+																							</tr>
+																						</tbody>
+																					</table>
+																					</td>
+																				</tr>
+																				<!-- HEADLINE & SOCIAL MEDIA BTNS END -->
+
+																				<tr valign="top"><!-- BTM CORNERS START -->
+																					<td bgcolor="#004482" valign="top" style="height: 7px;">
+																					 <img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_drkBlue_btmCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr><!-- BTM CORNERS END -->
+
+																				<!-- MAIN COPY BOX START -->
+																				<tr valign="top">
+																					<td bgcolor="#004482" valign="top">
+																					 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px; font-size: 14px; line-height: 18px; border-width: 0; border-collapse: collapse;">
+																						<tbody>
+																							<tr valign="top">
+																								<td bgcolor="#e9eff2" valign="top" width="1" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="19" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" style=" border: 0; border-width: 0; border-collapse: collapse;">
+																									<div id="module2_detail" class="module_detail"><?php echo strip($daily_digest['module2_detail']); ?></div>
+																									<?php
+																									if($_GET['id']=="" || $_GET['edit']=="1")
+																									{
+																									?>
+																										<a href="<?php echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/editor.htm?id=module2_detail&val=module_d1" onclick="return popitup('<?php echo $HTPFX.$HTADMINHOST; ?>/admin/email-digest/editor.htm?id=module2_detail')" >Click here to enter text</a>
+																									<?php
+																									}
+																									?>
+																								</td>
+																								<td bgcolor="#fafdff" valign="top" width="19" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																								<td bgcolor="#e9eff2" valign="top" width="1" style=" border: 0; border-width: 0; border-collapse: collapse;"><br /></td>
+																							</tr>
+																						</tbody>
+																					</table>
+																					</td>
+																				</tr>
+
+																				<tr valign="top"><!-- BTM CORNERS START -->
+																					<td bgcolor="#fafdff" valign="top" style="height: 7px;">
+																						 <img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_liteBlue_btmCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr><!-- BTM CORNERS END -->
+
+																				<!-- MAIN COPY BOX END -->
+
+																			</tbody>
+																		</table>
+																		<!-- BLUE HEADER MODULE 02 END -->
+
+																		<table cellpadding="0" cellspacing="0" border="0"><!-- SPACER ROW 2START -->
+																			<tbody>
+																				<tr valign="top">
+																					<td bgcolor="#ffffff" valign="top">
+																						<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/spacer.gif" width="356" height="20" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table><!-- SPACER ROW 02 END -->
+
+																		<!-- HALF PAGE AD MODULE START -->
+																		<table cellpadding="0" cellspacing="0" border="0">
+																			<tbody>
+
+																				<!-- TOP CORNERS START -->
+																				<tr valign="top">
+																					<td bgcolor="#fafdff" valign="top" style="height: 7px;">
+																						<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_liteBlue_topCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr>
+																				<!-- TOP CORNERS END -->
+
+																				<!-- NOTE START -->
+																				<tr valign="top">
+																					<td bgcolor="#fafdff" valign="top">
+																					 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px;">
+																						<tbody>
+																							<tr valign="top">
+																								<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="6"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="342">
+																									<p style="color: #84a4ba; font-size: 10px; margin: 0 0 4px 0;" >Advertisement</p>
+																								</td>
+																								<td bgcolor="#fafdff" valign="top" width="6"><br /></td>
+																								<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																							</tr>
+																						</tbody>
+																					</table>
+																					</td>
+																				</tr>
+																				<!-- NOTE END -->
+
+																				<!-- 300x600 BOX START -->
+																				<tr valign="top">
+																					<td bgcolor="#fafdff" valign="top">
+																					 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px; pading-bottom: 10px;">
+																						<tbody>
+																							<tr valign="top">
+																								<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="300">
+																								<?=show_cm8_noscript_ad($pageName,"MediumRectangle_300x250_300x600_bottom",NULL);?>
+
+																								</td>
+																								<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																								<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																							</tr>
+
+																							<tr valign="top"><!-- SPACER ROW 03 START -->
+																								<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																								<td bgcolor="#fafdff" valign="top" width="300">
+																									<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/spacer.gif" width="300" height="20" alt="" border="0" style="display:block;"/>
+																								</td>
+																								<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																								<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																							</tr><!-- SPACER ROW 03 END -->
+
+																						</tbody>
+																					</table>
+																					</td>
+																				</tr>
+																				<!-- 300x600 BOX END -->
+
+																				<tr valign="top"><!-- BTM CORNERS START -->
+																					<td bgcolor="#fafdff" valign="top" style="height: 7px;">
+																					 <img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_liteBlue_btmCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr><!-- BTM CORNERS END -->
+
+																			</tbody>
+																		</table>
+																		<!-- HALF PAGE AD MODULE END -->
+
+																	</td>
+
+																	<td bgcolor="#ffffff" valign="top" width="16"><br /></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+													<!-- LT COLUMN GRP END -->
+
+													<!-- RT COLUMN GRP START -->
+													<td valign="top">
+														<table style=" background: #ffffff; margin: 0; padding:  0; font-family: Arial, Helvetica, sans-serif;" align="center" border="0" cellpadding="0" cellspacing="0" width="375">
+															<tbody>
+																<tr valign="top">
+																	<td valign="top">
+																		<!-- BOX AD MODULE START -->
+																			<table cellpadding="0" cellspacing="0" border="0">
+																				<tbody>
+
+																					<!-- TOP CORNERS START -->
+																					<tr valign="top">
+																						<td bgcolor="#fafdff" valign="top" style="height: 7px;">
+																							<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_liteBlue_topCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																						</td>
+																					</tr>
+																					<!-- TOP CORNERS END -->
+
+																					<!-- NOTE START -->
+																					<tr valign="top">
+																						<td bgcolor="#fafdff" valign="top">
+																						 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px;">
+																							<tbody>
+																								<tr valign="top">
+																									<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																									<td bgcolor="#fafdff" valign="top" width="6"><br /></td>
+																									<td bgcolor="#fafdff" valign="top" width="342">
+																										<p style="color: #84a4ba; font-size: 10px; margin: 0 0 4px 0;" >Advertisement</p>
+																									</td>
+																									<td bgcolor="#fafdff" valign="top" width="6"><br /></td>
+																									<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																								</tr>
+																							</tbody>
+																						</table>
+																						</td>
+																					</tr>
+																					<!-- NOTE END -->
+
+																					<!-- 300x250 BOX START -->
+																					<tr valign="top">
+																						<td bgcolor="#fafdff" valign="top">
+																						 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px;">
+																							<tbody>
+																								<tr valign="top">
+																									<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																									<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																									<td bgcolor="#fafdff" valign="top" width="300">
+																										<?=show_cm8_noscript_ad($pageName,"MediumRectangle_300x250_300x600",NULL);?>
+																									</td>
+																									<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																									<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																								</tr>
+																							</tbody>
+																						</table>
+																						</td>
+																					</tr>
+
+																					<tr valign="top">
+																						<td bgcolor="#fafdff" valign="top">
+																						 <table cellpadding="0" cellspacing="0" border="0" width="356" style="width: 356px;">
+																							<tbody>
+																								<tr valign="top">
+																									<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																									<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																									<td bgcolor="#fafdff" valign="top" width="300">
+																										<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/spacer.gif" width="300" height="20" alt="" border="0" style="display:block;" />
+																									</td>
+																									<td bgcolor="#fafdff" valign="top" width="27"><br /></td>
+																									<td bgcolor="#e9eff2" valign="top" width="1"><br /></td>
+																								</tr>
+																							</tbody>
+																						</table>
+																						</td>
+																					</tr>
+
+																					<!-- 300x250 BOX END -->
+
+																					<tr valign="top"><!-- BTM CORNERS START -->
+																						<td bgcolor="#fafdff" valign="top" style="height: 7px;">
+																						 <img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/infoModule_liteBlue_btmCorners.gif" width="356" height="7" alt="" border="0" style="display:block;"/>
+																						</td>
+																					</tr><!-- BTM CORNERS END -->
+
+																				</tbody>
+																			</table>
+																			<!-- BOX  AD MODULE END -->
+
+																		<!-- SPACER ROW 04 START -->
+																		<table cellpadding="0" cellspacing="0" border="0">
+																			<tbody>
+																				<tr valign="top">
+																					<td bgcolor="#ffffff" valign="top">
+																						<img src ="<?php echo $IMG_SERVER; ?>/images/daily_digest/spacer.gif" width="356" height="20" alt="" border="0" style="display:block;"/>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																		<!-- SPACER ROW 04 END -->
+																	</td>
+																	<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+																</tr>
+
+																<tr valign="top"><!-- EDITORS PICKS HEDLINE START -->
+																	<td valign="top">
+																		<table style=" background: #ffffff; margin: 0; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="356">
+																			<tbody>
+																				<tr valign="top">
+																					<td bgcolor="#ffffff" valign="top" width="356"><h1 style="color: #000000; font-size: 30px; letter-spacing: -1px; font-family: Arial, Helvetica, sans-serif; margin: 0 0 14px 0;">Today's Editors' Picks</h1></td>
+																					<td bgcolor="#ffffff" valign="top" class="edit_pick" id="edit_pick" ></td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</td>
+																</tr> <!-- EDITORS PICKS HEDLINE END -->
+																<tr valign="top"><!-- EDITORS PICKS HEDLINE START -->
+																	<td valign="top">
+																		<table style=" background: #ffffff; margin: 0; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="356">
+																			<tbody>
+																			<?php
+
+																				if($_GET['id']=="" )
+																				{
+																					$row='';
+																					echo '<tr valign="top">';
+																					echo '<td bgcolor="#ffffff" valign="top" width="356">';
+																					echo '<select name="list_article"  style="margin-bottom:10px;width:350px;" id="list_article" onchange="addArticle();">';
+																					echo '<option style="padding:0px; margin:0px;" value="0">--Select articles--</option>';
+																					foreach($articles as $key=>$val)
+																					{
+																						echo '<option style="padding:0px; margin:0px;" value="'.$val[item_id].'">'.html_entity_decode(substr($val[title], 0,50)).'</option>';
+																						$row.='<tr class="hide" id="article_'.$val[item_id].'" valign="top"><td bgcolor="#ffffff" valign="top" width="356">';
+																						$row.='<h2 class="headline" style="color: #333333; font-size: 16px; letter-spacing: -1px; margin: 0;"><a style="color: rgb(51, 51, 51); text-decoration: none; font-size: 16px; letter-spacing: -1px; margin: 0pt;" href="'.$HTPFX.$HTHOST.$val[url].'?camp=newsletter&medium=email&from=recapemail" >'.html_entity_decode($val[title]).'</a><span class="remove" onClick="removeArticle(\''.$val[item_id].'\',\''.addslashes($val[title]).'\')" >Remove</span></h2>';
+																						$row.='<p class="author" style="color: #b2b2b2; font-size: 10px; margin: 0;">'.html_entity_decode($val[author_name]).'</p><p class="excerpt" style="margin: 0 0 20px 0;">'.html_entity_decode($val[description]).' <a class="cta" href="'.$HTPFX.$HTHOST.$val[url].'?camp=newsletter&medium=email&from=recapemail" target="_blank" style="color: #1a98e0; font-size: 11px; font-weight: bold; margin: 0 0 16px 0; text-decoration: none;">[READ NOW]</a></p>';
+																						$row.='</td></tr>';
+																					}
+																					echo "</select>";
+																					echo $row;
+																					echo "</td></tr>";
+																				}
+																				else
+																				{
+																					$art_arr = explode(",", $daily_digest['item_ids']);
+																					if($_GET['edit']=="1")
+																					{
+																						echo '<select name="list_article"  style="margin-bottom:10px;width:350px;" id="list_article" onchange="addArticle();">';
+																						echo '<option style="padding:0px; margin:0px;" value="0">--Select articles--</option>';
+																					}
+
+																					foreach($articles as $key=>$val)
+																					{
+
+																						if($_GET['edit']=="1")
+																						{
+																							if(!in_array($val[item_id], $art_arr))
+																							{
+																								echo '<option style="padding:0px; margin:0px;" value="'.$val[item_id].'">'.html_entity_decode($val[title]).'</option>';
+																							}
+																							if(in_array($val[item_id], $art_arr))
+																							{
+																								$row.= '<tr class="show" id="article_'.$val[item_id].'" valign="top">';
+																							}
+																							else
+																							{
+																								$row.= '<tr class="hide" id="article_'.$val[item_id].'" valign="top">';
+																							}
+																							$row.= '<td bgcolor="#ffffff" valign="top" width="356">';
+																							$row.='<h2 class="headline" style="color: #333333; font-size: 16px; letter-spacing: -1px; margin: 0;"><a style="color: rgb(51, 51, 51); text-decoration: none; font-size: 16px; letter-spacing: -1px; margin: 0pt;" href="'.$HTPFX.$HTHOST.$val[url].'?camp=newsletter&medium=email&from=recapemail" >'.html_entity_decode($val[title]).'</a><span class="remove" onClick="removeArticle(\''.$val[item_id].'\',\''.addslashes($val[title]).'\')" >Remove</span></h2>';
+																							$row.='<p class="author" style="color: #b2b2b2; font-size: 10px; margin: 0;">'.html_entity_decode($val[author_name]).'</p><p class="excerpt" style="margin: 0 0 20px 0;">'.html_entity_decode($val[description]).' <a class="cta" href="'.$HTPFX.$HTHOST.$val[url].'?camp=newsletter&medium=email&from=recapemail" target="_blank" style="color: #1a98e0; font-size: 11px; font-weight: bold; margin: 0 0 16px 0; text-decoration: none;">[READ NOW]</a></p>';
+																							$row.='</td></tr>';
+																						}
+																						else
+																						{
+																							if(in_array($val[item_id], $art_arr))
+																							{
+																								$row.= '<tr id="article_'.$val[item_id].'" valign="top">';
+																								$row.= '<td bgcolor="#ffffff" valign="top" width="356">';
+																								$row.='<h2 class="headline" style="color: #333333; font-size: 16px; letter-spacing: -1px; margin: 0;"><a style="color: rgb(51, 51, 51); text-decoration: none; font-size: 16px; letter-spacing: -1px; margin: 0pt;" href="'.$HTPFX.$HTHOST.$val[url].'?camp=newsletter&medium=email&from=recapemail" >'.html_entity_decode($val[title]).'</a></h2>';
+																								$row.='<p class="author" style="color: #b2b2b2; font-size: 10px; margin: 0;">'.html_entity_decode($val[author_name]).'</p><p class="excerpt" style="margin: 0 0 20px 0;">'.html_entity_decode($val[description]).' <a class="cta" href="'.$HTPFX.$HTHOST.$val[url].'?camp=newsletter&medium=email&from=recapemail" target="_blank" style="color: #1a98e0; font-size: 11px; font-weight: bold; margin: 0 0 16px 0; text-decoration: none;">[READ NOW]</a></p>';
+																								$row.='</td></tr>';
+																							}
+																						}
+
+
+																					}
+																					if($_GET['edit']=="1")
+																					{
+																						echo "</select>";
+																					}
+																					echo $row;
+																				}
+																			?>
+																			</tbody>
+																		</table>
+																	</td>
+
+																	<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+																</tr> <!-- EDITORS PICKS HEDLINE END -->
+																<tr valign="top"><!-- ARTICLES ARRAY START -->
+																	<td valign="top">
+																		<table style=" background: #ffffff; color: #666666;  font-size: 12px; margin: 0; padding:  0; font-family: Arial, Helvetica, sans-serif; line-height: 19px;" align="center" border="0" cellpadding="0" cellspacing="0" width="356" >
+																			<tbody id="article_table">
+
+																			</tbody>
+																		</table>
+																	</td>
+																	<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+																</tr><!-- ARTICLES ARRAY END -->
+
+																<tr valign="top"><!-- BOTTOM CTA START -->
+																	<td valign="top">
+																		<table style=" background: #ffffff; margin: 0; padding:  0;" align="center" border="0" cellpadding="0" cellspacing="0" width="356">
+																			<tbody>
+																				<tr valign="top">
+																					<td bgcolor="#ffffff" valign="top" width="356"><h2 style="color: #005696; font-size: 14px; letter-spacing: 0px; font-family: Arial, Helvetica, sans-serif; margin: 0 0 20px 0;">READ MORE FINANCIAL NEWS AT <a href="http://www.minyanville.com/" target="_blank" style="color: #e40030;">MINYANVILLE.COM</a></h2></td>
+																				</tr>
+																			</tbody>
+																		</table>
+
+																	</td>
+																	<td bgcolor="#ffffff" valign="top" width="19"><br /></td>
+																</tr><!-- BOTTOM CTA END -->
+															</tbody>
+														</table>
+													</td>
+													<!-- RT COLUMN GRP START -->
+												</tr>
+											</tbody>
+										</table>
+									</td>
+									<td bgcolor="#e7e7e7" valign="top" width="1"><br /></td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<!-- MAIN CONTENT END -->
+
+				<!-- FOOTER START -->
+				<tr valign="top">
+					<td valign="top">
+						<table cellspacing="0" cellpadding="0" border="0" style=" margin: 0 auto; font-family: Arial, Helvetica, sans-serif;" align="center" width="768">
+							<tbody>
+								<tr valign="top" style="height: 40px;">
+									<td width="766" valign="top" style="height: 40px;">
+										<img src="<?php echo $IMG_SERVER; ?>/images/daily_digest/footer_top.gif" width="768" height="40" border="0" alt="" style="display:block;" />
+									</td>
+								</tr>
+								<tr valign="top">
+									<td bgcolor="#f2f2f2" width="768" valign="top">
+										<table cellpadding="0" cellspacing="0" border="0" style="background: #f2f2f2; color: #444444; font-family: Arial, Helvetica, sans-serif; font-size: 11px; text-align: center;" width="768">
+											<tbody>
+												<tr valign="top">
+													<td bgcolor="#e7e7e7" valign="top" width="1"><br /></td>
+													<td bgcolor="#f2f2f2" valign="top" width="19"><br /></td>
+													<td bgcolor="#f2f2f2" valign="top">
+														<p>Follow us on <a href="http://www.facebook.com/MinyanvilleMedia" target="_blank" style=" color: #1a98e0;">Facebook</a> and <a href="http://twitter.com/#!/Minyanville" target="_blank" style=" color: #1a98e0;">Twitter</a></p>
+													</td>
+													<td bgcolor="#f2f2f2" valign="top" width="20"><br /></td>
+													<td bgcolor="#f2f2f2" valign="top">
+														<p><a href="<?php echo $HTPFX.$HTHOST; ?>/" target="_blank" style=" color: #1a98e0;">Visit Minyanville.com</a></p>
+													</td>
+													<td bgcolor="#f2f2f2" valign="top" width="20"><br /></td>
+													 <td bgcolor="#f2f2f2" valign="top">
+														  <p><a href="<?php echo $HTPFX.$HTHOST; ?>/subscription/register/forward_to_friend.htm?id=<?php echo $_GET['id']; ?>" target="_blank" style=" color: #1a98e0;"><strong>Forward this Newsletter to a Friend</strong></a></p>
+													</td>
+													<td bgcolor="#f2f2f2" valign="top" width="19"><br /></td>
+													<td bgcolor="#e7e7e7" valign="top" width="1"><br /></td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+								<tr valign="top" style="height: 14px;">
+									<td width="768" valign="top" style="height: 14px;">
+										<img src="<?php echo $IMG_SERVER; ?>/images/daily_digest/footer_bottom.gif" width="768" height="14" border="0" alt="" style="display:block;" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="temp_footer" style="color: #545454;font-size: 12px;padding-left: 20px;padding-top: 20px;font-family:Arial, Helvetica, sans-serif;">
+								&#169;<?php echo date('Y'); ?> Minyanville Media, Inc.<br>
+								708 Third Avenue, 6th Floor<br>
+								New York, New York 10017<br><br>
+								<a style="text-decoration:none;color: #545454;font-size: 12px;" href="<?php echo $HTPFX.$HTHOST; ?>/subscription/register/unsubscribe.htm"><u>Unsubscribe</u></a> for future emails from Minyanville.com
+						</div>
+					</td>
+				</tr>
+				<!-- FOOTER END -->
+
+			</tbody>
+		</table>
+		<input type="hidden" name="item_id" id="article_id" value="<?php echo $daily_digest[item_ids]; ?>">
+		<input type="hidden" name="dd_id" id="dd_id" value="<?php echo $_GET['id']; ?>">
+
+</div>
+
+<div class="buttons" align="center">
+<?php
+if($_GET['mail']!="1")
+{
+	if($_GET['id']!="")
+	{
+		if($_GET['edit']!="1")
+		{
+			echo '<a id="btnSend" style="text-decoration:none;" href="'.$HTPFX.$HTADMINHOST.'/admin/email-digest/send_digest.php?id='.$_GET[id].'&edit=1"> <img src="'.$IMG_SERVER.'/images/daily_digest/edit.jpg"  class="b_style" style="cursor:pointer;" name="btn_edit" ></a>';
+			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			echo '<img src="'.$IMG_SERVER.'/images/daily_digest/send.jpg"  style="cursor:pointer;" class="b_style" name="btn_mail" OnClick="sendmail(\''.$_GET['id'].'\');">';
+		}
+		else
+		{
+			echo '<img src="'.$IMG_SERVER.'/images/daily_digest/save.jpg" style="cursor:pointer;margin-right:100px;" id="save" name="btn_save" OnClick="saveTemplate();">';
+			echo '<input type="image"  src="'.$IMG_SERVER.'/images/daily_digest/preview.jpg" style="cursor:pointer;border:0;" name="btn_prev" id="prev" value="Preview" OnClick="prevTemplate();" >';
+		}
+
+	}
+	else
+	{
+		echo '<img src="'.$IMG_SERVER.'/images/daily_digest/save.jpg" style="cursor:pointer;margin-right:100px;" id="save" name="btn_save" OnClick="saveTemplate();">';
+		echo '<input type="image"  src="'.$IMG_SERVER.'/images/daily_digest/preview.jpg" style="cursor:pointer;border:0;" name="btn_prev" id="prev" value="Preview" OnClick="prevTemplate();" >';
+
+	}
+}
+?>
+</div>

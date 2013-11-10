@@ -1,0 +1,62 @@
+<?php
+if($_GET['pagename'])
+{
+	$pageName=$_GET['pagename'];
+}
+global $D_R;
+$pageJS=array('config','dailyfeed','jquery','global','featuredslider','mobileredirect');
+$pageCSS=array("global","layout","nav","codaslider","homepage","rightColumn");
+include("../_header.htm");
+$SectionDetails=getSection($menu_section_id);
+global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$bannername=$cm8_ads_Button_160x30;
+?>
+<!--left contaner start from here-->
+<div class="left_contant">
+	<div class="subsection_top_left">
+			<div class="sub_section_common_title">
+            <table width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td><?=$pageDetail['page_title']?></td>
+			<td align=right>Sponsored By</td>
+		  </tr>
+		</table>
+		 </div>
+        <?= renderPageModules($pageDetail['id'],'Subsection Feature Module') ?>
+		<table border="0" align="left"  cellpadding="0" cellspacing="0" width="100%">
+		<tr class="section_article_listing" valign="top"><td class="subsection_middle_left"><?= renderPageModules($pageDetail['id'],'Subsection Latest Module1') ?></td>
+		<td class="subsection_middle_right" valign="top"><?= renderPageModules($pageDetail['id'],'Subsection Latest Module2') ?></td>
+		</tr>
+		</table>
+	</div>
+	<div class="section_top_right_ads">
+		<div style="text-align:center;padding-bottom:3px">
+					<? CM8_ShowAd($bannername); ?>
+		</div>
+	</div>
+	<div class="section_top_right"><?= renderPageModules($pageDetail['id'],'Subsection Professor Module') ?></div>
+	<?if(getPageNameSectionId($pageName)!=1) {?>
+		<div><?section_showPartnerCenter();?></div>
+		<? } ?>
+   <div class="article-right-module-header">
+   		<img src="<?=$IMG_SERVER;?>/images/articles/section_headers_partnerlinks.gif" />
+	</div>
+</div>
+<!--left contaner end here-->
+<div class="right_contant" >
+<br />
+<?
+if(getPageNameSectionId($pageName)==1) {
+	showPartnerCenter();
+	$featuredProfId = $businessmarketIds[array_rand($businessmarketIds)];
+}
+elseif(getPageNameSectionId($pageName)==2) {
+$featuredProfId = $lifemoneyIds[array_rand($lifemoneyIds)];
+}
+$arrRightCols	=	array('show_ads','show_mostpopular','show_markets');
+include("_rightcolumn.htm");
+?>
+</div>
+<?
+include("../_footer.htm"); ?>

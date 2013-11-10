@@ -1,0 +1,28 @@
+<?
+	session_start();
+	if(!$_POST[username] || !$_POST[password]){
+		$error="Please enter your username and password";
+		location("/admin/".qsa(array(error=>$error)));
+		exit;
+	}
+	$ad = new admin($_POST["username"],$_POST["password"]);
+	if(!$ad->isAuthed){
+		set_sess_vars("AUSER","");
+		set_sess_vars("APASS","");
+		set_sess_vars("AMADMIN","");
+		mcookie("superuser",0);
+		location("/admin/?error=".urlencode("Username and password you provided are invalid"));
+		exit();
+	}else{
+		set_sess_vars("AMADMIN",1);
+		set_sess_vars("AUSER",$_POST["username"]);
+		set_sess_vars("APASS",$_POST["password"]);
+		if($_POST[SUPERUSER_I_AM]=="1"){
+			mcookie("superuser",1);
+		}else{
+			mcookie("superuser","0");
+		}
+	}
+	$defaulturl=$refer?base64_decode($refer):"./home.htm";
+	header("Location: ".$defaulturl);
+?>

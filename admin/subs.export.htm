@@ -1,0 +1,12 @@
+<?
+include_once("$DOCUMENT_ROOT/lib/_includes.php");
+$qry = stripslashes($qry);
+$qry = stripslashes($qry);
+$pos = strpos($qry,'LIMIT');
+$qry=substr($qry,0,$pos);
+csv_header("subscriptions.csv");
+$datestr="%m/%d/%Y";
+
+qry2csv($qry);
+
+?>

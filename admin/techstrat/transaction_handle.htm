@@ -1,0 +1,480 @@
+<?
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Content-Type: text/plain");
+header("Pragma: nocache\n");
+header("cache-control: no-cache, must-revalidate, no-store\n\n");
+header("Expires: 0");
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/layout_functions.php");
+include_once("$D_R/lib/_includes.php");
+include_once("$D_R/lib/_auth.php");
+include_once("$D_R/lib/_db.php");
+include_once("$D_R/lib/config/_techstrat_config.php");
+include_once("$D_R/admin/techstrat/techstrat_classes/class_transaction.php");
+include($D_R."/admin/techstrat/techstrat_classes/class_Performance.php");
+
+$transobj=new techstratTransaction();
+$json = new Services_JSON();
+$techPortType='';
+$techPortType=$_POST['techPortType'];
+$editaddform='';
+
+if($techPortType=='save'){
+	global $techStratMemcacheExpire;
+	$symbolval = $_POST['symbolval'];
+	$typeval = $_POST['typeval'];
+	$dateval = $_POST['dateval'];
+	$sharesval = $_POST['sharesval'];
+	$priceval = $_POST['priceval'];
+	$notesval = $_POST['notesval'];
+	$editaddform = $_POST['editaddform'];
+	$datetime = date('Y-m-d h:i:s',strtotime($dateval));
+
+	$splitsymbolsArray=explode(',',$symbolval);
+	$firstsymbolname=$splitsymbolsArray['0'];
+	$splitsymbolsnameArray=explode(':',$firstsymbolname);
+	$getidfromstocks="select id from ex_stock where stocksymbol= trim('".$splitsymbolsnameArray[1]."') and exchange=trim('".$splitsymbolsnameArray[0]."')";
+	$allressym=exec_query($getidfromstocks);
+
+	if(count($allressym)>0){
+		foreach($allressym as $allresultsym){
+			$sid=$allresultsym['id'];
+		}
+	}else if(count($allressym)==0){
+		# check the exchange validation frm local exchange table if exchange is listed go for yahoo otherwise return
+		$getidfromexchange = "select id from ex_stock_exchange where exchange_name = trim('".$splitsymbolsnameArray[0]."')";
+		$allresexch=exec_query($getidfromexchange);
+		if(count($allresexch)>0){
+			foreach($allresexch as $allresultexchn){
+				$eid=$allresultexchn['id'];
+				if(isset($eid)){
+					# Go for yahoo with only symbol name
+					$symbolname=trim($splitsymbolsnameArray[1]);
+					$getalldata=$transobj->getstockdetails($symbolname);
+					if($getalldata==0){
+					# Yahoo returns invalid symbol
+						$msg="The symbol (\"$symbolname\") doesn't appear to be registered<BR></FONT>";
+						if($editaddform==''){
+							$techTransRes = $transobj->alltransaction($msg);
+						}else if($editaddform=='edit'){
+							$techTransRes = $transobj->alltransactionediterr($msg);
+						}
+						$value=array('status'=>true,'msg'=>$techTransRes);
+						$output = $json->encode($value);
+						echo $output;
+						exit;
+					}else{
+					# Yahoo returns valid array without st.exchange name
+						# We will fetch this array and store in our local ex_stock table and will return the inserted id
+						$stocktabldata=array(
+							stocksymbol=>$getalldata[0],
+							exchange=>strtoupper(trim($splitsymbolsnameArray[0])),
+							CompanyName=>addslashes(trim($getalldata[9]))
+						);
+						$sid=insert_query("ex_stock",$stocktabldata);
+						$memCacheDelete = new memCacheObj();
+						$key="techStratOpenPositiontrade";
+						$memCacheDelete->deleteKey($key);
+						$key="techStratOpenPosition";
+						$memCacheDelete->deleteKey($key);
+						$key="techStratDisplayPerformance";
+						$memCacheDelete->deleteKey($key);
+						$transobj->updateOpenPositionRecords();
+						# Now the new symbol added in our db to reflect u hv to run the
+						$transobj->addinjsfile(); // here we are updaing the arry in js
+						$newmsg=1;
+					}
+				}
+			}
+		}//			if(count($allresexch)>0){
+		else{
+			# The entered stock exchange name is not valid;
+			$msg="The stock exchange name entered is Invalid";
+			if($editaddform==''){
+				$techTransRes = $transobj->alltransaction($msg);
+			}else if($editaddform=='edit'){
+				$techTransRes = $transobj->alltransactionediterr($msg);
+			}
+			$value=array('status'=>true,'msg'=>$techTransRes);
+			$output = $json->encode($value);
+			echo $output;
+			exit;
+		}
+	}//else if(count($allressym)==0){
+	// if sell then check whether its possible or not
+	if($typeval==1){
+		$getstockbuyarr=$transobj->getallbuystocks();
+		$totsahresbuyd=$getstockbuyarr[$sid];
+		// case when he never purchased
+		if($totsahresbuyd==0){
+			if($editaddform==''){
+				$msg="First Buy Then Sell";
+				$techTransRes = $transobj->alltransaction($msg);
+			}else if($editaddform=='edit'){
+				$techTransRes = $transobj->alltransactionediterr("First Buy Then Sell");
+			}
+			$value=array('status'=>true,'msg'=>$techTransRes);
+			$output = $json->encode($value);
+			echo $output;
+			exit;
+		}
+			// case when he wants to sell more than purchased quantity
+		if($sharesval>$totsahresbuyd){
+			if($editaddform==''){
+				$msg="Sell Quantity must be less than Buy Quantity $totsahresbuyd - $sid ";
+				$techTransRes = $transobj->alltransaction($msg);
+			}else if($editaddform=='edit'){
+				$techTransRes = $transobj->alltransactionediterr("Sell Quantity must be less than Buy Quantity $totsahresbuyd - $sid ");
+			}
+			$value=array('status'=>true,'msg'=>$techTransRes);
+			$output = $json->encode($value);
+			echo $output;
+			exit;
+		}
+	}
+	# Try to insert the transaction in transaction table
+	$transactiondata=array(
+		   quote_id=>$sid,
+		   transaction_type=>$typeval,
+		   creation_date=>$datetime,
+		   unit_price=>$priceval,
+		   quantity=>$sharesval,
+		   description=>$notesval
+		  );
+	if($sid > 0){
+		$retstatus=insert_query("techstrat_transaction",$transactiondata);
+	}
+
+	if(isset($retstatus)){
+		// delete key for memcache
+		$memCacheDelete = new memCacheObj();
+		$key="techStratOpenPositiontrade";
+		$memCacheDelete->deleteKey($key);
+		$key="techStratOpenPosition";
+		$memCacheDelete->deleteKey($key);
+		$key="techStratDisplayPerformance";
+		$memCacheDelete->deleteKey($key);
+		$transobj->updateOpenPositionRecords();;
+
+		$avg_unit_price=0.00;
+		if(isset($avgsharearr)) unset($avgsharearr);
+		$avgsharearr=$transobj->avgunitpricebysid($sid);
+		$avg_unit_price=$avgsharearr['up'];
+		//***$totbuyqty=$avgsharearr['totbuyqty'];
+		$getstockbuyarr=$transobj->getallbuystocks();
+		//htmlprint_r($getstockbuyarr);
+		$totbuyqty=0;
+		$totbuyqty=$getstockbuyarr[$sid];
+			# get the avg_unit_price of that symbol
+			# Try to insert / update in qp_user_portfolio table
+			# 1st check whether this symbol has any entry in that table
+			# If yes then update or insert the 1st entry
+
+		$sql_chk="select id from techstrat_user_portfolio where quote_id='$sid'";
+		$searchfound=exec_query($sql_chk);
+		if(count($searchfound)>0){
+				# Update
+			$transactiondata=array(
+			quantity=>$totbuyqty,
+			avg_unit_price=>$avg_unit_price,
+			recent_trade_date=>$datetime
+			);
+			update_query("techstrat_user_portfolio",$transactiondata,array(quote_id=>$sid));
+
+			$memCacheDelete = new memCacheObj();
+			$key="techStratOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$transobj->updateOpenPositionRecords();;
+		}else if((count($searchfound))==0){
+			#insert
+			$transactiondata=array(
+				quote_id=>$sid,
+				quantity=>$totbuyqty,
+				avg_unit_price=>$avg_unit_price,
+				purchase_date=>$datetime,
+				recent_trade_date=>$datetime
+			);
+			if($retstatus > 0){
+			  insert_query("techstrat_user_portfolio",$transactiondata);
+			  $memCacheDelete = new memCacheObj();
+			  $key="techStratOpenPositiontrade";
+			  $memCacheDelete->deleteKey($key);
+			  $key="techStratOpenPosition";
+			  $memCacheDelete->deleteKey($key);
+			  $key="techStratDisplayPerformance";
+			  $memCacheDelete->deleteKey($key);
+			  $transobj->updateOpenPositionRecords();;
+			}
+		}
+		# if sell short then enter in the sell table also
+		if($typeval=='2'){
+			$shortselldata=array(sell_trans_id=>$retstatus,creation_date=>$datetime,trans_status=>'pending');
+			insert_query("techstrat_sell_transaction",$shortselldata);
+			$memCacheDelete = new memCacheObj();
+			$key="techStratOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$transobj->updateOpenPositionRecords();;
+
+		}
+	}// end of if(isset($retstatus))
+
+	if($editaddform==''){
+		if($newmsg=='1'){
+			$app="<input type='hidden' id='txt' value='100'>";
+		}else{
+			$app='';
+		}
+		$techTransRes = $transobj->alltransaction().$app;
+	}else if($editaddform=='edit'){
+		$techTransRes = $transobj->alltransactionedit();
+	}
+$openPosArr = array();
+	/*Reset MemCache $key="techStratOpenPosition" Start */
+	$qryRecords="SELECT ES.CompanyName AS companyname, ES.stocksymbol ticker, SOP.transaction_type, DATE_FORMAT(SOP.creation_date,'%m/%d/%y') AS creation_date_get, ROUND(SOP.quantity-SOP.sold_quantity) AS contracts, ROUND(SOP.quantity*SOP.unit_price/SOP.quantity,2) AS costbasic FROM techstrat_openpositions SOP,ex_stock ES,techstrat_transaction ST WHERE SOP.quote_id=ES.id AND ST.id=SOP.transaction_id ORDER BY creation_date_get DESC";
+	$resGetOpenPositions=exec_query($qryRecords);
+	$totalcurrentvalue=0;
+	if(!empty($resGetOpenPositions)){
+		foreach($resGetOpenPositions as $openPosition)
+		{
+			$openPosArr[$openPosition['ticker']]['compName']=$openPosition['companyname'];
+			$openPosArr[$openPosition['ticker']]['ticker']=$openPosition['ticker'];
+			$openPosArr[$openPosition['ticker']]['transaction_type']=$openPosition['transaction_type'];
+			$openPosArr[$openPosition['ticker']]['openDate']=$openPosition['creation_date_get'];
+			if($openPosition['transaction_type']=='0'){
+				$openPosArr[$openPosition['ticker']]['tradeType']='L';
+				$openPosArr[$openPosition['ticker']]['contracts']=$openPosition['contracts'];
+			}
+			elseif($openPosition['transaction_type']=='2'){
+				$openPosArr[$openPosition['ticker']]['tradeType']='S';
+				$openPosArr[$openPosition['ticker']]['contracts']=-$openPosition['contracts'];
+			}
+			else{
+				$openPosArr[$openPosition['ticker']]['tradeType']='N/A';
+				$openPosArr[$openPosition['ticker']]['contracts']=$openPosition['contracts'];
+			}
+			$openPosArr[$openPosition['ticker']]['costBasis']=$openPosition['costbasic'];
+			$stocksymbols[]=$openPosition['ticker'];
+		}
+
+		$objPerformance=new Performance();
+		$currentOpenStocks=$objPerformance->getCurrentStockValue($stocksymbols,1);
+		if(!empty($stocksymbols)){
+			foreach($stocksymbols as $symbol)
+			{
+				$openPosArr[$symbol]['currentQuote']=$currentOpenStocks[$symbol];
+				$openPosArr[$symbol]['currentValue']=$currentOpenStocks[$symbol]*$openPosArr[$symbol]['contracts'];
+				$openPosArr[$symbol]['gainorloss']=round(($openPosArr[$symbol]['currentQuote'] - $openPosArr[$symbol]['costBasis'])*$openPosArr[$symbol]['contracts'],2);
+			}
+		}
+	}
+	$key="techStratOpenPosition";
+	$memCacheDelete->setKey($key,$openPosArr,$techStratMemcacheExpire);
+	/*Reset MemCache $key="techStratOpenPosition" End*/
+
+		/*Reset MemCache $key="techStratOpenPositiontrade" Start*/
+	$openPosTradeArr = array();
+	$qryRecords="SELECT ES.CompanyName AS companyname, ES.stocksymbol ticker, SOP.transaction_type, DATE_FORMAT(SOP.creation_date,'%m/%d/%y') AS creation_date_get, ROUND(SOP.quantity-SOP.sold_quantity) AS contracts, ROUND(SOP.quantity*SOP.unit_price/SOP.quantity,2) AS costbasic FROM techstrat_openpositions SOP,ex_stock ES,techstrat_transaction ST WHERE SOP.quote_id=ES.id AND ST.id=SOP.transaction_id ORDER BY creation_date_get DESC";
+	$resGetOpenPositions=exec_query($qryRecords);
+	$totalcurrentvalue=0;
+	if(!empty($resGetOpenPositions)){
+		foreach($resGetOpenPositions as $openPosition)
+		{
+			$openPosTradeArr[$openPosition['ticker']]['compName']=$openPosition['companyname'];
+			$openPosTradeArr[$openPosition['ticker']]['ticker']=$openPosition['ticker'];
+			$openPosTradeArr[$openPosition['ticker']]['transaction_type']=$openPosition['transaction_type'];
+			$openPosTradeArr[$openPosition['ticker']]['openDate']=$openPosition['creation_date_get'];
+			if($openPosition['transaction_type']=='0'){
+				$openPosTradeArr[$openPosition['ticker']]['tradeType']='L';
+				$openPosTradeArr[$openPosition['ticker']]['contracts']=$openPosition['contracts'];
+			}
+			elseif($openPosition['transaction_type']=='2'){
+				$openPosTradeArr[$openPosition['ticker']]['tradeType']='S';
+				$openPosTradeArr[$openPosition['ticker']]['contracts']=-$openPosition['contracts'];
+			}
+			else{
+				$openPosTradeArr[$openPosition['ticker']]['tradeType']='N/A';
+				$openPosTradeArr[$openPosition['ticker']]['contracts']=$openPosition['contracts'];
+			}
+			$openPosTradeArr[$openPosition['ticker']]['costBasis']=$openPosition['costbasic'];
+			$stocksymbols[]=$openPosition['ticker'];
+		}
+
+		$objPerformance=new Performance();
+		$currentOpenStocks=$objPerformance->getCurrentStockValue($stocksymbols,1);
+		if(!empty($stocksymbols)){
+			foreach($stocksymbols as $symbol)
+			{
+				$openPosTradeArr[$symbol]['currentQuote']=$currentOpenStocks[$symbol];
+				$openPosTradeArr[$symbol]['currentValue']=$currentOpenStocks[$symbol]*$openPosTradeArr[$symbol]['contracts'];
+				$openPosTradeArr[$symbol]['gainorloss']=round(($openPosTradeArr[$symbol]['currentQuote'] - $openPosTradeArr[$symbol]['costBasis'])*$openPosTradeArr[$symbol]['contracts'],2);
+			}
+		}
+	}
+	$key="techStratOpenPositiontrade";
+	$memCacheDelete->setKey($key,$openPosTradeArr,$techStratMemcacheExpire);
+/*Reset MemCache $key="techStratOpenPositiontrade" End*/
+
+	$value=array('status'=>true,'msg'=>$techTransRes);
+	$output = $json->encode($value);
+	echo $output;
+	exit;
+
+}
+
+if($techPortType=='next'){
+	global $transactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start+$transactioncnt;// in exchange just change newblogdiscusionsreply.htm
+	$techTransRes = $transobj->alltransactionedit($start,$end);
+
+	$value=array('status'=>true,'msg'=>$techTransRes);
+	$output = $json->encode($value);
+	echo $output;
+	exit;
+}
+if($techPortType=='prev'){
+	global $transactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start-$transactioncnt;
+	$techTransRes = $transobj->alltransactionedit($start,$end);
+
+	$value=array('status'=>true,'msg'=>$techTransRes);
+	$output = $json->encode($value);
+	echo $output;
+	exit;
+}
+if($techPortType=='nexttrans'){
+	global $transactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start+$transactioncnt;// in exchange just change newblogdiscusionsreply.htm
+	$techTransRes = $transobj->alltransaction('',$start,$end);
+
+	$value=array('status'=>true,'msg'=>$techTransRes);
+	$output = $json->encode($value);
+	echo $output;
+	exit;
+}
+if($techPortType=='prevtrans'){
+	global $transactioncnt;
+	$start=$_POST['start'];
+	$end=$_POST['end'];
+	$start=$start-$transactioncnt;
+	$techTransRes = $transobj->alltransaction('',$start,$end,'','');
+
+	$value=array('status'=>true,'msg'=>$techTransRes);
+	$output = $json->encode($value);
+	echo $output;
+	exit;
+}
+
+if($techPortType=='sellSearchStock'){
+	global $transactioncnt;
+	$serhsymname=$_POST['sellSymbol'];
+	$techStockSymbolRes = $transobj->getalldetailsofSymbol($serhsymname);
+
+	$value=array('status'=>true,'msg'=>$techStockSymbolRes);
+	$output = $json->encode($value);
+	echo $output;
+	exit;
+}
+if($techPortType=='cashentry'){
+	$amt=$_POST['amt'];
+	$idget=$_POST['idget'];
+	$msg=0;
+
+	$casharr=array();
+	if($idget==0){
+		$casharr['cash_amt']=$amt;
+		$casharr['creation_date']=mysqlNow();
+
+		$insertid=insert_query("techstrat_cash",$casharr);
+		if($insertid>0){
+			$msgText = "Data Saved Successfully.";
+			$memCacheDelete = new memCacheObj();
+			$key="techStratOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$transobj->updateOpenPositionRecords();
+			$msg=1;
+		}
+	}else{
+		$casharr['cash_amt']=$amt;
+		$casharr['updation_date']=date('Y-m-d h:i:s');
+		$updateid=update_query("techstrat_cash",$casharr,array(id=>$idget));
+		if($updateid>0){
+			$msgText = "Data Updated Successfully.";
+			$msg=1;
+			$memCacheDelete = new memCacheObj();
+			$key="techStratOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$transobj->updateOpenPositionRecords();
+		}
+	}
+
+// storing values for divident/interest
+
+	$dividentamt=$_POST['dividentamt'];
+	$dividentidget=$_POST['dividentid'];
+
+	$dividentcasharr=array();
+	if($dividentidget==0){
+		$dividentcasharr['cash_amt']=$dividentamt;
+		$dividentcasharr['status']='2';
+		$dividentcasharr['creation_date']=mysqlNow();
+		$dividentinsertid=insert_query("techstrat_cash",$dividentcasharr);
+		if($dividentinsertid>0){
+			if($msg==0){
+				$msgText = "Data Saved Successfully.";
+			}
+			$memCacheDelete = new memCacheObj();
+			$key="techStratOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$transobj->updateOpenPositionRecords();
+		}
+	}else{
+		$dividentcasharr['cash_amt']=$dividentamt;
+		$dividentcasharr['updation_date']=date('Y-m-d h:i:s');
+		$dividentupdateid=update_query("techstrat_cash",$dividentcasharr,array(id=>$dividentidget));
+		if($dividentupdateid>0){
+			if($msg==0){
+				$msgText = "Data Updated Successfully.";
+			}
+			$memCacheDelete = new memCacheObj();
+			$key="techStratOpenPositiontrade";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratOpenPosition";
+			$memCacheDelete->deleteKey($key);
+			$key="techStratDisplayPerformance";
+			$memCacheDelete->deleteKey($key);
+			$transobj->updateOpenPositionRecords();
+		}
+	}
+	$value=array('status'=>true,'msg'=>$msgText);
+	$output = $json->encode($value);
+	echo $output;
+	exit;
+}
+?>

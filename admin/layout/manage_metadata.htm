@@ -1,0 +1,60 @@
+<?php
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/_layout_data_lib.php");
+include_once("$D_R/lib/_layout_design_lib.php");
+include_once("$ADMIN_PATH/layout/layout_includes.php");
+
+
+if(!$_POST['mod']){
+	include("$ADMIN_PATH/_header.htm");
+}
+$getlist=getPageList();
+$page_id=$getlist['id'];
+?>
+<?php
+if($_POST['mod']){
+   $id=$_POST['id'];
+   if($_POST['id']){
+        $pageid=$_POST['pageid'];
+		$table='layout_meta';
+		$params['page_id']=$_POST['pageid'];
+		$params['title']=$_POST['title'];
+		$params['metadesc']=$_POST['desc'];
+		$params['metakeywords']=$_POST['keyword'];
+		getPageURL($pageid);
+   		$id=insert_or_update($table,$params,array('page_id'=>$pageid));
+		if(isset($id))
+		{
+			/*$pageURL = getPageAlias($pageid);
+			if($pageURL != "")
+			{
+				 $arPageURL = explode("/",$pageURL);
+				 $inCount = count($arPageURL);
+				 $arReplacing = array('/','?','&');
+				 $stKeywords = str_replace($arReplacing,"-",$params['metakeywords']);
+				 $arPageURL[$inCount-2] = strtolower($stKeywords);
+				$pageURL = implode("/",$arPageURL);
+				$id=update_query('layout_pages',array('alias'=>$pageURL),array('id'=>$pageid));
+			}*/
+			global $objPage;
+			$objPage= new Page($pageid);
+			$objCache = new Cache();
+			$objCache->setPageMeta();
+
+			echo "Data inserted successfully!";
+		}
+   }elseif($_POST['msg']){
+   		echo $_POST['msg'];
+   }else{
+	   $pageid=$_POST['pageid'];
+	   $metalist=getMetalist($pageid);
+	   getLayoutPages($metalist,$pageid);
+   }
+}else{ ?>
+
+<div id="showlayout">
+	<?getLayoutPages($metakeyword,$pageid);?>
+</div>
+<div id="showdiv"></div>
+<? } ?>
+<? include("$ADMIN_PATH/_footer.htm"); ?>

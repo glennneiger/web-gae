@@ -1,0 +1,105 @@
+<?php
+global $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Credit Crad Information</title>
+</head>
+
+<body>
+<table align="center" cellpadding="0" cellspacing="0" width="565px" border="0">
+	<tr>
+		<td><img src="<?=$IMG_SERVER;?>/images/Email-Design-041808.jpg" /></td>
+	</tr>
+	<tr>
+				<td ><div style="padding:4px;text-align:left; background: #EFEFEF;font-size:12px;font-family:Times, Times New Roman, serif;"><?= date("F j, Y") ?><a style=" padding-left:380px; font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:normal;color:#000000;text-decoration:underline;" href="<?=$HTNOSSLDOMAIN?>/library/search.htm">Search Minyanville</a></div></td>
+	</tr>
+	<tr></tr>
+    <tr><td ></td></tr>
+	<tr>
+		<td >
+			<table border="0" cellpadding="0" cellspacing="0" width="565px" >
+
+				<tr>
+					<td valign="top">&nbsp;</td>
+			    </tr>
+<?
+$articleqry="SELECT id,title from articles WHERE is_live='1' and approved ='1' and sent='1' and id<>'$id' order by date desc limit 0,3
+";
+ $latestarticle=exec_query($articleqry);
+?>
+
+
+
+					<tr>
+						<td>
+							<table width="100%" style="border:1px solid #999999;">
+								<tr>
+								  <td style="font-family: Arial, Helvetica, sans-serif;font-size:12px;font-weight:normal;color: #000000;text-decoration:none;padding-right:10px;padding-top:5px;">
+										<p>
+									    There was an error while processing the Credit Card transaction for&nbsp;<?=$_GET['loginEmail'];?>. The error details are mentioned below:</p>
+										<table border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td width="142" height="20"><strong>&nbsp;Error Code </strong></td>
+												<td height="20"><?=$_GET['errorCode'];?></td>
+											</tr>
+											<tr>
+												<td width="142" height="20"><strong>&nbsp;Error Reason</strong></td>
+												<td height="20"><?=htmlentities($_REQUEST['errorMsg']);?></td>
+											</tr>
+										</table>
+										<p><strong>Account Details:</strong></p>
+										  <table border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td width="175" height="20"><strong>&nbsp;Email</strong></td>
+												<td width="21" height="20"><?=$_GET['loginEmail'];?></td>
+											</tr>
+											<tr>
+												<td width="175" height="20"><strong>&nbsp;Phone Number</strong></td>
+												<td width="21" height="20"><?=$_GET['phone'];?></td>
+											</tr>
+											<tr>
+												<td width="175" height="20"><strong>&nbsp;Transaction Date</strong></td>
+												<td height="20"><?=date("m-d-Y")?></td>
+											</tr>
+											<tr>
+												<td width="175" height="20"><strong>&nbsp;Amount </strong></td>
+												<td height="20">$ <? if($_GET['amount']!=''){echo $_GET['amount'];}else{echo "0";}?></td>
+											</tr>
+											<tr>
+												<td width="175" height="20"><strong>&nbsp;Authorization Type</strong></td>
+												<td height="20"><?=$_GET['transType'];?></td>
+											</tr>
+									  </table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				    <tr>
+				      <td colspan="2" align="center">&nbsp;</td>
+		      </tr>
+			    <tr>
+					<td height="58" colspan="2" align="center" style="font-family: Verdana, Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;color: #999999;text-decoration:none;text-align:left;"><center><div style=" padding:5px;">
+					  Copyright (c) <?=date(Y);?> Minyanville Media, Inc 257 Park Avenue South, Suite 602, New York, NY 10010<br />
+					    <br />
+			      <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN ?>/rss/">RSS</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm">Disclaimers</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/contact.htm">Contact Us</a> I <a style="text-decoration:none;color:#999999;" href="<?=$HTNOSSLDOMAIN?>/company/mediakit/Minyanville_2006_Media_Kit.pdf" target="_new">Advertise With Us</a></p>
+					  </div></center></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_alert_transaction_error']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_alert_transaction_error']);
+*/
+?>
+</body>
+</html>

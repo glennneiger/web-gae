@@ -1,0 +1,119 @@
+.edit{
+ 	color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    padding-right: 10px;
+}
+.module_detail{
+	padding: 10px 0;
+}
+.edit_subject{
+	color: #000000;
+    cursor: pointer;
+    float: right;
+    font-family: arial;
+    font-size: 15px;
+    font-weight: bold;
+    position: relative;
+    right: 30px;
+    top: 25px;
+}
+.edit_pick{
+	 color: #000000;
+    cursor: pointer;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    position: relative;
+    right: 20px;
+    top: 15px;
+}
+
+.remove{
+	color: red;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    text-decoration: none;
+    cursor:pointer;
+}
+.excerpt{
+ 	font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    line-height: 19px;
+    margin: 0 0 20px;
+}
+.hide{
+	display:none;
+}
+.show{
+	display:block;
+}
+.dd_heading{
+	 color: #24478A;
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 15px;
+    width: 460px;
+}
+.buttons{
+    float: left;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    position: relative;
+    top: 20px;
+    width: 800px;
+}
+.b_style{
+	font-size: 8pt;
+	background: white;
+	padding-left: 3px;
+	padding-right: 3px;
+	border-image: initial;
+}
+.temp_footer{
+ 	color: #545454;
+    font-size: 11px;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.gauge_level{
+	width: 100%;
+	float: left;
+	margin: 10px;	
+}
+#edit_desc{
+float: left;
+margin: 10px 30px;
+}
+.temp_gauge{
+float: left;
+width: 100%;	
+}
+#level_grade{
+width: 100px;
+float: left;
+}
+
+.subj{
+	float: left;
+	width: 100%;
+	margin: 10px;
+}
+
+.subj h3{
+	float:left;	
+}
+
+#subject{
+	float: left;
+	width: 300px;
+	height: 25px;
+	margin: 10px;
+	border: 1px solid #DEDEDE;
+	font-size: 12px;
+}
+	

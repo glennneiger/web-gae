@@ -1,0 +1,91 @@
+<?php
+global $D_R,$HTHOST,$HTPFX;
+session_start();
+if(!$_SESSION['AdsFree'])
+{
+    header( "Location: http://mvp.minyanville.com/ads-free-landing-page-site/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=adsfree");
+}
+
+$USER=new user();
+$isLogin = $USER->id;
+$isLoggedIn = $USER->is_adFree();
+include_once($D_R."/lib/ad-free/_adFreeDesign.php");
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav","redesign");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","tsp","adFree");
+$pageName="adFree";
+$version=$_GET['v'];
+if(!$version){
+	$version=1;
+}
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+include_once("$D_R/lib/_exchange_lib.php");
+build_lang('adFree');
+global $lang;
+$objSubViewer = new subViewer();
+$trackingName = 'welcome-adfree';
+include("../_header.htm");
+?>
+
+<div id="content-container">
+	<?=showBreadCrum($breadcrum); ?>
+	<div class="adFreeBanner">
+    <div style="z-index:10;position:absolute;top:300px;left:-97px;width:576px;height:62px;">
+    <?= $objSubViewer->getAddtoCartbtnsAdFree('Ad Free','blank.png', 'subscription','subAdFree');?>
+    </div>
+	<? if ($version==1){ ?>
+	<img src="<?=$IMG_SERVER;?>/images/subscription/adfreeBanner_01.jpg" />
+	<? } else { ?>
+	<img src="<?=$IMG_SERVER;?>/images/subscription/adfreeBanner_02.jpg" />
+	<? } ?> </div>
+	
+	<!--Content Block Start-->
+	<? $objSubViewer-> displayAdsFreeLanding($lang); ?>
+	<!--Content Block End-->
+	
+	<!--Contact Footer Start-->
+	<? $objSubViewer-> displayAdsFreeContactFooter(); ?>
+	<!--Contact Footer End-->
+</div>
+<div style="clear:both;"></div>
+<?
+include("../_footer.htm"); ?>
+
+<? if($version==1){ ?>
+	<!-- Google Website Optimizer Tracking Script -->
+	<script type="text/javascript">
+	if(typeof(_gat)!='object')document.write('<sc'+'ript src="http'+
+	(document.location.protocol=='https:'?'s://ssl':'://www')+
+	'.google-analytics.com/ga.js"></sc'+'ript>')</script>
+	<script type="text/javascript">
+	try {
+	var gwoTracker=_gat._getTracker("UA-30222-16");
+	gwoTracker._trackPageview("/1957662600/test");
+	}catch(err){}</script>
+	<!-- End of Google Website Optimizer Tracking Script -->
+
+<? }else{ ?>
+	<!-- Google Website Optimizer Tracking Script -->
+	<!-- Google Website Optimizer Tracking Script -->
+<script type="text/javascript">
+if(typeof(_gat)!='object')document.write('<sc'+'ript src="http'+
+(document.location.protocol=='https:'?'s://ssl':'://www')+
+'.google-analytics.com/ga.js"></sc'+'ript>')</script>
+<script type="text/javascript">
+try {
+var gwoTracker=_gat._getTracker("UA-30222-16");
+gwoTracker._trackPageview("/1957662600/test");
+}catch(err){}</script>
+<!-- End of Google Website Optimizer Tracking Script -->
+
+	<!-- End of Google Website Optimizer Tracking Script -->
+
+<? }
+/* Google Anlytics Start */
+if(!empty($trackingName)){
+	googleanalytics("",$trackingName,1);
+}else{
+	googleanalytics();
+}
+?>
+<!--Analytics End-->

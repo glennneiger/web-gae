@@ -1,0 +1,129 @@
+<local>
+
+<movie>
+<file>videos/mvtv_hb_01.flv</file>
+<thumb>thumbs/thumb_18.jpg</thumb>
+<title>Hoofy & Boo's News & Views</title>
+<description>Episode 1</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode1.flv</file>
+<thumb>thumbs/thumb_1.jpg</thumb>
+<title>Wallstrip</title>
+<description>Wallstrip interviews Todd Harrison.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode2.flv</file>
+<thumb>thumbs/thumb_2.jpg</thumb>
+<title>Hedge Funds</title>
+<description>Steve Galbraith from Maverick Capital discusses the State of The Hedge Fund Industry.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode3.flv</file>
+<thumb>thumbs/thumb_3.jpg</thumb>
+<title>Where Have We Been? Where Are We Going?</title>
+<description>Steve Galbraith puts a compass to the markets.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode4.flv</file>
+<thumb>thumbs/thumb_4.jpg</thumb>
+<title>The Market</title>
+<description>Steve Galbraith Takes The Markets Pulse.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode5.flv</file>
+<thumb>thumbs/thumb_5.jpg</thumb>
+<title>What's It All Mean?</title>
+<description>What Can Investors Expect in 2007.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode6.flv</file>
+<thumb>thumbs/thumb_6.jpg</thumb>
+<title>Where Will Rates And The Dollar Go?</title>
+<description>Bennett Sedacca of Atlantic Advisors on The Fate of The Dollar and Interest Rates.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode7.flv</file>
+<thumb>thumbs/thumb_7.jpg</thumb>
+<title>What's The Consensus of Sentiment?</title>
+<description>John Roque from Natexis Bleichroeder Talks about Investor Sentiment.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode8.flv</file>
+<thumb>thumbs/thumb_8.jpg</thumb>
+<title>Todd On The Dollar</title>
+<description>Todd Harrison, Minyanville CEO Throws in His Two Cents on The Dollar.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode9.flv</file>
+<thumb>thumbs/thumb_9.jpg</thumb>
+<title>Jonathan On The Dollar</title>
+<description>Jonathan Golub from JP MorganPasses the Buck on the Greenback.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode10.flv</file>
+<thumb>thumbs/thumb_10.jpg</thumb>
+<title>Where Does Volatility Go From Here?</title>
+<description>John Succo from Vicis Capital on What Makes Markets Move.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode11.flv</file>
+<thumb>thumbs/thumb_11.jpg</thumb>
+<title>What Makes Markets Move?</title>
+<description>John Roque talks about the shape of things to come.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode12.flv</file>
+<thumb>thumbs/thumb_12.jpg</thumb>
+<title>Are People Leaning In Any Overall Direction?</title>
+<description>Bennett Sedacca  asks the 10 year bond “How low will you go?”.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode13.flv</file>
+<thumb>thumbs/thumb_13.jpg</thumb>
+<title>Why Is The 10 Year At 4.4%?</title>
+<description>Our panel maps out where to invest in 2007.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode14.flv</file>
+<thumb>thumbs/thumb_14.jpg</thumb>
+<title>Is The U.S. Still The Place To Be?</title>
+<description>Bennet Sedacca puts the investors on the couch for a quick analysis.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode15.flv</file>
+<thumb>thumbs/thumb_15.jpg</thumb>
+<title>Where Are People Now?</title>
+<description>Todd on covering your assets.</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode16.flv</file>
+<thumb>thumbs/thumb_16.jpg</thumb>
+<title>How Do You Hedge Today's Market?</title>
+<description>Episode 16 is about...</description>
+</movie>
+
+<movie>
+<file>videos/mvtv_episode17.flv</file>
+<thumb>thumbs/thumb_17.jpg</thumb>
+<title>Closing Remarks</title>
+<description>Kevin Wassong, Minyanville President, brings it all in for a landing.</description>
+</movie>
+
+</local>

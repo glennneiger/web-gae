@@ -1,0 +1,105 @@
+<?
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+include_once($D_R."/lib/_content_data_lib.php");
+$objContent = new Content();
+$UNSUB=1;
+$SECTION="digest";
+$datestr="%m/%d/%Y";
+$articleID=$_GET['aid'];
+$sitename=$_GET['sitename'];
+$profid=2;
+$prof_lang=cp_build_lang($profid);
+
+$qry="SELECT a.id, a.id article_id, a.contrib_id, a.date, a.title, a.body as blurb, c.name, c.name contributor, concat('/articles/index.php','?a=',a.id) article_url ,a.character_text, c.bio_asset FROM cp_articles a, cp_contributors c WHERE a.contrib_id=c.id and a.id in ($articleID) AND a.approved='1' AND a.sent='1' AND a.is_live='1' ORDER BY a.date DESC";
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+  		<title><?=$prof_lang['Marketreport_email_Title'];?> <?= date("F jS, Y") ?></title>
+	</head>
+
+	<body>
+		<table align="center" border="0" cellpadding="0" cellspacing="0" id="jcdmr-aAlert" width="598" style="background: #ffffff; border: 1px solid #e6e6e6;">
+			<tr valign="top">
+				<td valign="top">
+				<!-- Header Start -->
+					<table border="0" cellpadding="0" cellspacing="0" id="jcdmr-hdr" width="598" style="background: #fafafa; border: 1px solid #e6e6e6; border-width: 0 0 1px 0;">
+						<tr valign="top">
+							<td valign="top" width="19px" style="line-height: 24px;">&nbsp;</td>
+							<td valign="top" width="560px" style="line-height: 24px;">&nbsp;</td>
+							<td valign="top" width="19px" style="line-height: 24px;">&nbsp;</td>
+						</tr>
+						<tr valign="top">
+							<td valign="top" width="19px">&nbsp;</td>
+							<td valign="top" width="560px"><img src="<?=$IMG_SERVER;?>/images/redesign/cooper_email/cooper_email_header.png" alt="Jeff Cooper's Daily Market Report" height="51" width="441" style="border: 0; color: #003366; display: block; font-family: Arial, Helvetica, sans-serif; font-size: 2.125em; letter-spacing: -1px;" /></td>
+							<td valign="top" width="19px">&nbsp;</td>
+						</tr>
+						<tr valign="top">
+							<td valign="top" width="19px" style="line-height: 24px;">&nbsp;</td>
+							<td valign="top" width="560px" style="line-height: 24px;">&nbsp;</td>
+							<td valign="top" width="19px" style="line-height: 24px;">&nbsp;</td>
+						</tr>
+					</table><!-- /end #jcdmr-hdr -->
+
+					<!-- Body Start -->
+					<table border="0" cellpadding="0" cellspacing="0" id="jcdmr-content" width="598">
+						<tr valign="top">
+							<td valign="top" width="19px" style="line-height: 20px;">&nbsp;</td>
+							<td valign="top" width="560px" style="line-height: 20px;">&nbsp;</td>
+							<td valign="top" width="19px" style="line-height: 20px;">&nbsp;</td>
+						</tr>
+						<tr valign="top">
+							<td valign="top" width="19px">&nbsp;</td>
+							<td valign="top" width="560px">
+
+							<table border="0" cellpadding="0" cellspacing="0" class="jcdmr-post" width="560">
+								<tr valign="top">
+									<td valign="top" width="125" class="jcdmr-post-img" ><img src="<?=$IMG_SERVER;?>/images/redesign/cooper_email/cooper_email_image.jpg" alt="" height="123" width="123" style="border: 1px solid #e6e6e6; display: block;"/></td><!-- /end .jcdmr-post-img -->
+									<td valign="top" width="20px">&nbsp;</td>
+								<? foreach(exec_query($qry) as $row) { ?>
+									<td valign="top" width="415px">
+										<p style="color: #264d88; font-family: Arial, Helvetica, sans-serif; font-size: 1.375em; font-weight: bold; letter-spacing: -1px; margin: 0 0 2px 0" class="jcdmr-post-hdr"><a href="<?=$HTPFX.$sitename?><?=$row[article_url]?>" target="_blank" style="color: #264d88; font-family: Arial, Helvetica, sans-serif; font-weight: bold; text-decoration: none;"><?=preg_replace($specialchar,$replacechar,$row['title']);?></a></p><!-- /end .jcdmr-post-hdr -->
+										<p style="color: #999999; font-family: Arial, Helvetica, sans-serif; font-size: 0.6875em; margin: 0 0 7px 0" class="jcdmr-post-date"><?=date("M d, Y h:i a",strtotime($row[date]));?></p><!-- /end .jcdmr-post-date -->
+										<p style="color: #222222; font-family: Arial, Helvetica, sans-serif; font-size: 0.875em; margin: 0 0 7px 0" class="jcdmr-post-txt"><? $_text = $objContent->getCountWords($row['blurb'],'50'); echo strip_tags($_text,'<br>'); ?></p><!-- /end .jcdmr-post-txt -->
+										<p style="color: #1a98e0; font-family: Arial, Helvetica, sans-serif; font-size: 0.75em; font-weight: bold; margin: 0" class="jcdmr-post-link"><a href="<?=$HTPFX.$sitename?><?=$row[article_url]?>" target="_blank" style="color: #1a98e0; font-family: Arial, Helvetica, sans-serif; font-weight: bold; text-decoration: none;">[Click Here to Read the Full Post]</a></p><!-- /end .jcdmr-post-link -->
+									</td>
+								<? } ?>
+								</tr>
+							</table><!-- /end .jcdmr-post -->
+							</td>
+							<td valign="top" width="19px">&nbsp;</td>
+						</tr>
+						<tr valign="top">
+							<td valign="top" width="19px" style="line-height: 20px;">&nbsp;</td>
+							<td valign="top" width="560px" style="line-height: 20px;">&nbsp;</td>
+							<td valign="top" width="19px" style="line-height: 20px;">&nbsp;</td>
+						</tr>
+					</table><!-- /end #jcdmr-content -->
+
+					<!-- Footer Start -->
+					<table border="0" cellpadding="0" cellspacing="0" id="jcdmr-footer" width="598" style="background: #fafafa; border: 1px solid #e6e6e6; border-width: 1px 0 0 0; ">
+						<tr valign="top">
+							<td valign="top" width="19px" style="line-height: 9px;">&nbsp;</td>
+							<td valign="top" width="560px" style="line-height: 9px;">&nbsp;</td>
+							<td valign="top" width="19px" style="line-height: 9px;">&nbsp;</td>
+						</tr>
+						<tr valign="top">
+							<td valign="top" width="19px">&nbsp;</td>
+							<td valign="top" width="560px">
+								<img src="<?=$IMG_SERVER;?>/images/redesign/cooper_email/logo_cooper_email.png" alt="Minyanville" height="57" width="125" style="border: 0; color: #003366; display: block; font-family: Arial, Helvetica, sans-serif; font-size: 24px; margin: 0 217px 0 218px;" />
+								<p style="color: #999999; float: left; font-family: Arial, Helvetica, sans-serif; font-size: 0.6875em; margin: 7px 0 0 0; line-height: 15px; text-align: center; width: 560px;">&copy;2013 Minyanville Media, Inc. All Rights Reserved</p>
+							</td>
+							<td valign="top" width="19px">&nbsp;</td>
+						</tr>
+						<tr valign="top">
+							<td valign="top" width="19px" style="line-height: 9px;">&nbsp;</td>
+							<td valign="top" width="560px" style="line-height: 9px;">&nbsp;</td>
+							<td valign="top" width="19px" style="line-height: 9px;">&nbsp;</td>
+						</tr>
+					</table><!-- /end #jcdmr-footer -->
+				</td>
+			</tr>
+		</table><!-- /end #jcdmr-aAlert -->
+	</body>
+</html>

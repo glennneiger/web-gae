@@ -1,0 +1,61 @@
+<?include_once("$D_R/lib/_auth.php");
+
+
+/*
+LOGOUT==true
+	script unsets EMAIL, PASSWORD in session and redirects them to login page
+else
+	SCRIPT initiates session vars and sends them to the page they previously requested
+*/
+
+session_start();
+session_cache_limiter('private');//this has to be after it's started
+session_set_cookie_params(10800,"/");
+
+
+if($LOGOUT){
+	$USER=new user($_SESSION[EMAIL],$_SESSION[PASSWORD]);
+	$USER->resetSession($KILL);
+	location($SIGNIN_URL);
+	exit();
+}else{//login
+	$refer=$refer?base64_decode($refer):$DEFAULT_URL;//
+	list($e,$p)=array($_POST[email],$_POST[password]);
+	$USER = new user($e,$p);
+	$USER->resetAuthFields();//make curr user override existing
+	$USER->isDupeLogin();//updates authoritative user
+
+	if($USER->isAuthed){
+		set_sess_vars("EMAIL",$e);
+		set_sess_vars("PASSWORD",$p);
+		if($USER->account_status=="disabled" && !$acctmod){
+			$refer="/register/".convertUserType($USER->type)."/manage.htm";
+		}
+		if($_POST["setcookie"]){
+			mcookie("email",$e);
+			mcookie("password",$p);
+			mcookie("autologin",1);
+		}else{
+			mcookie("email");
+			mcookie("password");
+			mcookie("autologin");
+		}
+		location($refer);
+		exit();
+	}
+	else if($USER->expired) {
+		$error="<HR>Your account has expired. Please create a new one or contact support@minyanville.com to upgrade to a premium account<HR>";
+	}
+	else if($USER->notStarted) {
+		$error="This subscription isn't set to start until, please come back then, or create a new account<BR>\n";
+	}
+	//else{
+		set_sess_vars("EMAIL");
+		set_sess_vars("PASSWORD");
+		$rdir="/register/new/?email=$e&error=$error";
+		location($rdir);
+	//}
+	unset($USER);
+}
+
+

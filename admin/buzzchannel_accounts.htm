@@ -1,0 +1,177 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<!-- saved from url=(0022)http://internet.e-mail -->
+<!-- saved from url=(0022)http://internet.e-mail -->
+<?
+
+$page="admintools";
+$error = $_GET['error'];
+
+$allperms=array("corp_admin");
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($allperms)){
+	admin_error();
+}
+
+$user_query = "SELECT * FROM corp_bc order by id";
+
+$feature_data = exec_query("select id,name,intname from admin_features_bc order by intname");
+$handler="./buzzchannel_accounts_mod.htm";
+?>
+
+<br><br>
+<div class=adminheader>Administer Client Accounts</div><br>
+<div class="error"><?=$error?></div>
+Administer Client Accounts<br><br><br>
+<form name="clientacct" method=post action="<?=$handler?>">
+<table width=600 align=center bgcolor=#eeeeee border=0>
+<TR align=center bgcolor=#cccccc>
+<TD nowrap>ID:</TD>
+<TD nowrap>URL</TD>
+<TD nowrap>Account Name</TD>
+<TD nowrap>Account Email</TD>
+<TD nowrap>Admin Login</TD>
+<TD nowrap>Password</TD>
+<TD nowrap>Full name</TD>
+<TD nowrap >Max accounts</TD>
+<TD nowrap>Active accounts</TD>
+<TD nowrap>Start Date</TD>
+<TD nowrap>Expire Date</TD>
+</TR>
+
+<?foreach(exec_query($user_query) as $i=>$row){ ?>
+
+<TR valign=top align=center>
+<TD><?=$row[id]?><?input_hidden("corp[${row[id]}][id]",$row[id])?></TD>
+
+<TD><?input_text("corp[${row[id]}][url]",$row[url],12)?></TD>
+
+<TD><?input_text("corp[${row[id]}][corp_name]",$row[corp_name],12)?> </TD>
+
+<TD><?input_text("corp[${row[id]}][corp_email]",$row[corp_email],12)?> </TD>
+
+<?
+$row_admin_qry="Select * from admin_users_bc where client_id='".$row[id]."' and supervisor='1' ";
+$row_admin=exec_query($row_admin_qry,1);
+?>
+ <input type="hidden" name="admin_client[<?=$row[id]?>][id]" value="<?=$row_admin[id]?>">
+<TD><?input_text("admin_client[${row[id]}][username]",$row_admin[username],12)?></TD>
+
+<TD ><?input_text("admin_client[${row[id]}][password]",$row_admin[password],15)?></TD>
+
+<TD ><?input_text("admin_client[${row[id]}][name]",$row_admin[name])?></TD>
+<TD><?input_numsonly("corp[${row[id]}][max_users]",$row[max_users],11,11)?></TD>
+
+<?
+$active_query = "select count(*) active_users from subscription_bc where account_status='enabled' and client_id='".$row[id]."'";
+?>
+<TD><?echo exec_query($active_query, 1,"active_users")?></TD>
+<TD><?input_text("corp[${row[id]}][start_date]",$row[start_date],8,10)?></TD>
+<TD><?input_text("corp[${row[id]}][expire_date]",$row[expire_date],8,10)?></TD>
+</TR>
+
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<TD nowrap align=right>Group Login</TD>
+<TD><?input_text("corp[${row[id]}][corp_login]",$row[corp_login],12)?></TD>
+<TD><?input_text("corp[${row[id]}][corp_password]",$row[corp_password],12)?></TD>
+
+<TD nowrap colspan=2 >Account Notes
+<textarea name="corp[<?=$row[id]?>][account_notes]"  rows="2" cols="32" ><?=$row[account_notes]?></textarea>
+</TD>
+<TD colspan=3><input type="button" style="cursor:hand;color:#blue;text-decoration:underline;width:130px;height:20px"
+	onclick="window.location.href('buzz_channel_subs.htm?client_id=<?echo $row[id]; ?>')" value="View all Active users">
+</TD>
+</tr>
+
+<? } ?>
+
+</table>
+<hr width=100% color=black size=1><br>
+<table width=600 align=center border=0>
+<TR>
+<TD colspan=100>
+
+<input type="button" style="cursor:hand;color:#blue;text-decoration:underline"
+	onclick="void(newtable.style.display=(newtable.style.display=='none'?'block':'none'))"
+ value="Add New Client Account">
+<table style="display:none;" id="newtable">
+
+<TR>
+<TD align=right>Client's Full Name</TD>
+<TD><?input_text("new[corp_name]")?></TD>
+</tr>
+
+<TR>
+<TD align=right>Client's Email</TD>
+<TD><?input_text("new[corp_email]")?></TD>
+</tr>
+
+<TR>
+<TD align=right>URL</TD>
+<TD><?input_text("new[url]")?></TD>
+</TR>
+
+<TR>
+<TD align=right>Group login</TD>
+<TD><?input_text("new[corp_login]")?></TD>
+</TR>
+<TR>
+<TD align=right>Group Password</TD>
+<TD><?input_text("new[corp_password]")?></TD>
+</TR>
+<TR>
+<TD align=right>Max User Accounts</TD>
+<TD><?input_text("new[max_users]")?></TD>
+</TR>
+<TR>
+<TD align=right>Account Notes</TD>
+<TD><textarea name="new[account_notes]" size="4" cols="22" ></textarea></TD>
+</TR>
+
+<TR>
+<TD align=right>Start Date</TD>
+<TD><?date_input(time(),"s_date", 2005)?></TD>
+</TR>
+<TR>
+<TD align=right> Expiration Date</TD>
+<TD><?date_input(time()+(30*24*3600), "e_date", 2005)?></TD>
+</TR>
+<!-- All the admin fields -->
+<TR>
+<TD align=right>Admin User</TD>
+<TD><?input_text("admin_client_new[username]")?></TD>
+</TR>
+
+<TR>
+<TD align=right>Admin Password</TD>
+<TD><?input_text("admin_client_new[password]")?></TD>
+</TR>
+
+<!--<TR>
+<TD align=right>Admin Email</TD>
+<TD><?input_text("admin_client_new[email]")?></TD>
+</TR>-->
+
+<TR>
+<TD align=right>Admin Name</TD>
+<TD><?input_text("admin_client_new[name]")?></TD>
+</TR>
+
+
+</TR>
+</TR>
+
+</table>
+
+</TD>
+</TR>
+</table>
+<br><br><br>
+<center>
+<input type="submit" value="Save Changes" class=inbtn>
+</center><br>
+</form>
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

@@ -1,0 +1,7 @@
+DirectoryIndex robot.subsinfo.htm
+
+AuthUserFile /home/sites/minyanville/web/admin/subsreport/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Minyanville Admin"
+AuthType Basic
+require valid-user

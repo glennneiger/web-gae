@@ -1,0 +1,249 @@
+<?
+global $DATE_STR,$D_R;
+include_once($D_R."/lib/_robots.php");
+$page = "gazette";
+
+function togD($d){
+	if(!$d)$d="DESC";
+	return ($d=="ASC"?"DESC":"ASC");
+}
+function colclass($col){
+	global $s,$d;
+	if($s==$col){
+		echo " bgcolor=#".($d=="ASC"?"8da9e6":"7c98d5");
+	}
+}
+
+$viewapproved = $_GET['viewapproved'];
+$viewapproved=intval($viewapproved);
+include("$ADMIN_PATH/_header.htm");
+?>
+<script type="text/javascript">
+function submitSlideShows(){
+	var delchk  = document.formSlideApprove.deleteslides.length;
+	var delcount = "";
+	if(delchk==undefined){
+		 if(document.formSlideApprove.deleteslides.checked){
+			delcount=1;
+		 }
+	}else{
+		for (i = 0; i < delchk; i++) {
+			if (document.formSlideApprove.deleteslides[i].checked) {
+					delcount = 1;
+			}
+		}
+	}
+	var appchk  = document.formSlideApprove.approveslides.length;
+	var appcount = "";
+	if(appchk==undefined){
+		if(document.formSlideApprove.approveslides.checked){
+			appcount=1;
+		 }
+	}else{
+		for (i = 0; i < appchk; i++) {
+			if (document.formSlideApprove.approveslides[i].checked) {
+					appcount =1;
+			}
+		}
+	}
+
+	if(delcount=="1"){
+	  if (confirm("Are you sure you want to delete slideshow(s).")) {
+		 formSlideApprove.submit();
+	  }
+	}else if(appcount=="1"){
+	   formSlideApprove.submit();
+	}else{
+	  alert("Please select a slideshow.");
+	}
+}
+</script>
+<?
+$editarticlesall=$AD->getPerm("articles_all");
+$editarticlesown=$AD->getPerm("articles_own");
+
+$appr_gazette=$AD->getPerm("approve_gazette");
+
+
+
+if(!$appr_gazette){
+	admin_error();
+}
+$candelete=$AD->getPerm("articles_delete");
+$handler="slideshow_approve_mod.htm";
+
+/*-- query params --*/
+if($appr_gazette)$avail_categories[]="gazette";
+//if($appr_sch)$avail_categories[]="schoolhouse";
+$category_ids=getAreaPerms($avail_categories);
+$category_str=implode('(,|$)|',$category_ids).'(,|$)';//use in SQL REGEXP ending w/ , or $
+
+$pagesize=10;
+if(!$d)$d="DESC";
+if(!$s)$s="date";
+
+//Redirect slideshow page to edit page.
+		/* Slideshow default time commented now we are handling this inside slideshow/index.htm file
+		global $default_slider_time;
+		$slideshowdefaulttime=0;
+		//$slideshowdefaulttime=$_SESSION['defaulttime'];
+		$sid=$_SESSION['AID']."_default"; // get the user id from session
+		$slideshowdefaulttime=$_COOKIE[$sid]; // get the slideshowdefault time from cookie
+		// if no cookie value set set this to default value
+		if(($slideshowdefaulttime==0)||(!is_numeric($slideshowdefaulttime))){
+			$slideshowdefaulttime=$_SESSION['defaulttime']; // try to get from session
+			if(($slideshowdefaulttime == 0)||((!is_numeric($slideshowdefaulttime)))){
+				$slideshowdefaulttime=$default_slider_time;
+			}
+		}
+		*/
+$qry = "SELECT s.id, s.date date,s.title,s.publish_date,s.approved,s.contributor name,s.contrib_id ,s.note,concat( 'slideshow.htm?id=', s.id ) arturl,concat( '/slideshow/?preview=1&a=', s.id ) arturl1
+		FROM slideshow  s WHERE s.approved='$viewapproved'";
+
+$qry.=" GROUP BY s.id";
+if($s)$qry.=" ORDER BY $s $d ";
+
+/*--- end query params --*/
+
+/*--paging --*/
+$numpages=ceil(num_rows($qry)/$pagesize);
+$offset=(intval($p)*$pagesize);
+if($numpages>1){
+	$pagination=array();
+	foreach(range(0,$numpages-1) as $i){
+		$cond=($p==$i?1:0);
+		 $pagination[]=href($PHP_SELF.qsa(array(p=>$i)),$i+1,0,$cond);
+	}
+	$pagination=implode(" | ",$pagination);
+}
+$qry.=" LIMIT $offset,$pagesize ";
+
+/*-- end paging  ---*/
+
+$pagedata = exec_query($qry);
+
+
+?>
+<br>
+<?if($AD->getPerm("banter_all")||$AD->getPerm("banter_own")||$AD->getPerm("create_banter")){?>
+	<a href="banter.htm">Create/ Edit Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("banter_approve")){?>
+	<a href="approvebanter.htm">Approve Buzz and Banter</a><br>
+<?}?>
+<?if($AD->getPerm("create_schoolhouse")||$AD->getPerm("create_gazette")||$AD->getPerm("create_radar")||$AD->getPerm("articles_all")||$AD->getPerm("articles_own")){?>
+	<a href="articles.htm">Create/ Edit Articles</a><br>
+     <a href="slideshow.htm">Create/ Edit Slideshow</a><br>
+<?}?>
+
+<br>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<center>
+<?if(!$viewapproved){?>
+<div style="width:300;text-align:left">These are the slideshow that are awaiting approval. Check the slideshows you've approved, click save and they will be posted live to the site.<br>&nbsp;</div>
+<?}else{?>
+<div style="width:300;text-align:left">These are the slideshows that are approved. Check the slideshow you've disapproved, click save and they will be disapproved.<br>&nbsp;</div>
+<?}?>
+</center>
+<table width=300 align=center style="border:1px black solid">
+<TR>
+<TD <?if($viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array(viewapproved=>1),"p"),"View Approved Slideshows","class=small",($viewapproved))?> </TD>
+<TD <?if(!$viewapproved){?> bgcolor=#8da9e6<?}?> nowrap><?=href($PHP_SELF.qsa(array(viewapproved=>0),"p"),"View Unapproved Slideshows","class=small",(!$viewapproved))?></TD>
+<TD colspan=3>&nbsp;</TD>
+</TR>
+<form name="formSlideApprove" method="post" action="<?=$handler?>">
+<?input_hidden("viewapproved")?>
+<TR bgcolor=#cccccc align=center>
+<TD<?colclass("date")?>><a href="<?=$PHP_SELF.qsa(array(s=>"date",d=>togD($d)))?>">Slideshow Date</a></TD>
+<TD<?colclass("title")?>><a href="<?=$PHP_SELF.qsa(array(s=>"title",d=>togD($d)))?>">Title</a></TD>
+<TD<?colclass("note")?>><a href="<?=$PHP_SELF.qsa(array(s=>"note",d=>togD($d)))?>">Note</a></TD>
+<TD<?colclass("publish_date")?>>Publish Date</TD>
+<TD<?colclass("name")?>><a href="<?=$PHP_SELF.qsa(array(s=>"name",d=>togD($d)))?>">Author</a></TD>
+<TD><?=($viewapproved?"Disapprove":"Approve")?></TD>
+<?if($candelete){?>
+<TD>Delete</TD>
+<TD>Preview</td>
+<?}?>
+</TR>
+<?if(count($pagedata)){?>
+	<?foreach($pagedata as $i=>$row){
+		$color=$i%2?"dddddd":"eeeeee";
+		$link=urlqsa($row[arturl],array(PHPSESSID=>$PHPSESSID,AMADMIN=>1,contributor_id=>$row[contrib_id]),"*");
+		$link1=urlqsa($row[arturl1]);
+		/////////////////////////////////////////////////////////////////
+		// split url into parts
+		$linkParts=explode('?',$link1);
+		// add script name into url
+		$link1=$linkParts[0].'index.htm?'.$linkParts[1];
+		/////////////////////////////////////////////////////////////////
+
+		$breakDateStr="n|j|Y|G|i";
+		// list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,convert_date_to_unix($row[publish_date])));
+		$rowPublishDate=strtotime($row['publish_date']);
+		$m=date("n",$rowPublishDate);
+		$d=date("d",$rowPublishDate);
+		$y=date("Y",$rowPublishDate);
+		$h=date("g",$rowPublishDate);
+		$min=date("i",$rowPublishDate);
+
+		if($y=="2000" || $y=="1969"){//invalid date
+			$publishdatefield=array();
+		}else{
+			$publishdatefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+		}
+		/*if($row[publish_date] == "0000-00-00 00:00:00")
+		{
+			$publishdatefield="";
+			$row[publish_date]="";
+		} */
+	?>
+	<TR bgcolor=<?=$color?>>
+	<TD nowrap <?colclass("date")?>><?=date($DATE_STR,strtotime($row['date']))?></TD>
+	<TD nowrap <?colclass("title")?>>
+	<!-- Add script to make link to titles according to authorizations to edit-->
+	<?if(!$editarticlesall && !$editarticlesown){?>
+	<?=($row[title]?$row[title]:"(legacy data w/out title)")?></TD>
+	<?}elseif($editarticlesall){?>
+	<a href="<?=$link?>" target="_blank"><?=($row[title]?$row[title]:"(legacy data w/out title)")?></a></TD>
+	<?}elseif($AD->userInfo[name]==$row[name] && $editarticlesown){?>
+	<a href="<?=$link?>" target="_blank"><?=($row[title]?$row[title]:"(legacy data w/out title)")?></a></TD>
+	<?}else{?>
+	<?=($row[title]?$row[title]:"(legacy data w/out title)")?></TD>
+	<?}?>
+	<TD nowrap<?colclass("note")?>><?=$row[note]?></TD>
+	<TD nowrap <?colclass("date")?>><?=$row[publish_date]?></TD>
+	<TD nowrap<?colclass("name")?>><?=$row[name]?></TD>
+	<TD align=center><input type="checkbox" id="approveslides" name="approve[<?=$row[id]?>]" title="Check this to approve the slideshow then submit the page"></TD>
+
+	<TD><?if($candelete){?>
+	<input type="checkbox" id="deleteslides" name="delarticle[<?=$row[id]?>]" title="Check to remove have this slideshow removed">
+	</TD>
+	<td>
+	<!--<a href="javascript:void(0);" onClick="javascript:window.open('<?=$HTNOSSLDOMAIN.$link1?>','','location=1,status=no,toolbar=0,menubar=no,resizable=0,width=782,height=710,scrollbars=yes,top=0,left=0');"> Preview</a>-->
+    <a href="javascript:void(0);" onClick="javascript:window.open('<?=$HTNOSSLDOMAIN.$link1?>','','location=1,status=no,toolbar=0,menubar=no,resizable=0,width=782,height=710,scrollbars=yes,top=0,left=0');"> Preview</a>
+	</TD>
+	<?}?>
+	</TR>
+	<?}?>
+		<TR>
+	<TD colspan=100 align=center><?=$pagination?></TD>
+	</TR>
+<?}else{?>
+	<TR>
+	<TD colspan=100 align=center>
+		<br>
+		(There are no slides awaiting approval)
+		<br>
+	</TD>
+	</TR>
+<?}?>
+<TR>
+<TD colspan=100 align=center>
+<input type="button" value="Save Changes" onclick="javascript:submitSlideShows();">
+
+</TD>
+</TR>
+</form>
+</table>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

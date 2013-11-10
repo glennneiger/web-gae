@@ -1,0 +1,219 @@
+<?php
+global $IMG_SERVER,$HTPFX,$HTHOST, $is_ssl;
+include_once("$D_R/lib/layout_functions.php");
+$sub_sql="SELECT password from subscription where id=".$_GET['subid'];
+$sub=exec_query($sub_sql,1);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Buzz & Banter</title>
+<style type="text/css">
+.f-leftcolumnnav ul a{
+				width: 688px;
+				height: 26px;
+				list-style-type:none;
+				display : block;
+				text-decoration : none;
+				float: left;
+				text-indent: -1000px;
+			}
+			.f-leftcolumnnav li {
+				display: inline;
+			}
+			.f-navbutton1 {
+				width:127px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton1.gif) no-repeat;
+				background-position: 0 -26px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton1active {
+				width:127px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton1.gif) no-repeat;
+				background-position: 0px 0px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton1 a:hover {
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton1.gif) no-repeat 0px 0px;
+			}
+			.f-navbutton2 {
+				width:108px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton2.gif) no-repeat top;
+				background-position: 0 -26px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton2active {
+				width:108px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton2.gif) no-repeat top;
+				background-position: 0px 0px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton2 a:hover {
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton2.gif) no-repeat 0px 0px;
+			}
+			.f-navbutton3 {
+				width:140px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton3.gif) no-repeat top;
+				background-position: 0 -26px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton3active {
+				width:140px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton3.gif) no-repeat top;
+				background-position: 0px 0px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton3 a:hover {
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton3.gif) no-repeat 0px 0px;
+			}
+			.f-navbutton4 {
+				width:116px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton4.gif) no-repeat top;
+				background-position: 0 -26px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton4active {
+				width:116px;
+				height:26px;
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton4.gif) no-repeat top;
+				background-position: 0px 0px;
+				overflow:hidden;
+				float:left;
+			}
+			.f-navbutton4 a:hover {
+				background: url(<?= $IMG_SERVER?>/images/bb_images/n_navbutton4.gif) no-repeat 0px 0px;
+			}
+
+
+.f-leftcolumnnav {
+	/*	width:688px;*/
+		height:26px;
+		/*background-color:#003399;*/
+		background-image: url(<?= $IMG_SERVER?>/images/bb_images/backgrd_red.gif);
+	}
+</style>
+</head>
+
+<body>
+<table width="550px" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td>
+    <table width="532px" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><img src="<?= $IMG_SERVER?>/images/bb_images/top_img.jpg" width="532" height="88" /></td>
+      </tr>
+     <tr>
+        <td style="height:26px;" align="center" valign="top"> <!--   background="<?= $IMG_SERVER?>/images/bb_images/backgrd_red.gif"-->
+        <!-- rollover buttons-->
+     <div class="f-leftcolumnnav" style="vertical-align:top;height:26px;"><ul>
+                	<li class="f-navbutton1active"><a href="whatisit.htm"></a></li>
+                    <li class="f-navbutton2"><a href="whoarewe.htm"></a></li>
+                    <li class="f-navbutton3"><a href="whatsthebuzz.htm">?</a></li>
+                    <li class="f-navbutton4"><a href="whyjoin.htm"></a></li>
+   </ul></div>
+        </td>
+      </tr>
+      <tr>
+        <td background="<?= $IMG_SERVER?>/images/bb_images/background2.gif" style="background-repeat:no-repeat;">
+        <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+          <td style="height:10px;" ></td></tr>
+          <tr>
+            <td ><img src="<?= $IMG_SERVER?>/images/bb_images/dont_miss.gif" width="531" height="65" /></td>
+          </tr>
+          <tr>
+          <td >&nbsp; </td>
+
+          </tr>
+          <tr>
+          <td align="center">
+          	<table width="90%" cellpadding="0" cellspacing="0">
+            	<tr>
+                	<td width="51%" valign="top" align="left"><strong><font size="4" face="Verdana, Arial, Helvetica, sans-serif">Keeping up On The Buzz?</font></strong>
+                	  <p><font size="2px" face="Verdana, Arial, Helvetica, sans-serif">Get some help with your trading! Learn what the top traders on the street are doing right now!</font></p></td>
+                   <td width="49%" valign="top">
+                   <table width="100%" cellpadding="0" cellspacing="0">
+                   <tr>
+                    <td bgcolor="#93d9f8">
+                                	<table width="100%" border="0" cellspacing="0" cellpadding="2" >
+                  						<tr>
+                    						<td><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><strong>PASSWORD:</strong></font></td>
+                    						<td><input type="text" name="textfield" id="textfield" size="15" style="border-width:0px;" value="<?=$sub['password']?>" readonly="true"/></td>
+                  						</tr>
+   					  </table>                              </td>
+
+                   </tr>
+                   <tr>
+                    <td align="right"><a style="text-decoration:none" href="<?=$HTPFX?><?=$HTHOST?>/buzz/trial_buzz.php" onClick="window.open(this.href, 'popupwindow', 'status=no,toolbar=no,scrollbars=yes,titlebar=yes,menubar=no,resizable=yes,height=708,width=350,directories=no,location=no,top=225');return false;"><img style="cursor:pointer; border:none;" src="<?= $IMG_SERVER?>/images/bb_images/log_btn.png" width="157" height="56" /></a></td>
+                   </tr>
+                   </table>
+                   </td>
+                </tr>
+                <tr>
+                <TD colspan="2">&nbsp;</TD>
+                </tr>
+
+                 <tr>
+                <TD colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td><img src="<?= $IMG_SERVER?>/images/bb_images/bluetab1.gif" width="452" height="99" /></td>
+                  </tr>
+                  <tr>
+                    <td><img src="<?= $IMG_SERVER?>/images/bb_images/bluetab2.gif" width="452" height="87" /></td>
+                  </tr>
+                  <tr>
+                    <td><img src="<?= $IMG_SERVER?>/images/bb_images/bluetab3.gif" width="452" height="96" /></td>
+                  </tr>
+                  <tr>
+                    <td><img src="<?= $IMG_SERVER?>/images/bb_images/bluetab4.gif" width="452" height="104" /></td>
+                  </tr>
+                </table></TD>
+                </tr>
+            </table>
+
+          </td>
+
+          </tr>
+          <tr>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+
+      <tr>
+        <td valign="top"><font color="#666666" face="Verdana, Arial, Helvetica, sans-serif" size="1px">©<?=date(Y);?> Minyanville Media, Inc. All Rights Reserved. Minyanville, Buzz &amp; Banter
+          and the designs of such are trademarks of Minyanville Publishing and Multimedia, LLC.</font></td>
+      </tr>
+
+    </table>
+    </td>
+  </tr>
+</table>
+<?php
+/*
+$profileid=10;
+googleanalytics($profileid,$tracking_name['_eml_bb_trial4']);
+$profileid=1;
+googleanalytics($profileid,$tracking_name['_eml_bb_trial4']);
+*/
+?></body>
+</html>

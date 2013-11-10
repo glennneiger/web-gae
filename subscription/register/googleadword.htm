@@ -1,0 +1,27 @@
+<?php
+global $GOOGLEADWORDTRACKING;
+$prod = $_REQUEST['prod'];
+$trialType = $_REQUEST['type'];
+?>
+<html>
+<head>
+</head>
+<body>
+<script type="text/javascript">
+<!--
+var google_conversion_id =<?=$GOOGLEADWORDTRACKING['googleConversion']['Id']?>;
+var google_conversion_language = "en_US";
+var google_conversion_format = "1";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "<?=$GOOGLEADWORDTRACKING[$prod][$trialType]?>";
+//-->
+</script>
+<script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/<?=$GOOGLEADWORDTRACKING['googleConversion']['Id']?>/?label=<?=$GOOGLEADWORDTRACKING[$prod][$trialType]?>&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+</body>
+</html>

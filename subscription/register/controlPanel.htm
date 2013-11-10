@@ -1,0 +1,30 @@
+<?
+global $D_R,$HTHOST,$HTPFX;
+session_start();
+$id=$_SESSION['SID'];
+
+if($id=="")
+{
+	loginRedirection();	
+}
+$pageName = "controlPanel";
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","controlPanel");
+
+$objNewControlPanel= new newControlPanel();
+
+include_once("$D_R/_header.htm");
+include_once("$D_R/lib/_exchange_lib.php");
+include_once("$D_R/lib/email_alert/_lib.php");
+?>
+<div id="content-container">
+	<!-- Body Part Start -->
+	<?= $objNewControlPanel->displayWelcomeText(); ?>
+	<!-- Setting Box Start -->
+	<?= $objNewControlPanel->displaySettingsDiv(); ?>
+	<!-- Newsletter Box -->
+	<?= $objNewControlPanel->displayNewsletterBox($id,$authornotstr); ?>
+	<!-- Body Part End -->
+</div>
+<? include("$D_R/_footer.htm"); 
+?>

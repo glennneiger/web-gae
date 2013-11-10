@@ -1,0 +1,54 @@
+<?php
+global $D_R,$HTPFX,$HTHOST,$pageurl,$pageName,$objEduData,$alertId;
+session_start();
+
+$pageurl = $_SERVER['REQUEST_URI'];
+$pageName="eduAlert";
+include_once($D_R."/lib/_content_data_lib.php");
+require_once($D_R."/lib/config/_edu_config.php");
+require_once($D_R."/lib/edu/_edu_data_lib.php");
+require_once($D_R."/lib/edu/_edu_design_lib.php");
+require_once($D_R."/lib/_article_design_lib.php");
+$pageJS=array("config","redesign","zoomimage","fancybox","edu");
+$pageCSS=array("ibox","global","layout","section","rightColumn","zoomimage","nav","minyanville","fancybox","edu","articlepage");
+
+$objEduData = new eduData('edu_alerts');
+$objEduDesign = new eduDesign();
+$pageurl = $_SERVER["REQUEST_URI"];
+$alertId = $objEduData->getEduAlertIdByUrl($pageurl);
+if(empty($alertId)){
+	set_sess_vars('eduNotFound','1');
+	location($HTPFX.$HTHOST.'/edu');
+	exit;
+	}
+
+
+$objContent = new Content('elliot_alert',$alertId);
+$objArticle = new articleViewer();
+$obOuterTemplate = new OuterTemplate($pageName); 
+include($D_R."/edu/eduHeader.htm");
+loadjavascriptheader($pageCSS,$pageJS,'H',$noDefaultLoad);
+global $objEduData, $objEduDesign, $pageName, $objArticle;
+if(!empty($metaData)){
+	if($metaData['is_live']!='1' && !$_SESSION['AMADMIN']){
+   		set_sess_vars('eduNotFound','1');
+		location($HTPFX.$HTHOST.'/edu');
+		exit;
+	}
+}
+$alertDetails = $objEduData->getEduAlertMenuType($alertId);
+$sectionName = $alertDetails['menu_name'];
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<body>
+<div id="eduOuterContainer">
+	<?php echo $objEduDesign->displayEduHeader($sectionName);?>
+	<div class="eduContentContainer">
+		<div class="eduContainer">
+			<?php echo $objEduDesign->displayEduLeftArtCol($alertId);?>
+			<?php echo $objEduDesign->displayEduRightCol();?>
+		</div>
+	</div>
+</div>
+</body>
+<?php require_once($D_R."/_footer.htm"); ?>

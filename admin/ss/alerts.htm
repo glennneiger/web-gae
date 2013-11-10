@@ -1,0 +1,164 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+include("$ADMIN_PATH/ss/ss_classes/class_admin.php");
+/*============set up permissions=================*/
+$editanyuser=$AD->getPerm("ss_alerts_all");
+$candelete=$AD->getPerm("ss_alerts_manage");
+$edit_date=$AD->getPerm("alerts_date");
+$id = $_GET['id'];
+
+/*=============throw error if they're not allowed anything on this page====*/
+if(!$editanyuser && !$candelete && !$edit_date){
+	admin_error("You're not allowed to use this page.");
+}
+
+/*==========list of alerts==================*/
+$alertlist = "SELECT * from ss_alerts where type = 'alert' order by date desc";
+
+/*===========set up data for displaying alert edit page=============*/
+$pagedata = get_full_ss_alerts($id,0);
+
+
+$handler = "./alerts_mod.htm";
+
+if(!$id || !count($pagedata)){
+	$pagedata[body]="";
+	$pagedata[date]=mysqlNow();
+	$pagedata[udate]=time();
+	$pagedata[datefmt]=date($DATE_STR);
+	$pagedata[position]=$DEFAULT_NO_POS;
+  	$pagedata[is_public]=1;
+  	$pagedata[is_featured]=0;
+    $pagedata[title]="";
+    $pagedata[is_live]=1;
+    $pagedata[position]="";
+	//$pagedata[keyword]="";
+    $pagedata[note]="";
+    $pagedata[publish_date]="";
+    $ctrlstatus="disabled";
+}
+
+$pagedata[sent]=($pagedata[sent]?1:0);
+
+//-----------------make the date editable
+$breakDateStr="n|j|Y|G|i";
+list($m,$d,$y,$h,$min)=explode("|",date($breakDateStr,$pagedata[udate]));
+
+if($y=="2000" || $y=="1969"){//invalid date
+	$datefield=array();
+}else{
+	$datefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
+}
+
+?>
+<script>
+function deleteIt()
+{
+	if(confirm("Are you sure you want to delete this alert?"))
+	{
+		var frm=document["alertForm"];
+		frm["deletealert"].value=1;
+		frm.submit();
+	}
+}
+function Save(){
+	var err="";
+	var frm=document["alertForm"];
+
+	if(!trim(getValByName("alerts[title]"))){
+		err+="Please give this alert a title.\n";
+	}
+	if(err.length){
+		alert(err);
+		return;
+	}
+	findObj("alertForm").submit();
+}
+
+function setFormSubmitMarker(frm,value)
+{
+    frm.submitname.value=value;
+}
+
+</script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+<br><br>
+<?if($AD->getPerm("ss_alerts_manage")){?>
+	<a href="approve.htm">Approve Alerts</a><br>
+<?}?>
+<br>
+<form method=get action="<?=$PHP_SELF?>">
+	<table align=center width=600 border=0>
+		<TR>
+			<TD>Select a alert to Edit:
+				<select name="id" onChange="this.form.submit()">
+					<option value="">--New alert--</option>
+					<?
+					foreach(exec_query($alertlist) as $row)
+					{
+						$sel=($id==$row[id]?" selected":"");
+						$disp=$row[name]." - ".$row[title]." (${row[date]})";
+					?>
+					<option value="<?=$row[id]?>"<?=$sel.$style?>><?=$disp?></option>
+					<?}?>
+				</select>
+			</TD>
+		</TR>
+	</table>
+	<input type="hidden" name="submitname" value="">
+</form>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<form method="post" action="<?=$handler?>" name="alertForm">
+	<?input_hidden("id")?>
+	<?input_hidden("alerts[sent]",$pagedata[sent])?>
+	<?input_hidden("deletealert",0)?>
+	<table align=center width=600 border=0>
+		<TR>
+			<TD width=1% align=right><label for="alerts[title]"><b>Title</b>:</label></TD>
+			<TD width=99%><?input_text("alerts[title]",$pagedata[title],0,255," style='width:95%'")?></TD>
+			<?input_hidden("alerts[publish_date]",$pagedata[publish_date])?>
+		</TR>
+		<TR>
+			<TD align=right><b>Date</b>:</TD>
+			<TD>
+				<?if($edit_date){?>
+				<table cellpadding=0 cellspacing=0 border=0>
+					<TR>
+						<TD><?month_options("datefield[mo]",$datefield[mo])?></TD>
+						<TD><?day_options("datefield[day]",$datefield[day])?></TD>
+						<TD><?year_options("datefield[year]",$datefield[year],"",2002,date("Y")+3)?></TD>
+						<TD><?hour_options("datefield[hour]",$datefield[hour])?></TD>
+						<TD><?minute_options("datefield[min]",$datefield["min"])?></TD>
+					</TR>
+				</table>
+				<?}else{?>
+				<?=$pagedata[datefmt]?>
+				<?}?>
+				<?input_hidden("alerts[date]",$pagedata["date"] );?>
+			</TD>
+		</TR>
+		<TR valign=top>
+			<TD align=right><b>Entry</b>:</TD>
+			<TD align=left>
+			<?
+				input_textarea("alerts[body]",strip($pagedata[body]),"600");
+			?>
+			<script language="javascript">
+				showEditor('alerts[body]',800,400);
+			</script>
+			</TD>
+		</TR>
+		<TR>
+			<TD colspan=2 align=center>
+				<hr width=100% size=1 color="#000000"><br>
+				<input type="button" value="Save" onClick="Save()">&nbsp;&nbsp;
+				<input type="button" value="Cancel" onClick="void(location.replace(location.href))">&nbsp;&nbsp;
+				<?if($candelete && $id){?><input type="button" value="Delete This Alert" onClick="deleteIt()"><?}?>
+			</TD>
+		</TR>
+	</table>
+</form>
+<br>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

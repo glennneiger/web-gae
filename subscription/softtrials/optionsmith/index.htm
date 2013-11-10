@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/admin/ss/ss_classes/class_Performance.php");
+$performanceobj=new Performance();
+$productName="subOptionSmith";
+$trialtype="SoftTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+$_SESSION['setSessionReferal'] =  $_SERVER['HTTP_REFERER'];
+//set google referal if user is coming from Google with param from = google
+setSessionReferal($_REQUEST['from'], $_SERVER['HTTP_REFERER']);
+if($_GET['from']){
+	$from=$_GET['from'];
+}else{
+	$from=substr($_SERVER['HTTP_REFERER'],7);
+}
+$pcode = (isset($_REQUEST['pcode']))? trim($_REQUEST['pcode']):'Enter Promo Code (Optional)';
+$trackname=createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+$pageName = "optionsmith_softtrial";
+$objPage= new Page($pageName);
+$pageMetaData=$objPage->getMetaData();
+ if(strtolower($from) == 'google' ){
+	$refererSourceId ='google';
+}elseif(strtolower($from) == 'yahoo' ){
+	$refererSourceId ='yahoo';
+}elseif(strtolower($from) == 'bing' ){
+	$refererSourceId ='bing';
+}else{
+	$refererSourceId='';
+}
+?>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$pageMetaData['title']?>-Minyanville</title>
+<meta name="description" content="<?=$pageMetaData['description']?>" >
+<meta name="keywords" content="<?=$pageMetaData['keywords']?>">
+<!-- google anaytics  code -->
+
+
+
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/min/ibox.1.1-min.js" type="text/javascript"></script>
+<link href="<?=$HTPFX.$HTHOST?>/css/optionsmithSoft.css" rel="stylesheet" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/soft_trials.1.4.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$HTPFX.$HTHOST;?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/optionsmith/Video/swfobject.js"></script>
+
+</head>
+
+<body>
+<!--Option main start from here-->
+<center>
+<div class="OptionSoftMAin" >
+<!--Main body start from here-->
+<table align="center" cellpadding="0" cellspacing="0" border="0">
+<tr><td>
+<div class="JackSoftMAininner">
+<div class="JackHeader">
+<img src="<?=$IMG_SERVER?>/images/optionsmithTrial/OptionHeader.jpg"  border="0" alt="Flex Folio by quint tatro" />
+</div>
+<!--Left Content start from here-->
+<div class="left_cont_Jack">
+
+<div class="option_soft_titleMain">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div class="option_soft_title">
+Let Steve Smith, veteran options trader, show you the way to cut risk and boost your returns through the strategic use of options.
+<h2>Whether you already trade options or are looking for another tool to strengthen your portfolio, you can now benefit from Steve's experiences as a trader, market maker and successful newsletter author - having returned +73% from 2004-2008  </h2>
+</div></td>
+    <td valign="top"><span class="LaveryImage">
+<img src="<?=$IMG_SERVER?>/images/optionsmithTrial/optionsmith.jpg" alt="Steve smith" border="0" />
+<span>Steve smith</span>
+</span>
+</td>
+  </tr>
+</table>
+</div>
+
+
+<div class="optionFreeTrialBoxMain">
+<div class="optionFreeTrialBox">
+
+<div class="LaveryFreeTrialBoxLeft">
+<h1>14 day free trial</h1>
+<div class="product_text"><!--Lorem Ipsum is simply dummy text of the printing and typesetting industry.--></div>
+</div>
+
+<div class="OptionFreeTrialBoxRight">
+<form action="" method="get">
+
+<input id="fname" name="fname" type="text" value="Enter First Name" onfocus="javascript:if(this.value=='Enter First Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('fname',this.value,'Enter First Name');" tabindex="1" />
+<input id="lname" name="lname" type="text" value="Enter Last Name" onfocus="javascript:if(this.value=='Enter Last Name') this.value=''; return false;" onblur="javascript:chkSpaceNull('lname',this.value,'Enter Last Name');"tabindex="2" />
+<input id="uid" name="uid" type="text" value="Enter Email" onfocus="javascript:if(this.value=='Enter Email') this.value=''; return false;" onblur="javascript:chkSpaceNull('uid',this.value,'Enter Email');" tabindex="3" />
+<input name="pwd_t" id="pwd_t" style="display:;" type="text" onfocus="convertTextToPass('pwd_t','pwd','password');"  value="Password" class="search_input_box_pass" tabindex="4" />
+
+<input name="pwd" id="pwd" style="display:none;" type="password" onblur="javascript:checkPassNull('pwd_t','pwd');" value="" class="search_input_box_pass" tabindex="4" />
+
+<input id="repwd_t" name="repwd_t" style="display:;" type="text" onfocus="convertTextToPass('repwd_t','repwd','password');" value="Re-Enter-Password" class="search_input_box_pass" tabindex="5" />
+<input id="repwd" name="repwd" style="display:none;" type="password" onblur="javascript:checkPassNull('repwd_t','repwd');"  value="" class="search_input_box_pass" tabindex="5" />
+
+<input id="promocode" name="promocode" type="text" value="<?=$pcode ?>" onfocus="javascript:if(this.value=='Enter Promo Code (Optional)') this.value=''; return false;" onblur="javascript:chkSpaceNull('promocode',this.value,'Enter Promo Code (Optional)');" tabindex="6" />
+<div class="optionsmitherrmsg" id="errmsg">&nbsp;</div><div style="float:right;"><img src="<?=$IMG_SERVER?>/images/optionsmithTrial/submitTrial.jpg" onclick="Javascript:validateSoftTrial('optionsmith','14','<?=$trackname;?>','<?=$refererSourceId?>');" alt="Submit" align="right"  style="cursor:pointer; padding-right:21px;" tabindex="7" /></div>
+</form>
+</div>
+</div>
+</div>
+
+
+
+<!--Article area start from here-->
+<div class="optionArticleMain">
+<br />
+When you subscribe to OptionSmith by Steve Smith, <b>you'll receive Steve's specific trading ideas in your inbox as they occur</b>, along with detailed explanations of the strategy and thinking behind each trade. <b> Every Monday you'll also get his recap of the previous week including what worked, didn't work, and why, updates and commentary on all open positions and his outlook for the coming week.</b>
+<br/><br/>
+The OptionSmith portfolio and trading history will be displayed for all to see.  Along the way, you'll learn the right way to use options within your overall portfolio and to manage specific positions, reducing your risk and enhancing your return
+<br/><br/>
+If you're newer to options trading or want to sharpen your skills and get independent ideas, this is an opportunity to learn from Steve Smith -<b> a seatholding member of the CBOT and CBOE</b> for six years where he traded multiple markets for his own account and acted as an executing broker for third party accounts.
+<br/><br/>
+<b>Hear from Steve Smith About OptionSmith:</b><br/>
+<br/>
+Improve your returns and reduce your risk by using options.<b>Try OptionSmith by Steve Smith free for 14 days.</b>
+Then continue for only <b>$349 per year</b> or <b>$39 per month.</b>  Subscribe to any other Minyanville product on an annual basisand get 20% off that product and OptionSmith by Steve Smith.
+<br/><br/>
+Subscribe to three Minyanville products at the annual rate and get 25% off all products
+
+
+
+
+<!-- ########## Start Add to cart buttons ######################### -->
+<div class="optionsmith_main_cart_container">
+<div class="jack_producttrial_container">
+<table width="90%" cellspacing="0" cellpadding="0" border="0" align="left">
+  <tbody><tr>
+    <td valign="middle"><img hspace="0" alt="The Lavery Insight" src="<?=$IMG_SERVER?>/images/optionsmithTrial/optionsmith_sell.jpg"/>
+    <h1>14 DAY FREE TRIAL!</h1></td>
+    <td><table width="100%" cellspacing="4" cellpadding="0" border="0" class="option_add_to_cart_box_trial">
+      <tbody><tr>
+        <td width="50%" class="jack_recurringTrial">monthly</td>
+        <td width="0%" valign="top" align="center" rowspan="4"><img height="50" width="1" vspace="10" src="<?=$IMG_SERVER?>/images/optionsmithTrial/cart_divider.jpg"/></td>
+        <td width="50%" class="jack_recurringTrial" colspan="2">annual</td>
+      </tr>
+	  <tr><td valign="top" align="center">$<?=$viaProducts['OptionsmithMonthly']['price']?></td><td valign="top" align="center">$<?=$viaProducts['OptionsmithAnnual']['price']?></td></tr>
+	  <tr><td align="center"><a ;="" onclick=" checkcart ('23','14','SUBSCRIPTION');" style="cursor: pointer;"><img border="0" alt="add to cart" src="<?=$IMG_SERVER?>/images/optionsmithTrial/BuyNow.jpg"/></a></td>
+	  <td align="center"><a ;="" onclick=" checkcart ('22','14','SUBSCRIPTION');" style="cursor: pointer;"><img border="0" alt="add to cart" src="<?=$IMG_SERVER?>/images/optionsmithTrial/BuyNow.jpg"/></a></td>
+	  </tr>
+	      </tbody></table></td>
+  </tr>
+</tbody></table>
+
+
+</div>
+
+</div>
+<!-- ########## End Add to cart buttons ######################### -->
+
+
+
+<!--Article area Ends here-->
+
+
+
+<div class="AddtocartLaverymain">
+<h1>Get <span>Optionsmith</span> Now!</h1>
+<span><a href="#" style="cursor:pointer;" ><img src="<?=$IMG_SERVER?>/images/optionsmithTrial/signUptrial.jpg"  onclick ="javascript:signup();" alt="Sign up for 14 day trial" border="0"  vspace="10"/></a></span>
+</div>
+
+<div class="Contactmain">
+<p>Questions? Contact us at 212-991-9357 or</p> <span><a href="mailto:support@minyanville.com">support@minyanville.com</a></span>
+</div>
+
+
+</div>
+</div>
+<!--Left Content Ends here-->
+
+<!--Right Content start from here-->
+
+<div class="right_cont_jack">
+	<div class="right_Video_jack">
+	<script type="text/javascript">	addLoadEventQunintVideo(movieload,1,300,280,'container');	</script>
+	<div id="container"></div>
+	</div>
+<!-- OptionSmith performance goes here -->
+	<div class="right_common_container">
+		<?
+		echo $performanceobj->datadisplayperformance_home($loginoption,$home,$sp='1');   ///display for all users
+		?>
+	</div>
+
+
+	<div class="option_common_container">
+	<div class="jack_article_box">
+	<ul>
+	<li><span>Get email alerts </span>every time Steve makes a trade</li>
+	<li><span>Detailed analysis and rationale </span>for each trade</li>
+	<li><span>Trade management:</span> (entries/exits/stops)</li>
+	<li><span>Weekly review of all positions</span> and a look at the week ahead</li>
+	<li>Flexibility to <span >follow all of Steve's</span> trades or just the ones that meet your personal risk tolerance and guidelines</li>
+	<li><span >The best strategies</span> to use in volatile markets </li>
+	<li><span > Access </span>to the OptionSmith portfolio holdings, closed positions and performance.</li>
+	</ul>
+	</div>
+</div>
+
+
+
+
+</div>
+<!--Right Content Ends here-->
+
+</div>
+<!--Main body Ends here-->
+</td>
+</tr>
+</table>
+</div>
+
+
+<div class="TrialFooter"><img src="<?=$IMG_SERVER?>/images/optionsmithTrial/trialFooter.jpg"  /></div>
+<!--Option main Ends here-->
+<?php
+$profileid=1;
+//googleanalytics($profileid,$trackname);
+googleanalytics();
+?>
+</center>
+</body>
+</html>

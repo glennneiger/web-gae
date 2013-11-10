@@ -1,0 +1,29 @@
+<?//email gets an article and dispalys a link to it. It's smart enough to distinguish between journal and newsviews postings.
+$UNSUB=1;
+global $D_R;
+include_once("$D_R/lib/_news.php");
+$res=get_full_article($article_id,0);
+$res[url]=substr($res[url],0, strpos($res[url], "?")  );
+$biolink="$HTNOSSLDOMAIN/gazette/bios.htm?id=${res[contributor_id]}";
+include("$D_R/emails/_eml_header.htm");
+?>
+ 
+
+<?if($type!="text"){?>
+
+<font color="#1E1648"> 
+      <h3>A new article has arrived at <a href="<?=$HTNOSSLDOMAIN?>/">Minyanville.com</a>
+      </h3><br>written by <b><a href="<?=$biolink?>"><?=$res[contributor]?></a></b>, entitled <b><?=$res[title]?></b>. <a href="<?=$res[url]?>">Click here</a> to see it. 
+</font>
+<?}else{?>
+
+A new article has arrived at www.Minyanville.com written by <?=$res[contributor]?> (<?=$biolink?>), entitled <?=$res[title]?>.
+
+Go here (<?=$res[url]?>) to see it.
+	
+<?}?>
+
+<?php
+$tracking_name = $tracking_name['_eml_post_notify'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?>

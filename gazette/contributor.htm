@@ -1,0 +1,49 @@
+<?php
+$pageName = "contributor";
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav","minyanville");
+
+include("../_header.htm");
+$contributorid=$_GET['cid'];
+if(!$contributorid)
+{
+	$contributorid="1";
+}
+$contributorName=getAuthorName($contributorid);
+
+$page_navigation=$NAVIGATION["NEWS & VIEWS"];
+$title= "NEWS & VIEWS - ".$contributorName;
+$modules = getModules();
+
+$sql = "select articles.id,articles.keyword,articles.blurb,contrib_id, title, date, contributor, contributors.name author, character_text talkbubble from articles,contributors where contributors.id=articles.contrib_id and approved='1' and is_live='1' and is_featured='0' and contrib_id=".$contributorid." order by date desc limit 30";
+
+?>
+<!--Body area start from here-->
+
+<!--left contaner start from here-->
+<div class="shadow">
+<div id="content-container">
+	<div id="article-left">
+
+    <!--Section Main start from here-->
+		<div class="footer_common_main">
+			<div class="footer_common_title" style='width:98%;'><?=$contributorName;?><br/><span class="current_date"><?= displayDate();?></span></div>
+			<div class="article_section_main">
+
+				<table width="98%" cellpadding="0" cellspacing="0" border="0" align="left">
+				<tr><td><div class="template3_main_container"><? displayRecentHeadlines("News & Views",$sql,""); ?></div> </td> </tr>
+                </table>
+               				</div>
+</div>
+</div>
+
+<?
+$arrRightCols	=	array('show_mostpopular','show_ads','show_subcenter');
+include("../_rightcolumn.htm");
+?>
+</div><!--Main contaner end here-->
+</div><!-- shadow end -->
+<div style="clear:both;"></div>
+<?
+include("../_footer.htm");
+?>

@@ -1,0 +1,150 @@
+<?
+
+$page="admintools";
+
+$allperms=array("admin_users_all","admin_users_self");
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm($allperms)){
+	admin_error();
+}
+
+$error = $_GET['error'];
+$user_query = "SELECT * FROM admin_users";
+
+if(!$AD->getPerm("admin_users_all")){
+	$user_query.=" WHERE id='".$AD->userInfo[user_id]."'";
+}else{
+	$i_am_admin=1;
+}
+
+$feature_data = exec_query("select id,name,intname from admin_features order by intname");
+$handler="./admin_users_mod.htm";
+
+//for normal admins filter out permissions that deal wtih contributor functionality
+$notcontrib_filter=array("articles_own","articles_chars","contrib_self");
+
+?>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<br><br>
+<div class=adminheader>Administer Users</div><br>
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+Administer Minyanville.com Contributors and other administrators<br><br><br>
+<table width=600 align=center bgcolor=#eeeeee border=0>
+<TR align=center bgcolor=#cccccc>
+<TD nowrap>ID:</TD>
+<TD nowrap>Full Name</TD>
+<TD nowrap>Email</TD>
+<TD nowrap>login</TD>
+<TD nowrap>Password</TD>
+<?if($i_am_admin){?>
+<TD>Permissions [ctrl] + click for multiple</TD>
+<TD nowrap style="width:80px;">Suspend</TD>
+<TD nowrap style="width:75px;" >Remove</TD>
+<TD nowrap style="width:75px;">Edit</TD>
+<?}?>
+</TR>
+<?foreach(exec_query($user_query) as $i=>$row){
+	$featids = explode(",",$row[feature_ids]);
+	$isme = $row[id]==$AD->userInfo[user_id]?1:0;
+	$contribs="SELECT au.id FROM admin_users au, contributors c, $ARTICLE_TABLE a 
+			  WHERE au.id='${row[id]}' and a.contrib_id=c.id and c.user_id=au.id";
+	$contribs=num_rows($contribs);
+	$iscontributor=num_rows("SELECT id FROM contributors WHERE user_id='${row[id]}'");
+?>
+<TR valign=top align=center>
+<TD rowspan=2><?=$row[id]?><?input_hidden("user[${row[id]}][id]",$row[id])?></TD>
+<TD><input type="text" class="adminUserType" name="user[<?=$row[id]?>][name]" id="user_<?=$row[id]?>_name" value="<?=$row[name]?>" readonly></TD>
+<TD><input type="text" class="adminUserType" id="user_<?=$row[id]?>_email" name="user[<?=$row[id]?>][email]" value="<?=$row[email]?>" readonly></TD>
+<TD><input type="text" class="adminUserType" id="user_<?=$row[id]?>_username" name="user[<?=$row[id]?>][username]" value="<?=$row[username]?>" readonly></TD>
+<TD><input type="text" class="adminUserType" id="user_<?=$row[id]?>_password" name="user[<?=$row[id]?>][password]" value="" readonly></TD>
+<?if($i_am_admin){?>
+	<TD rowspan=2><select name="user_<?=$row[id]?>_feature_ids" id="user_<?=$row[id]?>_feature_ids" size=5 multiple <?if($isme){?>disabled<?}?>>
+		<?foreach($feature_data as $item){
+			$sel=(in_array($item[id],$featids)?" selected":"");
+			$msg="";
+			if(!$iscontributor && (in_array($item[intname],$notcontrib_filter)) ){
+				continue;
+			}?>
+			<option value="<?=$item[id]?>"<?=$sel?>><?=$item[name]?> <?=$msg?></option>
+		<?}?>
+		</select>
+	</TD>
+	<TD nowrap rowspan=2 style="position:relative; top:10px;"><input type="checkbox" name="user_<?="${row[id]}"?>_suspend" id="user_<?="${row[id]}"?>_suspend" <?=($isme?" disabled":"")?><?=($row[suspend]?" checked":"")?>></TD>
+	<TD rowspan=2  style="position:relative; top:10px;" ><input type="button" value="Delete" onclick="deleteUser('<?=$row[id]?>');"> </TD>
+	<TD  style="position:relative; top:10px;" ><input type="button" value="Edit" id="edit_<?=$row[id]?>" onclick="editUser('<?=$row[id]?>')"> </TD>
+	<?}?>
+</TR>
+<TR valign=top>
+<TD colspan=4>Info:
+	<?if($contribs){?>
+	<br><i>Person is a contributing author and has <?=$contribs?> article(s) in our system</i>
+	<?}?>
+	<?if($iscontributor && !$contribs){?>
+		<br><i>Person is a contributing author but hasn't written anything.</i>
+	<?}?>
+	
+	
+</TD>
+</TR>
+<?}?>
+</table>
+<br><br><br>
+<form method=post action="<?=$handler?>">
+<hr width=100% color=black size=1><br>
+<?if($i_am_admin){?>
+<table width=600 align=center border=0>
+<TR>
+<TD colspan=100>
+
+<input type="button" style="cursor:hand;color:#blue;text-decoration:underline"
+	onclick="void(newtable.style.display=(newtable.style.display=='none'?'block':'none'))"
+ value="Add New User">
+<table style="display:none;" id="newtable">
+<TR><TD colspan=2>
+<br><br>
+NOTE: If your intention is to create a new <b>CONRIBUTING AUTHOR</b> <a href="contributors.htm?page=admintools">FOLLOW THIS LINK</a>. You can create a username and password for them on that screen. These fields strictly deal with permissions.
+</TD></TR>
+
+<TR>
+<TD align=right>User's Full Name</TD>
+<TD><?input_text("new[name]")?></TD>
+</tr>
+<TR>
+<TD align=right>User's Email</TD>
+<TD><?input_text("new[email]")?></TD>
+</TR>
+<TR>
+<TD align=right>login</TD>
+<TD><?input_text("new[username]")?></TD>
+</TR>
+<TR>
+<TD align=right>Password</TD>
+<TD><?input_text("new[password]")?></TD>
+</TR>
+<TR>
+<TD align=right>Permissions <br>[alt ] + click for multiple</TD>
+<TD><select name="new[feature_ids][]" size=5 multiple>
+		<?foreach($feature_data as $item){?>
+		<option value="<?=$item[id]?>"><?=$item[name]?></option>
+		<?}?>
+	</select>
+</TD>
+</TR>
+</TR>
+</table>
+
+<?}?>
+
+</TD>
+</TR>
+</table>
+<br><br><br>
+<center>
+<input type="submit" value="Add User" class=inbtn>
+</center><br>
+</form>
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

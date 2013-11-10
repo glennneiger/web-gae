@@ -1,0 +1,87 @@
+<?
+$page="admintools";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("archive")){
+	admin_error();
+}
+?>
+<style>
+label{font-weight:bold}
+</style>
+<div class="adminheader">
+	Archive of Minyanville.com
+</div>
+<script>
+var indices="f[mo]:f[day]:f[year]:t[mo]:t[day]:t[year]".split(":");
+function Save(){
+	var err="";
+	if(findObj("range_on").checked){
+		for(i=0;i<indices.length;i++){
+			if(findObj(indices[i]).selectedIndex<1){
+				err+="-Please select a full date range to search "
+				    +"including a FROM date and a TO date\n";
+				break;
+			}
+		}
+	}
+/*	if(findObj("author_on").checked){
+		if(findObj("contrib_ids[]").selectedIndex<1){
+			err+="- Please select the authors whose articles you want to archive\n";
+		}
+	}*/
+	if(err.length){
+		alert(err);
+		return;
+	}
+	findObj("frmObj").submit();
+}
+</script>
+<?=errormsg()?>
+<form method="post" action="archive.get.htm" name="frmObj">
+<table width=300 bgcolor="#cccccc">
+<TR>
+<TD colspan=2>Archive Filters</TD>
+</TR>
+<label for="range_on">
+<TR bgcolor="#eeeeee">
+<TD width=1%><input type="checkbox" name="range_on" id="range_on"></TD>
+<TD widht=99% nowrap>
+	Archive articles within date range:<br>
+
+	<table>
+		<label for="range_on">
+	<TR>
+	<TD>FROM:</TD>
+	<TD>  <?month_options("f[mo]")?> 
+	<?day_options("f[day]")?> 
+	<?year_options2("f[year]",$year,"",date("Y"),2002)?></TD>
+	</TR>
+	<TR>
+	<TD align=right>TO:</TD>
+	<TD><?month_options("t[mo]")?> 
+	<?day_options("t[day]")?> 
+	<?year_options2("t[year]",$year,"",date("Y"),2002)?></TD>
+	</TR>
+		</label>
+	</table>
+
+</TD>
+</TR>
+</label>
+<label for="author_on">
+<TR bgcolor="#eeeeee">
+<TD><input type="checkbox" name="author_on" id="author_on"></TD>
+<TD>Only archive articles by selected authors:<br>
+	<select name="contrib_ids[]" multiple size=3>
+		<?selectHasArr(get_all_contributors(),"id","name")?>
+	</select>
+
+</TD>
+</TR>
+</label>
+<TR>
+	<TD colspan=2 align=right><input type="button" onclick="Save()" value="go"></TD>
+</TR>
+</table>
+</form>
+<?include("$ADMIN_PATH/_footer.htm");?>

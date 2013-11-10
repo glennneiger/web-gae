@@ -1,0 +1,30 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("edu_create edu_approve"))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Education Center</div><br>
+	<div style="padding:10px;width:400px">
+		<div style="padding-left:20px;"><ul>
+   			 <?if($AD->getPerm("edu_create")){ ?>
+   				<li><a href="../layout/manage_pages.php?page=edu">Create/Edit Slider Image</a></li>
+	 		<? }
+			if($AD->getPerm("edu_create")){ ?>
+   				<li><a href="edu-create.htm">Create/Edit Edu Alert</a></li>
+	 		<? }
+	 		if($AD->getPerm("edu_approve")){?>
+				<li><a href="edu-approve.htm">Approve Edu Alert</a></li>
+			<? } 
+			if($AD->getPerm("edu_create")){ ?>
+   				<li><a href="edu-glossary.htm">Create/Edit Glossary Term</a></li>
+	 		<? }
+	 		if($AD->getPerm("edu_create")){ ?>
+   				<li><a href="edu-product.htm">Add Product</a></li>
+	 		<? } ?>
+	 		</ul>
+		</div><br/>
+		<br />
+	</div>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

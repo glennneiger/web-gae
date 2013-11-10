@@ -1,0 +1,32 @@
+<?php 
+global $HTPFX,$HTHOST,$IMG_SERVER;
+$pageName = "welcome";
+$pageJS=array('config','jquery','global');
+$pageCSS=array("global","nav");
+include("$D_R/_header.htm");
+?>
+<link href="<?=$HTPFX.$HTHOST?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
+<div class="container">
+                <div class="welcome-box" style="float:left;margin-bottom:24px;">
+                    <div class="col-01">
+                        <img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/trialEmblem_7.png" height="213" width="442" alt="" border="0" />
+                        <div class="details">
+                            <p>Please feel free to contact us with any questions or troubles at <a href="mailto:support@minyanville.com?subject=Buzz And banter 14-Day Trial Inquiry" target="_blank">support@minyanville.com</a> or <font class="ltBlueTxt">212-991-9357.</font></p>
+                            <p>And please remember, to prevent any disruption of your free trial subscription after your 7-day trial, you may register for a full monthly, quarterly or annual subscription by <a href="<?=$HTPFX.$HTHOST;?>/buzzbanter/" target="_blank">clicking here</a> or calling <font class="ltBlueTxt">212-991-9357.</font></p>
+                        </div>
+                    </div>                    
+                    <div class="col-02">
+                        <ul class="callToAction clearfix">	
+                            <li class="buzz-logo">
+                                <img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/buzzlogo_gray.png" height="23" width="169" alt="" border="0" />
+                            </li>
+                            <li class="launch-buzz">
+                                <a class="launch-buzz-btn" onclick="javascript:banterWindow=window.open('/buzz/buzz.php','Banter','width=350,height=708,resizable=yes,toolbar=no,scrollbars=no');">Launch The Buzz</a>
+                            </li>
+                        </ul>
+                        <img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/buzzScreens.png" height="319" width="450" alt="" border="0" />
+                    </div>
+                </div>
+            </div>	
+           <br />
+<? include("$D_R/_footer.htm"); ?>

@@ -1,0 +1,82 @@
+<?php
+set_time_limit( 60*60 );//1 hour
+global $D_R;
+include_once("$D_R/admin/_authenticate.htm");
+$orderCodeId=$_GET['orderCodeId'];
+$productName=$_GET['productName'];
+$datestr=date("mdY");
+$outfile=$productName.'-'.$datestr.'.csv';
+
+if(!$AD->getPerm("download_product_subscriber_report")){
+	admin_error("You're not allowed to use this page.");
+}
+
+// if($outfile)	$fp=fopen($outfile,"w+");
+csv_header($outfile,"text/csv");
+
+$orderCodeIdArray=array();
+$orderCodeIdArray=explode(",", $orderCodeId);
+$objVia = new Via();
+$objViaContlr= new user();
+
+ $getResult=$objVia->getSubscriptionEmailList($orderCodeId);
+ $productDetail=array();
+ 
+$dateCurrent=date('Y-m-d');
+if(is_array($getResult)){
+ foreach($getResult as $key=>$row){
+    $getEmail=xml_attribute($row,"email");
+    if($getEmail){ 
+        $sql="select via_id from subscription where email='".$getEmail."'";
+        $getViaIdResult=exec_query($sql,1);
+        $viaId=$getViaIdResult['via_id'];
+        $getCustInfo=$objVia->customerSubInfo($viaId);
+        $getProdInfo=$objViaContlr->getUserProductDetail($viaId);
+       if(is_array($getProdInfo)){
+        foreach($getProdInfo as $row){
+             
+             $dateProduct=date('Y-m-d',strtotime($row->expireDate));
+             if (in_array($row->orderCodeId,$orderCodeIdArray) && ($dateProduct>=$dateCurrent)) {
+                  $prodStartDate=$row->startDate;
+                  $prodEndDate=$row->expireDate;
+                  $description=$row->description;
+             }
+         }
+         }
+        
+       
+        
+        $productDetail[$key]=array(
+        'email'=>$getEmail,
+        'firstname'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->nameFirst,
+        'lastname'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->nameLast,
+        'address1'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->addresses->address1,
+        'address2'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->addresses->address2,
+        'address3'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->addresses->address3,
+        'city'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->addresses->city,
+        'state'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->addresses->state,
+        'country'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->addresses->country,
+        'zip'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->addresses->zip,
+        'phone'=>$getCustInfo->CustomerSubInfoReqResult->CustomerSubInfo->customer->phone,
+        'description'=>$description,
+        'startDate'=>$prodStartDate,
+        'expireDate'=>$prodEndDate
+        );
+        
+    }    
+    
+ }
+ 
+} 
+if(is_array($productDetail)){
+    $data=$productDetail;
+}else{
+    $data[0]="No record found";
+}
+
+data2csv($data, $outfile="", $encl='"',$sep=",",$line="\n");
+
+
+exit;
+
+?>

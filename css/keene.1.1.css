@@ -1,0 +1,546 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin:0;
+	padding:0;
+}
+
+h2{
+	text-transform: none;
+}
+
+#keene_wrapper{
+	width:980px;
+	margin:0px auto;
+	background-color:#f5f5f5;
+}
+.clr{
+	clear:both;
+	margin:0px;
+	padding:0px;
+}
+/*Top Area Start*/
+.keene_logo{
+	float: left;
+	display: block;
+	margin: 20px 40px;
+}
+
+.keene_logo img{
+	width: 269px;
+	height: 52px;
+}
+
+#keene_header{
+	float: left;
+	width: 900px;
+	padding: 20px 40px;
+	border-top: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
+	background-color: #fafafa;
+}
+#keene_header ul{
+	width: 700px;
+}
+#keene_header ul li{
+	float: left;	
+	color:#666666;
+	list-style:none;
+	font-size: 16px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+#keene_header ul li a{
+	color:#666666;
+}
+
+#keene_header li{
+	margin: 0px 0px;
+	padding: 0px 20px 0px 0px;
+}
+#keene_header .active{
+	color: #333333;
+	font-weight: bold;
+}
+
+#keene_header .active a{
+	color: #333333;
+}
+
+.keene_emailQust{
+	float: right;
+	width: 290px;
+	color:#666666;
+	font-size: 16px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+.keene_emailQust a{
+	color:#167fc5;
+	text-decoration:none;
+}
+.keene_emailQust a:hover{
+	color:#167fc5;
+	text-decoration:underline;
+}
+
+/*Content Area Start*/
+.keene_contentPanel{
+	float: left;
+	padding: 40px 40px;
+}
+.keene_contentPanel .keeneButton{
+	float:left;
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:16px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 14px 0px 0px 0px;
+	padding:5px 0px 5px 0px;
+	border-radius: 5px 5px;
+	background-color: #00b4f1;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.keene_contentPanel .keeneButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+
+.keene_contentPanel keeneButton a{
+	background-color: #0a8cf1;
+	text-decoration:none;
+}
+
+.keene_lftPanel{
+	width: 580px;
+	float: left;
+	margin: 0px 40px 0px 0px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+.keene_lftPanel h1{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	font-family: 'PT Sans Narrow', sans-serif;
+
+}
+
+.keene_lftPanel h1 a hover{
+	color:#167FC5;
+	text-decoration:underline;
+}
+
+.keene_lftPanel h1.keene_about{
+	width:580px;
+	margin:0px 0px 15px 0px;
+	padding:0px 0px 15px 0px;
+	border-bottom: 1px dashed #aeaeae;
+}
+
+.keene_lftPanel h1 a{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	margin:10px 0px 15px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.keene_lftPanel h1 a:hover{
+	color:#00b4f1;
+	text-decoration:underline;
+}
+
+.keene_lftPanel h3{
+	float: left;
+	width: 580px;
+	color:#999999;
+	font-size:16px;
+	cursor:default;
+	font-size: 16px;
+	font-weight:normal;
+	text-transform: none;
+	margin:0px 0px 14px 0px;
+	padding:0px 0px 14px 0px;
+	border-bottom: 1px dashed #aeaeae;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.keene_lftPanel p{
+	float: left;
+	color:#333333;
+	font-size:16px;
+	font-weight:normal;
+}
+.keene_alertBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 14px 0px;
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+}
+
+.keene_lftPanel .keene_bioDesc{
+	float: left;
+	color:#333333;
+	font-size:16px;
+	font-weight:normal;
+}
+
+.keene_alertDetailBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 15px 0px;
+}
+
+.keene_alertDetailBox img{
+	height:auto;
+	width:100%;
+}
+
+.keene_alertDetailBox h1{
+	margin:0px 0px 14px 0px;
+}
+
+.keene_alertDetailBox h2{
+	line-height:28px;
+	margin:0px 0px 8px 0px;
+}
+
+.keene_alertDetailBox h3{
+	font-size: 18px; 
+	line-height: 18px; 
+	margin:0px 0px 8px 0px;
+}
+
+.keene_alertDetailBox h4{
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.keene_alertDetailBox h5{
+	color: #333333; 
+	font-size: 12px; 
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.keene_alertDetailBox h6{
+	color: #333333; 
+	font-size: 11px;  
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.keene_pagination{
+	float: left;
+	width: 580px;
+}
+.keene_pagination .keenePageButton{
+	float: left;
+	width: 20%;
+	height: 20px;
+	color: #ffffff;
+	font-size:16px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 20px 0px 0px 0px;
+	padding: 5px 0px 5px 0px;
+	border-radius: 5px 5px;
+	background-color: #0aa676;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.keene_pagination .keenePageButton:hover{
+	background-color: #0aa676;
+	text-decoration:underline;
+}
+
+.keene_pagination .keenePageButton a{
+	color: #ffffff;
+}
+
+.keene_pagination .prv_button{
+	float: left;
+}
+.keene_pagination .nxt_button{
+	float: right;
+}
+.keene_rght_panel .keeneBioButton{
+	float: left;
+	border:none;
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:16px;
+	cursor: pointer;
+	padding:5px 0px;
+	text-align:center;
+	border-radius: 5px 5px;
+	margin: 15px 0px 0px 0px;
+	background-color: #0670c1;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.keene_rght_panel{
+	width:280px;
+	float:left;
+}
+
+.keene_rght_panel .keeneBioButton:hover{
+	background-color: #0a8cf1;
+	text-decoration:underline;
+}
+
+.keene_rght_panel .keeneBioButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+.keene_rght_panel h2{
+	float: left;
+	color:#333333;
+	font-size:28px;
+	font-weight:bold;
+	text-transform: none;
+	margin:10px 0px 20px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+.keene_rght_panel input[type="text"]{
+	float: left;
+	width: 160px;
+	height: 28px;
+	color: #999999;
+	font-style:italic;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border:1px solid #e1e1e1;
+	padding: 0px 10px 0px 10px;
+}
+.keene_rght_panel input[type="button"]{
+	float: left;
+	width: 91px;
+	height: 38px;
+	border:none;
+	background: url(http://storage.googleapis.com/mvassets/images/keene/keeneSearch.png) no-repeat;
+}
+.keene_rght_panel p{
+	width: 280px;
+	float: left;
+	color:#333333;
+	font-size:16px;
+	font-weight:normal;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.keene_box_rght{
+	float: left;
+	clear:left;
+	width:282px;
+	padding:0px 0px 15px 0px;
+}
+.hr{
+	width:282px;
+	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+}
+
+.keene_disclaimer{
+	float: left;
+	clear:left;
+	font-weight:normal;
+	font-style:italic;
+	padding:0px 0px 15px 0px;
+	color: #666666;
+    font-family: "Times New Roman",Times,serif;
+    font-size: 12px;
+}
+
+.keene_alertBottom{
+	float: left;
+	clear:left;
+	width:565px;
+	margin:30px 0px 0px 0px;
+}
+
+.keene_category{
+	float:left;	
+}
+
+.keene_category span{
+	color:#1174ba;
+}
+#keene_post{
+	float:left;
+	width:580px;
+	font-size: 16px;
+	color: #333333;		
+	overflow:hidden;
+}
+
+#keene_post a{
+	color: #167FC5;		
+}
+
+#keene_post a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+.no_post{
+	color: #333333;
+	font-size: 20px;
+	text-align: center;
+}
+
+#keene_post ul{
+	margin: 5px 0px 0px 20px;		
+}
+
+#keene_post ul li{
+	font-size: 16px;
+	color: #333333;		
+}
+
+#keene_post h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#keene_post h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+#keene_alert_body{
+	float:left;
+	width:580px;
+	font-size: 16px;
+	color: #333333;	
+	overflow:hidden;	
+}
+
+#keene_alert_body ul{
+	margin: 0px 0px 0px 5px;		
+}
+
+#keene_alert_body a{
+	color: #167FC5;		
+}
+
+#keene_alert_body a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+#keene_alert_body ul li{
+	font-size: 16px;
+	color: #333333;	
+	margin:15px;	
+}
+
+#keene_alert_body h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#keene_alert_body h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+#keene_alert_body span{
+	font-family: 'PT Sans Narrow', sans-serif; !important
+}
+
+.keene_category span:hover{
+	color:#167FC5;	
+	text-decoration:underline;
+}
+
+
+.keene_alertBottom .keene_goTop{
+	float: right;
+	color:#00b4f1;
+	cursor: pointer;
+}
+
+.keene_goTop a, .keene_goTop a:hover{
+	color:#00b4f1;	
+	text-decoration:underline;
+}
+
+.keene_bioImage{
+	float: left;
+    width: 175px;
+    margin: 0 20px 20px 0;
+}
+
+.keene_bioImage img{
+	height: auto;
+    width: 100%;	
+}
+.ptc_fancyBox{
+	float:left;
+	width:580px;
+}
+
+#fancybox-close{
+	top:-30px;
+	right:0px;
+	height:24px;
+	width:24px;
+	background-repeat:no-repeat;
+	background: url('http://storage.googleapis.com/mvassets/images/peter-tchir/popup_close.png');
+}
+
+.keene_rightCol_list{
+	float:left;
+	color:#00b4f1;
+	font-size:16px;
+	font-weight:normal;
+	list-style:none;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.keene_rightCol_list a{
+	color:#00b4f1;
+	text-decoration:none;
+}
+
+.keene_rightCol_list a:hover{
+	text-decoration:underline;
+}
+
+.no_result{
+	color: red;
+	font-size: 18px;
+	text-align: center;
+}
+
+.bioEmail{
+	color:#0aa676;
+	text-decoration:none;
+}

@@ -1,0 +1,52 @@
+<?php
+global $D_R,$HTPFX,$HTHOST;
+include_once("$D_R/lib/email_alert/_lib.php");
+$pageName="emailunsubscribe";
+$ib_tracking_zone=$pageName;
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav","registration");
+include($D_R."/_header.htm");
+include_once("$D_R/lib/email_alert/_design_lib.php");
+
+
+if($_POST['unsubscribe_hidden'] == 'clicked') {
+
+	send_unsubscribe_mail($_REQUEST['emailadd']);
+
+}
+
+if(isset($_GET['unsub_id'])) {
+
+	unSubscribe($_GET['unsub_id']);
+
+}
+?>
+
+<script src="<?=$HTPFX.$HTHOST?>/js/unsubscribe.js" language="JavaScript" type="text/javascript"></script>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div class="left_contant">
+<?if(!isset($_GET['unsub_id'])) { ?>
+<div class="unsubscribe_content"><?email_content();?></div>
+<? } ?>
+<div class="unsubscribe_error" id="unsubscribeErrorMsgs"></div>
+<div class="unsubscribe_html_display">
+	<?
+    if(!isset($_GET['unsub_id']))
+    Before_UnsubscribeDesign();
+    else
+    After_UnsubscribeDesign();
+    ?>
+    </div>
+</div>
+<!--left contaner end here-->
+<?php
+$arrRightCols	=	array('show_300x250','show_mostpopular','recommendation','twitterWidget');
+include($D_R."/_rightcolumn.htm"); ?>
+  </div>
+  <!--Content contaner end here-->
+</div>
+<!-- shadow end -->
+<?php include($D_R."/_footer.htm"); ?>

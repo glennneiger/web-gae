@@ -1,0 +1,168 @@
+@CHARSET "UTF-8";
+
+.subRedesignLogo{ 
+	float:left; 
+	height:70px;
+	width:987px; 
+	background:#fff;
+	margin:20px 0px 0px 0px;
+}
+
+.subRedesignProductLogosBox{ 
+	float:left;	
+	width:949px; 
+	height:178px;
+	margin:-10px 0px 0px 42px;
+}
+
+.subRedesignProductLogo{
+	float:left; 
+	height:178px;
+	width:150px; 
+	background:#fff; 
+}
+
+.subRedesignProductImg{ 
+	float:left; 
+	width:150px; 
+	height:136px;
+	background:#fff;
+}
+
+.subRedesignLearnMore{
+	float:left; 
+	margin:0px;
+	width:150px; 
+	height:41px; 
+	background:#fff; 
+}
+
+.subRedesignDiscountMain{
+	float:left; 
+	height:90px;
+	width:987px; 
+	margin:10px 0px 0px 0px;
+}
+
+.subRedesignDiscount{	
+	float:left;
+	width:940px; 
+	height:71px;
+	margin:6px 0px 0px 24px;
+	background:url(http://storage.googleapis.com/mvassets/images/subscription/subDiscountContainer.png) no-repeat;
+}
+
+.subRedesignDiscountText{
+	float:left; 
+	width:293px;	
+	margin:0px 0px 0px 286px;
+}
+
+.subRedesignDiscountText p{ 
+	color:#4d4d4d; 
+	font-size:12px;
+	font-weight:bold; 
+	padding:20px 0px 0px 0px;
+	font-family:Arial, Helvetica, sans-serif; 
+}
+
+.subRedesignProductDescMain{ 
+	float:left;
+	width:987px; 
+	height:311px;	
+}
+
+.subRedesignProductDesc{ 
+	float:left;
+	width:300px; 
+	height:291px;
+	margin:11px 0px 11px 23px;
+}
+
+.subRedesignProductDescTop{
+	float:left;
+	width:300px;
+	height:58px;
+}
+
+.subRedesignProductDescMid{
+    float: left;
+    width: 260px;
+    min-height:140px;
+    padding:10px 20px 10px 20px; 
+	background: url("http://storage.googleapis.com/mvassets/images/subscription/mvp-repeat.png") repeat-y scroll 0 0 transparent;
+}
+
+.subRedesignProductDescBottom{
+    float: left;
+	height:71px;
+    width: 300px;
+	background: url("http://storage.googleapis.com/mvassets/images/subscription/bottom-img.png") repeat-y scroll 0 0 transparent;
+}
+
+p{ 
+	margin:0px;
+	color:#4d4d4d;
+	font-size:16px;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif; 
+}
+
+.subRedesignStartAdsFree{
+	float: left;
+    height: 31px;
+    width: 260px;
+    border: 0 none;
+    cursor: pointer;
+	margin-top:19px;
+	margin-left:20px;
+    outline: medium none;
+    background:url(http://storage.googleapis.com/mvassets/images/subscription/adsFreeMinyanville.png) no-repeat;
+}
+
+.subRedesignStartTrial {
+    float: left;
+    height: 31px;
+    width: 260px;
+    border: 0 none;
+    cursor: pointer;
+	margin-top:19px;
+	margin-left:20px;
+    outline: medium none;
+    background:url(http://storage.googleapis.com/mvassets/images/subscription/green-btn.png) no-repeat;
+}
+
+.subRedesignFooter{
+	float:left;
+	width:946px; 
+	height:77px;  
+	margin:25px 0px 0px 23px;
+}
+
+.subRedesignFooter p{ 
+	color:#4d4d4d; 
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.subRedesignFooter p .green{ 
+	color:#64a739;
+	font-size:12px; 
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.subRedesignFooter p .orange{ 
+	color:#ff6d08; 
+	font-size:12px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.subRedesignFooter p .orange a{ 
+	color:#ff6d08; 
+	font-size:12px;
+	font-weight:bold;
+	text-decoration:none;
+	font-family:Arial, Helvetica, sans-serif;
+}

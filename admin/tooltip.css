@@ -1,0 +1,93 @@
+A.leftfont {		
+	font-weight: bold;
+	FONT-SIZE: 8pt;
+	COLOR: #193C71 ; 
+	FONT-FAMILY: arial;
+	 TEXT-DECORATION: none
+}  
+A.leftfont:hover {
+font-weight: bold;
+	FONT-SIZE: 8pt;
+	COLOR: #193C71 ; 
+	FONT-FAMILY: arial;
+	 TEXT-DECORATION: underline
+}
+
+A.productinex {		
+	font-weight: bold;
+	FONT-SIZE: 9pt; 
+	COLOR: #00000; 
+	FONT-FAMILY: arial;
+	 TEXT-DECORATION: none
+}  
+A.productinex:hover {
+font-weight: bold;
+	FONT-SIZE: 9pt; 
+	COLOR: #00000 ; 
+	FONT-FAMILY: arial;
+	 TEXT-DECORATION: underline
+}
+
+.ds{
+	margin: 0px;
+	padding: 0px;
+	height: 0px;
+	width: 0px;
+	display:none;
+}
+
+
+#dhtmltooltip{
+position: absolute;
+border: 1px solid black;
+padding: 0px;
+background-color: lightyellow;
+font-family:verdana;
+font-size:10px;
+visibility: hidden;
+z-index: 100;
+/*Remove below line to remove shadow. */
+filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
+}
+#dhtmlfooter{
+position: absolute;
+border: 1px solid black;
+padding: 1px;
+background-color: lightyellow;
+font-family:verdana;
+font-size:10px;
+visibility: hidden;
+z-index: 100;
+/*Remove below line to remove shadow. */
+filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
+}
+#dhtmlprvnext{
+position: absolute;
+border: 1px solid black;
+padding: 1px;
+background-color: lightyellow;
+font-family:verdana;
+font-size:10px;
+visibility: hidden;
+z-index: 100;
+/*Remove below line to remove shadow. */
+filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
+}
+.borderRight {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #000000;
+}
+.borderbottom {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #000000;
+}
+.borderRb {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #000000;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #000000;
+}

@@ -1,0 +1,16 @@
+<?php
+$getTables=exec_query("SHOW TABLE STATUS");
+$arrExcludeTables=array('buzzbanter_today','category','ex_community','ex_item_tags_bc','ex_resources','ex_subscription_community','ex_tag_types','ex_tags_bc','groups','mv_facebook_mapping','phpads_acls','phpads_adclicks','phpads_adviews','s_promocodes','s_shipping','tt_mvrecommended','users_previleges','tracking_view','tracking_email');
+foreach($getTables as $table){
+	if(is_null($table['Rows']) and !in_array($table['Name'],$arrExcludeTables)){
+		$error=1;
+		print_r("Error in".$table['Name']."<br/>");
+		mymail('mvil@ebusinessware.com',"kamal@minyanville.com","Table Corrupted - ".$_SERVER['SERVER_ADDR'],$table['Name']." corrupted on the server, please fix ASAP.");
+	}
+}
+if($error){
+	echo "Error, I am ".$_SERVER['SERVER_ADDR'];
+}else{
+	echo "Ok, I am ".$_SERVER['SERVER_ADDR'];
+}
+?>

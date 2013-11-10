@@ -1,0 +1,214 @@
+body {
+	margin: 0;
+	background-color:#E0E0E0;
+}
+
+.folderList{
+	width: 200px;
+	height: 452px;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 2px 5px;
+	padding: 5px 10px;
+	list-style: none;
+	background-color: #ffffff;
+	border: 1px solid #b7b7b7;
+	border-radius: 5px;
+	overflow: auto;
+	position: relative;
+}
+
+.folder_view{
+	margin:5px 0px 0px 15px;
+}
+
+.imageUploader{
+	width: 820px;
+	height: 46px;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	margin: -2px 0px 3px 0px;
+	padding: 5px;
+	list-style: none;
+	background-color: #ffffff;
+	border: 1px solid #b7b7b7;
+	border-radius: 5px;	
+}
+
+.cke_label{
+	font-size: 14px;
+	position: relative;
+	top: -2px;
+	cursor:pointer;
+}
+
+.cke_button{
+	margin: 0px 10px;
+	float: left;
+	cursor:pointer;
+}
+
+h3{
+margin:0px;
+padding:0px;
+}
+
+.uploadImages{
+	width: 500px;
+	height: 100%;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 2px 0px 5px 0px;
+	padding: 5px;
+	list-style: none;
+	background-color: #ffffff;
+	border: 1px solid #b7b7b7;
+	border-radius: 5px;
+}
+
+.ImageList{
+	width: 800px;
+	height: 100%;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0;
+	padding: 5px;
+	list-style: none;
+	background-color: #ffffff;
+	border: 1px solid #b7b7b7;
+	border-radius: 5px;
+	overflow: auto;
+	overflow-x: hidden;
+	position: relative;
+}
+.firstItem{
+	margin:0px 0px 0px -10px !important;
+}
+
+.folder-switcher {
+	margin:0px 0px 0px -15px;
+	padding:0px 0px 0px 0px;
+	font-size:12px;
+}
+
+.folder-switcher ul{
+	margin:0px 0px 0px -20px;
+}
+
+.custom-menu {
+    z-index:1000;
+    position: absolute;
+    background-color:#C0C0C0;
+    border: 1px solid black;
+    padding: 2px;
+    cursor:pointer;
+}
+
+.folder-switcher li{
+	display: inline-block;
+	cursor: pointer;
+}
+
+.folder-switcher li div {
+	display: inline-block;
+	margin: 5px;
+	padding: 2px 5px;
+	border: 1px solid #b7b7b7;
+	border-radius: 4px;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+	color: #333;
+	cursor: pointer;
+}
+
+.folder-switcher li div:hover {
+	color: #0576b7;
+	border-color: #0576b7;
+}
+
+.folder-switcher li div.active {
+	color: #fff;
+	background-color: #0576b7;
+	border-color: #0576b7;
+	box-shadow: none;
+}
+
+.folderImg{
+	border: none !important;
+	box-shadow: none !important;
+	width: 20px !important;
+	margin: 0px !important;
+	padding: 0px !important;
+}
+
+.images-container {
+	padding: 5px 10px;
+}
+
+.thumbnail {
+	display: inline-block;
+	margin: 5px 5px;
+	overflow: hidden;
+	width:100px;
+	height:100px;
+	font-size: 0;
+}
+
+.thumbnail:hover {
+	border-color: #0a94e3;
+}
+
+.thumbnail img {
+	width: auto;
+	height: auto;
+	max-width: 100px;
+	max-height: 100px;
+}
+
+.CKimages{
+	float: left;
+	width: 112px;
+	height: 160px;
+	font-size: 12px;	
+}
+.imgName{
+	float: left;
+	margin: 0px 0px 0px 4px;
+	width: 100px;
+	text-align: center;
+}
+
+.ckFolderClosebttn {
+cursor: pointer;
+margin: -40px -2px 0px 0px;
+width: 100%;
+color: #ffffff;
+font-size: 11px;
+float: left;
+}
+
+.ckFolderText {
+text-align: center;
+font-size: 18px;
+line-height: 18px;
+color: #ffffff;
+font-family: "Palatino Linotype", "Book Antiqua",Palatino, serif;
+font-weight: bold;
+margin: 0px 0px 40px 0px;
+}
+
+.ckFolder {
+height: 85px;
+width: 325px;
+background: #024375;
+border-radius: 10px;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-khtml-border-radius: 10px;
+padding: 40px 0px 0px 0px;
+margin: 20px 0px 0px 0px;
+}

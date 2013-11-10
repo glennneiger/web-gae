@@ -1,0 +1,339 @@
+#buynhedge-bod {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.wrap {
+				 margin: 0 15px;
+			}
+			
+			*.main-shelf {
+				float: left;
+				font-family: Arial, Helvetica, sans-serif;
+				margin: 0;
+				padding: 0;
+			}
+			
+			#bnh-hdr {
+				/*border: 1px dotted #eae7e0;*/
+				/*border-width: 0 0 1px 0;*/
+				float: left;
+				padding: 0;
+				width: 100%;
+			}
+			
+			.bnh-logo {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png) no-repeat;
+				background-position: 0 -570px;
+				color: #666666;
+				float: left;
+				font-size: 14px;
+				font-family: Arial, Helvetica, sans-serif;
+				height: 41px;
+				margin: 0;
+				padding: 0;
+				text-indent: -9999px;
+				text-decoration: none;
+				width: 380px;
+			}
+			
+			.bnh-customer {
+				float: right;
+				font-size: 11px !important;
+				line-height: 11px !important;
+				margin: 0 !important; 
+				text-align: right;
+			}
+			
+			.main-shelf p, .bnh-col-1 p, .bnh-col-2 p {
+				color: #666666;
+				font-size: 14px;
+				font-family: Arial, Helvetica, sans-serif;
+				line-height: 21px;
+				margin: 0 0 18px 0;
+			}
+			
+			.main-shelf a.cta {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png) no-repeat;
+				color: #666666;
+				font-size: 14px;
+				font-family: Arial, Helvetica, sans-serif;
+				margin: 0;
+				padding: 0;
+				text-indent: -9999px;
+				text-decoration: none;
+			}
+
+			.btn-1 {
+				background-position:  -382px -196px !important;
+				float: left;
+				height: 68px;
+				margin: 40px 35px !important;
+				width: 260px;
+			}
+			
+			.btn-1:hover {
+				background-position:  -382px -266px !important;
+				float: left;
+				height: 68px;
+				width: 380px;
+			}
+			
+			.btn-2 {
+				background-position:  0 -518px !important;
+				float: left;
+				height: 36px;
+				margin: 10px 60px 20px 60px !important;
+				width: 260px;
+			}
+			
+			.btn-2:hover {
+				background-position:  -262px -518px !important;
+				float: left;
+				height: 36px;
+				width: 260px;
+			}
+			
+			.main-shelf h2 {
+				color: #202020;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 48px;
+				line-height: 48px;
+				letter-spacing: -1px;
+				margin: 0 0 20px 0;
+				text-transform: uppercase;
+			}
+			
+			.main-shelf h3 {
+				color: #202020;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 24px;
+				line-height: 24px;
+				letter-spacing: -1px;
+				margin: 0 0 20px 0;
+				text-transform: normal;
+			}
+			
+			
+			.wide-hed {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png) no-repeat;
+				float: left;
+				height: 82px;
+				text-indent: -9999px;
+				width: 763px;
+			}
+			
+			.hed-1 {
+				background-position: 0 0;
+			}
+			
+			.narrow-hed {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png) no-repeat;
+				float: left;
+				height: 45px;				
+				text-indent: -9999px;
+				width: 430px;
+			}
+			
+			.sub-hed-1 {
+				background-position: 0 -84px;
+			}
+			
+			.sub-hed-2 {
+				background-position: 0 -846px;
+				height: 41px !important;
+			}
+			
+			.sub-hed-3 {
+				background-position: 0 -889px;
+				height: 21px !important;
+				width: 100% !important;
+			}
+			
+			.sub-hed-4 {
+				background-position: -383px -648px;
+				height: 17px !important;
+			}
+			
+			.bnh-col-1 {
+				float: left;
+				margin-right: 10px;
+				width: 430px;
+			}
+			
+			.bnh-col-2 {
+				float: left;
+				margin-left: 10px;
+				width: 330px;
+			}
+			
+			.bnh-col-3 {
+				float: left;
+				margin-right: 10px;
+				width: 380px;
+			}
+			
+			.bnh-col-4 {
+				float: left;
+				margin-left: 10px;
+				width: 380px;
+			}
+			
+			.bnh-list-1 {
+				color: #373737;
+				float: left;
+				font-size: 14px;
+				font-weight: bold;
+				letter-spacing: -1px;
+				list-style-type: none;
+				padding: 0 0 0 10px;
+				margin:  0 0 20px 0;
+				white-space: nowrap;
+			}
+			
+			.bnh-list-1 li {
+				 color: #000000;
+			    float: left;
+			    font-weight: bold;
+			    line-height: 16px;
+			    margin: 0 0 4px;
+			    white-space: nowrap;
+			    width: 420px;
+			}
+			
+			.bnh-list-2 {
+				color: #373737;
+				float: left;
+				font-size: 14px;
+				font-weight: bold;
+				letter-spacing: -1px;
+				list-style-type: none;
+				padding: 0;
+				margin:  0 ;
+			}
+			
+			.bnh-list-2 li {
+				background: url("http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/checkBullet_22x22.png") no-repeat scroll left top transparent;
+			    float: left;
+			    font-weight: bold;
+			    height: 22px;
+			    line-height: 14px;
+			    list-style-type: none;
+			    margin: 0 0 15px;
+			    white-space: nowrap;
+			    width: 780px;
+			}
+			
+			.nm-btm {
+				margin-bottom: 0 !important;
+			}
+			
+			.bnh-list-2 p {
+				color: #373737;
+				float: left;
+				line-height: 14px;
+				margin: 0;
+				padding: 0 0 0 30px;
+			}
+			
+			.single-line {
+				padding-top: 4px !important;
+			}
+			
+			.bnh-special {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png);
+				background-position: 0 -612px;
+				float: left;
+				font-family: Arial, Helvetica, sans-serif;
+				height: 232px;
+				margin: 0;
+				padding: 0;
+				text-decoration: none;
+				width: 330px;
+			}
+			
+			.bnh-special p {
+				color: #1a1a1a !important;
+				float: left;
+				font-size: 13px !important;
+				letter-spacing: -1px;
+				line-height: 16px !important;
+				width: 140px;
+				margin: 95px 0 0 0;
+				padding: 0 0 0 20px;
+			}
+			
+			#big-cta {
+				float: left;
+				margin:  20px 0 20px 0;
+				padding: 0;
+				width: 100%;
+			}
+			
+			.big-cta-btn {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png) no-repeat;
+				background-position: 0 -378px;
+				color: #666666;
+				float: left;
+				font-size: 14px;
+				font-family: Arial, Helvetica, sans-serif;
+				height: 68px;
+				margin: 0 85px 0 84px;
+				padding: 0;
+				text-indent: -9999px;
+				text-decoration: none;
+				width: 611px;
+			}
+			
+			.big-cta-btn:hover {
+				background-position: 0 -448px;
+				height: 68px;
+				width: 611px;
+			}
+			
+			.jay-wayne-details {
+				margin-top: 8px !important;
+			}
+			
+			.jay-pix {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png) no-repeat;
+				background-position: 0 -196px;
+				float: left;
+				height: 180px;
+				width: 180px;
+				text-indent: -9999px;
+				margin-right: 20px;
+			}
+			
+			.wayne-pix {
+				background: url(http://storage.googleapis.com/mvassets/assets/FCK_Jan2011/images/freddy/2012/04/buyAndhedge_sprites_763x1063_02_040512.png) no-repeat;
+				background-position: -200px -196px;
+				float: left;
+				height: 180px;
+				width: 180px;
+				text-indent: -9999px;
+			}
+			
+			.clearfix:after {
+				content: ".";
+				display: block;
+				clear: both;
+				visibility: hidden;
+				line-height: 0;
+				height: 0;
+			}
+			 
+			.clearfix {
+				display: inline-block;
+			}
+			 
+			html[xmlns] .clearfix {
+				display: block;
+			}
+			 
+			* html .clearfix {
+				height: 1%;
+			}
+			
+
+

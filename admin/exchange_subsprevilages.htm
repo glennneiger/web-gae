@@ -1,0 +1,123 @@
+<?
+$hide_ui=1;
+include("$ADMIN_PATH/_header.htm");
+include_once("../lib/_misc.php");
+$subid=$_GET['id'];
+$mode=$_GET['mode'];
+if(!$AD->getPerm("subscribers_all")){
+	admin_error();
+}
+function getblockservicesInfo($subid, $serviceid="")
+{
+	$sqlblockservicesInfo = "select id,subscription_id,blockservice_id,value from ex_blockservices where subscription_id='$subid'";
+	if($serviceid)
+	{
+		$sqlblockservicesInfo .= " and blockservice_id='$serviceid'";
+	}
+	foreach(exec_query($sqlblockservicesInfo) as $rowblockservicesInfo)
+	{
+		$value=$rowblockservicesInfo['value'];
+	}
+	return $value;
+}
+if($_POST)
+{
+	$postarray=$_POST;
+}
+if($mode)
+{
+	$getvalue=getblockservicesInfo($subid);	
+	if($getvalue)
+	{
+		del_query("ex_blockservices","subscription_id",$subid);
+	}
+	if($postarray)
+	{
+		foreach($postarray as $id=>$value)
+		{
+			$strservicesdata=array(
+			subscription_id=>$subid,
+			blockservice_id=>$id,
+			value=>$value
+			);
+			insert_query("ex_blockservices",$strservicesdata);
+		}
+	
+		global $HTHOST,$HTPFX, $MODERATOR_EMAIL;
+		$event="userblocking";
+		$resEmail=exec_query("select template_path,event email_body,email_subject from ex_email_template where event='$event'",1);
+		$from=$MODERATOR_EMAIL;
+		$subject=$resEmail[email_subject];
+		$path=$resEmail['template_path'];
+		$SUB_EML_TMPL=$HTPFX.$HTHOST.$path;
+		$template="$SUB_EML_TMPL?event=$event&to=$subid";
+		$getsubs=exec_query("select fname, lname, email from subscription where id=$subid",1);
+		$subFname =ucwords(strtolower($getsubs[fname]));
+		$subLname = $getsubs[lname];
+		$subEmail = $getsubs[email];
+		mymail("\"$subFname $subLname \"<$subEmail>",$from,$subject,inc_web($template));
+	}
+	?>
+	<script language="JavaScript">
+		mywin=parent.window.opener;
+		mywin.location.reload();
+		this.window.close();
+	</script>
+	<?
+}
+?>
+<style>
+body{margin:3px;padding:0px;border:0px}
+</style>
+<script>
+function saveSubs(){
+findObj("subform").submit();
+}
+
+</script>
+<?if($error){?><div class="error"><?=$error?></div><?}?>
+<form method="post" action="exchange_subsprevilages.htm?mode=submit&id=<?=$subid?>" name="subform">
+<?//input_hidden("bounceback",$PHP_SELF);input_hidden("id",$subs['id'])?>
+<fieldset><!--<legend>User previlages blocked Info</legend>--><legend>User privileges blocked Info</legend>
+<table>
+<TR>
+<TD nowrap><b>DB ID:</b><?=$subs[id]?></TD>
+</TR>
+<?
+$sqlservices = "select * from ex_services where status='1'";
+foreach(exec_query($sqlservices) as $rowservices)
+{
+	$serviceid=$rowservices['id'];
+	$servicename=$rowservices['servicename'];
+	$servicevalue=getblockservicesInfo($subid, $serviceid);
+?>
+<tr>
+<td><input type="checkbox" name="<?=$serviceid?>" <?if($servicevalue=='on'){echo "checked";}?>/><?=$servicename;?></td>
+</tr>
+<?	
+}
+?>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>
+<input type="button" value="Save & close" onclick="saveSubs()">
+<input type="reset" value="reset">
+</td>
+</tr>
+</table>
+</fieldset>
+<!--<fieldset><legend>Save Your Work</legend>
+<br><br>
+<div align=right>
+	<input type="button" value="save" onclick="saveSubs()">
+	<input type="reset" value="reset">
+</div>
+<br><br>
+</fieldset>-->
+</form>
+
+
+
+<?include("$ADMIN_PATH/_footer.htm")?>

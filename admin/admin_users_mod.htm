@@ -1,0 +1,99 @@
+<?
+include_once("$ADMIN_PATH/_authenticate.htm");
+
+$json = new Services_JSON();
+$bounceback="./admin_users.htm?error=";
+
+$deluser = $_POST['deluser'];
+$new = $_POST['new'];
+$user = $_POST['user'];
+$action = $_POST['action'];
+
+/*========removing users==================*/
+if($action=="delete"){
+	$delids = $_POST['id'];
+	$check="SELECT a.id FROM $ARTICLE_TABLE a, contributors c 
+			WHERE a.contrib_id=c.id AND find_in_set(c.user_id,'$delids')";
+	if(!num_rows($check)){//make sure the person being deleted hasn't written anything
+		//remove contributors
+		$qry="DELETE from contributors WHERE find_in_set(user_id,'$delids') LIMIT ".count($deluser);
+		exec_query_nores($qry);
+		//remove admin accounts
+		$qry="DELETE from admin_users where find_in_set(id,'$delids') LIMIT ".count($deluser);
+		exec_query_nores($qry);
+                $value['status'] ="1";
+                $value['msg'] = "User has been deleted";
+	}else{
+                $value['status'] = "0";
+		$value['msg'] = "CAN'T REMOVE PEOPLE WHO'VE WRITTEN SOMETHING!<br>";
+		flush();
+	}
+        $output = $json->encode($value);
+	echo strip_tags($output);
+}
+/*===========creating a new user===============*/
+if($new[username] && $new[password] ){
+    $new[password]=md5($new[password]);
+	$fids=$new[feature_ids];
+	$new[feature_ids]=implode(",",$new[feature_ids]);
+	$qry="SELECT id FROM admin_users WHERE LOWER(username)='".lc($new[username])."'";
+	if(!num_rows($qry)){
+		$id=insert_query("admin_users",$new);
+	}else{
+		$error="${new[username]} is already being used!";
+	}
+        location($bounceback.urlencode($error));
+}
+
+/*==========updating existing users==============*/
+if($_POST['action']=="save")
+{
+        $u = $_POST;
+	$id=$u[id];
+	$old_user=exec_query("SELECT * FROM admin_users WHERE id='$id'",1);
+	//username changed. make sure it's not taken already
+
+	if($old_user[username]!=$u[username]){
+		 $qry="SELECT count(id) as count_id FROM admin_users WHERE LOWER(username)='".lc($u[username])."'";
+                 $result = exec_query($qry,1);
+		if($result['count_id']=="0")
+                {
+			$error.="can't change <b>${old_user[username]}</b> to <b>${u[username]}</b>!<br>";
+                        $u[username] = $old_user[username];
+		}
+	}
+
+	if($id==$AD->userInfo[user_id]){//i'm editing myself
+                        echo "Dddd";
+		//reset session stuff
+		set_sess_vars("AUSER",$u[username]);
+		set_sess_vars("APASS",$u[password]);
+		mcookie("auser",$u[username]);
+		mcookie("apass",$u[password]);
+		//unset stuff user's can't do for themself
+		unset($u[feature_ids]);
+		unset($u[suspend]);
+	}else{
+		$u[suspend]=($u[suspend]=="true"? 1:0);
+	}
+	unset($u[id]);
+	unset($u[action]);
+        if($u[password]){
+	    $u[password]=md5($u[password]);
+		update_query("admin_users",$u,array(id=>$id));
+	}
+	unset($u[password]);
+
+	update_query("admin_users",$u,array(id=>$id));
+        if($error=="")
+        {
+            $error = "User has been updated sucessfully";
+        }
+        $value['status'] = "1";
+	$value['msg'] = $error;
+        $output = $json->encode($value);
+	echo strip_tags($output);
+
+}
+
+?>

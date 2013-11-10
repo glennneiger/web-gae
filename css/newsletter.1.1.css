@@ -1,0 +1,58 @@
+.news_container{
+	background-color: #F2F2F2;
+    border-left: 1px solid #B8C4d0;
+    border-right: 1px solid #B8C4d0;
+    float: left;
+    margin-top: -1px;
+    width: 643px;
+}
+.landing_headline{
+	float: left;
+    padding: 0 0 40px 20px;
+    width: 300px;
+}
+
+.resend{
+	position: relative;
+    top: -10px;
+}
+.bottom_txt{
+	float: left;
+    font-size: 13px;
+    padding: 0 0 12px;
+    text-align: center;
+    width: 100%;
+}
+
+.mid_txt{
+	padding: 0 0 0 20px;
+}
+
+.unsubscribe_error{
+	color: #FF0000;
+    float: left;
+    font-size: 14px;
+    font-weight: normal;
+    height: 10px;
+    margin: 0;
+    padding: 10px 0;
+    text-align: left;
+    text-transform: none;
+}
+
+.right_text{
+    float: left;
+    padding: 0 0 0 20px;
+    font-size: 13px;
+    width:285px;
+    margin-top: -2px;
+}
+.sub_prod{
+
+}
+
+.bottom_image{
+}
+.rss_common_main{
+	padding: 0 0 0 12px;
+}

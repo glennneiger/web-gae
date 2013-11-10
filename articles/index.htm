@@ -1,0 +1,222 @@
+<?php
+global $D_R;
+include_once($D_R."/lib/_content_data_lib.php");
+handle_ssl();
+session_start();
+$articleArr = getKeyVal('id,a,from',$_SERVER['REQUEST_URI']);
+$articleid = ($articleArr['id']=="" ? $articleArr['a'] : $articleArr['id']);
+$objContent=new Content('1',$articleid);
+global $D_R,$gaTrackingAuthor,$HTPFX,$HTHOST,$CDN_SERVER,$gaTrackingTicker,$article_ic_tag,$mobile_itemID,$mobile_itemType,$ad_author,$ad_author_id,$nextUrl,$prevUrl,$articlePages;
+$mobile_itemType="1";
+$mobile_itemID=$articleid;
+//CheckMobile('',$articleid);
+
+global $cm8_ads_MicroBar,$cm8_ads_MediumRectangle,$cm8_ads_1x1_Text,$cm8_ads_Button_160x30,$cm8_ads_Leaderboard,$cm8_ads_Leaderboard_bottom;
+include_once($D_R."/lib/mailchipapi/mailchimp_data_lib.php");
+$objMailChimp= new mailChimp();
+$articlecache= new Cache();
+$from = ($_GET['from']=="" ? $articleArr['from'] : $_GET['from']);
+
+if(strlen($from)>1 && strlen($camp)<1)
+{
+	$_GET['camp']="syndication";
+}else{
+	$_GET['camp']=$camp;
+}if(strlen($from)>1 && strlen($medium)<1){
+	$_GET['medium']="portals";
+}else{
+	$_GET['medium']=$medium;
+}
+
+$articleURL	=makeArticleslink($articleid);
+if($articleURL =='')
+{
+	set_sess_vars('notFound','1');
+	location($HTPFX.$HTHOST);
+	exit;
+}
+
+if(parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH)!=$articleURL){
+	Header( "HTTP/1.1 301 Moved Permanently" );
+	Header( "Location: ".$articleURL );
+	exit;
+}
+
+include_once($D_R."/lib/_homepage_design.php");
+
+$pageName = "article_template";
+$show_canonical = 1;
+$disqusArticleId=$articleid;
+$disqusTableName="articles";
+$disqusItemType="1";
+
+$objHPDesign = new homeDesign();
+$article=$articlecache->getArticleCache($articleid);
+
+$articleFullURL = recursive_array_replace($purifier,$articleFullURL);
+
+$articlePages =  count($article->body);
+$page = recursive_array_replace($purifier,$page);
+if(!is_numeric($page) && $page!="full")
+{
+	$page="";
+}
+if ($page == "" || $page == "0") {
+	if($articlePages>"1")
+	{
+		$prevUrl = $articleFullURL."?page=1";
+		$nextPage = "2";
+		if ($nextPage <= $articlePages) {
+			$nextUrl = $articleFullURL."?page=".$nextPage;
+		}
+	}
+}
+else {
+    $prevUrl = $articleFullURL."?page=".$page;
+	$nextPage = $page+1;
+	if ($nextPage <= $articlePages) {
+	    $nextUrl = $articleFullURL."?page=".$nextPage;
+	}
+}
+
+$memCache = new memCacheObj();
+$articleContentCache = new ArticleCache();
+
+$ad_author = urlencode($article->author);
+$ad_author_id = $article->authorid;
+$article_title = $article->title;
+$gaTrackingTicker=$article->stocks;
+$article_ic_tag=$article->ic_tag;
+$article_is_live = $article->is_live;
+if($article->is_live!='1' && !$_SESSION['AMADMIN']){
+	set_sess_vars('notFound','1');
+	location($HTPFX.$HTHOST);
+	exit;
+}
+
+$noDefaultLoad=TRUE;
+$bannernameMR="MediumRectangle_300x250_300x600_bottom";
+$pageJS=array('config','redesign','Articles','jquery','global','articleComment','zoomimage','mobileredirect','global','stickycontent','emailalert','fancybox','mailchimp','selectivizr');
+$pageCSS=array("global","nav","articlepage",'zoomimage',"rightColumn","fontStylesheet","fancybox","mailchimp");
+
+$cacheRequest = $memCache->getKey('cacheRequest');
+if($cacheRequest=='0' || $cacheRequest==''){
+	$displayArticlePage = $articleContentCache->getArticleContent($articleFullURL,$articleid,'1',$page);
+}
+if(!empty($displayArticlePage) && $article->is_live=='1'){
+	echo $displayArticlePage;
+	exit;
+}else{
+	include_once($D_R.'/lib/_convert_charset.class.php');
+	include_once($D_R.'/lib/config/_article_config.php');
+	include("$D_R/lib/_article_design_lib.php") ;
+	include_once($D_R."/lib/mailchipapi/mailchimp_design_lib.php");
+	include_once($D_R."/lib/config/_mailchimp_config.php");
+	include("../_header.htm");
+	global $ga_account_id,$ga_profile_id,$ua_profile_id;
+	echo $objHPDesign->freeModuleFancyBox(); ?>
+	
+	<script type="text/javascript">jQuery.noConflict();</script>
+	
+	<? $objArticleViewer	=	new articleViewer();
+	$memCache = new memCacheObj();
+	$NewEncoding = new ConvertCharset('iso-8859-1', 'utf-8', 1);	//set to 1 for numeric entities instead of regular chars
+	$layout = $article->layout;
+	global $memCache;?>
+	
+	<script type="text/javascript">
+		function trackTSClick(linkOut,url,label)
+		{
+			try {
+		    pageTracker._trackEvent("Link Outs","Click",label);
+		    ga('send', 'event', 'Link Outs', 'Click',label);
+		    setTimeout('document.location = "' + url + '"', 100);
+		  }catch(err){}
+		}
+		function trackEmailNewsletterClick(action)
+		{
+			try {
+				pageTracker._trackEvent("Newsletter Signup", action, "Articles");
+				ga('send', 'event', 'Newsletter Signup', action, "Articles");
+		  }catch(err){}
+		}
+	</script>
+	
+	<div class="shadow">
+	<div id="content-container" style="position:relative;">
+	<div>
+	<?php
+		switch($layout){
+		case 'no-photo':
+			$objArticleViewer->articleLayoutNoPhoto($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'large-photo':
+			$objArticleViewer->articleLayoutLargePhoto($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'small-photo':
+			$objArticleViewer->articleLayoutSmallPhoto($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'no-related':
+			$objArticleViewer->articleLayoutNoRelated($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'no-byline-date':
+			$objArticleViewer->articleLayoutNoByline($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'live-blog':
+			$objArticleViewer->articleLayoutLiveBlog($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'thestreet':
+    	case 'realmoneysilver':
+			include("$D_R/lib/rss_php.php") ;
+			include("$D_R/lib/config/_thestreet_config.php");
+			$objArticleViewer->articleLayoutTheStreet($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'observer':
+			$objArticleViewer->articleLayoutObserver($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+		case 'radio':
+			$objArticleViewer->articleLayoutRadio($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+		break;
+    	default:
+			$objArticleViewer->articleLayoutNoPhoto($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
+	}?>
+	<script type="text/javascript"> getSetArticleDivHeight(<?=$articleid?>);</script>
+	<? $heightKey = $memCache->getKey("article_height_".$articleid);
+	if($heightKey>1050){
+		switch($layout){
+			case 'no-photo':
+				$arrRightCols	=	array('freeReportModule','show_related_article','show_mostpopular','recommendation','sponsoredlinks','show_MediumRectangle_Art_300x250','twitterWidget','show_markets','financial_product_guide','show_ads');
+			break;
+			default:
+				$arrRightCols	=	array('freeReportModule','daily_recap_module','show_art_300x250','show_mostpopular','recommendation','sponsoredlinks','show_MediumRectangle_Art_300x250','twitterWidget','show_markets','financial_product_guide','show_ads');
+			break;
+		}
+	}else{
+		switch($layout){
+			case 'no-photo':
+				$arrRightCols	=	array('freeReportModule','show_related_article','show_MediumRectangle_Art_300x250','show_mostpopular','recommendation','sponsoredlinks','twitterWidget','show_markets','financial_product_guide','show_ads');
+			break;
+			default:
+				$arrRightCols	=	array('freeReportModule','daily_recap_module','show_MediumRectangle_Art_300x250','show_mostpopular','recommendation','sponsoredlinks','twitterWidget','show_markets','financial_product_guide','show_ads');
+			break;
+		}
+	}
+	include("../_rightcolumn.htm"); ?>
+	</div>
+	<div class="header_ads"><? CM8_ShowAd($cm8_ads_Leaderboard_bottom); ?></div>
+	</div><!--Content contaner end here-->
+	</div> <!-- shadow end -->
+	<?php if(strpos($_SERVER['HTTP_REFERER'],"subscription/register/login.htm")){ ?>
+		<script language="javascript">goToComments();</script>
+	<? }
+	
+	if($article->stop_autorefresh == '1') { ?>
+		<script language="javascript">stopRefreshPage();</script>
+	<? } ?>
+	
+	<script>makeLinksNewWindow('article_content');</script>
+	
+	<? $pageName = "Article_Template"; /* Ver critical fix. Please do not change this.*/
+		include("../_footer.htm");
+}	//Article Full Page Cache If close
+?>

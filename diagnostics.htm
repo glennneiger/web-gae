@@ -1,0 +1,8 @@
+<?php
+htmlprint_r(base64_encode(serialize($_SESSION)));
+echo "<br /><br /><br />";
+htmlprint_r(base64_encode(serialize($_COOKIE)));
+echo "<br /><br /><br />";
+echo "Ok, I am ".$_SERVER['SERVER_ADDR'];
+
+?>

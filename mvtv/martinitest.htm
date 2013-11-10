@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>http://qa.minyanville.com/mvtv/martinitest.htm</title>
+</head>
+<script src="<?=$HTPFX.$HTHOST;?>js/yume_static_cb.js" type="text/javascript"></script>
+<script>
+ function yumeAdPlayer(){
+       var yumeCbAdObject1 = new yumeStaticCbAd();
+      yumeCbAdObject1.setPlayerMediumRectangleCompanionBannerDivSource("cb_medrect1_div");yumeCbAdObject1.setPlayerAdDomainUrl("http://shadow01.yumenetworks.com/");yumeCbAdObject1.setPlayerIframeBannerPlaylist("dynamic_banner_iframe.html?domain=88ElOFHxAh");
+ }
+</script>
+<body onload="yumeAdPlayer();">
+<?php
+global $D_R,$HTHOST,$HTPFX,$IMG_SERVER,$STORAGE_SERVER;
+session_start();
+$pageName='audiovideo';
+$pageJS=array("config","ibox","registration","iboxregistration","nav","search");
+$pageCSS=array("ibox","global","layout","minyanville","section","rightColumn","nav");
+include_once("$D_R/lib/_includes.php");
+include_once("$D_R/_header.htm");
+?>
+<div style="width:auto; float:left; padding-top:20px; padding-bottom:10px;">
+<div style="width:auto; float:left;">
+<script type="text/javascript" src="http://objects.tremormedia.com/embed/js/banners.js"></script> 
+		<script type="text/javascript"> 		
+		function displayCompanionBanners(banners) {  		  
+			tmDisplayBanner(banners, "adCompanionBanner", 300, 250);  
+			} 		</script> 	
+		<script type="text/javascript" src="http://www.minyanville.com/mvtv/flowplayer/flowplayer-3.2.0.min.js"></script>
+		<a href="<?=$STORAGE_SERVER?>/mvtv/videos/DF 10-11-10 EXPORT.flv" style="display:block;width:610px;height:450px;clear:both:" id="embed_player"></a> 		<script> 		var acudeoParams = { 							progId: "4cb4278b864c5", 						version: 2, 		videoId: "8891", 		title: "Business+Fix+10-11-10", 		videoDescriptionUrl: "http://www.minyanville.com/audiovideo/8891", 		description:"", 		debug: false 		}; 		prerollPlay=0; 		prerollFinish=0; 		flowplayer("embed_player", 		{src:"http://releases.flowplayer.org/swf/flowplayer-3.2.12.swf",wmode: "transparent"}, 		{ 		clip: { 								onBegin: function(clip) { 					reloadstatus=0; 					if(clip.url.indexOf("flv")>=0 && prerollPlay>=1) 					{ 						if(clip.autoPlay){ 							pageTracker._trackEvent("Videos", "Autoplay", clip.section+ " | " +clip.title); 							 						}else{ 							pageTracker._trackEvent("Videos", "Play", clip.section+ " | " +clip.title); 							 						} 					}else{ 						prerollPlay=prerollPlay+1; 						 					} 				},  								onPause: function(clip) { 				reloadstatus=1; 					if(clip.url.indexOf("flv")>=0 && prerollFinish>=1) 					{ 						pageTracker._trackEvent("Videos", "Pause", clip.section+" | " +clip.title, parseInt(this.getTime())); 						  					}else{ 						prerollFinish=prerollFinish+1; 					} 				},  								onStop: function(clip) { 				reloadstatus=1; 					if(clip.url.indexOf("flv")>=0) 					{ 						pageTracker._trackEvent("Videos", "Stop", clip.section+" | " +clip.title, parseInt(this.getTime())); 						prerollFinish=0; 						 					} 				},  								onFinish: function(clip) { 				reloadstatus=1; 					if(clip.url.indexOf("flv")>=0) 					{ 						pageTracker._trackEvent("Videos", "Finish", clip.section+" | " +clip.title); 						prerollFinish=0; 					} 				} 			}, 						onLoad: function () { 				this.setVolume(15); 			}, 							plugins: {  controls: {
+	// change the default controlbar to air
+	url: "http://releases.flowplayer.org/swf/flowplayer.controls-air-3.2.12.swf"
+	},  acudeo_plugin: {
+    url: 'http://objects.tremormedia.com/embed/swf/acudeoflowplayerplugin32.swf',    acudeoParams: acudeoParams  },
+}				}); 	</script>
+</div>
+
+<!--<div id="adCompanionBanner" style="width:300px;height:250px; float:right; padding-left:10px;"><script language="javascript">CM8ShowAd("MediumRectangle_300x250_300x600")</script></div>-->
+
+   <div id="cb_medrect1_div" style="width:300px;height:250px; float:left; padding-left:10px;">
+      <iframe name="cb_medrect1_frame" id="cb_medrect1_frame" src="http://qa.minyanville.com/mvtv/mvad.htm" frameborder="0" scrolling="no"
+      marginheight="0" marginwidth="0" topmargin="0" leftmargin="0" allowtransparency="true" width="300" height="250"></iframe>
+    </div>
+</div>
+
+
+<? include_once("$D_R/_footer.htm"); ?>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

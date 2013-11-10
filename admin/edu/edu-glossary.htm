@@ -1,0 +1,69 @@
+<?
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+include("$ADMIN_PATH/_header.htm");
+include($D_R."/lib/config/_edu_config.php");
+include($D_R."/lib/edu/_edu_data_lib.php");
+
+$objEduData = new eduData('edu_alerts');
+$page="edu-library";
+$handler="glossary_mod.htm";
+
+/*if(!$AD->getPerm("glossary_edit")){
+	admin_error();
+}*/
+
+$eduDictlist = $objEduData->getEduGlossary();
+$id=$_GET['id'];
+$msg = $_GET['error'];
+if(!empty($id)){
+	$pagedata = $objEduData->getEduGlossaryById($id);
+}
+if($pagedata['id']!=""){
+	$id=$pagedata['id'];
+}
+
+?>
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/edu-admin.css">
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/edu.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+<br><br>
+
+<div class=adminheader>Education Center - Glossary</div>
+<BR>
+<div class="eduErrorMsg" id="eduErrorMsg"><?=$msg?></div>
+
+<form method="get" action="<?=$PHP_SELF?>">
+<div class="eduGlossary">
+	<p class="eduGlossaryLabel">Select a dictionary term to edit</p>
+	<select name="id" onchange="this.form.submit()">
+		<option value="">--New Dictionary Term--</option>
+		<?php foreach($eduDictlist as $key=>$val){ ?>
+			<option value="<?=$val['id']?>"><?=$val['name']?></option>
+		<?php } ?>
+	</select>
+</div>
+</form>
+
+<div class="eduCreate">
+	<form method="post" action="<?=$handler?>" name="frmEduGlossay" id="frmEduGlossay">
+		<? input_hidden("id", $id);?>
+		<? input_hidden("actionType"); ?>
+		<div class="eduGlossary">
+			<p class="eduGlossaryLabel">Dictionary Term :</p>
+			<input type="text" name="glossary[name]" id="glossaryName" value="<?=$pagedata[name];?>" />
+		</div>
+		<div class="eduMoreOptions">
+			<p class="alertCreateLabel">Definition:</p><br/><br/>
+			<textarea id="gloassaryDef" id="gloassaryDef" name="glossary[value]"><?=$pagedata[value];?></textarea>
+			<script language="javascript">showEditor('gloassaryDef',500,250);</script>
+		</div>
+		<div class="eduGlossaryBttn">
+			<img src="<?=$IMG_SERVER?>/images/education/add.jpg" style="cursor:pointer; border:none;" onclick="saveEduGlossary('save');" />
+			<img src="<?=$IMG_SERVER?>/images/education/delete.jpg" style="cursor:pointer; border:none;" onclick="saveEduGlossary('delete');" />
+		</div>
+</form>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

@@ -1,0 +1,123 @@
+<?
+if(!$page)$page="townhall";
+$handler="./characters_mod.htm";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("chars_edit")){
+	admin_error();
+}
+
+if(!$id)$id=exec_query("select id from characters",1,"id");
+$pagedata=array();
+foreach(get_characters(0) as $row){
+	if($row[id]==$id){
+		$pagedata=$row;
+	}
+	$list[$row[id]]=$row[name];
+}
+
+?>
+<br>
+<div class=adminheader>
+	Character Bios
+</div>
+<table width=600 align=center>
+<?if($error){?><TR><TD colspan=100 class=error><?=strip($error)?></TD></TR><?}?>
+<TR>
+<form method=get action="<?=$PHP_SELF?>">
+<?input_hidden("page")?>
+<TD align=center colspan=2>Select a character to edit<br>
+	<select name="id" onchange="this.form.submit()">
+	<?foreach($list as $rowid=>$name){
+		$sel=($rowid==$id?" selected":"");
+	?><option value="<?=$rowid?>"<?=$sel?>><?=strip($name)?>
+	<?}?>
+	</select>
+</TD>
+</form>
+
+</TR>
+<form method="post" action="<?=$handler?>" enctype="multipart/form-data">
+<?input_hidden("id")?>
+<?input_hidden("page")?>
+<TR>
+<TD align=right><label for="character[name]"><b>Character Name</b></label>: </TD>
+<TD><?input_text("character[name]",$pagedata[name],"","","style=width:100%")?></TD>
+</TR>
+<TR>
+<TD align=right><label for="character[email]"><b>Character Email</b></label>: </TD>
+<TD><?input_text("character[email]",$pagedata[email],"","","style=width:100%")?></TD>
+</TR>
+<TR>
+<TD align=right><b>Show on Char. Bios Page</b>: </TD>
+<TD><?input_radio("character[display]",1,$pagedata[display])?><label for="character[display]1">Yes</label>	&nbsp;
+	<?input_radio("character[display]",0,$pagedata[display])?><label for="character[display]0">No</label>
+	 </TD>
+</TR>
+<TR valign=top>
+<TD align=right><b>Bio</b>:</TD>
+<TD><?rich_editor("character[bio]",strip($pagedata[bio]),"100%",200,array(img_dir=>"/assets/characters"))?></TD>
+</TR>
+<TR>
+<TD>&nbsp;</TD>
+<TD ><hr width=100% size=1 color=black></TD>
+</TR>
+<?if($id){?>
+<TR valign=top>
+<TD align=right><b>Graphics</b></TD>
+<TD>	<div class=border>
+		<table width=100%>
+		<TR bgcolor=#efefef>
+		<TD nowrap>Bio Image:</TD>
+		<TD nowrap><div class=border><?if($pagedata[bio_asset]){?>
+				<img src="<?=$pagedata[bio_asset]?>" border=0 align=absmiddle> &nbsp; 
+				<input type="checkbox" name="rmbioimg" value="<?=$pagedata[bio_asset]?>">Remove This
+				<?input_hidden("character[bio_asset]",$pagedata[bio_asset])?>
+			<?}else{?>
+				<input type="file" name="bioimg">
+			<?}?>
+			</div>
+			</TD>
+		</TR>
+		</table>
+		</div>
+		
+		<br>
+		<span class=border>
+		<table width=100%>
+		<TR bgcolor=#eeeeee>
+		<TD>Image Name</TD>
+		<TD>Image</TD>
+		<TD width=1% nowrap>Remove Image</TD>
+		</TR>
+		<?foreach(get_character_images($id) as $i=>$row){?>
+			<?input_hidden("char_imgs[character_id]",$id)?>
+			<TR valign=top bgcolor=#eeeeee align=center>
+			<TD><?input_text("char_imgs[${row[id]}][name]",$row[name])?></TD>
+			<TD><span class=border><img src="<?=$row[asset]?>" border=0 alt="<?=$row[asset]?>"></span> 				
+				<?input_hidden("char_imgs[${row[id]}][asset]",$row[asset])?>
+			</TD>
+			<TD align=center valign=middle><input type="checkbox" name="del_img[<?=$row[id]?>]"></TD>
+			</TR>
+			<TR><TD colspan=3></TD></TR>
+		<?}?>
+		<TR>
+		<TD><?input_text("new_img[name]")?></TD>
+		<TD><input type="file" name="newimg"></TD>
+		</TR>
+		</table>
+		</span>
+</TD>
+</TR>
+<?}?>
+<TR>
+<TD>&nbsp;</TD>
+<TD ><hr width=100% size=1 color=black></TD>
+</TR>
+<TR>
+<TD></TD>
+<TD align=center><input type="submit" value="save"> <input type="button" value="cancel" onclick="location.replace(location.href)"> </TD>
+</TR>
+</table>
+</form>
+
+<?include("$ADMIN_PATH/_footer.htm")?>

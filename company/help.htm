@@ -1,0 +1,34 @@
+<?php
+/*$SECTION="company";
+$HEADER="/assets/Companybanner.jpg";
+$title="Help";*/
+$zoneIDSky = $SEC_TO_ZONE['helptop'];
+$zoneIDFooter = $SEC_TO_ZONE['helpfooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['helpfooter2'];
+/* Operative Configuration *****/
+$pageName ='help';
+$pageJS=array("config","registration","iboxregistration","nav","search");
+$pageCSS=array("global","rightColumn","nav","minyanville","fontStylesheet");
+$zone_name= $pageName;
+$tile728x90=1;
+$tile160x600top=2;
+$tile160x600bottom=3;
+$tile125x125=4;
+/* End Operative Configuration *****/
+include("$D_R/_header.htm");
+?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<div id="article-left">
+    <div class="footer_common_main">
+	<div class="help-bar-reg-new"><h3 class="new-head">Minyanville Site Help</h3></div>
+	<?= renderPageModules($pageDetail['id'],'HELP') ?>
+	</div>
+</div>
+<?php
+$arrRightCols	=	array('show_300x250','show_mostpopular','email_alert','show_rss_emailalert');
+include("../_rightcolumn.htm"); ?>
+</div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<? include("../_footer.htm"); ?>

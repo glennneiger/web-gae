@@ -1,0 +1,38 @@
+<?php
+session_start();
+global $D_R,$HTPFX,$HTHOST;
+$pageName = "newsletter_offers";
+$pageJS=array("config","registration","jquery","nav","redesign",'dailyfeed');
+$pageCSS=array("global","layout","rightColumn","nav","minyanville","newsletter");
+include_once($D_R."/_header.htm");
+if($_GET['dr']=="1")
+{
+	$dr="?dr=1";
+}
+if(!empty($_GET['email']))
+{
+	$email=$_GET['email'];
+}
+else if(!empty($_SESSION[EMAIL])){
+	$email=$_SESSION[EMAIL];
+}
+
+$bounceBackUrl = $HTPFX.$HTHOST."/newsletter_success.htm".$dr;
+$coregUrl = "http://coreg.investingchannel.com/AdServe.aspx?pid=14&pubid=5&first_name=".$_SESSION[nameFirst]."&last_name=".$_SESSION[nameLast]."&address=".urlencode($_SESSION['address'])."&city=".$_SESSION[city]."&state=".$_SESSION[state]."&zip=".$_SESSION[zip]."&email=".$_SESSION[email]."&phone_number=".$_SESSION[phone]."&redirect_url=".$bounceBackUrl;
+
+?>
+<div class="shadow">
+    <div id="content-container">
+	    <div id="article-left">
+	   		<div class="co_reg_header">
+	   			<div class="coreg_head" >Thanks! You've successfully been added to our mailing list. </div>
+	   		<br>
+	   		<div class="coreg_text" >As a valued member of Minyanville.com, you have the opportunity to receive exclusive FREE offers from our partners listed below. Check as many offers as you'd like, then click Continue. </div>
+	   		</div>
+	    	<div class="co_reg">
+				<script type='text/javascript' src='<?=$coregUrl?>'></script>
+			</div>
+		</div>
+    </div><!--Content contaner end here-->
+</div> <!-- shadow end -->
+<?include("$D_R/_footer.htm");?>

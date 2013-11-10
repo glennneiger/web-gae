@@ -1,0 +1,55 @@
+<?php
+global $D_R,$HTPFX,$HTHOST,$HTPFXSSL;
+$emlTitle=$_REQUEST['title'];
+$emlBody=$_REQUEST['body'];
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>The Stock Playbook Alert</title>
+<style type="text/css">a, a:link, a:visited, a:active {text-decoration: none} a:hover {text-decoration: underline}a:link {color: #330066;}
+</style></head>
+<body>
+<div style="width: 600px; margin: 0 auto; border:1px solid rgb(185,185,185); padding:14px 14px 14px 14px;">
+<div align="center"><img src="<?=$IMG_SERVER;?>/images/tsp/stockplaybook_hdr.jpg" alt="The Stock Palybook" /></div>
+<div style="margin-bottom:8px; margin-top:8px; width:600px;"><img src="<?=$IMG_SERVER;?>/images/tsp/hLine_01.gif" alt="line"  width="600" height="1"/></div>
+<table align="center"  width="600" bgcolor="#FFFFFF" style="border:1px rgb(0,0,0);">
+<tbody>
+<tr style="font-size:11px; font-family:Verdana, Arial, Helvetica, sans-serif; color:#330066;">
+<td width="110" style="text-align:center;"><a href="<?=$HTPFX.$HTHOST;?>">Minyanville.com</a>&nbsp;&nbsp;</td>
+
+<td width="183" style="text-align:center"><a href="<?=$HTPFX.$HTHOST;?>/the-stock-playbook/">The Stock Playbook Home</a>&nbsp;&nbsp;</td>
+<td width="165" style="text-align:center"><a href="<?=$HTPFXSSL.$HTHOST;?>/subscription/">Subscriptions - Free Trial</a>&nbsp;&nbsp;</td>
+<td width="142" style="text-align:center"><a href="<?=$HTPFXSSL.$HTHOST;?>/subscription/register/controlPanel.htm">Free Email Newsletters</a></td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top:8px; width:600px;"><img src="<?=$IMG_SERVER;?>/images/tsp/hLine_01.gif" alt="line"  width="600" height="1"/></div>
+<div style="width: 600px;">
+<p style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:24px; color:rgb(29,18,97); text-align:left; padding:9px 9px 9px 9px; margin:9px 9px 9px 9px;"><b><a href="<?=$HTPFX.$HTHOST;?>/the-stock-playbook/"><?=$emlTitle;?></a></b></p>
+<p style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; color:rgb(35,35,35); text-align:left; padding:9px 9px 9px 9px; margin:9px 9px 9px 9px;"><?=$emlBody;?>
+<br />
+<a href="<?=$HTPFX.$HTHOST;?>/the-stock-playbook/">Click here to view tonight's videos</a>
+</p>
+<div style="margin-top:8px; width:600px;"><img src="<?=$IMG_SERVER;?>/images/tsp/hLine_01.gif" alt="line"  width="600" height="1"/></div>
+<div style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; color:rgb(35,35,35); text-align:center; padding:9px 9px 9px 9px; margin:9px 9px 9px 9px;">
+<table cellspaceing="0" cellpadding="0" width="100%">
+<tr>
+    <td valign="top" align="center" colspan="5" height="24"><font face="Arial" size="2" color="#333333">Go
+      to the site:</font><font face="Verdana, Arial, Helvetica, sans-serif" color="#000066">
+      </font><a href="<?=$HTNOSSLDOMAIN?>"><font color="#000066" face="Verdana, Arial, Helvetica, sans-serif" ><b>Minyanville.com</b></font></a></td>
+</tr>
+<tr>
+    <td valign="top" align="center" colspan="5"><a href="<?=$HTNOSSLDOMAIN?>/company/help.htm"><font face="Arial" size="2" color="#24478A">Help</font></a><font face="Arial" size="2">
+      | <a href="<?=$HTNOSSLDOMAIN?>/company/privacy.htm"><font color="#24478A">Privacy Policy</font></a>
+      | <a href="<?=$HTNOSSLDOMAIN?>/company/substerms.htm"><font color="#24478A">Subscription Agreement and Terms of Use </font></a>
+     | <a href="<?=$HTNOSSLDOMAIN?>/company/disclaimers.htm"><font color="#24478A">Disclaimers</font></a></font>
+</td>
+  </tr>
+</table>
+</div>
+</div>
+</div>
+</body>
+</html>

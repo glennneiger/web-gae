@@ -1,0 +1,94 @@
+<?
+global $ADMIN_PATH;
+$viewapproved=$_POST['viewapproved'];
+$approve=$_POST['approve'];
+$delarticle=$_POST['delarticle'];
+$ARTICLE_TABLE="etf_articles";
+include_once("$D_R/lib/_content_data_lib.php");
+include_once("$D_R/lib/etf/_etf_lib.php");
+include_once('../../lib/layout_functions.php');
+include_once("$ADMIN_PATH/_header.htm");
+$sendemail=$AD->getPerm("etf_approve");
+$bounceback="./approve.htm".qsa(array(viewapproved=>$viewapproved,error=>"-"));
+$objremove= new Content();
+if(!count($approve) && !count($delarticle) ){
+	location($bounceback.urlencode("No changes were made"));
+	exit;
+}
+
+if(is_array($delarticle)){
+	$keys = implode(",",array_keys($delarticle));
+	$qry="DELETE FROM $ARTICLE_TABLE WHERE find_in_set(id,'$keys') LIMIT ".count($delarticle);
+	exec_query_nores($qry);
+	/*remove deleted article from object search*/
+	$objremove->removeUnapprovedItems($keys,$ARTICLE_TABLE);
+}
+
+if(is_array($approve)){
+	$keys = implode(",",array_keys($approve));
+	$qry = "UPDATE $ARTICLE_TABLE SET approved='".($viewapproved?0:1)."'";
+	if(!$viewapproved)
+		$qry.=", date='".mysqlNow()."'";
+	$qry.="WHERE find_in_set(id,'$keys')
+		   AND approved='".($viewapproved?1:0)."'
+		  LIMIT ".count($approve);
+	exec_query_nores($qry);
+	if($viewapproved=='1'){
+			/*remove unapprove article from object search*/
+			$objremove->removeUnapprovedItems($keys,$ARTICLE_TABLE);
+	}
+
+
+//final step in publishing process, flatten out article and marc as sent
+	if(!$viewapproved){//don't want to resend articles
+		foreach(array_keys($approve) as $article_id){
+			$qry="SELECT id FROM $ARTICLE_TABLE WHERE id='$article_id' AND sent='0'";
+			if(num_rows($qry)){//article hasn't been spammed yet
+				update_query($ARTICLE_TABLE,array(sent=>1),array(id=>$article_id));
+				wgetArticle($article_id);
+			}
+		}
+	}
+
+	// 31 Jul 2007
+	if(!$viewapproved && $sendemail==1){
+
+/*Send email to subscribers using via*/
+            $objetf= new Etftrader();
+			global $ETF_FROM, $ETF_ALERT_TMPL;
+			$from= $ETF_FROM;
+			$subject=htmlentities($objetf->get_article_title_etf($keys),ENT_QUOTES);
+			$msgfile="/tmp/spam_".mrand().".eml";
+			$msghtmlfile="$D_R/assets/data/".basename($msgfile);
+			$msgurl=$ETF_ALERT_TMPL.qsa(array(aid=>$keys,prof_id=>$_POST['prof_id']));
+			$mailbody=inc_web($msgurl);
+			include_once("$D_R/lib/_user_controller_lib.php");
+		    $userObj=new user();
+			$result = $userObj->emailDetails($from,$subject,utf8_encode($mailbody),'ETF');
+		$message="The articles were changed and an email was sent to subscribers.";
+
+	}
+	else{
+		if($sendemail!=1)
+			$message="Articles were changed.";
+	}
+}
+
+
+//Change error message for deleted articles.
+if (count($delarticle))
+{
+location($bounceback.urlencode("The articles were deleted"));
+exit;
+}
+if(!$viewapproved)
+{
+location($bounceback.urlencode($message));
+}
+else
+{
+location($bounceback.urlencode("The articles were changed and are now not live on the site"));
+
+}
+exit;
+?>

@@ -1,0 +1,360 @@
+<?
+globval $IMG_SERVER,$D_R;
+include_once("$D_R/lib/_news.php");
+include("$D_R/_header.htm");
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/layout_functions.php");
+$DATE_STR="D M jS, Y";
+
+//include_once("$D_R/_authenticate.htm");
+$advanced=1;
+//$dbname="minyanville_stage";
+
+$SECTION="library";
+$PAGE="search";
+$HEADER="/assets/Searchbanner.jpg";
+
+$title="Minyanville : Library : Search";
+$headgfk=$advanced?"/assets/searchAdvSearch.gif":"/assets/keywordsearch.gif";
+
+$searchparams=array(
+			"all" => "Search Everywhere",
+			"a.title"=>"Article Titles",
+			"a.body" =>"Article Bodies",
+			"a.blurb" =>"Article Summaries",
+			"a.character_text"=>"MV Critter Talk Bubble"
+		);
+
+
+if ($_GET['search'] == "Article") {
+		//prepare for articles search
+		
+		$p=intval($p);
+		$offset=($p*$SEARCH_PAGESIZE);
+		if(($p||$category_id||$conrib_id) && !isset($q))$q="";//set $q so search results show
+		$q=lc($q);
+		$qry=$SEARCH_QRY." AND a.approved='1' and a.is_live='1'";
+		
+		
+		
+		if(!$qparams){
+			$qparams=array("all");
+		}
+		if($q){
+			if(!is_array($qparams))$qparams=array();
+			$tmp_qparams=array_unique($qparams);//copy so form maintains state
+			$sqlparams=array();
+			//user selected "all" or no search parameters
+			if(in_array("all",$tmp_qparams) || !count($tmp_qparams)){
+				$tmp_qparams=array_keys($searchparams);
+			}
+			foreach($tmp_qparams as $field){
+				if($field=="all")continue;
+				$sqlparams[]="instr(LOWER($field),'$q')\n";
+			}
+			if(count($sqlparams)){
+				$sqlparams=" AND (\n".implode(" OR ",$sqlparams)."\n)";
+			}
+		
+			$qry.=$sqlparams;
+			$getresults=1;
+		}
+		if($mo){
+			$qry.=" AND(  month(a.date)='$mo' ) \n";
+			$getresults=1;
+		}
+		if($day){
+			$qry.=" AND( dayofmonth(a.date)='$day'  )\n";
+			$getresults=1;
+		}
+		if($year){
+			$qry.=" AND(  year(a.date)='$year' )\n";
+			$getresults=1;
+		}
+		if($contrib_id){
+			$qry.="  AND( a.contrib_id='$contrib_id' ) \n";
+			$getresults=1;
+		}
+		if($category_id){
+			$qry.=" AND find_in_set('$category_id',a.category_ids) \n";
+		}
+		if(isset($_GET[q]) || isset($_POST[q]) ){
+			$getresults=1;
+		}
+		if($getresults){
+			$qry.=" GROUP BY a.id ";
+			$resnum=num_rows($qry);
+			$numpages=ceil($resnum/$SEARCH_PAGESIZE);
+			$qry.=" ORDER BY a.date DESC LIMIT $offset,$SEARCH_PAGESIZE";
+			$pagelinks=array();
+			if($numpages>1){
+				foreach(range(0,$numpages-1) as $i){
+					$here=($i==$p?1:0);
+					$pagelinks[]=href($PHP_SELF.qsa(array(p=>$i)),bold(($i+1),$here),0,$here  );
+				}
+				$pagelinks=implode(" | ",$pagelinks);
+			}
+		}
+} elseif ($_GET['search'] == "Banter") {
+	
+	//prepare for banter search
+		$p=intval($p);
+		$SEARCH_PAGESIZE=50;
+		$offset=($p*$SEARCH_PAGESIZE);
+		if(($p||$category_id||$conrib_id) && !isset($q))$q="";//set $q so search results show
+		$q=lc($q);
+		$qry="SELECT *,date_format(date,'%r') mdate,UNIX_TIMESTAMP(date)udate,
+			  concat('http://$HTTP_HOST/gazette/buzzbanter/?date=',date_format(date,'%m/%d/%Y'))url
+			   FROM buzzbanter 
+			   WHERE is_live='1'
+			   AND show_on_web='1' ";
+		
+		
+		if($q){
+			$qry.=" AND instr(LOWER(body),'".lc($q)."')\n";
+			$getresults=1;
+		}
+		if($mo){
+			$qry.=" AND(  month(date)='$mo' ) \n";
+			$getresults=1;
+		}
+		if($day){
+			$qry.=" AND( dayofmonth(date)='$day'  )\n";
+			$getresults=1;
+		}
+		if($year){
+			$qry.=" AND(  year(date)='$year' )\n";
+			$getresults=1;
+		}
+		if($author){
+			$qry.="  AND( LOWER(author)='".lc($author)."' ) \n";
+			$getresults=1;
+		}
+		
+		
+		$d="DESC";
+		if(!$getresults){
+			$getresults=1;
+			$qry.=" GROUP BY DATE_FORMAT(date,'%m/%d/%y')";
+			$datesonly=1;
+		}
+		
+		
+		$resnum=num_rows($qry);
+		$numpages=ceil($resnum/$SEARCH_PAGESIZE);
+		
+		$qry.=" ORDER BY date $d LIMIT $offset,$SEARCH_PAGESIZE";
+		$pagelinks=array();
+		if($numpages>1){
+			foreach(range(0,$numpages-1) as $i){
+				$here=($i==$p?1:0);
+				$pagelinks[]=href($PHP_SELF.qsa(array(p=>$i)),bold(($i+1),$here),0,$here  );
+			}
+			$pagelinks=implode(" | ",$pagelinks);
+		}
+		
+		
+		
+
+}
+
+
+?>
+<script>
+function submitForm(){
+	frm=findObj("myform");
+	frm.submit();
+}
+</script>
+
+<table id="home-news" cellpadding="0" cellspacing="0" width="100%"><tr>
+		<td width="13"><img src="<?=$IMG_SERVER?>/images/lc.gif" width="13" alt="" /></td>
+		<td class="top">&nbsp;</td>
+		<td width="13"><img src="<?=$IMG_SERVER?>/images/cr.gif" width="13" alt="" /></td>
+		</tr>
+		<tr>
+		<td class="left-border">&nbsp;</td>
+		<td id="home-news-main">
+		  <div id="home-news-main">
+		    <div id="home-news-content">
+			  
+			  <h1>SEARCH</h1>
+			  <p class="simple-separator">&nbsp;</p>
+			  <h3><?= displayDate() ?></h3>
+			  <p class="double-separator">&nbsp;</p><br />
+
+	<div class=padding>
+		<h2>Article Search</h2>
+		<table cellspacing=5>
+			<form method="get" action="<?= $PHP_SELF; ?>" name="myform">
+			<input type="hidden" name="search" value="Article" />
+			<?input_hidden("advanced")?>
+			<?if(!$advanced){?>
+		
+			<TR valign=middle>
+			<TD>Keyword</TD>
+			<TD><?input_text("q")?></TD>
+			<td><input type="submit" value="Search"></td>
+			<TD><?mOver("Searchup.gif","searchove.gif","javascript:submitForm()")?></TD>
+			<TD>&nbsp;  &nbsp;&nbsp; <a class=small href="<?=$PHP_SELF.qsa(array(advanced=>1))?>">Advanced Search</a></TD>
+			</TR>
+		<?}else{?>
+			<TR valign=top>
+			<TD><span class="number">1.</span> Keyword:<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and/or</TD>
+			<TD><?input_text("q")?></TD>
+			</TR>
+			<TR valign=top>
+			<TD rowspan=2><span class="number">2.</span> Date:</TD>
+			<TD><?month_options("mo")?>
+			&nbsp;&nbsp;
+			<?day_options("day")?>
+			&nbsp;&nbsp;
+			<?year_options2("year",$year,"",2002,date("Y"))?>	
+			</TD>
+			</TR>
+			<TR>
+			<TD><select name="contrib_id">
+				<option value="">--All Authors--</option>
+				<?selectHashArr(get_active_contributors(),"id","name",$contrib_id)?>
+			</select>	
+			&nbsp; 
+			<select name="category_id">
+			<option value="">--All Sections--</option>
+			<?selectHashArr(get_all_categories(),"id","title",$category_id)?>
+			</select>	
+			</TD>
+			</TR>
+			<TR valign=top>
+			<TD><span class="number">3. </span> Params.</TD>
+			<TD><select name="qparams[]" multiple size=3>
+				<?selectHash($searchparams,$qparams)?>
+			</select></TD>
+			</TR>
+			<TR>
+			<TD><div class="number">4.</div></TD>
+			<TD>
+			<input type="submit" value="Search Articles" class="searchButton">
+			<!--<?mOver("Searchup.gif","searchove.gif","javascript:submitForm()")?>--></TD>
+			</TR>
+		<?}?>
+		</form>
+		
+		<? 
+		// BUZZ AND BANTER SEARCH IF USER IS LOGGED IN
+		if ($USER->isAuthed) {  
+		
+		?>
+		<tr><td colspan="4" align="left"><br><h2 style="align:left">Buzz & Banter Search</h2></td></tr>
+		<form method="get" action="<?=$PHP_SELF?>" name="myform">
+			<input type="hidden" name="search" value="Banter" />
+			<?input_hidden("adv")?>
+		
+		<?if(!$advanced){?>
+			<TR valign=middle>'
+			<TD>Keyword</TD>
+			<TD><?input_text("q")?></TD>
+			<TD><?mOver("Searchup.gif","searchove.gif","javascript:submitForm()")?></TD>
+			<TD>&nbsp;  &nbsp;&nbsp; <a class=small href="<?=$PHP_SELF.qsa(array(advanced=>1))?>">Advanced Search</a></TD>
+			</TR>
+		<?}else{?>
+			<TR valign=top>
+			<TD width=1% nowrap><span class="number">1.</span> Keyword:<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and/or</TD>
+			<TD width=99%><?input_text("q")?></TD>
+			</TR>
+			<TR valign=top>
+			<TD rowspan=2><span class="number">2.</span> Date:</TD>
+			<TD><?month_options("mo")?>
+			&nbsp;&nbsp;
+			<?day_options("day")?>
+			&nbsp;&nbsp;
+			<?year_options2("year",$year,"",2004,date("Y"))?>	
+			</TD>
+			</TR>
+			<TR>
+			<TD><select name="author">
+				<option value="">--All Authors--</option>
+				<?selectHashArr(get_active_contributors(),"name","name",$author)?>
+			</select>	
+	
+			</TD>
+			</TR>
+
+			<TR>
+			<TD><div class="number">3.</div></TD>
+			<TD>
+			<input type="submit" value="Search Buzz & Banter" class="searchButton">
+			<!-- <?mOver("Searchup.gif","searchove.gif","javascript:submitForm()")?> --></TD>
+			</TR>
+		<?}?>
+		</form>
+		<? } // END OF LOGGED USER CHECK. END OF BANTER SEARCH FORM ?>
+		</table>
+	</div>
+	
+	
+			<?if($getresults){?>
+				<h2 class="bar"><?= $_GET['search']; ?> Results</h2>
+			<?}else{?>
+			 	&nbsp;
+			<?}?>
+	<?if($getresults){?>
+	<div class="padding">
+		<?if(!$resnum){?>
+		Couldn't find anything based on your search.	
+		<?}else{?>
+			<?
+			foreach(exec_query($qry) as $row){
+			
+				if ($_GET['search'] == "Article") {
+			?>
+				<div class=searchtitle><a href="../articles/index.php?a=<?=$row['id']; ?>"><?=$row[title]?></a></div>
+				<div class=searchdate><?=date($DATE_STR,$row[udate])?></div>
+				<div class=searchauthor>By <?=ucwords($row[name])?><br>
+					in <i><?=$row[category_title]?></i></div>
+				<div class=searchblurb><?=strip_tags($row[blurb])?></div>
+				<br><br>
+			
+			<? } elseif (($_GET['search'] == "Banter") && ($USER->isAuthed)) {  ?>
+				
+				<div class=searchdate><?=href($row[url],date($DATE_STR,$row[udate]))?></div>
+				
+				<?if(!$datesonly){?>
+					<div class=searchauthor>By <?=ucwords($row[author])?></div>
+					<div class=searchblurb><?=strip_tags($row[body])?></div>
+					<div class=searchtitle><a href="<?=$row[url]?>#banter<?=$row[id]?>">view...</a></div>
+				
+					<br><br>
+				<?}
+				
+				}
+				
+			}
+		}
+		?>
+		
+		</div>
+		<?if($resnum>5){?>
+		<div class="contact"><div class=slimpadding><div class=topbutton><?mOver("topup.gif","topover.gif","#")?></div></div></div>
+		<?}?>
+		<?if($numpages>1){?>
+		<br>
+		<div class="searchpages"><?=$pagelinks?></div>
+		
+		<? }
+	
+	}?>
+	
+
+</div>
+		  </div> 
+		</td>
+		<td class="right-border">&nbsp;</td></tr>
+		<tr>
+		<td><img src="<?=$IMG_SERVER?>/images/lr_corner.gif" width="13" alt="" /></td>
+		<td class="bottom">&nbsp;</td>
+		<td><img src="<?=$IMG_SERVER?>/images/rb_corner.gif" width="13" alt="" /></td>
+		</table>
+		
+<?include("$D_R/_footer.htm");?>

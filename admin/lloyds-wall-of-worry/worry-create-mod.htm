@@ -1,0 +1,54 @@
+<?
+global $D_R,$HTPFX,$HTHOST,$cloudStorageTool,$IMG_SERVER;
+include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
+
+$bounceback = $HTPFX.$HTHOST."/admin/lloyds-wall-of-worry/worry-create.htm";
+
+$objWorryData = new worryData();
+$worryImgPath="/assets/lloyds-wall-of-worry/";
+$worryId=$_POST['worryid'];
+if(!empty($_POST['worryTitle'])){
+	$data['title'] = $_POST['worryTitle'];
+
+	if($worryId ==''){
+	  	$qry = "SELECT id FROM upload_worry WHERE title = '".$data['title']."'";
+		$result = exec_query($qry,1);
+
+		if(!empty($result)){
+			$strError = "Worry Title Already Exists.";
+		}else{
+
+			$data['worryImgName'] = rand().'-'.str_replace(" ","_",$_FILES['worryImg']['name']);
+			$data['archiveImgName'] = rand().'-'.str_replace(" ","_",$_FILES['archiveImg']['name']);
+			move_uploaded_file($_FILES["worryImg"]["tmp_name"],"gs://mvassets/assets/lloyds-wall-of-worry/".$data['worryImgName']);
+			move_uploaded_file($_FILES["archiveImg"]["tmp_name"], "gs://mvassets/assets/lloyds-wall-of-worry/".$data['archiveImgName']);
+			if($worryId){
+				$data['worryid']=$worryId;
+			}
+			$id = $objWorryData->prepareWorryData($data);
+			if($id>0){
+				$strError = "Worry has been created.";
+			}
+			$worry_id = $id;
+		}
+	}else{
+		$data['worryImgName'] = rand().'-'.str_replace(" ","_",$_FILES['worryImg']['name']);
+		$data['archiveImgName'] = rand().'-'.str_replace(" ","_",$_FILES['archiveImg']['name']);
+	
+		move_uploaded_file($_FILES["worryImg"]["tmp_name"], "gs://mvassets/assets/lloyds-wall-of-worry/".$data['worryImgName']);
+		move_uploaded_file($_FILES["archiveImg"]["tmp_name"], "gs://mvassets/assets/lloyds-wall-of-worry/".$data['archiveImgName']);
+        if($worryId){
+        	$data['worryid']=$worryId;
+        }
+ 
+		$id = $objWorryData->prepareWorryData($data);
+		if($id>0){
+			$strError = "Worry has been updated.";
+		}
+		$worry_id = $worryId;
+	}
+}
+
+header( "HTTP/1.1 301 Moved Permanently" );
+header( "Location: ".$bounceback."?error=".$strError."&worryid=".$worry_id);
+exit;

@@ -1,0 +1,510 @@
+
+AddType application/x-httpd-php .htm .html .php .txt
+
+DirectoryIndex index.htm index.php
+Options -Indexes
+
+ErrorDocument 400 /errors/?code=400
+ErrorDocument 401 /errors/?code=401
+ErrorDocument 402 /errors/?code=402
+ErrorDocument 403 /errors/?code=403
+ErrorDocument 404 /errors/?code=404
+ErrorDocument 500 /errors/?code=500
+ErrorDocument 501 /errors/?code=501
+ErrorDocument 502 /errors/?code=502
+ErrorDocument 503 /errors/?code=503
+
+php_value auto_prepend_file "C:/minyanville.com/dev/lib/_includes.php"
+php_flag register_globals on
+php_flag display_errors on
+
+Header always append X-Frame-Options SAMEORIGIN
+
+Redirect permanent /etf/index.htm https://www.mptrader.com/reg/mvp
+Redirect permanent /dayentries.asp http://www.minyanville.com/gazette/journal/
+Redirect permanent /todd.asp http://www.minyanville.com/gazette/journal/
+Redirect permanent /todd.asp http://www.minyanville.com/gazette/newsviews/
+Redirect permanent /ourtown http://www.minyanville.com/townhall/
+Redirect permanent /minyanwood http://www.minyanville.com/reporter/
+Redirect permanent /business http://www.minyanville.com/business-news/
+RedirectMatch permanent /customproducts(.*) http://www.minyanville.com/subscription/
+RedirectMatch permanent /news_views/? http://www.minyanville.com/business-news/
+Redirect permanent /community/index.htm http://www.minyanville.com/community/home.htm
+RedirectMatch permanent /community/register/(.*)  http://www.minyanville.com/community/home.htm
+RedirectMatch permanent /community/exchange_register/index.htm  http://www.minyanville.com/community/home.htm
+
+#Redirection for all old section/subsection pages
+RedirectMatch permanent /section/businessmarket/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /section/businessmarket/tradingideas.htm http://www.minyanville.com/business-news/
+RedirectMatch permanent /section/lifemoney/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /subsection/stockideas/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /subsection/options/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /subsection/economy/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /subsection/advancetrading/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /subsection/fivethings/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /subsection/randomthoughts/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /subsection/twowaystoplay/? http://www.minyanville.com/business-news/
+RedirectMatch permanent /subsection/features/? http://www.minyanville.com/special-features/
+RedirectMatch permanent /subsection/mindyourbusiness/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /subsection/fiscalhygiene/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /subsection/whyshouldicare/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /subsection/economicsnapshot/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /subsection/householdceo/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /subsection/umv/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /subsection/teachyourkids/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /section/familyfinance/? http://www.minyanville.com/trading-and-investing/
+RedirectMatch permanent /economy/? http://www.minyanville.com/business-news/the-economy/
+
+RedirectMatch permanent /audiovideo/lightspeed/? http://www.minyanville.com/audiovideo/
+RedirectMatch permanent /articles/(.*)index/ap/(.*) http://www.minyanville.com/articles/articlelisting.htm
+RedirectMatch permanent ^/qp /active-investor/
+RedirectMatch permanent ^/blog http://blogs.minyanville.com
+RedirectMatch permanent ^/subscription/softtrials/optionsmith(.*) http://www.minyanville.com/optionsmith/
+RedirectMatch permanent ^/subscription/softtrials/buzz/index.htm http://www.minyanville.com/subscription/softtrials/buzz/sembuzz.htm?pcode=sembuzz
+RedirectMatch permanent ^/subscription/softtrials/buzz/newyear2012.htm http://www.minyanville.com/buzzbanter/
+RedirectMatch permanent ^/subscription/softtrials/cooper(.*) http://www.minyanville.com/cooper/
+RedirectMatch permanent ^/subscription/softtrials/flexfolio(.*) http://www.minyanville.com/active-investor/
+RedirectMatch permanent ^/subscription/softtrials/jacklavery(.*) http://www.minyanville.com/laveryinsight/
+#RedirectMatch permanent ^/subscription/softtrials/? http://www.minyanville.com/subscription/
+RedirectMatch permanent ^/businessmarkets/?$ http://www.minyanville.com/business-news/
+RedirectMatch permanent ^/laveryinsight(.*) http://www.minyanville.com/subscription/
+RedirectMatch permanent ^/beyond-the-crisis-2011(.*) http://www.minyanville.com/
+RedirectMatch permanent ^/getpositivemoney(.*) http://www.minyanville.com/
+
+#Redirection for RSS pages to MediaFeed Pages
+RedirectMatch permanent ^/rss/minyanfeed.php http://minyanville.com.feedsportal.com/c/35270/f/660792/index.rss
+RedirectMatch permanent ^/rss/dailyfeed.rss http://minyanville.com.feedsportal.com/c/35270/f/660791/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/49/ http://minyanville.com.feedsportal.com/c/35270/f/657510/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/87/ http://minyanville.com.feedsportal.com/c/35270/f/657511/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/93/ http://minyanville.com.feedsportal.com/c/35270/f/657512/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/53/ http://minyanville.com.feedsportal.com/c/35270/f/657513/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/47/ http://minyanville.com.feedsportal.com/c/35270/f/657514/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/50/ http://minyanville.com.feedsportal.com/c/35270/f/657515/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/75/ http://minyanville.com.feedsportal.com/c/35270/f/657516/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/74/ http://minyanville.com.feedsportal.com/c/35270/f/657517/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/56/ http://minyanville.com.feedsportal.com/c/35270/f/657518/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/73/ http://minyanville.com.feedsportal.com/c/35270/f/657519/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/89/ http://minyanville.com.feedsportal.com/c/35270/f/657520/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/71/ http://minyanville.com.feedsportal.com/c/35270/f/657521/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/97/ http://minyanville.com.feedsportal.com/c/35270/f/657522/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/80/ http://minyanville.com.feedsportal.com/c/35270/f/657523/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/79/ http://minyanville.com.feedsportal.com/c/35270/f/657524/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/90/ http://minyanville.com.feedsportal.com/c/35270/f/657525/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/91/ http://minyanville.com.feedsportal.com/c/35270/f/657527/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/68/ http://minyanville.com.feedsportal.com/c/35270/f/657528/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/69/ http://minyanville.com.feedsportal.com/c/35270/f/657529/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/78/ http://minyanville.com.feedsportal.com/c/35270/f/657530/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/92/ http://minyanville.com.feedsportal.com/c/35270/f/657531/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/70/ http://minyanville.com.feedsportal.com/c/35270/f/657532/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/55/ http://minyanville.com.feedsportal.com/c/35270/f/657533/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/76/ http://minyanville.com.feedsportal.com/c/35270/f/657534/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/83/ http://minyanville.com.feedsportal.com/c/35270/f/657535/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/51/ http://minyanville.com.feedsportal.com/c/35270/f/657536/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/82/ http://minyanville.com.feedsportal.com/c/35270/f/657537/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/81/ http://minyanville.com.feedsportal.com/c/35270/f/657539/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/96/ http://minyanville.com.feedsportal.com/c/35270/f/657541/index.rss
+RedirectMatch permanent ^/rss/articlerss.rss/sec_id/98/ http://minyanville.com.feedsportal.com/c/35270/f/657542/index.rss
+RedirectMatch permanent ^/rss/podCastFeed.xml$ http://minyanville.com.feedsportal.com/c/35270/f/657543/index.rss
+RedirectMatch permanent ^/rss/podCastFeed.xml/cat_id/23/ http://minyanville.com.feedsportal.com/c/35270/f/657544/index.rss
+RedirectMatch permanent ^/rss/podCastFeed.xml/cat_id/25/ http://minyanville.com.feedsportal.com/c/35270/f/657545/index.rss
+RedirectMatch permanent ^/rss/podCastFeed.xml/cat_id/24/ http://minyanville.com.feedsportal.com/c/35270/f/657547/index.rss
+
+RedirectMatch permanent ^/dailyfeed/?$ /mvpremium/
+RedirectMatch permanent ^/dailyfeed/(.*)/?$ /mvpremium/$1
+RedirectMatch permanent (.*)/buyhedge/(.*)/?$ http://www.minyanville.com/subscription/
+
+RedirectMatch permanent ^dailyfeed/tid/(.*)/p/(.*) mvpremium/index.htm?tid=$1&p=$2 
+RedirectMatch permanent ^dailyfeed/tag/(.*)/p/(.*) mvpremium/index.htm?tag=$1&p=$2 
+RedirectMatch permanent ^dailyfeed/source/(.*)/p/(.*) mvpremium/index.htm?source=$1&p=$2 
+RedirectMatch permanent ^dailyfeed/cid/(.*)/p/(.*) mvpremium/index.htm?cid=$1&p=$2 
+RedirectMatch permanent ^dailyfeed/category/(.*)/p/(.*) mvpremium/index.htm?category=$1&p=$2 
+RedirectMatch permanent ^dailyfeed/p/(.*) /mvpremium/index.htm?p=$1 
+RedirectMatch permanent ^dailyfeed/id/(.*) /mvpremium/index.htm?feedid=$1 
+RedirectMatch permanent ^dailyfeed/tag/(.*) /mvpremium/index.htm?tag=$1
+RedirectMatch permanent ^dailyfeed/source/(.*) /mvpremium/index.htm?source=$1 
+RedirectMatch permanent ^dailyfeed/cid/(.*) /mvpremium/index.htm?cid=$1 
+RedirectMatch permanent ^dailyfeed/tid/(.*) /mvpremium/index.htm?tid=$1 
+RedirectMatch permanent ^dailyfeed/category/(.*) /mvpremium/index.htm?category=$1 
+
+RewriteEngine On
+RewriteRule ^markets/precious-metals/  /sectors/precious-metals/ [L,R=301]
+RewriteRule ^markets/stocks-and-markets/  /trading-and-investing/stocks/ [L,R=301]
+RewriteRule ^markets/emerging-markets/  /sectors/emerging-markets/ [L,R=301]
+RewriteRule ^markets/business-news/  /business-news/ [L,R=301]
+RewriteRule ^markets/macro-outlook/  /business-news/the-economy/ [L,R=301]
+RewriteRule ^markets/energy/  /sectors/energy/ [L,R=301]
+RewriteRule ^markets/commodities/  /trading-and-investing/commodities-and-options/ [L,R=301]
+RewriteRule ^markets/options/  /trading-and-investing/commodities-and-options/ [L,R=301]
+RewriteRule ^investing/retirement-planning/  /trading-and-investing/personal-finance/ [L,R=301]
+RewriteRule ^investing/etfs/  /trading-and-investing/etfs/ [L,R=301]
+RewriteRule ^investing/biotech-pharma/  /sectors/etfs/ [L,R=301]
+RewriteRule ^investing/real-estate/  /sectors/real-estate/ [L,R=301]
+RewriteRule ^investing/technology/  /sectors/technology/ [L,R=301]
+RewriteRule ^investing/savings/  /trading-and-investing/personal-finance/ [L,R=301]
+RewriteRule ^investing/credit-debit/  /trading-and-investing/fixed-income/ [L,R=301]
+RewriteRule ^investing/stocks/  /trading-and-investing/stocks/ [L,R=301]
+RewriteRule ^investing/currencies/  /trading-and-investing/currencies/ [L,R=301]
+RewriteRule ^investing/taxes/  /trading-and-investing/taxes/ [L,R=301]
+RewriteRule ^investing/financial-planning/  /sectors/financial/ [L,R=301]
+RewriteRule ^investing/options/  /trading-and-investing/commodities-and-options/ [L,R=301]
+RewriteRule ^investing/bonds/  /trading-and-investing/fixed-income/ [L,R=301]
+RewriteRule ^special-features/products/  /special-features/ [L,R=301]
+RewriteRule ^special-features/companies/  /special-features/ [L,R=301]
+RewriteRule ^special-features/people/  /special-features/ [L,R=301]
+RewriteRule ^special-features/automotives/  /sectors/transportation/ [L,R=301]
+
+RewriteRule ^markets/(.*)  /business-news/$1 [L,R=301]
+RewriteRule ^markets$  /markets/
+RewriteRule ^markets/  /business-news/
+
+RewriteRule ^investing/(.*)  /trading-and-investing/$1 [L,R=301]
+RewriteRule ^investing  /trading-and-investing/
+
+RewriteRule ^(.*)/latest$  $1/latest/
+
+RewriteCond %{HTTP_HOST} ^local\.(minyanville)\.com$ [NC]
+RewriteRule ^(.*) http://www.minyanville.com/ [L,R]
+RewriteCond %{HTTP_HOST} ^uklocal\.(minyanville)\.com$ [NC]
+RewriteRule ^(.*) http://www.minyanville.com/ [L,R]
+RewriteCond %{HTTP_HOST} ^canadalocallocal\.(minyanville)\.com$ [NC]
+RewriteRule ^(.*) http://www.minyanville.com/ [L,R]
+RewriteRule ^subscription/ft/(.*)$ /subscription/softtrials/$1
+RewriteRule ^subscription/st/(.*)$ /subscription/softtrials/$1
+RewriteRule ^laveryinsight/articles/index/a/(.*)$ /laveryinsight/articles/?a=$1
+RewriteRule ^laveryinsight/articles/(.*)/index/a/(.*)$ /laveryinsight/articles/?a=$2
+RewriteRule ^cooper/articles/(.*)index/a/(.*)/p/(.*) /cooper/articles/index.php?a=$2&p=$3
+RewriteRule ^cooper/articles/(.*)index/a/(.*)/from/(.*) /cooper/articles/index.php?a=$2&from=$3
+RewriteRule ^cooper/articles/(.*)index/a/(.*) /cooper/articles/index.php?a=$2
+RewriteRule ^etf/articles/index/a/(.*)$ /etf/articles/?a=$1
+RewriteRule ^etf/articles/(.*)/index/a/(.*)$ /etf/articles/?a=$2
+RewriteRule etf/home.htm etf/index.htm
+RewriteRule ^articles/(.*)index/a/(.*)/p/(.*) /articles/index.htm?a=$2&p=$3
+
+#new article page
+#RewriteRule ^articles/(.*)index/a/(.*)/from/(.*) /articles/index-comp.php?a=$2&from=$3
+#RewriteRule ^articles/(.*)index/a/(.*) /articles/index-comp.php?a=$2
+
+RewriteRule ^articles/(.*)index/a/(.*)/from/(.*) /articles/index.htm?a=$2&from=$3
+RewriteRule ^articles/(.*)index/a/(.*) /articles/index.htm?a=$2
+RewriteRule ^(.*)/articles/(.*)/id/([0-9]+) /articles/index.htm?a=$3
+RewriteRule ^(.*)/articles/index.php/(.*)/id/([0-9]+) /articles/index.htm?a=$3
+
+
+#new article page end
+
+RewriteRule ^community/(.*)/discussion/(.*)$ /community/Discussion.htm?thid=$2
+RewriteRule ^community/(.*)/blog/(.*)$ /community/blog_comments.htm?blog_id=$2
+RewriteRule ^community/search/(.*)$ /community/search.htm?userid=$1&type=4
+RewriteRule ^community/sendmessage/(.*)/(.*)$ /community/compose.htm?from=mvtv&a=$1&to=$2
+RewriteRule ^community/profile/userid/(.*)$ /community/profile/index.htm?userid=$1
+
+RewriteRule ^section/familyfinance/(.*) /section/index.htm?pagename=familyfinance
+RewriteRule ^subsection/(.*)/(.*) /subsection/index.htm?pagename=$1
+
+RewriteRule ^tradingcalendar/(.*)/$ /trading_calen_info.php?t=$1
+
+RewriteRule audiovideo/(.*)/(.*)/(.*) mvtv/index.htm?pagename=$1&page=$2&section_id=$3
+RewriteRule audiovideo/(.*)/(.*)? /mvtv/index.htm?pagename=$1
+RewriteRule audiovideo/(.*)?/?(.*)? /mvtv/index.htm
+RewriteRule audiovideo$ /mvtv/index.htm
+
+RewriteRule ^pages/([a-zA-z0-9]+)/? /mvtv/index.htm?pagename=$1
+RewriteRule ^video/(.*) /mvtv/index.htm
+
+RewriteRule ^product/(.*)/$ /product/?p=$1
+RewriteRule ^product/(.*)/p/(.*) /product/?p=$1&pcount=$2
+RewriteRule ^productpost/(.*)/article/(.*)/id/([0-9]+)$ product/post.htm?prod=$1&id=$3
+
+RewriteRule ^mvpremium/([0-9]*){4}/?([0-9]*){2}/?([0-9]*){2}/?(([a-zA-z0-9]+)(-|--)?){2,8}/?$ mvpremium/dailyfeed.htm?title=$1&%{QUERY_STRING}
+RewriteRule ^mvpremium/tid/(.*)/p/(.*) mvpremium/index.htm?tid=$1&p=$2
+RewriteRule ^mvpremium/tag/(.*)/p/(.*) mvpremium/index.htm?tag=$1&p=$2
+RewriteRule ^mvpremium/source/(.*)/p/(.*) mvpremium/index.htm?source=$1&p=$2
+RewriteRule ^mvpremium/cid/(.*)/p/(.*) mvpremium/index.htm?cid=$1&p=$2
+RewriteRule ^mvpremium/category/(.*)/p/(.*) mvpremium/index.htm?category=$1&p=$2
+RewriteRule ^mvpremium/p/(.*) /mvpremium/index.htm?p=$1
+RewriteRule ^mvpremium/id/(.*) /mvpremium/index.htm?feedid=$1
+RewriteRule ^mvpremium/tag/(.*) /mvpremium/index.htm?tag=$1
+RewriteRule ^mvpremium/source/(.*) /mvpremium/index.htm?source=$1
+RewriteRule ^mvpremium/cid/(.*) /mvpremium/index.htm?cid=$1
+RewriteRule ^mvpremium/tid/(.*) /mvpremium/index.htm?tid=$1
+RewriteRule ^mvpremium/category/(.*) /inthemix/index.htm?category=$1
+
+
+RewriteRule slideshow/(.*)/(.*) slideshow/index.htm?a=$1&page=$2
+
+RewriteRule qp/mvtv/video/id/(.*) /qp/mvtv/video.htm?id=$1
+RewriteRule ^register/?(.*)?$ /subscription/register/
+RewriteRule ^buzzlanding/?(.*)?$ /buzzbanter/
+RedirectMatch permanent ^/buzzandbanter http://mvp.minyanville.com/buzz-banter-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=buzz
+
+#RewriteRule ^markets/?$ /category/?pagename=markets
+#RewriteRule ^investing/?$ /category/?pagename=investing
+RewriteRule ^special-features/?$ /category/?pagename=specialfeatures
+RewriteRule ^business-news/?$ /category/?pagename=business-news
+RewriteRule ^trading-and-investing/?$ /category/?pagename=trading-and-investing
+RewriteRule ^sectors/?$ /category/?pagename=sectors
+
+#Rewrite rules for Topic pages
+#RewriteRule ^markets/((([a-zA-z0-9]+)(-|--)?){1,4})/?$ /topic/?subsection=$1&%{QUERY_STRING}
+#RewriteRule ^investing/((([a-zA-z0-9]+)(-|--)?){1,4})/?$ /topic/?subsection=$1&%{QUERY_STRING}
+RewriteRule ^special-features/((([a-zA-z0-9]+)(-|--)?){1,4})/?$ /topic/?subsection=$1&%{QUERY_STRING}
+RewriteRule ^businessmarkets/((([a-zA-z0-9]+)(-|--)?){1,4})/?$ /topic/?subsection=$1&%{QUERY_STRING}
+RewriteRule ^business-news/((([a-zA-z0-9]+)(-|--)?){1,4})/?$ /topic/?subsection=$1&%{QUERY_STRING}
+RewriteRule ^trading-and-investing/((([a-zA-z0-9]+)(-|--)?){1,4})/?$ /topic/?subsection=$1&%{QUERY_STRING}
+RewriteRule ^sectors/((([a-zA-z0-9]+)(-|--)?){1,4})/?$ /topic/?subsection=$1&%{QUERY_STRING}
+
+# The Stockplaybook Rules Starts
+#RedirectMatch permanent ^/thestockplaybook/$ http://www.minyanville.com/the-stock-playbook/
+RewriteRule ^the-stock-playbook/?$ /thestockplaybook/
+RewriteRule ^the-stock-play-book/?$ /thestockplaybook/?v=2&%{QUERY_STRING}
+# The Stockplaybook Ends
+
+# Sean Udall
+RewriteRule ^techstrat/ticker/(.*)/p/(.*) techstrat/search.htm?tid=$1&p=$2
+RewriteRule ^techstrat/tag/(.*)/p/(.*) techstrat/search.htm?tag=$1&p=$2
+RewriteRule ^techstrat/tag/(.*) /techstrat/search.htm?tag=$1
+RewriteRule ^techstrat/ticker/(.*) /techstrat/search.htm?tid=$1
+RewriteRule ^techstrat/(.*)/(([a-zA-z0-9]+)(-|--)?){2,8}/?$ techstrat/post.htm?title=$1&%{QUERY_STRING}
+RewriteRule ^techstrat/all-posts/p/(.*) /techstrat/allpost.htm?p=$1
+RewriteRule ^techstrat/trades-ideas/p/(.*) /techstrat/tradeideas.htm?p=$1
+RewriteRule ^techstrat/mailbag/p/(.*) /techstrat/mailbag.htm?p=$1
+RewriteRule ^techstrat/research-tank/p/(.*) /techstrat/researchtank.htm?p=$1
+RewriteRule ^techstrat/all-posts /techstrat/allpost.htm
+RewriteRule ^techstrat/trades-ideas /techstrat/tradeideas.htm
+RewriteRule ^techstrat/mailbag techstrat/mailbag.htm
+RewriteRule ^techstrat/research-tank /techstrat/researchtank.htm
+RewriteRule ^techstrat/positions-performance /techstrat/performance.htm
+RewriteRule ^techstrat/open-positions-trade /techstrat/openpositions-trade.htm
+RewriteRule ^techstrat/open-positions /techstrat/openpositions.htm
+RewriteRule ^techstrat/closed-positions /techstrat/closepositions.htm
+
+#Peter Tchir
+RewriteRule ^tchir-fixed-income/p/(.*) /tchir-fixed-income/index.htm?p=$1
+RewriteRule ^tchir-fixed-income/weekly-report/p/(.*) /tchir-fixed-income/weekly-report.htm?p=$1
+RewriteRule ^tchir-fixed-income/intra-week-updates/p/(.*) /tchir-fixed-income/intra-week-updates?p=$1
+RewriteRule ^tchir-fixed-income/(.*)/(([a-zA-z0-9]+)(-|--)?){2,8}/?$ tchir-fixed-income/alert.htm?title=$1&%{QUERY_STRING}
+RewriteRule ^tchir-fixed-income/bio tchir-fixed-income/bio.htm
+RewriteRule ^tchir-fixed-income/weekly-report tchir-fixed-income/weekly-report.htm
+RewriteRule ^tchir-fixed-incomer/intra-week-updates tchir-fixed-income/intra-week-updates.htm
+
+#Elliott Wave
+RewriteRule ^elliott-wave-insider/analyst/(.*)/p/(.*) elliott-wave-insider/search.htm?bio=$1&p=$2
+RewriteRule ^elliott-wave-insider/category/(.*)/p/(.*) elliott-wave-insider/search.htm?cat=$1&p=$2
+RewriteRule ^elliott-wave-insider/mo/(.*)/yr/(.*)/p/(.*) elliott-wave-insider/search.htm?mo=$1&yr=$2&p=$3
+RewriteRule ^elliott-wave-insider/analyst/(.*) /elliott-wave-insider/search.htm?bio=$1
+RewriteRule ^elliott-wave-insider/category/(.*) /elliott-wave-insider/search.htm?cat=$1
+RewriteRule ^elliott-wave-insider/mo/(.*)/yr/(.*) /elliott-wave-insider/search.htm?mo=$1&yr=$2
+RewriteRule ^elliott-wave-insider/p/(.*) /elliott-wave-insider/index.htm?p=$1
+RewriteRule ^elliott-wave-insider/extras/p/(.*) /elliott-wave-insider/more.htm?p=$1
+RewriteRule ^elliott-wave-insider/analysts/p/(.*) /elliott-wave-insider/allAnalysts.htm?p=$1
+RewriteRule ^elliott-wave-insider/(.*)/(([a-zA-z0-9]+)(|-)?){2,8}/?$ elliott-wave-insider/alert.htm?title=$1&%{QUERY_STRING}
+RewriteRule ^elliott-wave-insider/category/(.*)/p/(.*) /elliott-wave-insider/search.htm?cat=$1&p=$2
+RewriteRule ^elliott-wave-insider/analyst/(.*)/p/(.*) /elliott-wave-insider/search.htm?bio=$1&p=$2
+RewriteRule ^elliott-wave-insider/extras /elliott-wave-insider/more.htm
+RewriteRule ^elliott-wave-insider/analysts /elliott-wave-insider/allAnalysts.htm
+
+#Education Center
+RewriteRule ^edu/(.*)/(([a-zA-z0-9]+)(|-)?){2,8}/?$ edu/alert.htm?title=$1&%{QUERY_STRING}
+RewriteRule ^edu/how-to-trade/p/(.*) /edu/eduTrade.htm?p=$1
+RewriteRule ^edu/how-to-videos/p/(.*) /edu/eduVideo.htm?p=$1
+RewriteRule ^edu/personal-finance/p/(.*) /edu/eduFinance.htm?p=$1
+RewriteRule ^edu/how-to-invest/p/(.*) /edu/eduInvest.htm?p=$1
+RewriteRule ^edu/how-to-trade /edu/eduTrade.htm
+RewriteRule ^edu/how-to-videos /edu/eduVideo.htm
+RewriteRule ^edu/personal-finance /edu/eduFinance.htm
+RewriteRule ^edu/how-to-invest /edu/eduInvest.htm
+RewriteRule ^edu/glossary /edu/eduGlossary.htm
+RewriteRule ^/edu/home /edu/
+
+
+#Keene On Options
+RewriteRule ^keene/?$ /keene/category.htm
+RewriteRule ^keene-options/?$ /keene/category.htm
+RewriteRule ^keene-on-options/?$ /keene/category.htm
+RewriteRule ^keeneonoptions/?$ /keene/category.htm
+RewriteRule ^keene/andrew-keene/?$ /keene/bio.htm
+RewriteRule ^keene/([a-zA-z-]+)/?$ /keene/category.htm?cat=$1
+RewriteRule ^keene/([a-zA-z-]+)/p/(.*)?$ /keene/category.htm?cat=$1&p=$2
+RewriteRule ^keene/(.*)/(([a-zA-z0-9]+)(|-)?){2,8}/?$ keene/alert.htm?title=$1&%{QUERY_STRING}
+
+
+RewriteRule ^investing/etf/limit/(.*)  /articles/topic.htm?limit=$1
+RewriteRule ^investing/etf  /articles/topic.htm
+
+
+RedirectMatch permanent ^/library/index.htm /library/search.htm
+
+RewriteRule ^investing/etf/limit/(.*)  /articles/topic.htm?limit=$1
+RewriteRule ^investing/etf  /articles/topic.htm
+
+
+RedirectMatch permanent ^/library/index.htm /library/search.htm
+
+
+# Garyk
+RedirectMatch permanent ^garyk/? http://www.minyanville.com/subscription/
+
+#Redirect permanent garyk http://www.minyanville.com/subscription/
+
+#RewriteRule ^garyk/ticker/(.*)/p/(.*) garyk/search.htm?tid=$1&p=$2
+#RewriteRule ^garyk/tag/(.*)/p/(.*) garyk/search.htm?tag=$1&p=$2
+#RewriteRule ^garyk/tag/(.*) /garyk/search.htm?tag=$1
+#RewriteRule ^garyk/ticker/(.*) /garyk/search.htm?tid=$1
+#RewriteRule ^garyk/(.*)/(([a-zA-z0-9]+)(-|--)?){2,8}/?$ garyk/post.htm?title=$1&%{QUERY_STRING}
+#RewriteRule ^garyk/all-posts/p/(.*) /garyk/allpost.htm?p=$1
+#RewriteRule ^garyk/trades-ideas/p/(.*) /garyk/tradeideas.htm?p=$1
+#RewriteRule ^garyk/mailbag/p/(.*) /garyk/mailbag.htm?p=$1
+#RewriteRule ^garyk/reports/p/(.*) /garyk/reports.htm?p=$1
+#RewriteRule ^garyk/all-posts /garyk/allpost.htm
+#RewriteRule ^garyk/mailbag garyk/mailbag.htm
+#RewriteRule ^garyk/reports /garyk/report.htm
+#RewriteRule ^garyk/positions-performance /garyk/performance.htm
+#RewriteRule ^assets/garyk/pdf_performance/(.*)$ http://download.minyanville.com/assets/garyk/pdf_performance/$1 [L]
+
+
+# Housing market report
+RewriteRule ^housing-market-report/all-post/p/(.*) /housing-market-report/all-post.htm?p=$1
+RewriteRule ^housing-market-report/all-post/ /housing-market-report/all-post.htm
+RewriteRule ^housing-market-report/archive/p/(.*) /housing-market-report/archive.htm?p=$1
+RewriteRule ^housing-market-report/archive/ /housing-market-report/archive.htm
+RewriteRule ^housing-market-report/pdf/(.*) /housing-market-report/report.htm?p=$1
+RewriteRule ^housing-market-report/issue/(.*) /housing-market-report/freeReport.htm?p=$1
+
+RewriteRule ^housing-market-report/(.*)/ /housing-market-report/post.htm?title=$1
+
+RewriteRule ^(.*)/buzzalert/(.*)/id/([0-9]+) /buzz/buzzalert.htm?id=$3&%{QUERY_STRING}
+
+RewriteRule ^investing/lloyds-wall-of-worry/(.*)/ /investing/lloyds-wall-of-worry/index.htm?pubdate=$1
+
+# Optionsmith rewrite Rule
+
+RewriteRule ^optionsmith/post/id/([0-9]*)$ /optionsmith/home.htm?id=$1
+
+# Active Investor rewrite Rule
+
+RewriteRule ^active-investor/post/id/([0-9]*)/$ /active-investor/home.htm?id=$1
+
+RewriteRule ^assets/seanudall/pdf_performance/(.*)$ http://download.minyanville.com/assets/seanudall/pdf_performance/$1 [L]
+RewriteRule ^assets/garyk/pdf_performance/(.*)$ http://download.minyanville.com/assets/garyk/pdf_performance/$1 [L]
+RewriteRule ^assets/housingreport/pdf_performance/(.*)$ http://download.minyanville.com/assets/housingreport/pdf_performance/$1 [L]
+RewriteRule ^assets/techstrat/pdf_performance/(.*)$ http://download.minyanville.com/assets/techstrat/pdf_performance/$1 [L]
+
+RewriteCond %{REQUEST_URI}  ^/rss/articlerss\.rss$
+RewriteCond %{QUERY_STRING} ^sec_id=([0-9]*)$ 
+RewriteRule ^(.*)$ /rss/articlerss.rss/sec_id/%1/? [L,R=301]
+
+RewriteCond %{REQUEST_URI}  ^/rss/podCastFeed\.xml$
+RewriteCond %{QUERY_STRING} ^cat_id=([0-9]*)$ 
+RewriteRule ^(.*)$ /rss/podCastFeed.xml/cat_id/%1/? [L,R=301]
+
+RewriteCond %{HTTP_USER_AGENT} !^MediafedMetrics.*
+RewriteRule ^/rss/minyanfeed.php http://minyanville.com.feedsportal.com/c/35270/f/660792/index.rss [L]
+
+RewriteCond %{HTTP_USER_AGENT} !^MediafedMetrics.*
+RewriteRule ^/rss/dailyfeed.rss http://minyanville.com.feedsportal.com/c/35270/f/660791/index.rss [L]
+
+RewriteCond %{REQUEST_URI} journal
+#in .htaccss you don't prepend the slash (i.e. /gazette/journal -> gazette/journal)
+RewriteRule ^(.*)gazette/journal(.*)$ $1gazette/newsviews$2 
+
+# Rewrite Rule for Sitemaps Starts
+RewriteRule ^(mvpremium|buzz)(_?)news_sitemap.xml$ /sitemap/gsitemap.xml?type=$1 
+# Rewrite Rule for Sitemaps Ends
+
+RewriteCond %{HTTP_HOST} ^84\.40\.30\.14\.?(:[0-9]+)?$
+RewriteRule ^(.*)$ http://www.minyanville.com/$1 [L,R=301]
+RewriteCond %{HTTP_HOST} ads\.minyanville\.com [NC] 
+RewriteRule ^(.*)$ http://www.minyanville.com/$1 [L,R=301]
+RewriteCond %{HTTP_HOST} model\.minyanville\.com [NC] 
+RewriteRule ^(.*)$ http://www.minyanville.com/$1 [L,R=301]
+
+#ExpiresActive On
+#<FilesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css)$">
+#ExpiresDefault "access plus 10 years"
+#</FilesMatch>
+
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+#AddOutputFilterByType DEFLATE text/html text/css application/x-javascript text/plain text/xml
+
+Header unset ETag
+
+
+#Block Bad bots
+RewriteCond %{HTTP_USER_AGENT} ^BlackWidow [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Bot\ mailto:craftbot@yahoo.com [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^ChinaClaw [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Custo [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^DISCo [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Download\ Demon [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^eCatch [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^EirGrabber [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^EmailSiphon [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^EmailWolf [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Express\ WebPictures [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^ExtractorPro [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^EyeNetIE [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^FlashGet [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^GetRight [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^GetWeb! [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Go!Zilla [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Go-Ahead-Got-It [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^GrabNet [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Grafula [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^HMView [OR] 
+RewriteCond %{HTTP_USER_AGENT} HTTrack [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Stripper [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Sucker [OR] 
+RewriteCond %{HTTP_USER_AGENT} Indy\ Library [NC,OR] 
+RewriteCond %{HTTP_USER_AGENT} ^InterGET [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Internet\ Ninja [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^JetCar [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^JOC\ Web\ Spider [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^larbin [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^LeechFTP [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Mass\ Downloader [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^MIDown\ tool [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Mister\ PiX [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Navroad [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^NearSite [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^NetAnts [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^NetSpider [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Net\ Vampire [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^NetZIP [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Octopus [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Explorer [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Navigator [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^PageGrabber [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Papa\ Foto [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^pavuk [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^pcBrowser [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^RealDownload [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^ReGet [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^SiteSnagger [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^SmartDownload [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^SuperBot [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^SuperHTTP [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Surfbot [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^tAkeOut [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Teleport\ Pro [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^VoidEYE [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Image\ Collector [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Sucker [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebAuto [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebCopier [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebFetch [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebGo\ IS [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebLeacher [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebReaper [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebSauger [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Website\ eXtractor [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Website\ Quester [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebStripper [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebWhacker [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WebZIP [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Widow [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^WWWOFFLE [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Xaldon\ WebSpider [OR] 
+RewriteCond %{HTTP_USER_AGENT} ^Zeus 
+RewriteRule ^.* - [F,L]
+

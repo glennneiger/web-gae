@@ -1,0 +1,23 @@
+<?
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm(qw("peterTchir_alerts peterTchir_approve peterTchir_heatmap"))){
+	admin_error();
+}
+?>
+	<div class=adminheader>Peter Tchir's Fixed Income Report</div><br>
+	<div style="padding:10px;width:400px">
+		<div style="padding-left:20px;">
+			<?if($AD->getPerm("peterTchir_alerts")){ ?>
+   				<li><a href="alert.htm">Create/Edit Alerts</a></li>
+	 		<? }
+	 		if($AD->getPerm("peterTchir_approve")){?>
+				<li><a href="approve-alert.htm">Approve Alerts</a></li>
+			<? }
+			if($AD->getPerm("peterTchir_heatmap")){?>
+				<li><a href="featured-heatmap.htm">Heatmap</a></li>
+			<? } ?>
+		</div><br/>
+		<br />
+	</div>
+
+<?include("$ADMIN_PATH/_footer.htm");?>

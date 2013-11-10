@@ -1,0 +1,233 @@
+
+/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.clearfix:before,
+.clearfix:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	content: " ";
+	display: table;
+}
+
+.products-div{
+	width: 656px;
+	max-width: 656px;
+	margin: 20px 0 0 9px;
+	padding: 0;	
+}
+
+.product_slide{
+	width: 656px;
+	max-width: 656px;
+ 	border-bottom: 1px solid #DFDFDF;
+    padding: 0 0 5px;
+}
+
+.partner_center{
+	float: left;
+    width: 655px;
+    margin:0px 0px 11px 0px;
+}
+
+.clearfix:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	clear: both;
+}
+
+/*/////  COMPONENT STYLES /////*/
+
+.adSlider-container {
+	width: 656px;
+	max-width: 656px;
+	margin: 20px 0 0 9px;
+	padding: 0;
+}
+
+.cbp-fwslider {
+	position: relative;
+	margin: 0 0 5px;
+	overflow: hidden;
+	padding: 10px 0 30px 28px;
+}
+
+.cbp-fwslider ul {
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+	list-style-type: none;
+}
+
+.cbp-fwslider ul li {
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	transform: translateZ(0);
+	float: left;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+.cbp-fwslider ul li > a,
+.cbp-fwslider ul li > div {
+	display: block;
+	text-align: center;
+	outline: none;
+}
+
+#cbp-fwslider ul li > a {
+	display: block;
+	float: left;
+	text-align: center;
+	outline: none;
+}
+
+.cbp-fwslider ul li > a img {
+	border: none;
+	display: block;
+	margin: 0 10px 0 10px;
+	max-width: 180px;
+}
+
+.cbp-fwslider nav span {
+	position: absolute;
+	top: 50%;
+	width: 28px;
+	height: 40px;
+	/*background: #3294e4;*/
+	color: #fff;
+	font-size: 50px;
+	text-align: center;
+	margin-top: -30px;
+	line-height: 100px;
+	cursor: pointer;
+	font-weight: normal;
+}
+
+.cbp-fwslider nav span:hover {
+	background: #378fc3;
+}
+
+.cbp-fwslider nav span.cbp-fwnext {
+	right: 0px;
+	background: url("http://storage.googleapis.com/mvassets/images/home_redesign/fwdArow.png") left top;
+}
+
+.cbp-fwslider nav span.cbp-fwprev {
+	left: 0px;
+	background: url("http://storage.googleapis.com/mvassets/images/home_redesign/backArrow.png") left top;
+}
+
+.cbp-fwdots {
+	position: absolute;
+	bottom: 0px;
+	white-space: nowrap;
+	text-align: center;
+	width: 91.7%;
+}
+
+.cbp-fwdots span {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background: #ddd;
+	margin: 4px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.cbp-fwdots span:hover {
+	background: #999;
+}
+
+.cbp-fwdots span.cbp-fwcurrent {
+	background: #3294e4;
+	box-shadow: 0 0 0 2px #3294e4;
+	-webkit-transition: box-shadow 0.2s ease-in-out;
+	-moz-transition: box-shadow 0.2s ease-in-out;
+	transition: box-shadow 0.2s ease-in-out;
+}
+
+/*///// AD AND OVERLAY STYLES /////*/
+
+.adModule-new-head {
+	color: #000000 !important;
+	font-family: 'FrancoisOneRegular',Arial,sans-serif !important;
+	font-size: 22px;
+	letter-spacing: -1px;
+	line-height: 22px !important;
+	font-weight: bold;
+	margin: 0;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.figure {
+  display: block;
+  position: relative;
+  float: left;
+  overflow: hidden;
+  /*margin: 0 20px 20px 0;*/
+}
+
+.figcaption {
+  position: absolute;
+  background: black;
+  background: rgba(0,0,0,1);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  padding: 16px;
+  margin: 0 10px 0 10px;
+  opacity: 0;
+  width: 148px;
+  height: 118px;
+  white-space: normal;
+  -webkit-transition: all 0.6s ease;
+  -moz-transition:    all 0.6s ease;
+  -o-transition:      all 0.6s ease;
+}
+
+.figure:hover .figcaption {
+  opacity: 1;
+  left: 0;
+}
+
+.figure:before {
+  /*content: "+";*/
+  	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  position: absolute;
+  font-weight: 800;
+  background: black;
+  background: rgba(255,255,255,0.75);
+  text-shadow: 0 0 5px white;
+  color: black;
+  width: 24px;
+  height: 24px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius:    12px;
+  border-radius:         12px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 24px;
+  -moz-transition: all 0.6s ease;
+  opacity: 0.90;
+}
+
+.figure:hover:before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  opacity: 0;
+}
+
+.cap-bot:before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	 bottom: 10px; left: 10px; }
+.cap-bot .figcaption { left: 0; bottom: -100%;}
+.cap-bot:hover .figcaption { bottom: 0; }

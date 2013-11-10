@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+session_start();
+global $D_R,$IMG_SERVER;
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/_includes.php");
+global $viaProducts,$HTHOST,$HTPFX,$IMG_SERVER;
+$productName="subBuzzBanter";
+$trialtype="SoftTrial";
+$producttype="";
+$eventname="Landed";
+$source=$_SERVER['HTTP_HOST'];
+$keyword=$_GET['keyword'];
+if($_GET['from']){
+	$from=$_GET['from'];
+}else{
+	$from=substr($_SERVER['HTTP_REFERER'],7);
+}
+$pcode = (isset($_REQUEST['pcode']))? trim($_REQUEST['pcode']):'Enter Promo Code (Optional)';
+$pcode=strtoupper($pcode);
+$trackname = createNomenCleature($productName,$trialtype,$producttype,$eventname,$source,$keyword,$from);
+$pageName = "sembuzz_softtrial";
+$objPage= new Page($pageName);
+$pageMetaData=$objPage->getMetaData();
+
+if(strtolower($from) == 'google' ){
+	$refererSourceId ='google';
+}elseif(strtolower($from) == 'yahoo' ){
+	$refererSourceId ='yahoo';
+}elseif(strtolower($from) == 'bing' ){
+	$refererSourceId ='bing';
+}else{
+	$refererSourceId='';
+}
+?>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$pageMetaData['title']?>-Minyanville</title>
+<meta name="description" content="<?=$pageMetaData['description']?>" >
+<meta name="keywords" content="<?=$pageMetaData['keywords']?>">
+<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link href="<?=$HTPFX.$HTHOST?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
+<script src="<?=$HTPFX.$HTHOST?>/js/sembuzz.js" type="text/javascript"></script>
+<!-- <script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script> -->
+<script src="<?=$HTPFX.$HTHOST;?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script src='http://cdn.minyanville.com/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
+<!-- google anaytics  code -->
+</head>
+
+
+<body>
+		<div class="container">
+				<div class="header-box clearfix">
+					<div class="top-borders"></div>
+					<div class="header-main"></div>
+					<div class="bottom-borders"></div>
+				</div>
+				
+				<div class="content-box clearfix">
+									
+				<img class="professors-box" src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz/professors_img.png" alt="Buzz Authors" height="456" width="140" usemap="#buzzauthors" border="0" />
+<!-- imge map Buzz Author start -->
+<map id="buzzauthors" name="buzzauthors">
+<area shape="rect" coords="19,18,119,108" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=1" alt="Todd Harrison" title="Todd Harrison"    />
+<area shape="rect" coords="19,117,100,132" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=1" alt="Todd Harrison" title="Todd Harrison"    />
+<area shape="rect" coords="18,138,64,180" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=441" alt="Jeff Cooper" title="Jeff Cooper"    />
+<area shape="rect" coords="17,189,62,217" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=441" alt="Jeff Cooper" title="Jeff Cooper"    />
+<area shape="rect" coords="74,135,119,180" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=541" alt="Gary Kaltbaum" title="Gary Kaltbaum"    />
+<area shape="rect" coords="73,188,128,218" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=541" alt="Gary Kalbtaum" title="Gary Kalbtaum"    />
+<area shape="rect" coords="18,226,62,270" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=132" alt="Smita Sadana" title="Smita Sadana"    />
+<area shape="rect" coords="16,277,60,305" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=132" alt="Smita Sadana" title="Smita Sadana"    />
+<area shape="rect" coords="75,223,119,269" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=106" alt="Peter Atwater" title="Peter Atwater"    />
+<area shape="rect" coords="73,275,120,306" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=106" alt="Peter Atwater" title="Peter Atwater"    />
+<area shape="rect" coords="19,313,65,356" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=358" alt="Barry Ritholtz" title="Barry Ritholtz"    />
+<area shape="rect" coords="16,364,62,395" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=358" alt="Barry Ritholtz" title="Barry Ritholtz"    />
+<area shape="rect" coords="76,315,119,359" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=286" alt="Scott Redler" title="Scott Redler"    />
+<area shape="rect" coords="71,366,117,394" href="<?=$HTPFX.$HTHOST;?>/gazette/bios.htm?bio=286" alt="Scott Redler" title="Scott Redler"    />
+</map>
+<!-- imge map Buzz Author end -->
+
+
+				
+					<div class="highlights-container clearfix">
+						<img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz//gain_topBorders.png" alt="" height="8" width="780" style="float:left;" />
+						<div class="highlights-columns-box">
+							<div class="highlight-A nmLt">
+								<img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz//50Gain_img.png" height="48" width="380" alt="" style="margin: 12px 0 0 0; "/>
+								<p>On October 11, 2011 Buzz and Banter contributor Michael Comeau alerted subscribers about OCZ Technology Group Inc. when it was trading at $5.83.  It hit a high of $8.75 on November 7, 2011 for a <strong>50% gain.</strong>  </p>
+							</div>
+							<div class="highlight-B nmRt">
+								<img class="gain-B" src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz//57Gain_img.png" height="48" width="380" alt="" style="margin: 12px 0 0 0; "/>
+								<p>On July 7, 2011, Buzz and Banter contributor Jeffrey Cooper alerted subscribers he was buying HomeAway, Inc. at $40.50.  He sold it during the same day at $42.80 for a <strong>5.7% gain.</strong></p>
+							</div>
+						</div>
+						<img src="<?=$IMG_SERVER?>/images/buzzTrial/sembuzz//gain_btmBorders.png" alt="" height="8" width="780" style="float:left;" />
+					</div>
+					
+					<div class="volatile-box">
+						<h1>In This Volatile Market, Who Do You Follow For Investment Advice?</h1>
+						<p>Do you conduct your own research? Follow a broker's advice? Read a newsletter? Get tips from a friend or neighbor?</p>
+						<p>We think it's difficult for one person to be consistently right about the market.</p>
+						<p>But what if you could have a team of over 30 professional investors guiding you through this volatile market with real-time, cutting-edge commentary?</p>
+						<p>With the Buzz and Banter web-based application, you're instantly wired in to over 30 professional traders in real time as they supply you with actionable trading ideas, market insights, and commentary. As the market writes the script, the Buzz and Banter tells the story each and every trading day.</p>
+						
+					</div>
+					
+					<div class="rt-column-box clearfix">
+						<ul class="signup-legend clearfix">
+							<li>Sign-up for a Free 14-Day Trial Now!</li>
+							<li class="legend-narrow">* Required</li>
+						</ul>
+						
+						<div class="registration-form clearfix" style="float:left;">
+						<form method="post" action="contactengine.php">
+							<ul class="labels">
+								<li><label for="FirstName">First Name</label></li>
+								<li><label for="LastName">Last Name</label></li>
+								<li><label for="Email">Email</label></li>
+								<li><label for="Password">Password</label></li>
+								<li><label for="Telephone">Telephone</label></li>
+							</ul>
+							<ul class="openFields">
+								<li><input value="Please Enter First Name" onfocus="if(this.value=='Please Enter First Name')this.value='';" onblur="if(this.value=='')this.value='Please Enter First Name';" type="text" name="FirstName" id="FirstName" /> </li>
+								<li><input value="Please Enter Last Name" onfocus="if(this.value=='Please Enter last Name')this.value='';" onblur="if(this.value=='')this.value='Please Enter last Name';" type="text" name="LastName" id="LastName" /> </li>
+								<li><input value="Please Enter Your Email" onfocus="if(this.value=='Please Enter Your Email')this.value='';" onblur="if(this.value=='')this.value='Please Enter Your Email';" type="text" name="Email" id="Email" /> </li>
+								<li><input value="" type="password" name="Password" id="Password" /> </li>
+								<li><input value="Please Enter Your Telephone" onfocus="if(this.value=='Please Enter Your Telephone')this.value='';" onblur="if(this.value=='')this.value='Please Enter Your Telephone';" type="text" name="Telephone" id="Telephone" /> </li>
+<li><input id="promocode" name="promocode" type="hidden" value="<?=$pcode?>" /> </li>								
+							</ul>
+							<span class="buzzerrmsg" id="errmsg">&nbsp;</span>
+							<input type="button" name="submit" value="" class="submit-button" onclick="Javascript:validateSoftTrial('buzz','14','<?=$refererSourceId?>');" >
+						</form>
+							
+						</div>
+					</div>
+					
+				<div class="subscribe-box clearfix">
+					<h1><strong>Subscribe and Receive:</strong></h1>
+					<ul class="benefits-list">
+					<li><p>Long and short-term actionable trading and investment ideas spread across multiple asset classes.</p></li>
+					<li class="nmRt"><p>A unique mix of fundamental and technical analysis</p></li>
+					<li class="wide"><p>Real-time breakdowns of the important news of the day, including economic data, earnings reports, and big moves in stock, fixed income, commodity, and currency markets</p></li>
+					</ul>
+				</div>
+					
+				<div class="bottom-box">
+					<h1>Institutional Traders Benefit Every Day From Real-Time Interaction With Fellow Traders on Fully-Staffed Desks</h1>
+					<p>With the Buzz and Banter, you can gain access to a virtual-trading desk from anywhere in the world.</p>
+					<p>As you read the Buzz and Banter, you'll get instant help in making the very best investment and trading decisions for your portfolio.</p>
+					<p>And best of all, you'll be joining the Buzz and Banter not only as a subscriber, but as part of a trading community that shares your passion for investing..</p>
+				</div>
+					
+			</div>
+			
+			<ul class="footer">
+				<li class="nmLt">
+					<p><strong>&copy;2012 Minyanville Media, Inc. All Rights Reserved</strong></p>
+				</li>
+				<li>
+					<p><strong>Questions or More Information</strong><br />
+					For any inquiries, issues or cancellation please email <a href="mailto:support@minyanville.com"><strong>support@minyanville.com</strong></a> or call <br /><strong class="greenTxt">212-991-9357</strong></p>
+				</li>
+				<li class="nmRt">
+					<p><strong>Customer Support</strong><br />
+						<strong class="greenTxt">Monday - Friday:</strong> 9:00AM - 6:00PM EST<br />
+							We normally respond to emails the same business day. If you need immediate assistance please call 212-991-9357.</p>
+				</li>
+			</ul>
+				
+		</div>
+
+<?php
+$profileid=1;
+//googleanalytics($profileid,$trackname);
+googleanalytics();
+?>
+
+</body>
+</html>

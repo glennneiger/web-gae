@@ -1,0 +1,438 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+margin: 0px 10px 0px 12px;
+background-color:#a3adb6;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+
+}
+
+h5 {
+font-family:Helvetica;
+font-size:11px;
+font-weight:bold;
+margin:0px;
+line-height:20px;
+text-align:left;
+color:#083d70;
+text-transform:uppercase;
+}
+h5 a{
+font-family:Helvetica;
+font-size:11px;
+font-weight:bold;
+margin:0px;
+line-height:20px;
+text-align:left;
+color:#083d70;
+text-transform:uppercase;
+}
+a:focus
+{
+  -moz-outline-style: none;
+}
+
+.CooperSoftMAin{
+width:98%;
+border:solid 0px red;
+float:left;
+padding-left:9px;
+padding-right:10px;
+background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/BuzzmainBg.jpg);
+background-repeat:repeat-y;
+background-position:center;
+padding-bottom:50px;
+}
+
+.CooperHeader{
+text-align:left;
+text-indent:60px;
+background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/CooperHeaderbg.jpg);
+background-repeat:repeat-x;
+width:100%;
+float:left;
+
+}
+.CooperSoftMAininner{
+border:solid 0px red;
+float:left;
+width:955px;
+background-color:#fff;
+background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/bodyContentBg.jpg);
+background-repeat:repeat-x;
+background-position:50% 0%;
+}
+.left_cont_buzz{ 
+ width:630px;
+ float:left;
+ padding:0px 0px 0px 7px;
+ margin:0px;
+ border:solid 0px red;
+ 
+}
+
+.right_cont_Buzz{ 
+ width:300px;
+ float:right;
+ border:solid 0px red;
+ padding-right:0px;
+ text-align:left;
+}
+.Cooper_soft_title{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:28px;
+color:#265b8a;
+vertical-align:top;
+font-weight:normal;
+text-align:left;
+float:left;
+margin-bottom:10px;
+width:590px;
+text-transform:none;
+padding-left:10px;
+
+}
+.Cooper_soft_title h2{
+margin:0px;
+font-size:12px;
+font-family:Arial, Helvetica, sans-serif;
+color:#323232;
+font-weight:normal;
+letter-spacing:normal;
+}
+.CooperFreeTrialBoxMain{
+float:left;
+width:auto;
+padding-left:35px;
+}
+.CooperFreeTrialBox{
+float:left;
+text-align: center;
+padding:15px 0px 15px 0px;
+background-color:#329dc1;
+color:#FFFFFF;
+width:540px;
+border:solid 1px #000;
+background-image: url(http://storage.googleapis.com/mvassets/images/cooperTrial/CooperTrialBoxBg.jpg);
+background-repeat:repeat-x;
+}
+
+.CooperFreeTrialBoxLeft
+{
+float:left;
+width:52%;
+border:solid 0px red;
+}
+.CooperFreeTrialBoxLeft h1
+{
+margin:0px;
+font-size:22px;
+font-weight:bold;
+text-transform:uppercase;
+padding-bottom:5px;
+padding-top:20px;
+color:#FFFFFF;
+}
+.CooperFreeTrialBoxRight
+{
+float:left;
+text-align:left;
+width:48%;
+border:solid 0px red;
+}
+.CooperFreeTrialBoxRight input{
+width:230px;
+border:solid 1px #FFF;
+padding-left:5px;
+margin-bottom:10px;
+font-size:12px;
+font-weight:bold;
+}
+.CooperFreeTrialBoxRight form{
+margin:0px;
+padding:0px;
+}
+.CooperFreeTrialBoxRight img{
+text-align:right;
+padding-right:22px;
+cursor:pointer;
+}
+
+.CooperArticleMain{
+width:600px;
+margin-top:10px;
+font-weight:bold;
+padding-top:10px;
+padding-bottom:10px;
+padding-left:15px;
+clear:both;
+line-height:18px;
+color:#323232;
+float:left;
+margin-bottom:10px;
+}
+
+.CooperArticleMain h1{
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size:20px;
+line-height:25px;
+text-align:left;
+font-weight:bold;
+color:#265b8a;
+white-space:nowrap;
+}
+
+.CooperArticleMainLeft{
+width:45%;
+float:left;
+font-weight:normal;
+padding-right:12px;
+text-align:left;
+}
+.banter_window_trial_boxRight{
+float:left;
+background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/cooper_article_bg.jpg);
+background-position:top;
+background-repeat:repeat-x;
+width:48%;
+padding:15px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:14px;
+font-weight:;
+text-align:left;
+line-height:25px;
+color:#323232;
+background-color:#82b8d0;
+}
+
+.banter_window_trial_boxRight ul{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+color:#323232;
+text-transform:none;
+margin:0px;
+padding:0px;
+}
+.banter_window_trial_boxRight li{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:bold;
+color:#323232;
+line-height:25px;
+margin-left:16px;
+text-transform:none;
+}
+
+.RightCommonCooperContainer{
+width:96%;
+padding-right:10px;
+line-height:20px;
+float:left;
+margin-bottom:20px;
+}
+.RightVideoContainer{
+width:96%;
+padding-right:10px;
+float:left;
+margin-bottom:10px;
+}
+.RightCommonCooperContainer h1{
+color:#000000;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-transform:none;
+margin:0px;
+}
+
+.cooperMaillinks{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+color:#083d70;
+text-transform:none;
+}
+.cooperMaillinks a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+text-decoration:underline;
+color:#00314c;
+text-transform:none;
+}
+
+
+
+.buzzRightarticle{
+font-weight:bold;
+line-height:25px;
+color:#323232;
+float:left;
+
+}
+.buzzRightarticle ul{
+font-family:Arial, Helvetica, sans-serif;
+font-size:16px;
+font-weight:bold;
+list-style-position: outside;
+margin:0px;
+color:#2B5784;
+text-transform:none;
+}
+.buzzRightarticle li{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:normal;
+margin-left:15px;
+color:#323232;
+line-height:25px;
+text-transform:none;
+}
+.Addtocartmaincooper{
+padding-top:10px;
+width:100%;
+float:left;
+text-align:center;
+}
+.Addtocartmaincooper h1{
+color:#2c2c2c;
+font-family:Arial,Helvetica,sans-serif;
+font-size:22px;
+font-weight:bold;
+text-transform:none;
+margin:0px;
+}
+.Addtocartmaincooper h1 span{
+color:#265B8A;
+font-family:Arial,Helvetica,sans-serif;
+font-size:22px;
+font-weight:bold;
+text-transform:none;
+}
+.Contactmain{
+width:100%;
+float:left;
+text-align:center;
+padding-top:10px;
+}
+.Contactmain p{
+color:#2c2c2c;
+font-family:Arial,Helvetica,sans-serif;
+font-size:18px;
+font-weight:normal;
+text-transform:none;
+margin:0px;
+width:auto;
+float:left;
+padding-left:30px;
+
+}
+.Contactmain span{
+color:#265B8A;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-transform:none;
+float:left;
+padding-left:10px;
+}
+.Contactmain  span a{
+color:#265B8A;
+cursor:pointer;
+text-decoration:none;
+}
+.cooper_Article_head {
+color:#000000;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+font-weight:bold;
+text-transform:none;
+}
+.cooper_books_trial_main{
+padding-left:0px;
+text-align:left;
+clear:both;
+padding-top:15px;
+float:left;
+}
+.cooper_books_trial_main img{
+border:none;
+cursor:pointer;
+}
+.cooper_Mainheading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#787876;
+font-weight:normal;
+line-height:20px;
+padding-top:10px;
+}
+.cooper_Mainheading a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#787876;
+font-weight:normal;
+text-decoration:none;
+}
+.cooper_recent_trial_heading{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#787876;
+font-weight:normal;
+line-height:15px;
+
+}
+.cooper_main_cart_container{
+float:left;
+width:100%;
+border:solid 0px red;
+padding-top:10px;
+}
+.add_to_cartCooper{
+width:300px;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size:30px;
+color:#FFFFFF;
+background-color:#2B86B2;
+font-weight:bold;
+text-align:center;
+line-height:20px;
+margin-top:10px;
+}
+.add_to_cartCooper td{
+padding:2px;
+}
+.add_to_cartCooper img{
+padding-top:2px;
+}
+.cooper_recurring{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11px;
+text-decoration:none;
+padding-top:10px;
+text-transform:uppercase;
+color:#ffffff;
+font-weight:normal;
+}
+.coopererrmsg{
+float:left; 
+font-size:11px; 
+color: #FF0000;
+margin-top:5px;
+width:60%;
+}
+
+.TrialFooter{
+float:left;
+width:99.7%;
+width:99.6%!important;
+
+}
+.product_text
+{
+text-align:center;
+padding-left:35px;
+padding-right:35px;
+}

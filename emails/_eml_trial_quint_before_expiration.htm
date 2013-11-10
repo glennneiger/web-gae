@@ -1,0 +1,12 @@
+<?include("$D_R/emails/_eml_header.htm")?>
+<br>
+<p>Dear <?= $row[fname]?>,
+  <br>
+  <br>
+Thank you for recently signing up for a free trial to our FlexFolio by Quint Tatro. We hope you’ve found it to be insightful, beneficial and profitable. This notice is to let you know that your trial will be expiring on <?= date('m/d/Y',$row[expires]);?>.</p>
+<p>Don’t miss any of Quint’s analysis or trades. To continue to receive access to the FlexFolio by Quint Tatro please <strong><a href="<?=$HTDOMAIN?>/register/new/manage.htm" target="_blank">click here</a></strong> to subscribe.</p>
+<p>If you have any questions or troubles, please don’t hesitate to contact Josh Sander at <a href="mailto:sander@minyanville.com">sander@minyanville.com</a> or 212-991-9357.</p>
+<?php
+$tracking_name = $tracking_name['_eml_trial_quint_before_expiration'];
+?>
+<?include("$D_R/emails/_eml_footer.htm")?>

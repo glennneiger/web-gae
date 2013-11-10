@@ -1,0 +1,117 @@
+<?
+$page="emails";
+include("$ADMIN_PATH/_header.htm");
+if(!$AD->getPerm("emails")){
+	admin_error();
+}
+
+$list_labels=array(
+	gazette=>"Daily Gazette Mailling List",
+	promo=>"List of Users who've opted-in to receive promotional materials"
+);
+
+?>
+<script>
+
+window.onload=function(){
+	frm = document["mailerform"];
+	toType=document.all("to");
+}
+function getToType(){
+	return toType[toType.selectedIndex].value;
+}
+
+
+function Send(){
+	frm["sendmail"].value="1";
+	var subj = frm["mail[subject]"].value;
+	var bod  = frm["mail[body]"].value;
+	var msg="";
+	if(getToType().indexOf("recv")>-1 )
+		msg="Are you sure you want to send this mail to everyone in the list?";
+	if(getToType()=="mylist")
+		msg="Are you sure you want to send email to the people defined in the text field above?";
+	if(confirm(msg)){
+		frm.submit();
+	}
+}
+
+function Cancel(){
+	if(confirm("Are you sure you want to cancel the changes you've made here?")){
+		location.replace(location.href);
+		return;
+	}
+}
+
+function preview(){
+	var bd=frm["mail[body]"].value;
+	var ttl=frm["mail[subject]"].value;
+	var pvfrm=findObj("previewform");
+	pvfrm["body"].value=bd;
+	pvfrm["title"].value=ttl;
+	pvfrm.submit();
+}
+
+function showMyList(){
+	document.all("trmylist").style.display=(getToType()=="mylist"?"block":"none")
+}
+</script>
+<br>
+<div class=adminheader>Send E-Mails</div> 
+<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+
+<form method="post" action="./emails_mod.htm" name="mailerform">
+	<?input_hidden("sendmail","0")?>
+	<?input_hidden("mail[date]",($date?$date:time()));?>
+<table width=100% border=0>
+<TR valign=top>
+<TR>
+
+
+<TD align=center colspan=2 class=orng>
+	<table width=100%>
+
+
+	<TR>
+	<TD nowrap align=right><b>Send this email to</b>:</TD>
+	<TD>
+		<select name="to" onchange="showMyList(this.selectedIndex)">
+		<?foreach($EMAIL_LISTS as $k=>$v){?>
+			<option value="<?=$v?>"><?=$list_labels[$k]?></option>
+		<?}?>
+			<option value="mylist">A mailing list that I create</option>
+		</select>
+	</TD>
+	</TR>
+	<TR style="display:none" id="trmylist">
+	<TD align=right><b>Put the people you want to email in this box (ONE PER LINE)</b></TD>
+	<TD><textarea name="mylist" style="width:300;height:200"></textarea></TD>
+	</TR>
+	</table>
+</td>
+
+
+</tr>
+
+<tr>
+<TD>Subject:</TD>
+<TD width=99%><input type="text" size=30  style="width:100%" name="mail[subject]" value="<?=$subject?>"></TD>
+</TR>
+<TR valign=top>
+<TD align=right width=1% nowrap>Body:</TD>
+<TD><?rich_editor("mail[body]",$body)?></TD>
+</TR>
+<TR>
+<TD colspan=2 align=center>
+	<input type="button" value="Cancel" onclick="Cancel()"> &nbsp; 
+	<input type="button" value="Send This Email" onclick="Send()"> &nbsp; 
+	<input type="button" value="Preview" onclick="preview()"> &nbsp; 	
+</TD>
+</TR>
+
+</table>
+</form>
+<form name="previewform" action="<?=$SPAM_EML_TMPL?>" target="previewwnd" method="post">
+<?input_hidden("body"," ");input_hidden("title","")?>
+</form>
+<?include("$ADMIN_PATH/_footer.htm");?>

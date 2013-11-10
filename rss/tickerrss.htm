@@ -1,0 +1,87 @@
+<?
+/* Operative Configuration *****/
+/* $zone_name="tickerrss";
+$tile728x90=1;
+$tile160x30=2;
+$tile300x250=3; */
+/* End Operative Configuration *****/
+$pageName = "articlelisting";
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav","minyanville");
+include("../_header.htm");
+include_once("$D_R/lib/layout_functions.php");
+global $cm8_ads_1x1_Text,$cm8_ads_Button_160x30;
+?>
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+<div id="article-left">
+<div class="rss_common_main">
+<div  class="footer_common_title" style="width:645px;">
+<table width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
+			  <tr>
+				<td>Articles RSS module</td>
+				<td>
+				<div  class="section_ads_main">
+				<? // = show_ads_operative($zone_name,$tile160x30,"160x30","",""); ?>
+				<?
+					$bannername=$cm8_ads_Button_160x30;
+					CM8_ShowAd($bannername);
+				?>
+				</div>
+				</td>
+			  </tr>
+			</table>
+<br /></div>
+
+
+	<div style="float:left;"><table cellpadding="0" cellspacing="0" width="90%" border="0" align="left">
+
+<table width=100% align=center cellpadding=0 cellspacing=0 border=0>
+<tr><td height=20><b>Extension: </b>Minyanville Article RSS.</td></tr>
+<tr><td height=20><b>Purpose: </b>Article RSS allows content publishers to syndicate financial content in different formats.</td></tr>
+<tr><td height=20><b>Subscribe to Minyanville Article RSS: <a href="<?=$HTPFX.$HTHOST;?>/rss/minyanvillearticle.rss"><b><?=$HTPFX.$HTHOST;?>/rss/</b></a></td>    </tr>
+<tr><td height=50><b>Namespace declaration:</b></td></tr>
+<tr><td>
+<b>xmlns:tickersdata</b>="http://www.minyanville.com/tickerrss.htm"
+<br></td></tr>
+<tr><td>
+<b>xmlns:tickersvalue</b>="http://www.minyanville.com/tickerrss.htm"
+</td></tr>
+<tr><td height=30><b>Description:</b></td></tr>
+<tr><td height=30>One element <b>ticker</b> which is a sub element of tickerdata and tickervalue has the stock ticker value assigned to it.</td></tr>
+<tr><td height=30><b>Example:</b></td></tr>
+<tr><td>
+<table width=100% align=center cellpadding=0 cellspacing=0>
+<tr><td><b>&lt;item&gt;</b></td></tr>
+<tr><td><b>&lt;title&gt;</b>CSX Corp. Leads Earnings Train<b>&lt;/title&gt;</b></td></tr>
+<tr><td><b>
+&lt;description&gt;</b> &lt;strong&gt;&lt;em&gt;Minyan Morning Memo&lt;/em&gt;&lt;/strong&gt; &lt;br /&gt;&lt;br /&gt;&lt;strong&gt;One to Watch:&lt;/strong&gt; &lt;strong&gt;CSX Corp.&lt;/strong&gt; (CSX)&amp;nbsp;will hope to avoid giving investors any excuse to rail against its stock when the transportation giant reports after the close. Q2 is expected to be down; of greater importance is the company&amp;rsquo;s outlook and guidance. With an increasingly carbon friendly footprint that sends cargo all across America, CSX is a good guage of economic health. As such its results will receive more attention than many in a week which sees a welter of earnings announcements. &lt;br /&gt;&lt;br /&gt;&lt;strong&gt;What Just Happened:&lt;/strong&gt; Last week the &lt;strong&gt;Dow&lt;/strong&gt; declined to its lowest levels since April. Oil flirted with the 50&amp;rsquo;s again. And Arnie aimed to prove his is the party of the big tent by giving a &lt;a href=&quot;http://www.ft.com/cms/s/0/71c79888-6db2-11de-8b19-00144feabdc0.html&quot;&gt;weekend interview&lt;/a&gt; in one as California&amp;rsquo;s fiscal crisis raged on. &lt;br /&gt;&lt;br /&gt;&lt;strong&gt;What&amp;rsquo;s Happening:&lt;/strong&gt; Asia was off across the board, and less dire than feared results from &lt;strong&gt;Philips&lt;/strong&gt; (PHG)&amp;nbsp;are failing to stop a similar drop in Europe. Blame it on &lt;strong&gt;Rio Tinto&lt;/strong&gt; (RTP), the iron ore titan is sinking like a stone after China arrested a key executive. President Jintao is clearly keen to prove Hu&amp;rsquo;s on first. U.S. futures are off as markets anxiously await earnings.&lt;br /&gt;&lt;br /&gt;&lt;strong&gt;What Will Happen:&lt;/strong&gt; The federal budget statement is out at 2:00 PM Eastern in an otherwise quiet day in economics. We&amp;rsquo;ll get quarterly announcements from &lt;strong&gt;Novellus&lt;/strong&gt; (NVLS)&amp;nbsp;as well as &lt;strong&gt;Charles Schwab&lt;/strong&gt; (SCHW), which hopes to benefit from a &lt;em&gt;Barrons&lt;/em&gt; bounce after adorning its cover. &lt;br /&gt;&lt;br /&gt;&lt;strong&gt;Happenstance:&lt;/strong&gt; The last leg of my European trip takes me to France, where I was amused to learn &lt;strong&gt;McDonald&amp;rsquo;s&lt;/strong&gt; (MCD)&amp;nbsp;golden arches carry weight even in the land of the Michelin Guide. The country ranks second only to America as a cash cow for the company. Apparently even our continental cousins devour freedom fries with relish. And ketchup.<b>&lt;/description&gt;</b>
+</td></tr>
+<tr><td><b>&lt;author&gt;</b>Justin Sharon<b>&lt;/author&gt;</b></td></tr>
+<tr><td><b>&lt;category&gt;</b>News and Views<b>&lt;/category&gt;</b></td></tr>
+<tr><td><b>&lt;link&gt;</b>http://www.minyanville.com/articles/index/a/23515<b>&lt;/link&gt;</b></td></tr>
+<tr><td><b>&lt;guid isPermaLink="true"&gt;</b>23515<b>&lt;/guid&gt;</b></td></tr>
+<tr><td><b>&lt;pubDate&gt;</b>Mon, 13 Jul 2009 08:30:00 EST<b>&lt;/pubDate&gt;</b></td></tr>
+<tr><td><b>&lt;tickersdata:tickers&gt;</b></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<b>&lt;tickersval:ticker&gt;</b>NASDAQ:NVLS<b>&lt;/tickersval:ticker&gt;</b></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<b>&lt;tickersval:ticker&gt;</b>NYSE:MCD<b>&lt;/tickersval:ticker&gt;</b></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<b>&lt;tickersval:ticker&gt;</b>NYSE:RTP<b>&lt;/tickersval:ticker&gt;</b></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<b>&lt;tickersval:ticker&gt;</b>NYSE:PHG<b>&lt;/tickersval:ticker&gt;</b></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;<b>&lt;tickersval:ticker&gt;</b>NYSE:CSX<b>&lt;/tickersval:ticker&gt;</b></td></tr>
+<tr><td><b>&lt;/tickersdata:tickers&gt;</b></td></tr>
+<tr><td><b>&lt;/item&gt;</b></td></tr>
+</table>
+			</td></tr>
+				   </table></div>
+
+</div>
+</div>
+<!--left contaner end here-->
+<?
+$arrRightCols	=	array('show_video','show_adblade','show_mostpopular','email_alert','show_rss_emailalert','show_localguides');
+include("../_rightcolumn.htm");
+?>
+</div>
+</div>
+<? include("../_footer.htm"); ?>

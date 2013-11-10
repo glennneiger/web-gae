@@ -1,0 +1,169 @@
+<?
+global $D_R;
+
+//phpAdServe zone ID
+$zoneIDSky = $SEC_TO_ZONE['tradingideatop'];
+$zoneIDLeft = $SEC_TO_ZONE['tradingidealeft'];
+$zoneIDRight = $SEC_TO_ZONE['tradingidearight'];
+$zoneIDBottom = $SEC_TO_ZONE['tradingideabottom'];
+$zoneIDBottom2 = $SEC_TO_ZONE['tradingideabottom2'];
+$zoneIDFooter = $SEC_TO_ZONE['tradingideafooter'];
+$zoneIDFooter2 = $SEC_TO_ZONE['tradingideafooter2'];
+$page_navigation=$NAVIGATION["NEWS & VIEWS"];
+$title= "Trading Ideas";
+$pageName = "trading_radar";
+$pageJS=array('config','dailyfeed','jquery','global','featuredslider','mobileredirect','emailalert','Articles','stickycontent','sticky','stickyscroller','getset','fancybox','mailchimp');
+$pageCSS=array("global","articlepage","layout","nav","codaslider","fontStylesheet","homepage","rightColumn","fancybox","mailchimp");
+include("../_header.htm");
+include("../layout/dbconnect.php");
+include("../lib/layout_functions.php");
+include("$D_R/lib/_article_design_lib.php");
+$objArticleViewer	=	new articleViewer();
+
+$category = "tradingideas";
+$categoryNum = 11;
+$dynamicModule['category'] = $categoryNum;
+
+//modules are in associative array - key (id)  => value[name]
+$modules = getModules();
+?>
+
+<div class="underheader">
+<div id="content-container" style="position: relative;">
+<div id="article-left">
+<div class="columnLeft" style="margin:17px 0px 0px 0px;">
+ <div class="columnLeftInner">
+  <table cellpadding="0" cellspacing="0">
+  <tr><td>
+			<table cellpadding="0" cellspacing="0" width="100%"  >
+    <!-- ********  News and Views area including featured article ********  -->
+				<tr><td>
+				<table cellpadding="0" cellspacing="0" border="0" width="97%"  style="margin-left:5px;">
+						<tr><td width="31px"><?
+					  	if (isset($zoneIDLeft)) {
+				  		if (@include(getenv('DOCUMENT_ROOT').'/admin/phpads/phpadsnew.inc.php')) {
+						if (!isset($phpAds_context)) $phpAds_context = array();
+						$phpAds_raw = view_raw ('zone:'.$zoneIDLeft , 0, '', '', '0', $phpAds_context);
+						echo $phpAds_raw['html'];
+						}
+						}?></td>
+						<td class="articletitlehome"><h2><?=$title?></h2></td>
+						<td width="31px"><?
+					  	if (isset($zoneIDRight)) {
+				  		if (@include(getenv('DOCUMENT_ROOT').'/admin/phpads/phpadsnew.inc.php')) {
+						if (!isset($phpAds_context)) $phpAds_context = array();
+						$phpAds_raw = view_raw ('zone:'.$zoneIDRight , 0, '', '', '0', $phpAds_context);
+						echo $phpAds_raw['html'];
+					}
+					}?></td></tr></table></td>
+				</tr>
+		   		<!-- <tr><td class="date" align="center"><?= displayDate() ?></td></tr>  -->
+                <tr><td>
+                <table class="featuredarticle" cellpadding="0" cellspacing="0" width="94%">
+                <tr><td>
+                  <div class="newsFeatureBox">
+                <table cellpadding="0" cellspacing="0" width="100%">
+				<tr><td colspan="2"><div class="NewsViewsTodayHeader">Today in Minyanville</div></td></tr>
+		<tr>
+                <td style="padding-left:10px;"><? call_Column_Module_List($pageName,"upperbox",$modules,'show','upperbox'); ?></td>
+	            <td width="30px" style="padding-right:10px;" ><? call_Column_Module_List($pageName,"upperboximg",$modules,'show','upperboximg'); ?></td>
+			 </tr>
+                </table></div>
+                </td></tr>
+                </table>
+                </td></tr>
+     		</table>
+	    </td></tr>
+			 <tr>
+				<!-- left column-->
+				<td >
+
+				<?
+
+				$sql = "select articles.id,articles.keyword,articles.blurb,contrib_id, title, date, contributor, contributors.name author, character_text talkbubble, category_ids from articles,contributors
+where contributors.id=articles.contrib_id and approved='1' and is_live='1' and is_featured='0' and instr(CONCAT(',',articles.category_ids,','),',".$categoryNum.",')>0 order by date desc limit 6";
+				displayRecentHeadlines("News & Views",$sql,$zoneID);
+
+				?>
+				</td></tr>
+				<tr> <td class="greyline">&nbsp; </td></tr>
+				<tr>
+				<td><br>
+					<center>
+					<?
+				   	if (isset($zoneIDBottom)) {
+			  		if (@include(getenv('DOCUMENT_ROOT').'/admin/phpads/phpadsnew.inc.php')) {
+					if (!isset($phpAds_context)) $phpAds_context = array();
+					$phpAds_raw = view_raw ('zone:'.$zoneIDBottom , 0, '', '', '0', $phpAds_context);
+					echo $phpAds_raw['html'];
+					}
+					}?>
+
+					</center>
+
+
+				</td>
+				</tr>
+				<tr> <td>
+	  <tr> <td class="greyline">&nbsp; </td></tr>
+	    <tr>
+	      <td colspan="3" align="center">
+
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			          <tr>
+			          <td width="50%">
+			          <table width="100%" cellpadding="0" cellspacing="0">
+			          <tr><td><?
+					  call_Column_Module_List($pageName,'bottomleftcolumn1',$modules,'show','bottomleftcolumn1'); ?></td></tr>
+			          </table>
+			          </td>
+			          <td width="50%">
+			          <table width="100%" cellpadding="0" cellspacing="0">
+			          <tr><td class="borderclassleft" ><? call_Column_Module_List($pageName,'bottomleftcolumn2',$modules,'show','bottomleftcolumn1'); ?></td></td></tr>
+			          </table>
+			          </td>
+			          </tr></table>
+
+				</td>
+				</tr>
+				<tr>
+	  				<td><? showgoogleads(350); ?></td>
+				</tr>
+
+				</table>
+				<!-- end left-bottom area-->
+</div>
+</div>
+<!----------Middle column ------------------>
+<!--  <div class="columnMiddle">
+<table border="0" cellpadding="0" cellspacing="0"><tr><td>
+  <? call_Column_Module_List($pageName,'column3',$modules,'show','middlemoduleinner') ; ?>
+</td></tr><tr><td><br></td></tr><tr><td>
+<?  displayShareBox(); ?>
+</td></tr><tr><td><br></td></tr>
+<tr><td>
+						<center>
+	  				<?
+					if (isset($zoneIDBottom2)) {
+			  		if (@include(getenv('DOCUMENT_ROOT').'/admin/phpads/phpadsnew.inc.php')) {
+					if (!isset($phpAds_context)) $phpAds_context = array();
+						$phpAds_raw = view_raw ('zone:'.$zoneIDBottom2 , 0, '', '', '0', $phpAds_context);
+						echo $phpAds_raw['html'];
+						}
+						} ?>
+
+					</center>
+</td></tr></table>
+</div> -->
+<div class="columnEmail">
+<?=$objArticleViewer->emailBar();?>
+</div>
+</div>
+<?
+		$arrRightCols	=	array('daily_recap_module','show_mostpopular','show_art_300x250','recommendation','sponsoredlinks','show_MediumRectangle_Art_300x250','twitterWidget','show_markets','financial_product_guide','show_ads');
+
+	include("../_rightcolumn.htm");
+?>
+</div>
+</div>
+	<? include("$D_R/_footer.htm");?>

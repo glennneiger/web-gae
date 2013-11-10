@@ -1,0 +1,39 @@
+<?
+ob_start();
+session_start();
+
+$orderNo=$_GET['ordernumber'];
+
+$orderItemSeq=$_GET['orderitemseq'];
+$payType=$_GET['paytype'];
+$refundAmount=$_GET['refundamount'];
+$refundToCustId=$_GET['refundtocustid'];
+$typeSpecificId=$_GET['typespecificid'];
+
+if($payType=='mastercard') $payType='MasterCard';
+if($payType=='visa') $payType='Visa';
+if($payType=='americanexpress') $payType='AmericanExpress';
+if($payType=='discover') $payType='Discover';
+?>
+<div class="login_main_container" name="parentdiv" id="parentdiv">
+<input type="hidden" name="cuurntscreen" id="cuurntscreen" value="1">
+<input type="hidden" name="freeemailexchng" id="freeemailexchng" value="<? echo array_search('Ex_Email_Alert',$orderDetails);?>">
+<input type="hidden" name="targeturl" id="targeturl" value="">
+			<table width="100%" class="login_table" border="2" align="center" cellpadding="5" cellspacing="0">
+			<tr><td colspan="2" valign="top" class="log_head">
+			Cancel Reason <span id="cancel" class="erordiv"></span>
+			</td></tr>
+			<tr><td colspan="2" valign="top" class="log_head">
+			<select id="cancelreason" class="quint_alert_input">
+				<option value="">--Select--</option>
+				<option value="Cost">Too Expensive</option>
+				<option value="Not Trading">No Longer Trading</option>
+				<option value="Not Using">I don't use it/Don't find it useful.</option>
+				<option value="Other">Other</option>
+				<option value="Technical">Technical Problems</option>
+			</select>
+			</td></tr>
+			<tr><td colspan="2" valign="top" class="log_head">
+			<img src="<?=$HTPFX.$HTHOST?>/images/community_images/submit_additional.gif" onclick="Javascript:cancelProduct('<?=$orderNo?>','<?=$orderItemSeq?>','<?=$payType?>','<?=$refundAmount?>','<?=$refundToCustId?>','<?=$typeSpecificId?>','','','');"></img>&nbsp;&nbsp;&nbsp;<img src="<?=$HTPFX.$HTHOST?>/images/community_images/cancel_additional.gif" onclick="Javascript:closemeibox();">
+			</td></tr>
+			</table>

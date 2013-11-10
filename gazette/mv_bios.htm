@@ -1,0 +1,140 @@
+<?php
+global $HTHOST,$HTPFX;
+$pageName="contributor";
+global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+$bannername=$cm8_ads_Button_160x30;
+
+/* End Operative Configuration *****/
+$pageJS=array("config","ibox","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav");
+include_once("../_header.htm");
+include_once($D_R."/lib/_content_data_lib.php");
+include_once("../lib/layout_functions.php");
+include_once($D_R."/admin/lib/_contributor_class.php");
+$objCont = new contributor();
+?>
+<link type="text/css" href="<?$D_R?>/css/mvBios.css" rel="stylesheet" />
+<?php
+$contrib_id=0;
+$contrib_id=0;
+if($_GET['bio']){
+	$objContent=new Content('21',$_GET['bio']);
+}
+$groupId=0;
+if($_GET['type'] && $_GET['type'] !='')
+{ 
+	if($_GET['type']=='professors')
+	$groupId	=	1;
+	elseif($_GET['type']=='contributors')
+	$groupId	=	2;
+	elseif($_GET['type']=='staff')
+	$groupId	=	3;
+	elseif($_GET['type']=='buzz')
+	$groupId	=	4;
+	
+	if($groupId>0)
+	{
+		$contributors	=	$objCont->getContributorsByGroup($groupId);
+	}
+	else
+	{
+		$contributors=get_bio_contributors();
+	}
+}
+else
+{
+	$contributors=get_bio_contributors();
+}
+$modules = getModules();
+?>
+<!--Body area start from here-->
+<div class="shadow">
+<div id="content-container">
+<!--left contaner start from here-->
+	<div id="article-left">
+	<div id="homepage-content">
+	<!--Our professors main start from here-->
+	<div class="introduction">
+	<div class="bioHeader"><h1>Who We Are</h1></div>
+	<div class="hNbImg"><img src="<?=$IMG_SERVER?>/images/hNbSilhouette.gif" width="81" height="49" border="0" alt="Hoofy &amp; Boo" title="Hoofy &amp; Boo"/></div>
+	<div class="wwa-desc">Minyanville and it's contributors create branded business content that informs, entertains and educates all generations about the worlds of business and finance. Minyanville is a place where people who seek useful, unbiased information come to learn, laugh and connect.</div>
+	</div>
+	<div class='introduction'>
+	<div class="professorBox">P</div><div class="bioCategory"><a href="<?=$HTPFX.$HTHOST?>/gazette/mv_bios.htm?type=professors" title="Professors"><img src="<?=$IMG_SERVER?>/images/professors.png" border="0" alt="Minyanville Professors" /></a>
+	<div class='groupDesc'>Professors are active professionals in financial markets. They are full-time traders and investors, not full time writers, who offer intraday observations, thoughts, and ideas as the markets move.</div></div>
+	
+	<div class="contributorBox">C</div><div class="bioCategory"><a href="<?=$HTPFX.$HTHOST?>/gazette/mv_bios.htm?type=contributors" title="Contributors"><img src="<?=$IMG_SERVER?>/images/contributors.png" border="0" alt="Minyanville Contributors" /></a><div class='groupDesc'>Contributors are people within the Minyanville community who write for the site. They provide food for thought and opinion, and may be professional writers, freelancers, or are uniquely positioned to give a "boots on the ground" perspective on a particular issue..</div></div>
+	
+	<div class="buzzBox">B</div><div class="bioCategory"><a href="<?=$HTPFX.$HTHOST?>/gazette/mv_bios.htm?type=buzz" title="Buzz & Banter Contributors"><img src="<?=$IMG_SERVER?>/images/buzz.png" border="0" alt="Buzz & Banter  Contributors" /></a><div class='groupDesc'>Buzz and Banter contributors are active professionals in financial markets. They are full-time traders and investors who offer intraday observations, thoughts, and ideas as the markets move through Minyanville's Buzz &amp; Banter.</div></div>
+	<div class="staffBox">S</div>
+	<div class="bioCategory"><a href="<?=$HTPFX.$HTHOST?>/gazette/mv_bios.htm?type=staff" title="Minyanville Staff"><img src="<?=$IMG_SERVER?>/images/staff.png" border="0" alt="Minyanville Staff" /></a><div class='groupDesc'>Staff writers are professional writers employed by Minyanville.com.</div></div>
+	</div>
+	<div style="clear:both;"></div>
+	<div class="grid-container">
+		<div class="biographies">
+			<?php
+				foreach ($contributors as $row)
+				{
+					$contName		= 	$row['name'];
+					$contTumbImg	=	$row['small_bio_asset'];
+					$contId			=	$row['id'];
+					if(is_file("$D_R$contTumbImg")){
+						$thumbImg	=	$IMG_SERVER.$contTumbImg;
+					} else {
+						$thumbImg	=	$IMG_SERVER."/assets/bios/thumb/no-photo.jpg"; }
+				
+					$sqlContGroup = "select g.id,g.group_name from contributor_groups g, contributor_groups_mapping gm
+where g.id=gm.group_id and gm.contributor_id='".$contId."'";
+					$resContGroup	= exec_query($sqlContGroup);
+				?>
+				<div class="bio bionmLt bionmRt">
+				<div class="thmb"><a href="<?=$HTPFX.$HTHOST?>/gazette/bios.htm?bio=<?=$contId;?>" target="_blank"><img src="<?=$thumbImg;?>" border=0 height="50px" width="50px;"></a> </div>
+					<?php
+					if(count($resContGroup)>0)
+					{
+						echo "<div class='bioFlags'>";
+						foreach($resContGroup as $row)
+						{
+							if($row['id'] == '1')
+							{
+								echo "<div class='mvProfessors'></div>";
+							}
+							if($row['id'] == '2')
+							{
+								echo "<div class='mvContributors'></div>";
+							}
+							if($row['id'] == '3')
+							{
+								echo "<div class='mvStaff'></div>";
+							}		
+							if($row['id'] == '4')
+							{
+								echo "<div class='buzzNbanter'></div>";
+							}
+						}
+					echo "</div>";
+					}
+					?>
+					<div class="name-tag"><a href="http://www.minyanville.com/gazette/bios.htm?bio=<?=$contId;?>" target="_blank"><h3><?=$contName;?></h3></a></div>
+				</div>
+				<?php 
+				}
+				?>
+		</div>
+	</div>
+<!--Our professors main Closed here-->
+	</div><!-- Home Content Section-->
+	</div><!-- Bio Left Section-->
+<?
+global $arrRightCols;
+$arrRightCols	=	array('show_mostpopular','show_ads','show_subcenter');
+/*$show_mostpopular="true";
+$show_subcenter="true";*/
+?>
+<?php
+include("../_rightcolumn.htm"); ?>
+</div><!--Main contaner end here-->
+</div><!-- shadow end -->
+<!--right contaner end here-->
+<? include("../_footer.htm")?>

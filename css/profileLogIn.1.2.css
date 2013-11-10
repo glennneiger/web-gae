@@ -1,0 +1,537 @@
+/* CSS Document */
+
+.logInProfile{
+	width:820px;
+	float:left;
+	margin:10px 87px  0px 87px; 
+}
+.leftBox{
+	width:400px;
+	float:left;
+	padding:0px 0px 15px 0px;
+}
+.rightBox{
+	width:400px;
+	float:left;
+	margin:0px 0px 0px 20px;
+}
+
+.logIn{
+	width:400px;
+	float:left;
+}
+
+.logIn_Profile{
+	width:331px;
+	float:left;
+	margin:0px 0px 20px 0px;
+	display:block;
+}
+
+.facebook{
+	width:400px;
+	float:left;
+	margin:0px 0px 10px 0px;
+}
+
+.mvilIntro{
+	width:331px;
+	float:left;
+	margin:10px 0px 0px 0px;
+}
+
+.logInContent{
+	width:400px;
+	float:left;
+	background-repeat:repeat-y; 
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/newLoginMid.png);
+}
+
+.logInHeading{
+	float:left;
+	width:380px;
+	color:#00395F;
+	font-size:24px;
+	text-align:left;
+	padding:0px 0px 10px 20px;
+	border-bottom:1px solid #ededed;
+	font-family:'OpenSansBold',Arial, Helvetica, sans-serif;
+}
+
+.boldText{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	color:#113b61;
+}
+
+.plainText{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#113b61;
+	
+}
+
+.plainText a{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#113b61;
+	padding:0px 0px 0px 0px;
+}
+
+.forgotpassword{
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#113b61;
+	padding:0px 0px 10px 70px;
+}
+
+.forgotpassword a{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#113b61;
+	padding:0px 0px 0px 40px;
+}
+
+.inputField{
+	width:310px;
+	float:left;
+	padding:0px 0px 8px 0px;
+}
+
+.inputLabel{
+	width:290px;
+	float:left;
+	font-size:14px;
+	font-weight:bold;
+	color:#4c4c4c;
+	white-space:nowrap;
+	padding:0px 0px 10px 0px;
+	text-align:left;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.inputLabel span{
+	color:#009aff;
+	font-size:11px;
+	font-weight:normal;
+	padding:0px 0px 0px 15px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.inputLabel span a{
+	color:#009aff;
+	text-decoration:none;
+}
+
+.inputImage{
+	width:290px;
+	float:left;
+	padding:0px 0px 10px 0px;
+}
+
+.inputImage input{
+	width:282px;
+	height:30px;
+	float:left;
+	padding:0px 0px 0px 5px;
+	border: 1px solid #ededed;
+}
+
+
+.inputImageProfile{
+	width:195px;
+	float:left;
+	padding:0px 0px 0px 5px;
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/loginInput.gif);
+}
+
+.inputImageProfile input{
+	width:195px;
+	height:15px;
+	*height:20px !important;
+	float:left;
+	padding:2px 0px 0px 0px;
+	background-repeat:no-repeat;
+	border: 0px solid;
+	background-color:transparent;
+}
+
+
+.inputImageCountry{
+	width:174px;
+	float:left;
+	padding:4px 13px 9px 13px;
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/select_box.gif);
+	background-repeat:no-repeat;
+	text-align:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	cursor:pointer;
+}
+
+.countryDropdown{ 
+	float:left;
+	background-color: #ffffff;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:9px;
+	line-height:17px;
+	width:194px;
+	border: 1px solid #a5a5a5;
+	border-bottom: 0px solid #a5a5a5;
+	font-weight:normal;
+	position:absolute;
+	margin:22px 0px 0px 111px;
+	text-align:left;
+	height:91px;
+	overflow:auto;
+	*margin:22px 0px 0px -200px;
+}
+.countryDropdown a{ 
+width: auto;
+display: block;
+border-bottom: 1px solid #a5a5a5;
+padding: 0px;
+text-decoration: none;
+color: #000000;
+}
+
+
+.inputImageCountry select{
+	width:200px;
+	float:left;
+	height:22px;
+	/*background-image:url(http://storage.googleapis.com/mvassets/images/subscription/select_box.gif);*/
+	padding:0px 0px 0px 0px;
+	border: 0px solid;
+}
+
+.inputImageCountry select option{
+	width:180px;
+	float:left;
+	padding:0px 0px 0px 0px;
+}
+
+
+.tdNormalFont{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	color:#000000;
+	white-space:nowrap;
+	padding:0px 0px 10px 5px;
+	text-align:left;
+}
+
+.inputBox{
+	float:left;
+	width:288px;
+	margin:0px 0px 0px 1px;
+	padding:0px 55px 0px 55px;
+	border-top:1px solid #ffffff;
+}
+
+.inputBoxProfile{
+	width:310px;
+	float:left;
+	padding:10px 0px 0px 5px;
+}
+
+.buttonImage{
+	width:163px;
+	float:left;
+	margin: 15px 117px 10px 117px;
+}
+
+.buttonImage img{
+	width:163px;
+	height:40px;
+	cursor:pointer;
+}
+
+.fbFont{
+	float:left;
+	width:258px;
+	color:#4c4c4c;
+	font-size:14px;
+	font-weight:bold;
+	text-align:center;
+	padding:49px 69px 25px 69px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.mvilBold{
+	width:300px;
+	float:left;
+	text-align:left;
+	padding:0px 0px 10px 10px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-size:11px;
+}
+
+.mvilDesc{
+	width:300px;
+	float:left;
+	text-align:left;
+	padding:0px 0px 0px 10px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	font-size:11px;
+}
+
+.radioBox{
+	width:320px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+}
+
+.checkboxDiv{
+	width:320px;
+	float:left;
+	text-align:left;
+	padding:10px 0px 0px 0px;
+}
+
+.terms{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	text-align:left;
+	color:#103a64;
+	padding:4px 0px 0px 4px;
+}
+
+.mvpolicy{
+    float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	text-align:left;
+	color:#103a64;
+	padding:10px 0px 0px 0px;
+}
+
+.mvpolicy a{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	text-align:left;
+	color:#42802a;
+}
+
+.receive-newseletter{
+color:#000000;
+float:left;
+font-family:Arial,Helvetica,sans-serif;
+font-size:11px;
+font-weight:bold;
+padding:5px 0 5px 5px;
+text-align:left;
+white-space:nowrap;
+width:95px;
+}
+
+.newslttrcat{
+float:left;
+width:280px;
+padding:0px 0px 0px 2px;
+line-height:14px;
+}
+
+.checkboxinput{
+width:20px;
+float:left;
+padding:0px 0px 0px 0px;
+}
+	
+.register_error {
+	color:#FF0000;
+	float:left;
+	font-size:10px;
+	font-weight:normal;
+	height:15px;
+	padding:0px 0px 0px 8px;
+	text-transform:none;
+}
+
+.frgtPwd{
+	width:331px;
+	float:left;
+	margin:10px 0px 0px 0px;
+}
+
+.frgtPwdError{
+	display:none;
+	width:100%;
+	float:left;
+	clear:both;
+	border:0px solid red;
+}
+
+.frgetLabel{
+	width:310px;
+	float:left;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:bold;
+	color:#000000;
+	margin:0px 0px 0px 10px;
+	text-align:left;
+}
+
+.frgtInput{
+	width:200px;
+	float:left;
+	padding:0px 0px 0px 2px;
+	margin:0px 0px 0px 5px;
+	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/loginInput.gif);
+	background-repeat:no-repeat;
+}
+
+.frgtInput input{
+	width:185px;
+	height:20px;
+	float:left;
+	padding:2px 5px 0px 0px;
+	background-repeat:no-repeat;
+	border: 0px solid;
+	background-color:transparent;
+}
+
+.sendPwd{
+	width:143px;
+	float:left;
+}
+
+.cancelPwd{
+	width:119px;
+	float:left;
+	padding:0px 0px 0px 20px;
+}
+
+.frgtPwdImage{
+	width:310px;
+	float:left;
+	margin:10px 0px 0px 10px;
+}
+
+.loginTopBottomImage{
+	width:400px;
+	float:left;
+	margin:0px 0px -3px 0px;
+}
+
+.terms a{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-weight:normal;
+	text-align:left;
+	color:#42802a;
+}
+
+.fbButton{
+	float:left;
+	width:301px;
+	cursor:pointer;
+	margin:0px 48px 70px 48px;
+}
+
+.login_error_password {
+color:#FF0000;
+font-size:10px;
+font-weight:normal;
+text-align:left;
+min-height:13px;
+display:block;
+}
+
+#password_login_error{
+	display:block;
+	padding:5px 0px 5px 10px;
+	text-align:left;
+}
+
+.login-error{
+	float:left;
+	width:290px;
+	height:15px;
+	font-size:10px;
+	margin-bottom:5px;
+	padding:0px 0px 0px 5px;
+	color:#FF0000;
+	font-weight: normal;
+	text-transform:none;
+}
+
+.errorSignup{
+float:left;
+left:0;
+position:fixed;
+text-align:center;
+top:0;
+width:100%;
+z-index:50;
+}
+
+.errorSignup span{
+background-color:#174C7D;
+color:#FFFFFF;
+font-size:12px;
+font-weight:bold;
+line-height:20px;
+margin:0 auto;
+padding:5px;
+width:268px;
+display:none;
+}
+
+#signupError{
+display:none;
+}
+
+.rememberMe{
+	float:left;
+	font-size:14px;
+	font-weight:bold;
+	color:#4c4c4c;
+	white-space:nowrap;
+	padding:0px 0px 0px 0px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+.remembermeInput{
+	float:left;
+}
+
+.remembermetext{
+	float:left; 
+	margin:3px 0px 0px 4px;
+}
+
+.fbContent{
+	float:left;
+	width:398px;
+	min-height:240px;
+	margin:0px 0px 0px 1px;
+	border-top:1px solid #ffffff;
+}
+
+.fbError {
+	float:left;
+	width:360px;
+	height:15px;
+	color:#FF0000;
+	font-size:10px;
+	font-weight:normal;
+	padding:0px 0px 0px 8px;
+	text-transform:none;
+}

@@ -1,0 +1,130 @@
+@charset "utf-8";
+/* CSS Document */
+
+#fancybox_container{width:660px; height:432px; margin:0px auto; float:left;}
+#fancybox_container_thanku{width:660px; height:432px; margin:0px auto; float:left;}
+#top_closebtn{height:33px; float:left; width:640px;} 
+#top_closebtn .close-button{height:33px; width:61px; float:right;}
+#main-logocontainer{width:599px; height:184px; float:left; margin-left:20px; margin-right:20px;}
+#data-container{
+	width:640px; 
+	float:left; 
+	height:436px; 
+	margin-left:20px; 
+	margin-bottom:35px;
+	background:url(http://storage.googleapis.com/mvassets/images/fancybox/pt_fBox_main.png) no-repeat;
+}
+
+#data-container-next{
+	width:640px; 
+	float:left; 
+	height:436px; 
+	margin-left:20px; 
+	margin-bottom:35px;
+	background:url(http://storage.googleapis.com/mvassets/images/fancybox/fancybox_keeneOnOptions_main.png) no-repeat;
+}
+
+#data-container-thanku{
+	width:598px; 
+	float:left; 
+	height:278px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	background-color:#122a36;
+	margin:20px 0px 35px 20px;
+	font-family:"Palatino Linotype", "Book Antiqua",Palatino, serif;
+}
+
+.thanksFancyBoxText{
+	color:#ffffff;
+	font-size: 32px;
+	line-height:32px;
+	font-weight:bold;
+	text-align:center;
+	margin:40px 0px 40px 0px;
+	font-family:"Palatino Linotype", "Book Antiqua",Palatino, serif;
+}
+
+.thanksFancyBoxLinkText{
+	height:95px;
+	width:598px; 
+	color:#ffffff;
+	font-size: 22px;
+	font-weight:normal;
+	text-align:center;
+	display:table-cell;
+	font-family:"Palatino Linotype", "Book Antiqua",Palatino, serif;
+}
+
+.thanksFancyBoxCloseBttn{
+	cursor: pointer;
+	width: 100%;
+	color: #ffffff;
+	font-size: 11px;
+	float: left;
+}
+
+.thanksFancyBoxCloseBttn img{
+	margin:-13px -18px 0px 0px;
+}
+
+#leftdata-container{width:349px; height:198px; margin-left:20px; float:left;}
+#text-imgcon{width:349px; height:73px; float:left;}
+#rightbook-container{width:229px; height:198px; float:left;}
+#signup-container{
+	width:508px; 
+	height:49px; 
+	float:left;
+	margin:310px 0px 0px 67px;
+	*width:550px;
+	*margin:310px 0px 0px 32px;
+}
+
+#lfttxt-container{
+    float: left;
+    width: 344px;
+	height:30px;
+}
+.fancybox_email {
+    background:url(http://storage.googleapis.com/mvassets/images/fancybox/pt_fBox_input.png) no-repeat;
+    border: medium none;
+    float: left;
+	font-size:14px;
+	color:#000;
+	padding:0px 0px 0px 15px;
+	margin-right: 10px;
+    width: 233px;
+	height:49px;
+	font-weight:normal;
+}
+#fancybox_button {
+    border: 0 none;
+    cursor: pointer;
+    float: left;
+    height: 49px;
+    outline: medium none;
+    width: 248px;
+}
+
+#fancybox-content{
+	width:640px;
+	height:432px;		
+}
+/*
+#toptext-container{width:368px; height:84px; float:left;}
+#signup-container{width:368px; height:114px; float:left; background:url(http://storage.googleapis.com/mvassets/images/fancybox/sign-upimg.png) repeat;}
+
+
+#lftbtn-container{
+      float: left;
+    margin-top: 15px;
+    width: 145px;
+	height:30px;
+	padding-left:20px;
+}
+
+
+
+#right-container{ width:231px; height:218px; margin-right:20px; float:left;}*/

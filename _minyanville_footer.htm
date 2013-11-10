@@ -1,0 +1,102 @@
+ </div> <!-- Gradient below subnavigation div closed here -->
+        <!--Main footer div start from here-->
+        <div class='main_footer'>
+      <!---bottom quick link start from here-->
+	  <div class="FooterLinksMain">
+</div>
+            <div class='footer'><a href='http://minyanvillemedia.com/' class='footer_links'>About us</a>  &nbsp;&nbsp;
+			 <a target="_blank" href='<? echo $HTPFX.$HTHOST ?>/ads/docs/mvMediaKit2013.pdf' class='footer_links'>Advertise</a>&nbsp; &nbsp;
+			 <a target="_blank" href='/company/contact.htm' class='footer_links'> Contact Us</a> &nbsp; &nbsp;
+
+			 <a href='<? echo $HTPFX.$HTHOST ?>/company/help.htm' class='footer_links'> Help</a>&nbsp;&nbsp;
+			 <a href='<? echo $HTPFX.$HTHOST ?>/company/privacy.htm' class='footer_links'> Privacy Policy</a>&nbsp; &nbsp;
+			 <a href='<? echo $HTPFX.$HTHOST ?>/company/substerms.htm' class='footer_links'>Subscription and Terms of Use</a>&nbsp; &nbsp;
+			 <a href='<? echo $HTPFX.$HTHOST ?>/company/disclaimers.htm' class='footer_links'> Disclaimers</a>&nbsp; &nbsp;
+			 <a href='<?=$HTPFX.$HTHOST ?>/site-index/' class='footer_links'>Site Map</a>
+			 <span class='copy_rights'></span><br /><span class='footer_links'>&copy;2010 Minyanville Media, Inc. All Rights Reserved</span>
+</div>
+</div>
+<!--Main footer div end here-->
+</div>
+</div>
+<script language="javascript">
+/*window.onload = activeMemberDiv();*/
+function activeMemberDiv()
+{
+	document.getElementById('membership').style.display = "block";
+	document.getElementById('membership').style.visibility = "visible";
+
+}
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      if (oldonload) {
+        oldonload();
+      }
+      func();
+    }
+  }
+}
+addLoadEvent(activeMemberDiv);
+addLoadEvent(function() {
+  /* more code to run on page load */
+});
+
+</script>
+<!--Main div end here-->
+<!-- Footer JS Starts -->
+<script src="<?=$HTPFX.$HTHOST;?>/_externalLinks.js" language="JavaScript" type="text/javascript"></script>
+<!-- Start Quantcast tag -->
+ <script type="text/javascript">
+  var _qevents = _qevents || [];
+
+  (function() {
+   var elem = document.createElement('script');
+
+   elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+   elem.async = true;
+   elem.type = "text/javascript";
+   var scpt = document.getElementsByTagName('script')[0];
+   scpt.parentNode.insertBefore(elem, scpt);
+  })();
+</script>
+<script type="text/javascript">
+_qevents.push([{
+qacct:"p-76i-akcf8qEJM",
+labels: "<?=getquantcastlabel($pageName);?>"
+}]);
+</script>
+
+<noscript>
+<a href="http://www.quantcast.com/p-76i-akcf8qEJM" target="_blank"><img
+
+src="//pixel.quantserve.com/pixel/p-76i-akcf8qEJM.gif" style="display: none;" border="0" height="1" width="1"
+
+alt="Quantcast"/></a>
+</noscript>
+<!-- End Quantcast tag -->
+<!-- Footer Js Ends -->
+<?
+$userid=$_SESSION['SID'];
+if($userid){
+?>
+	<script language="javascript">
+	getMarketWatchlist('<?=$userid?>','header');
+	</script>
+<? }
+renderContextWebTracking($pageName);
+?>
+<!-- Start Halogen Tag  -->
+<script type="text/javascript" src="http://publishers.halogennetwork.com/audience/minyanville.js"></script>
+<!-- End Halogen Tag  -->
+<?
+if($pageName!="SlideShow"){
+	googleanalytics();
+}
+?>
+<script type="text/javascript"> sr_adspace_id = 1000001689407; sr_adspace_width = 1; sr_adspace_height = 1; sr_ad_new_window = true; sr_adspace_type = "graphic"; </script> <script type="text/javascript" src="http://ad.afy11.net/srad.js?azId=1000001689407"> </script> <img height="1" width="1"border="0" src="http://aperture.displaymarketplace.com/audmeasure.gif?liveconclientID=3272765660196&PageID=304&EventType=view">
+</body>
+</html>

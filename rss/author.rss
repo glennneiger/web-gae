@@ -1,0 +1,20 @@
+<?
+global $D_R;
+include_once($D_R."/lib/feed/_design_lib.php");
+include_once($D_R."/lib/config/_article_config.php");
+include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
+include_once($D_R."/lib/MemCache.php");
+include_once($D_R."/lib/_content_data_lib.php");
+include_once($D_R."/admin/lib/_contributor_class.php");
+$maxItemLimit=$_GET['maxItems'];
+$authorId=$_GET['authorid'];
+/* Load Default values */
+if(!$maxItemLimit || $maxItemLimit>500){
+	$maxItemLimit=20;
+}
+
+header('Content-type: text/xml');
+echo "<?xml version='1.0' encoding='ISO-8859-1'?>";
+$objFeedView= new feedViewer($feedType,$partnerId,$authorId);
+$objFeedView->showAuthorRSS($maxItemLimit,$thread_id,$authorId);
+?>

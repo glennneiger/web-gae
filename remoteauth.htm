@@ -1,0 +1,66 @@
+<?include_once("$D_R/lib/_auth.php");  
+
+
+/*
+LOGOUT==true 
+	script unsets EMAIL, PASSWORD in session and redirects them to login page
+else
+	SCRIPT initiates session vars and sends them to the page they previously requested
+*/
+
+session_start();
+session_cache_limiter('private');//this has to be after it's started
+session_set_cookie_params(10800,"/");
+
+
+$refer=$refer?base64_decode($refer):$DEFAULT_URL;
+
+
+if($_POST[email] && $_POST[password]){
+	list($e,$p)=array($_POST[email],$_POST[password]);
+	$USER = new user($e,$p);
+	$USER->resetAuthFields();//make curr user override existing
+	$USER->isDupeLogin();//updates authoritative user
+
+	if($USER->isAuthed){
+		set_sess_vars("EMAIL",$e);
+		set_sess_vars("PASSWORD",$p);
+		if($USER->account_status=="disabled" && !$acctmod){
+			$refer="/register/".convertUserType($USER->type)."/manage.htm";
+		}
+		if($_POST["setcookie"]){
+			mcookie("email",$e);
+			mcookie("password",$p);
+			mcookie("autologin",1);
+		}else{
+			mcookie("email");
+			mcookie("password");
+			mcookie("autologin");
+		}
+		location($refer);
+		exit();
+	}else{
+		set_sess_vars("EMAIL");
+		set_sess_vars("PASSWORD");
+		$rdir="/register/new/?email=$e";
+		location($rdir);
+	}
+	unset($USER);
+	exit();
+}
+
+
+/*================ company account login ===================*/
+if($_POST[company] && $_POST[password]){
+	if(isValidCompanyAccount($_POST[company], $_POST[password])){
+		set_sess_vars("FROM_COMPANY",1);
+		header("Location: $refer");
+		exit();
+	}
+}
+
+/*============== didn't authenticate for user or comany ======*/
+header("Location: /register/");
+exit();
+
+?>

@@ -1,0 +1,9 @@
+<?php
+
+$viaUrl='https://wspro.viaemanager.com/v2.3/WSPro.asmx?mid=1900';
+$viaObj=  new SoapClient( $viaUrl . "&WSDL", array('trace' => true, 'location' => $viaUrl));
+
+$customerAuth=$viaObj->CustomerAuthentication(array('sCustLogin'=>'afaque.khan@ebusinessware.com','sCustPassword'=>'123456'));
+
+echo "<pre>"; print_r($customerAuth); echo "</pre>";
+?>
