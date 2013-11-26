@@ -131,6 +131,8 @@ price,recurly_plan_desc AS plan_name,recurly_plan_promotional_headline AS plan_p
 
 	function setSoftTrialUserRegistration($email,$firstName,$lastName,$phone,$planCode){
 		//$objRegisterFunnel= new registrationFunnelData();
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $viaProductsName;
 		$objRecurlyData= new recurlyData();
 		$objUserData= new userData();
@@ -244,6 +246,8 @@ AND SCO.recurly_state ='active') AND SCO.recurly_current_period_ends_at IS NOT N
 	}
 
 	function sendSoftTrialUserWelcomeEmail($firstName,$lastName,$email,$password,$productName){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $fromWelcomeEmailSoftTrial,$subjectWelcomeEmailSoftTrial,$tmplWelcomeEmailSoftTrial,$D_R,$HTPFX,$HTHOST,$viaProductsName,$tmplWelcomeEmailTechstratSoftTrial,$tmplWelcomeEmailPeterTchirSoftTrial,$tempWelBuzz60SoftTrial,$subWelBuzz60SoftTrial;
 
 		$user_email =$email;

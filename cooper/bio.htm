@@ -1,0 +1,97 @@
+<?php
+global $D_R,$HTPFX,$HTHOST;
+session_start();
+/*if($_SESSION['Cooper']!="1"){
+  Header( "Location: http://mvp.minyanville.com/jeff-coopers-daily-market-report-landing-page-navbar/?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=cooper");
+  exit;
+}*/
+$pageName="cooperhome";
+require_once($D_R."/lib/config/_cooper_config.php");
+require_once($D_R."/lib/cooper/_cooper_data_lib.php");
+require_once($D_R."/lib/cooper/_cooper_design_lib.php");
+$pageJS=array("config","redesign","fancybox","cooperRedesign","modernizr");
+$pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","cooperRedesign","sub_homepage");
+include($D_R."/_header.htm");
+$objCooperData = new cooperData('cp_articles');
+$objCooperDesign = new cooperDesign();
+
+global $objCooperData, $objCooperDesign, $pageName;
+
+$categoryName="Resources";
+
+$p=0;
+$offset=0;
+if($_GET['p']){
+	$p=$_GET['p'];
+	$offset=$_GET['p'];
+}
+
+?>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<script type="text/javascript">jQuery.noConflict() ;</script>
+<script language="javascript" type="text/javascript">
+	var startTimer;
+	jQuery(document).ready(function(){
+		jQuery.fancybox.init();
+		jQuery('div.ca-item-main').fancybox({
+			showCloseButton : false,
+	        type: 'inline',
+	        content: '#cooperLeavingWindow',
+	        overlayOpacity : 0.8,
+			overlayColor : '#000',
+			onClosed : function(){
+				//Close timer
+				try{
+					clearTimeout(startTimer);
+					startTimer = null;
+				}catch(err){
+					
+				}
+			}
+	    });
+		jQuery('#fancybox-wrap').css('top','100px');
+	});
+	
+	function docKeyDown1(oEvent){ // controls keyboard navigation
+		var oEvent = (typeof oEvent != "undefined")? oEvent : event;
+		var oTarget = (typeof oEvent.target != "undefined")? oEvent.target : oEvent.srcElement;
+		var intKeyCode = oEvent.keyCode;
+		var inc;
+		if(intKeyCode==13) {
+		   if($F("optionsearch")){
+			searchalert('optionsearch','<?=$contribid?>','optionsearch','<?=$oid?>');
+			}
+		}
+		if(intKeyCode==17){	inc=0;}
+		if (inc==0){
+			if(intKeyCode==65 || intKeyCode==97 )	{
+				return(false);   //in case of IE & firefox1.5
+			}
+		}
+	}
+	document.onselectstart=new Function("return false");
+	document.onmousedown=new Function("return false");
+	document.oncontextmenu=new Function("return false");
+	document.onkeydown=docKeyDown1;
+
+	function disableclick() {
+		document.onmousedown=new Function("return false");void(0);
+	}
+	
+	function enableclick() {
+		document.onmousedown=new Function("return true");void(0);
+	}
+</script>
+<body>
+<div id="cooper_wrapper">
+	<?php echo $objCooperDesign->displaycooperHeader($categoryName);?>
+	<div class="clr"></div>
+	<div class="cooper_contentPanel">
+		<?php echo $objCooperDesign->displayCooperBio($categoryName);?>
+		<?php echo $objCooperDesign->displayCooperRightCol();?>
+	</div>
+	<div class="clr"></div>
+</div>
+</body>
+
+<? include($D_R."/_footer.htm"); ?>

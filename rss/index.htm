@@ -21,7 +21,13 @@ if ($_GET['limit'] != "") {
 }
 
 //query for 100 articles
-$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, date, blurb, keyword,body, position, character_text from articles, contributors where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' ORDER BY date DESC LIMIT " . $start . "," . $end;
+$sql = "select articles.id id, articles.title,
+ contributors.name author, articles.contributor,
+ contrib_id authorid, date, blurb, keyword,body, character_text from articles, 
+contributors where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' 
+and articles.date>('".mysqlNow()."' - interval 1 month)  
+ORDER BY date DESC LIMIT " . $start . "," . $end;
+
 $results = exec_query($sql);
 ?>
 

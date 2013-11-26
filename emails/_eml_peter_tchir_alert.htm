@@ -3,6 +3,7 @@ global $is_ssl,$IMG_SERVER,$HTHOST,$HTNOSSLDOMAIN,$HTPFXSSL;
 include($D_R."/lib/peter-tchir/_peterTchir_data_lib.php");
 $objPeterData= new peterTchirData();
 
+$id = $_GET['id'];
 $data = $objPeterData->getAlertDetails($id);
 $breakPos = strpos($data['body'],'<br /><br />');
 $words=explode(" ",$data['body'],51);

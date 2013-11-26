@@ -1,0 +1,19 @@
+application: minyanville-buzz
+module: videos
+version: 1
+runtime: php
+api_version: 1
+threadsafe: true
+
+instance_class: F1
+automatic_scaling:
+  max_idle_instances: 1
+  min_pending_latency: 15s
+
+handlers:
+- url: /(.*)
+  script: mvtv/index.htm
+    
+    
+    
+    

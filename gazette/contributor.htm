@@ -1,4 +1,6 @@
 <?php
+global $D_R;
+include_once("$D_R/lib/layout_functions.php");
 $pageName = "contributor";
 $pageJS=array("config","registration","iboxregistration","creditcard","nav");
 $pageCSS=array("global","layout","section","rightColumn","nav","minyanville");
@@ -9,7 +11,12 @@ if(!$contributorid)
 {
 	$contributorid="1";
 }
-$contributorName=getAuthorName($contributorid);
+$sql = "select name from contributors where id=". $contributorid . " limit 1";
+$contributorNameArr = exec_query($sql,1);
+if($contributorNameArr)
+{  $contributorName=$contributorNameArr['name'];  }
+else  { $contributorName="0"; }
+
 
 $page_navigation=$NAVIGATION["NEWS & VIEWS"];
 $title= "NEWS & VIEWS - ".$contributorName;

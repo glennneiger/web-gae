@@ -686,6 +686,8 @@ foreach($_SESSION['viacart']['SUBSCRIPTION'] as $product)
 <? }
 
 function registrationSubmitOrder(){
+	global $D_R;
+	include_once($D_R.'/lib/config/_products_config.php');
 	global $HTPFX, $HTHOST,$_SESSION,$IMG_SERVER,$viaProducts,$promoCodeSourceCodeNoFreeTrial,$HTPFXSSL;
 	$objRegProdData = new regitrationProductData();
 

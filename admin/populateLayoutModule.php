@@ -1,4 +1,6 @@
 <?php
+global $_SESSION,$D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
 // Get all active modules on the site
 $stQuery="select distinct(module_id) from layout_module AS lm , layout_placeholder AS lp 
 WHERE lm.module_id IN(lp.module_order)";

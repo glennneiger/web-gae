@@ -1,6 +1,7 @@
 <?php
 include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
 include_once("$D_R/lib/config/_article_config.php");
+$objCache = new Cache();
 Class googleFeed											// Class Start
 {
 	function googleFeed($item_type){						// Constructor Call
@@ -33,7 +34,7 @@ Class googleFeed											// Class Start
 		switch($filter){
 			case 'google_editors_pick':
 
-		 	 $sqlGoogleArticlesFeeds = "SELECT * FROM (SELECT articles.id id,EIM.item_type, articles.title, contributors.name author,EIM.description,articles.body as body, IF(articles.publish_date,articles.publish_date,articles.date) AS `pub_date` FROM articles, contributors, content_syndication CS, ex_item_meta EIM WHERE articles.contrib_id = contributors.id AND EIM.item_id=articles.id AND EIM.item_type='1' AND articles.approved='1' AND articles.is_live='1' AND  articles.id=CS.item_id AND CS.item_type='1' AND CS.is_syndicated='1' AND CS.syndication_channel='".$filter."'  		 	UNION
+		 	$sqlGoogleArticlesFeeds = "SELECT * FROM (SELECT articles.id id,EIM.item_type, articles.title, contributors.name author,EIM.description,articles.body as body, IF(articles.publish_date,articles.publish_date,articles.date) AS `pub_date` FROM articles, contributors, content_syndication CS, ex_item_meta EIM WHERE articles.contrib_id = contributors.id AND EIM.item_id=articles.id AND EIM.item_type='1' AND articles.approved='1' AND articles.is_live='1' AND  articles.id=CS.item_id AND CS.item_type='1' AND CS.is_syndicated='1' AND CS.syndication_channel='".$filter."'  		 	UNION
      SELECT daily_feed.id id,EIM.item_type, daily_feed.title,
    contributors.name author,EIM.description,daily_feed.body AS body,
    IF(daily_feed.publish_date,daily_feed.publish_date,daily_feed.creation_date) AS `pub_date` FROM `daily_feed`, `contributors`, content_syndication CS, ex_item_meta EIM
@@ -526,7 +527,7 @@ SELECT '2' as item_type, B.id,B.title,B.body ,B.updated AS creation_date from bu
 <rss version="2.0" xmlns:atom10='http://www.w3.org/2005/Atom'>
 <channel>
 	<ttl>1</ttl>
-	<lastBuildDate><?php echo $LBD;?> EDT</lastBuildDate>
+	<lastBuildDate><?php echo $LBD;?> EST</lastBuildDate>
 	<link><?php echo $HTPFX.$HTHOST; ?></link>
  <description>Minyanville's best articles</description>
  <title>Minyanville's Editor's Picks</title>
@@ -551,7 +552,9 @@ SELECT '2' as item_type, B.id,B.title,B.body ,B.updated AS creation_date from bu
  <item>
    <title><![CDATA[<?php echo mswordReplaceSpecialChars($story['title']); ?>]]></title>
 		   <link><?php
-		      echo $HTPFX.$HTHOST.makeRssArticleslink($story['id'],$story['item_type']);
+		   $objCache = new Cache();
+		   		$url = $objCache->getItemLink($story['id'],$story['item_type']);
+		      echo $HTPFX.$HTHOST.$url;
 		      if($story['item_type']=="1")
 		      {
 		      	echo "/";
@@ -559,7 +562,7 @@ SELECT '2' as item_type, B.id,B.title,B.body ,B.updated AS creation_date from bu
 		   ?>?camp=syndication&amp;medium=editors-pick&amp;from=googlenews</link>
 		   <description><![CDATA[<?php echo $body; ?>]]></description>
    <author><?php echo mswordReplaceSpecialChars($story['author']); ?></author>
-   <pubDate><?php echo date('D, j M Y H:i:s',strtotime($story['pub_date'])); ?> EDT</pubDate>
+   <pubDate><?php echo date('D, j M Y H:i:s',strtotime($story['pub_date'])); ?> EST</pubDate>
  </item>
  <?php }
  ?>

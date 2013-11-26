@@ -1,0 +1,894 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin:0;
+	padding:0;
+}
+
+h2{
+	text-transform: none;
+}
+
+#cooper_wrapper{
+	width:980px;
+	margin:0px auto;
+	background-color:#f5f5f5;
+}
+.clr{
+	clear:both;
+	margin:0px;
+	padding:0px;
+}
+/*Top Area Start*/
+.cooper_logo{
+	float: left;
+	display: block;
+	padding:30px 40px 14px 40px;
+	background:#f5f5f5;
+}
+
+.cooper_logo img{
+	width: 406px;
+	height: 50px;
+}
+
+#cooper_header{
+	float: left;
+	width: 900px;
+	padding: 20px 40px;
+	border-top: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
+	background-color: #fafafa;
+}
+
+#cooper_header ul{
+	width: 850px;
+}
+
+#cooper_header ul li{
+	float: left;	
+	color:#666666;
+	list-style:none;
+	font-size: 20px;
+	font-weight:normal;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+#cooper_header ul li a{
+	color:#666666;
+}
+
+#cooper_header li{
+	margin: 0px 0px;
+	padding: 0px 20px 0px 0px;
+}
+#cooper_header .active{
+	color: #333333;
+	font-weight: bold;
+}
+
+#cooper_header .active a{
+	color: #333333;
+}
+
+.cooper_emailQust{
+	float: right;
+	width: 290px;
+	color:#666666;
+	font-size:14px;
+	font-weight:normal;
+	padding: 58px 0px 14px 0px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif
+}
+.cooper_emailQust a{
+	color:#00b4f1;
+	text-decoration:none;
+}
+.cooper_emailQust a:hover{
+	color:#00b4f1;
+	text-decoration:underline;
+}
+
+/*Content Area Start*/
+.cooper_contentPanel{
+	float: left;
+	padding: 40px 40px;
+}
+.cooper_contentPanel .cooperButton{
+	float:left;
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:16px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 14px 0px 0px 0px;
+	padding:5px 0px 5px 0px;
+	border-radius: 5px 5px;
+	background-color: #00b4f1;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.cooper_contentPanel .cooperButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+
+.cooper_contentPanel cooperButton a{
+	background-color: #0a8cf1;
+	text-decoration:none;
+}
+
+.cooper_lftPanel{
+	width: 580px;
+	float: left;
+	margin: 0px 40px 0px 0px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+.cooper_lftPanel h1{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	font-family: 'PT Sans Narrow', sans-serif;
+
+}
+
+.cooper_lftPanel h1 a hover{
+	color:#167FC5;
+	text-decoration:underline;
+}
+
+.cooper_lftPanel h1.cooper_about{
+	width:580px;
+	margin:0px 0px 15px 0px;
+	padding:0px 0px 15px 0px;
+}
+
+.cooper_lftPanel h1 a{
+	float: left;
+	clear:left;
+	color:#333333;
+	font-size: 36px;
+	font-weight:bold;
+	line-height:35px;
+	margin:10px 0px 15px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.cooper_lftPanel h1 a:hover{
+	color:#00b4f1;
+	text-decoration:underline;
+}
+
+.cooper_lftPanel h3{
+	float: left;
+	width: 580px;
+	color:#999999;
+	font-size:16px;
+	cursor:default;
+	font-size: 16px;
+	font-weight:normal;
+	text-transform: none;
+	margin:0px 0px 14px 0px;
+	padding:0px 0px 0px 0px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.cooper_lftPanel p{
+	float: left;
+	color:#333333;
+	font-size:16px;
+	font-weight:normal;
+}
+.cooper_alertBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 14px 0px;
+	background: url(http://image.minyanville.com/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+}
+
+.cooper_lftPanel .cooper_bioDesc{
+	float: left;
+	color:#333333;
+	font-size:16px;
+	font-weight:normal;
+}
+
+.cooper_alertDetailBox{
+	float: left;
+	clear:left;
+	padding:0px 0px 15px 0px;
+}
+
+.cooper_alertDetailBox img{
+	height:auto;
+	width:100%;
+}
+
+.cooper_alertDetailBox h1{
+	margin:0px 0px 14px 0px;
+}
+
+.cooper_alertDetailBox h2{
+	line-height:28px;
+	margin:0px 0px 8px 0px;
+}
+
+.cooper_alertDetailBox h3{
+	font-size: 18px; 
+	line-height: 18px; 
+	margin:0px 0px 8px 0px;
+}
+
+.cooper_alertDetailBox h4{
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.cooper_alertDetailBox h5{
+	color: #333333; 
+	font-size: 12px; 
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.cooper_alertDetailBox h6{
+	color: #333333; 
+	font-size: 11px;  
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+}
+
+.cooper_pagination{
+	float: left;
+	width: 580px;
+}
+.cooper_pagination .cooperPageButton{
+	float: left;
+	width: 20%;
+	height: 20px;
+	color: #ffffff;
+	font-size:16px;
+	text-align:center;
+	border:none;
+	cursor: pointer;
+	margin: 20px 0px 0px 0px;
+	padding: 5px 0px 5px 0px;
+	border-radius: 5px 5px;
+	background-color: #0aa676;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.cooper_pagination .cooperPageButton:hover{
+	background-color: #0aa676;
+	text-decoration:underline;
+}
+
+.cooper_pagination .cooperPageButton a{
+	color: #ffffff;
+}
+
+.cooper_pagination .prv_button{
+	float: left;
+}
+.cooper_pagination .nxt_button{
+	float: right;
+}
+.cooper_rght_panel .cooperBioButton{
+	float: left;
+	border:none;
+	width: 83px;
+	height: 20px;
+	color: #ffffff;
+	font-size:16px;
+	cursor: pointer;
+	padding:5px 0px;
+	text-align:center;
+	border-radius: 5px 5px;
+	margin: 15px 0px 0px 0px;
+	background-color: #0670c1;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.cooper_rght_panel{
+	width:280px;
+	float:left;
+}
+
+.cooper_rght_panel .cooperBioButton:hover{
+	background-color: #0a8cf1;
+	text-decoration:underline;
+}
+
+.cooper_rght_panel .cooperBioButton a{
+	color: #ffffff;
+	text-decoration:none;
+}
+.cooper_rght_panel h2{
+	float: left;
+	color:#333333;
+	font-size:28px;
+	font-weight:bold;
+	text-transform: none;
+	margin:14px 0px 5px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+.cooper_rght_panel input[type="text"]{
+	float: left;
+	width: 160px;
+	height: 28px;
+	color: #999999;
+	font-style:italic;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border:1px solid #e1e1e1;
+	padding: 0px 10px 0px 10px;
+}
+.cooper_rght_panel input[type="button"]{
+	float: left;
+	width: 91px;
+	height: 38px;
+	border:none;
+	cursor:pointer;
+	background: url(http://image.minyanville.com/images/cooper-redesign/cooperSearch.png) no-repeat;
+}
+.cooper_rght_panel p{
+	width: 258px;
+	float: left;
+	color:#a6a6a6;
+	font-size:16px;
+	font-weight:normal;
+	margin:12px 0px 0px 0px;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.cooper_box_rght{
+	float: left;
+	clear:left;
+	width:282px;
+	padding:0px 0px 15px 0px;
+}
+.hr{
+	width:282px;
+	background: url(http://image.minyanville.com/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+}
+
+.cooper_disclaimer{
+	float: left;
+	clear:left;
+	font-weight:normal;
+	font-style:italic;
+	padding:0px 0px 15px 0px;
+	color: #666666;
+    font-family: "Times New Roman",Times,serif;
+    font-size: 12px;
+}
+
+.cooper_alertBottom{
+	float: left;
+	clear:left;
+	width:565px;
+	margin:30px 0px 0px 0px;
+}
+
+.cooper_category{
+	float:left;	
+}
+
+.cooper_category a{
+	color:#00b4f1;
+}
+
+.cooper_category a:hover{
+	color:#00b4f1;
+	text-decoration:underline;	
+}
+
+#cooper_post{
+	float:left;
+	width:580px;
+	font-size: 16px;
+	color: #333333;		
+	overflow:hidden;
+}
+
+#cooper_post a{
+	color: #167FC5;		
+}
+
+#cooper_post a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+.no_post{
+	color: #333333;
+	font-size: 20px;
+	text-align: center;
+}
+
+#cooper_post ul{
+	margin: 5px 0px 0px 20px;		
+}
+
+#cooper_post ul li{
+	font-size: 16px;
+	color: #333333;		
+}
+
+#cooper_post h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#cooper_post h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+#cooper_alert_body{
+	float:left;
+	width:580px;
+	font-size: 16px;
+	color: #333333;	
+	overflow:hidden;	
+}
+
+#cooper_alert_body ul{
+	margin: 0px 0px 0px 5px;		
+}
+
+#cooper_alert_body a{
+	color: #167FC5;		
+}
+
+#cooper_alert_body a:hover{
+	color: #167FC5;	
+	text-decoration:underline;	
+}
+
+#cooper_alert_body ul li{
+	font-size: 16px;
+	color: #333333;	
+	margin:15px;	
+}
+
+#cooper_alert_body h2{
+	color: #333333;
+	font-size: 28px;
+	font-family: 'PT Sans Narrow', sans-serif;
+	font-weight: 700;
+	line-height: normal;
+}
+
+#cooper_alert_body h3{
+	color: #333333;
+	font-size: 20px;
+	font-family: 'PT Sans','PT Sans Narrow',sans-serif;
+	font-weight: 400;
+	border-bottom:none;
+	margin:0px;
+	padding:0px;
+	float: none;
+}
+
+#cooper_alert_body span{
+	font-family: 'PT Sans Narrow', sans-serif; !important
+}
+
+.cooper_alertBottom .cooper_goTop{
+	float: right;
+	color:#00b4f1;
+	cursor: pointer;
+}
+
+.cooper_goTop a, .cooper_goTop a:hover{
+	color:#00b4f1;	
+	text-decoration:underline;
+}
+
+.cooper_bioImage{
+	float: left;
+    margin: 0 20px 20px 0;
+}
+
+.cooper_bioImage img{
+	height: auto;
+    width: 100%;	
+}
+.ptc_fancyBox{
+	float:left;
+	width:580px;
+}
+
+#fancybox-close{
+	top:-30px;
+	right:0px;
+	height:24px;
+	width:24px;
+	background-repeat:no-repeat;
+	background: url('http://image.minyanville.com/images/peter-tchir/popup_close.png');
+}
+
+.cooper_rightCol_list{
+	float:left;
+	color:#00b4f1;
+	font-size:16px;
+	font-weight:normal;
+	list-style:none;
+	font-family: 'PT Sans','PT Sans Narrow', sans-serif;
+}
+
+.cooper_rightCol_list a{
+	color:#00b4f1;
+	text-decoration:none;
+}
+
+.cooper_rightCol_list a:hover{
+	text-decoration:underline;
+}
+
+.no_result{
+	color: red;
+	font-size: 18px;
+	text-align: center;
+}
+
+.bioEmail{
+	color:#00b4f1;
+	text-decoration:none;
+}
+
+.bioEmail:hover{
+	color:#00b4f1;
+	text-decoration:underline;
+}
+
+.cooper_user_guide{
+	color:#fff;
+	font-size:28px;
+	font-weight:bold;
+	border-radius:5px;
+	background:#00b4f1;
+	text-align:center;
+	padding:0px 0px 4px 0px;
+	margin:14px 0px 0px 0px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.cooper_user_guide a:hover{
+	color:#fff;
+	text-decoration:underline;
+}
+
+.cooper_user_guide a{
+	color:#fff;
+}
+
+#frmCooperSearch{
+	margin:15px 0px 0px 0px;
+}
+
+.cooperWheelImg{
+	width:236px;
+	height:174px;
+	margin:25px 0px 0px 25px;
+}
+
+.cooperBuyNow{
+	color:#fff;
+	width:96px;
+	height:20px;
+	font-size:18px;
+	font-weight:bold;
+	border-radius:5px;
+	background:#00b4f1;
+	text-align:center;
+	padding:4px 0px 8px 0px;
+	margin:14px 0px 0px 50px;
+	font-family: 'PT Sans Narrow', sans-serif;
+}
+
+.cooperBuyNow a:hover{
+	color:#fff;
+	text-decoration:underline;
+}
+
+.cooperBuyNow a{
+	color:#fff;
+}
+
+.cooperArchive{
+	height: 285px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	list-style-type: none;
+	margin:15px 0px 0px 0px;
+}
+
+.cooperArchive li{
+	color:#00b4f1;
+	font-size:14px;	
+	list-style-type: none;	
+	font-family:PT Sans Narrow;
+}
+
+.cooperArchive li a{
+	color:#00b4f1;
+	text-decoration:none;
+}
+
+.cooperArchive li a:hover{
+	color:#00b4f1;
+	text-decoration:underline;
+}
+
+.cooperArchive div.yrList{
+	width:60px;
+	height:20px;
+	cursor:pointer;
+	color:#00b4f1;
+	font-size:14px;
+	font-weight:normal;
+	list-style-type: none;	
+	font-family:PT Sans Narrow;
+}
+
+.cooperArchive div.mnthList{
+	width:130px;
+	height:20px;
+	cursor:pointer;
+	color:#00b4f1;
+	font-size:14px;
+	font-weight:normal;
+	list-style-type: none;	
+	font-family:PT Sans Narrow;
+}
+
+.cooperArchive .yearHeading{
+	width:30px;
+	float:left;
+}
+
+.cooperArchive .monthHeading{
+	width:90px;
+	float:left;
+}
+
+.cooperArchive div.yrList:hover, .cooperArchive div.mnthList:hover{
+	color:#00b4f1;
+	text-decoration:underline;
+}
+
+.inner, .innerCat{
+	display:none;
+	padding:0px 0px 0px 20px;
+}
+
+.cooperListImg{
+	width:30px;
+	float:left;
+	margin:7px 0px 0px 0px;
+}
+
+.cooperMnthListImg{
+	width:40px;
+	float:left;
+	margin:7px 0px 0px 0px;
+}
+
+.cooperListImg img, .cooperMnthListImg img{
+	width:7px;
+	height:7px;
+}
+
+.bttmArrwImg{
+	display:none;
+}
+
+.cbp-fwslider ul {
+	margin: 25px 0px 0px 28px !important;
+}
+
+.cbp-fwslider nav{
+	top:0px !important;
+	position:relative !important;
+}
+
+.cbp-fwdots{
+	width:223px;
+	position:static;
+	margin:-19px 0px 0px 0px;
+}
+
+.cbp-fwslider nav span.cbp-fwprev{
+	left:-28px !important;
+}
+
+.cooperProductPopUp{
+	height:310px;
+	width:590px;
+	background:#024375;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px; 
+	padding:40px 0px 0px 0px;
+	margin:20px 0px 0px 0px;
+}
+
+.cooperProdPopUpText{
+	text-align:center;
+	font-size: 32px;
+	line-height:32px;
+	color:#ffffff;
+	font-family:PT Sans Narrow, serif;
+	font-weight:bold;
+}
+
+.cooperProdPopUpItatlicText{
+	color: #ffffff;
+	font-size: 30px;
+	text-align: center;
+	font-style: italic;
+	margin: 10px 0px 0px 0px;
+	font-family: PT Sans Narrow, serif;
+}
+
+.cooperProdLink{
+	margin:30px 0px 0px 0px;
+}
+
+.cooperProdLinkBox{
+	height:95px;
+	width:600px;
+	color:#ffffff;
+	font-size: 22px;
+	text-align:center;
+	background:#04213a;
+	display:table-cell;
+	vertical-align:middle;
+	font-family:PT Sans Narrow, serif;	
+}
+
+.cooperProdPopUpHopeTxt{
+	color:#ffffff;
+	font-size: 24px;
+	text-align:center;
+	margin:12px 0px 0px 0px;
+	font-family:PT Sans Narrow, serif;
+}
+		
+.cooperClosebttn{
+	cursor: pointer;
+	margin: -40px -2px 0px 0px;
+	width: 100%;
+	color: #ffffff;
+	font-size: 11px;
+	float: left;
+}
+
+.cooperCloseText{
+	width: 100px;
+	float: right;
+}
+
+/* Cooper Slider */
+.ca-container{
+	float:left;
+	width:282px;
+}
+.ca-wrapper{
+	width:282px;
+	height:335px;
+	position:relative;
+}
+
+.ca-item{
+	float:left;
+	width:281px;
+	height:281px;
+	text-align:center;
+}
+
+.ca-fwdots {
+	top:-375px;
+	left:97px;
+	width:100px;
+	position: relative;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.ca-fwdots span {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background: #ddd;
+	margin: 4px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.ca-fwdots span:hover {
+	background: #999;
+}
+
+.ca-fwdots span.ca-fwcurrent {
+	background: #3294e4;
+	box-shadow: 0 0 0 2px #3294e4;
+	-webkit-transition: box-shadow 0.2s ease-in-out;
+	-moz-transition: box-shadow 0.2s ease-in-out;
+	transition: box-shadow 0.2s ease-in-out;
+}
+
+.ca-nav{
+	height:50px;
+}
+
+.ca-item-main{
+	float:left;
+	cursor:pointer;
+}
+
+.fade {
+	opacity: 1;
+	transition: opacity .25s ease-in-out;
+	-moz-transition: opacity .25s ease-in-out;
+	-webkit-transition: opacity .25s ease-in-out;
+	}
+   
+.fade:hover {
+	opacity: 0.5;
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	filter: alpha(opacity=50);
+}  
+
+.ca-nav span{
+	float:left;
+	width:28px;
+	height:40px;
+	background:transparent url(http://image.minyanville.com/images/subscription/arrows.png) no-repeat top left;
+	opacity:0.7;
+	cursor:pointer;
+	z-index:100;
+}
+.ca-nav span.ca-nav-next{
+	float:right;
+	background-position:top right;
+}
+
+.ca-nav span:hover{
+	opacity:1.0;
+}
+
+.cooperPrint{
+	margin:0px 0px 0px 10px;
+}
+
+.cooperPrint a{
+	color: #083d70;
+	text-decoration:none;
+}
+
+.cooperPrint a:hover{
+	text-decoration:underline;
+}
+
+.cooperPrint img{
+	width:16px;
+	height:14px;
+	border:none;
+}

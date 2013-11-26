@@ -1,6 +1,7 @@
 <?php
-global $IMG_SERVER,$HTPFX,$HTHOST;
+global $IMG_SERVER,$HTPFX,$D_R,$HTHOST;
 session_start();
+include_once("$D_R/lib/json.php");
 class regitrationProductData{
 
 	function newThreeStepRegisteration() {

@@ -54,22 +54,22 @@ a {
 }
 
 .top-borders {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px 0px; no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px 0px; no-repeat;
 	height: 10px;
 }
 
 .bottom-borders {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -129px; no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px -129px; no-repeat;
 	height: 10px;
 }
 
 .header-main {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -10px; no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px -10px; no-repeat;
 	height: 119px;
 }
 
 .buzz-tagline {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -3px no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px -3px no-repeat;
 	height: 86px;
 	width: 512px;
 	margin: 0;
@@ -109,16 +109,16 @@ a {
 	width: 780px;
 	margin:  0 10px 0 0;
 	float: left;
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -161px no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px -161px no-repeat;
 }
 
 .hl-borders-top {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -141px no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px -141px no-repeat;
 	height: 8px;
 }
 
 .hl-borders-btm{
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -151px no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px -151px no-repeat;
 	height: 8px;
 }
 
@@ -136,7 +136,7 @@ a {
 }
 
 .trialButton {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) no-repeat;
 	background-position: 0px -615px;
 	float: left;
 	height: 30px;
@@ -187,7 +187,7 @@ a {
 }
 
 .registration-form {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) -0px -889px no-repeat;	
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) -0px -889px no-repeat;	
 }
 
 .labels, .openFields {
@@ -222,7 +222,7 @@ a {
 
 .submit-button {
 	background: none;
-	background-image: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png);
+	background-image: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png);
 	background-position:  -324px -889px ;
 	cursor: pointer;
 	float: right;
@@ -243,7 +243,7 @@ input.submit-button:focus {
 
 
 .subscribe-box {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/sprites.png) 0px -647px no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/sprites.png) 0px -647px no-repeat;
 	float: left;
 	height: 198px;
 	width: 900px;
@@ -328,7 +328,7 @@ input.submit-button:focus {
 }
 
 .welcome-box {
-	background: #000000 url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/mainBkg.png) left top no-repeat;
+	background: #000000 url(http://image.minyanville.com/images/buzzTrial/sembuzz/mainBkg.png) left top no-repeat;
 	height: 385px;
 	padding: 20px 0 0 20px;
 	width:920px;
@@ -380,14 +380,14 @@ input.submit-button:focus {
 	float: left;
 	height: 35px;
 	width: 181px;
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/launchBuzz_btn.png) left top no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/launchBuzz_btn.png) left top no-repeat;
 	text-indent: -9999px;
 	outline: 0;
 	cursor:pointer;
 }
 
 .launch-buzz-btn:hover {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/sembuzz/launchBuzz_hover_btn.png) left top no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/sembuzz/launchBuzz_hover_btn.png) left top no-repeat;
 }
 
 .sembuzz-footer{

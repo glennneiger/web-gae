@@ -183,7 +183,7 @@ padding: 0;
 	float:left;
 	padding:0px 0px 0px 0px;
 	/*margin:4px 0px 0px 0px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/input_search.png);
+	background-image:url(http://image.minyanville.com/images/subscription/input_search.png);
 	background-repeat:no-repeat;*/
 }
 	
@@ -622,7 +622,7 @@ margin:27px auto;
 color:#33617f !important;
 line-height:0px;
 }
-.footer_bar{background: url(http://storage.googleapis.com/mvassets/images/footer/indentedDivider_color.gif) repeat-x scroll center; float:left;
+.footer_bar{background: url(http://image.minyanville.com/images/footer/indentedDivider_color.gif) repeat-x scroll center; float:left;
 line-height: 6px !important;
 }
 
@@ -974,7 +974,7 @@ text-align:left;
 
 .right_common_head_home{ 
  text-align:center;
- background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/right_common_main_bg.jpg);
+ background-image:url(http://image.minyanville.com/images/home_redesign/right_common_main_bg.jpg);
  clear:both;
  height:28px;
  
@@ -1061,7 +1061,7 @@ width:975px;
 clear:both;
 margin-left:3px;
 #margin-left:2px;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/control_panel_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/control_panel_bg.jpg);
 background-repeat: repeat-x;
 padding-left:10px;
 border-right:solid 0px #000;
@@ -1210,7 +1210,7 @@ padding-left:8px;
 margin-right:2px;
 padding-right:8px;
 border:solid 1px #8d6922;
-background-image:url(http://storage.googleapis.com/mvassets/images/view_button_bg.jpg);
+background-image:url(http://image.minyanville.com/images/view_button_bg.jpg);
 }
 
 .view_button a{
@@ -1424,13 +1424,13 @@ text-decoration:none;
 font-weight:bold;
 }
 .main_header_bg_login{
-/*background-image:url(http://storage.googleapis.com/mvassets/images/redesign/header_right_corner.jpg);
+/*background-image:url(http://image.minyanville.com/images/redesign/header_right_corner.jpg);
 background-repeat:no-repeat;
 background-position:right;*/
 }
 .header_main_logout{
 font-family:Arial, Helvetica, sans-serif;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/header_right_corner.jpg);*/
+/*background-image: url(http://image.minyanville.com/images/header_right_corner.jpg);*/
 background-repeat:no-repeat;
 width:auto;
 background-position:top right;
@@ -1558,7 +1558,7 @@ padding-bottom:5px;
 padding-left:10px;
 }
 #login_screen_six ul{
-list-style-image: url(http://storage.googleapis.com/mvassets/images/redesign/login_bullet.gif);
+list-style-image: url(http://image.minyanville.com/images/redesign/login_bullet.gif);
 
 }
 
@@ -1566,7 +1566,7 @@ list-style-image: url(http://storage.googleapis.com/mvassets/images/redesign/log
 margin:0px;
 font-family:Arial, Helvetica, sans-serif;
 font-size:12px;
-list-style-image: url(http://storage.googleapis.com/mvassets/images/redesign/login_bullet.gif);
+list-style-image: url(http://image.minyanville.com/images/redesign/login_bullet.gif);
 font-weight:bold;
 line-height:20px;
 color:#6b6b6b;
@@ -1682,7 +1682,7 @@ margin-bottom:10px;
 }
 
 .control_panel_option  {
-background-image:url("http://storage.googleapis.com/mvassets/images/redesign/control_panel_bg_option.jpg");
+background-image:url("http://image.minyanville.com/images/redesign/control_panel_bg_option.jpg");
 background-repeat:repeat-x;
 border-right:0 solid #000000;
 clear:both;
@@ -2125,8 +2125,4 @@ padding: 0px 0px 0px 15px;
 
 #os_dmp_embed .os-playlist_extra-vanilla h3{
 	color:#000;
-}
-
-#fancybox-content{
-	height:auto !important;	
 }

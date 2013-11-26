@@ -1,10 +1,11 @@
 <?
-global $cloudStorageTool,$HTPFX,$HTHOST;
+global $cloudStorageTool,$HTPFX,$HTHOST,$tempPath,$D_R,$bucketPath;
 include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/_cart.php");
 
 $postto= $HTPFX.$HTHOST."/admin/store/categories.mod.php";
 
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' => $tempPath];
 $frm_url = $cloudStorageTool->createUploadUrl($postto, $options);
 
 /*============set up permissions=================*/

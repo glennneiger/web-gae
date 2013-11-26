@@ -1,5 +1,5 @@
 <?
-global $D_R;
+global $D_R,$CDN_SERVER;
 include_once($D_R."/admin/lib/_contributor_class.php");
 $page="thestreet_articles";
 if(!$page)$page="admintools";
@@ -137,7 +137,7 @@ function checkArticleType()
 <script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
-<script language="javascript" type="text/javascript" src="http://<?=$HTTP_HOST?>/js/suggestion.js"></script>
+<script language="javascript" type="text/javascript" src="<?=$CDN_SERVER?>/js/suggestion.js"></script>
 <TR>
 <TD colspan="2"><label for="TS_articles[tickers]"><b>Tickers</b></label></TD>
 </TR>

@@ -3,6 +3,12 @@
 
 global $D_R,$IMG_SERVER;
 include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/layout_functions.php");
+if($_SERVER['REQUEST_URI'])
+{
+        $articleArr = getKeyVal('a,p,from',$_SERVER['REQUEST_URI']);
+}
+$articleid = ($_GET['a']=="" ? $articleArr['a'] :$_GET['a']);
 
 $pageName = "cooperhome";
 $zoneIDSky = $SEC_TO_ZONE['articletop'];
@@ -10,7 +16,6 @@ $zoneIDFooter = $SEC_TO_ZONE['articlefooter'];
 $zoneIDFooter2 = $SEC_TO_ZONE['articlefooter2'];
 $zoneIDBottom2 = $SEC_TO_ZONE['articlebottom2'];
 
-$articleid = $_GET['a'];
 $objContent = new Content('Cooper',$articleid);
 
 include_once("$D_R/lib/layout_functions.php");
@@ -35,8 +40,8 @@ if(!$_SESSION['LoggedIn']){
 	}
 }
 
-if (($_GET['a'] != "") && (is_numeric($_GET['a']))) {
-	$articleid = $_GET['a'];
+if (($articleid != "") && (is_numeric($articleid))) {
+echo "safsf";
 	$article = getArticlecooper($articleid);
 	if ($article != 0) {
 		$articleSet = true;
@@ -47,11 +52,6 @@ if (($_GET['a'] != "") && (is_numeric($_GET['a']))) {
 
 //some old images will point to gazette/newsviews redirect this to articles/index.php
 $article['body'] = str_replace("gazette/newsviews/?id","articles/index/a",$article['body']);
-
-//those old links inside the body of the article shouldn't open in  a new window.
-//$article['body'] = str_replace("_blank","_self",$article['body']);
-
-//$article['link'] = $HTNOSSLDOMAIN . makeArticleslinkcooper($article['id'],$article['keyword'],$article['blurb']);
 
 /* Static for cooper article*/
 $article['authorid'] = 90;
@@ -118,8 +118,7 @@ function cooperprint(articleid) {
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
   <tr>
-    <td colspan="2" ><?=displayAuthorLink($article['author'],$article['authorid']); ?>&nbsp;<?= $article['date'];?><a href="javascript:cooperprint(<?= $articleid; ?>);" target="_self" style='text-decoration:none;color: #083d70;'>
-    <img src="<?=$IMG_SERVER?>/images/icons/print-icon.gif"  width="16" hspace="5" height="14" border="0"alt="Print" />Print</a>   </td>
+    <td colspan="2" ><?=displayAuthorLink($article['author'],$article['authorid']); ?>&nbsp;<?= $article['date'];?><a href="javascript:cooperprint(<?= $articleid; ?>);" target="_self" style='text-decoration:none;color: #083d70;'><img src="<?=$IMG_SERVER?>/images/icons/print-icon.gif"  width="16" hspace="5" height="14" border="0"alt="Print" />Print</a>   </td>
     </tr>
   <tr>
     <td colspan="2"  >&nbsp;

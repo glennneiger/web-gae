@@ -7,6 +7,7 @@ use google\appengine\api\mail\Message;
 $mailClass = new Message();
 $cloudStorageTool = new CloudStorageTools();
 
+header('X-Frame-Options: SAMEORIGIN');
 ini_set("sendmail_path","/usr/sbin/sendmail -t -i -ob");
 //ini_set("session.cookie_domain",".minyanville.com");
 date_default_timezone_set('America/New_York');
@@ -19,21 +20,18 @@ include_once("$D_R/lib/_misc.php");
 include_once("$D_R/lib/_state.php");
 include_once("$D_R/lib/_exchange_config.php");
 include_once("$D_R/lib/_exchange_lib.php");
-include_once("$D_R/lib/_minyanville.php");
+include_once("$D_R/lib/_minyanville.php"); // check
 include_once("$D_R/lib/_constants.php");
-include_once("$D_R/lib/json.php");
 include_once("$D_R/lib/MemCache.php");
 include_once("$D_R/lib/_module_design_lib.php");
 include_once("$D_R/lib/_module_data_lib.php");
 include_once("$D_R/lib/_redesign_design_lib.php");
 include_once("$D_R/lib/_redesign_data_lib.php");
-include_once("$D_R/lib/_cart.php");
-include_once("$D_R/lib/_layout_design_lib.php");
-include_once("$D_R/lib/_layout_data_lib.php");
-include_once("$D_R/lib/layout_functions.php");
+include_once("$D_R/lib/layout_functions.php"); //check
 include_once("$D_R/lib/config/_cache_config.php");
 include_once("$D_R/lib/_outer_design_lib.php");
-include_once ("$D_R/lib/_user_controller_lib.php");
+include_once("$D_R/lib/_layout_design_lib.php");
+include_once ("$D_R/lib/_user_controller_lib.php"); //check
 
 try{
 	include_once($D_R."/lib/htmlpurifier4.4/library/HTMLPurifier.includes.php");

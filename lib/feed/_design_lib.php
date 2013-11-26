@@ -57,7 +57,7 @@ The Trusted Choice for the Wall Street Voice
 </description>
 <pubDate>
 			<?=date('D, j M Y H:i:s',strtotime($item['pubDate'])) ?>
-EDT
+EST
 </pubDate>
 <guid isPermaLink="true">
 <![CDATA[<?=$articleLink?>]]>
@@ -129,27 +129,27 @@ EDT
 		$string.='xmlns:tickersdata="'.$HTPFX.$HTHOST.'/rss/tickerrss.htm"
 		xmlns:tickersval="'.$HTPFX.$HTHOST.'/rss/tickerrss.htm"
 		xmlns:media="http://search.yahoo.com/mrss/"';
-		if(trim($this->partnerId)!='PraJ6keqe57stEzu2ethuyAdr6thU6up' && trim($this->partnerId)!='qbvlNGTcW7e0FTJLHVIT2Mfpq20vVlMU' && trim($this->partnerId)!='2HAthamarev5RAfU8aFEKepruJeFraZA')
+		if(trim($this->partnerId)!='PraJ6keqe57stEzu2ethuyAdr6thU6up' && trim($this->partnerId)!='qbvlNGTcW7e0FTJLHVIT2Mfpq20vVlMU' && trim($this->partnerId)!='2HAthamarev5RAfU8aFEKepruJeFraZA' && trim($this->partnerId)!='UwX8053S76293TY171Y33581HRn32U87')
 		{
-			$string.='xmlns:nasdaq="http://www.nasdaq.com/reference/feeds/1.0"';
+			$string.=' xmlns:nasdaq="http://www.nasdaq.com/reference/feeds/1.0" ';
 		}
 	}
 	
 	
 	$string.='>
 <channel>
-<atom:link href="'.htmlspecialchars($HTPFX.$HTHOST.$_SERVER['REQUEST_URI'],ENT_QUOTES).'" rel="self" type="application/rss+xml" />
+<atom:link href="'.urlencode($HTPFX.$HTHOST.$_SERVER['REQUEST_URI']).'" rel="self" type="application/rss+xml" />
 <title>Minyanville</title>
 			<description>The Trusted Choice for the Wall Street Voice</description>
 			<link>'.$HTPFX.$HTHOST.'</link>
 			<copyright>'.date('Y').' Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
 			<ttl>1</ttl>
-		  	<lastBuildDate>'.$LBD.' EDT</lastBuildDate>';
+		  	<lastBuildDate>'.$LBD.' EST</lastBuildDate>';
 	
 		if($this->type=="yahoo" || $this->type=="yahooFull" || $this->type=="mvpremiumyahoo")
 		{
 			$string.='<image>
-'.$IMG_SERVER.'/mvassets/images/home_redesign/mv_logo_site.png
+'.$IMG_SERVER.'/images/home_redesign/mv_logo_site.png
 </image>
 <webMaster>it@minyanville.com</webMaster>
 <generator>Minyanville</generator>';
@@ -210,7 +210,7 @@ EDT
 				{
 					$string.='<link>'.$item['link'].'</link>';
 				}
-				$string.='<pubDate>'.date('D, j M Y H:i:s',strtotime($item['pubDate'])).' EDT</pubDate>';
+				$string.='<pubDate>'.date('D, j M Y H:i:s',strtotime($item['pubDate'])).' EST</pubDate>';
 				if(trim($this->partnerId)=='f468c507a1204d5e912d580e411ab36a' || trim($this->partnerId)=='qbvlNGTcW7e0FTJLHVIT2Mfpq20vVlMU' || trim($this->partnerId)=='PraJ6keqe57stEzu2ethuyAdr6thU6up' || trim($this->partnerId)=='2HAthamarev5RAfU8aFEKepruJeFraZA'){
 					$string.='<guid isPermaLink="false" >'.$item['guid'].'</guid>';
 				}else{
@@ -239,14 +239,16 @@ EDT
 					$relatedLinks.="</ul></p>";
 					$body = $this->addPartnerParam($item['desc']);
 					$string.='<description><![CDATA['.utf8_encode($body.$relatedLinks).']]></description>';
-				}
-				else
-				{
+				}elseif ($this->type=='gravity'){
+					$string.='<description><![CDATA['.utf8_encode($this->addPartnerParam($item['content'])).']]></description>';
+				}else {
 					$string.='<description><![CDATA['.utf8_encode($this->addPartnerParam($item['desc'])).']]></description>';
 				}
 				
 				if(trim($this->partnerId)=='PraJ6keqe57stEzu2ethuyAdr6thU6up' || trim($this->partnerId)=='qbvlNGTcW7e0FTJLHVIT2Mfpq20vVlMU' || trim($this->partnerId)=='2HAthamarev5RAfU8aFEKepruJeFraZA')
 				{
+					$item[articleImg] = str_replace('"', '', $item[articleImg]);
+					$item[articleImg] = str_replace("'", "", $item[articleImg]);					
 					$string.='<enclosure url="'.$item[articleImg].'"  type="image/jpeg" />';
 				}
 				
@@ -257,9 +259,11 @@ EDT
 					$string.='</name></author>';
 				}else{
 						$string.='<author><![CDATA['.utf8_encode($item['author']).']]></author>';
+
 				}
-					
-				$string.='<content:encoded><![CDATA['.$this->addPartnerParam($item['content']).']]></content:encoded>';
+				if($this->type!='gravity'){
+					$string.='<content:encoded><![CDATA['.$this->addPartnerParam($item['content']).']]></content:encoded>';
+				}
 
 				// Positions
 				if (trim($this->partnerId)=='a87ff679a2f3e71d9181a67b7542122c'){
@@ -338,7 +342,7 @@ EDT
 	{
 		global $arFeedPartners;
 		// Regular exp for Article links
-		$regexp = "<a\s[^>]*href=(\"??)(http:\/\/'.$HTHOST.'[^\" >]*?\/id\/[0-9]*)\\1[^>]*>(.*)<\/a>";
+		$regexp = "<a\s[^>]*href=(\"??)(http:\/\/www.minyanville.com[^\" >]*?\/id\/[0-9]*)\\1[^>]*>(.*)<\/a>";
 		preg_match_all("/$regexp/siU", $input, $matches);
 		$trackParameter="camp=syndication&medium=feed&from=".$arFeedPartners[$this->partnerId]['tracking_name'];
 		/*switch($this->partnerId){
@@ -421,7 +425,7 @@ The Daily Feed of Stock Market News
 </description>
 <pubDate>
 			<?=date('D, j M Y H:i:s',strtotime($item['pubDate'])) ?>
-EDT
+EST
 </pubDate>
 <guid isPermaLink="true">
 <![CDATA[<?=$feedLink;?>]]>

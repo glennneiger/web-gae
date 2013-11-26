@@ -1,6 +1,8 @@
 <?
-include_once("$ADMIN_PATH/_authenticate.htm");
+global $D_R,$ADMIN_PATH;
 
+include_once("$ADMIN_PATH/_authenticate.htm");
+include_once("$D_R/lib/json.php");
 $json = new Services_JSON();
 $bounceback="./admin_users.htm?error=";
 

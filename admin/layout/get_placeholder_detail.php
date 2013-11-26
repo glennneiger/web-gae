@@ -1,5 +1,6 @@
 <?php 
-
+global $D_R;
+include_once("$D_R/lib/_layout_data_lib.php");
 header('Content-Type: text/xml');  // for xml response
 $arPlaceHolderResult= getPagePlaceHolderList($_POST['page_id']);
 if($arPlaceHolderResult)

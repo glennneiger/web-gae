@@ -10,7 +10,7 @@
 }
 
 .body1 {
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/bkg.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/bkg.gif);
 	background-repeat: repeat-x; 
 }
 
@@ -41,7 +41,7 @@
 .f-headerright {
 		width:732px;
 		height:127px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/top-header-right.gif);		
+		background-image:url(http://image.minyanville.com/images/newregistration_images/top-header-right.gif);		
 		float:left;
 }
 .f-leftcolumn {
@@ -75,7 +75,7 @@ All this CSS (ul/lu/.navbutton*) is all the CSS image rollover code.
 .f-navbutton1 {
 				width:184px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/login_navbutton1.gif) no-repeat;
+				background: url(http://image.minyanville.com/images/newregistration_images/login_navbutton1.gif) no-repeat;
 				background-position: 0 -36px;
 				overflow:hidden;	
 				float:left;	
@@ -83,18 +83,18 @@ All this CSS (ul/lu/.navbutton*) is all the CSS image rollover code.
 .f-navbutton1active {
 				width:184px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/login_navbutton1.gif) no-repeat;
+				background: url(http://image.minyanville.com/images/newregistration_images/login_navbutton1.gif) no-repeat;
 				background-position: 0px 0px;
 				overflow:hidden;	
 				float:left;	
 }			
 .f-navbutton1 a:hover {
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/login_navbutton1.gif) no-repeat 0px 0px;	
+				background: url(http://image.minyanville.com/images/newregistration_images/login_navbutton1.gif) no-repeat 0px 0px;	
 			}			
 			.f-navbutton2 {
 				width:149px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton2.gif) no-repeat top;
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton2.gif) no-repeat top;
 				background-position: 0 -36px;
 				overflow:hidden;
 				float:left;		
@@ -102,18 +102,18 @@ All this CSS (ul/lu/.navbutton*) is all the CSS image rollover code.
 			.f-navbutton2active {
 				width:149px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton2.gif) no-repeat top;
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton2.gif) no-repeat top;
 				background-position: 0px 0px;
 				overflow:hidden;
 				float:left;		
 			}			
 			.f-navbutton2 a:hover {
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton2.gif) no-repeat 0px 0px;	
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton2.gif) no-repeat 0px 0px;	
 			}			
 			.f-navbutton3 {
 				width:194px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton3.gif) no-repeat top;
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton3.gif) no-repeat top;
 				background-position: 0 -36px;
 				overflow:hidden;
 				float:left;	
@@ -121,18 +121,18 @@ All this CSS (ul/lu/.navbutton*) is all the CSS image rollover code.
 			.f-navbutton3active {
 				width:194px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton3.gif) no-repeat top;
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton3.gif) no-repeat top;
 				background-position: 0px 0px;
 				overflow:hidden;
 				float:left;	
 			}			
 			.f-navbutton3 a:hover {
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton3.gif) no-repeat 0px 0px;	
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton3.gif) no-repeat 0px 0px;	
 			}			
 			.f-navbutton4 {
 				width:161px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton4.gif) no-repeat top;
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton4.gif) no-repeat top;
 				background-position: 0 -36px;
 				overflow:hidden;
 				float:left;	
@@ -140,19 +140,19 @@ All this CSS (ul/lu/.navbutton*) is all the CSS image rollover code.
 			.f-navbutton4active {
 				width:161px;
 				height:36px;
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton4.gif) no-repeat top;
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton4.gif) no-repeat top;
 				background-position: 0px 0px;
 				overflow:hidden;
 				float:left;	
 			}			
 			.f-navbutton4 a:hover {
-				background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/navbutton4.gif) no-repeat 0px 0px;	
+				background: url(http://image.minyanville.com/images/newregistration_images/navbutton4.gif) no-repeat 0px 0px;	
 			}			
 	
 	.f-leftcolumncontent {
 		width:688px;
 		height:1610px;
-		background-image: url(http://storage.googleapis.com/mvassets/images/newregistration_images/left-col-bkg.gif);
+		background-image: url(http://image.minyanville.com/images/newregistration_images/left-col-bkg.gif);
 		border:none;
 	}
 	
@@ -175,17 +175,17 @@ make smaller sections for the text to live in.
 	}
 	.f-rightcolumn1 {
 		height:111px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-1.gif);	
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-1.gif);	
 	}
 	.f-rightcolumn2 {
 		height:300px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-2.gif);
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-2.gif);
 		background-repeat:repeat;
 		color:black;
 	}
 	.f-rightcolumn3 {
 		height:47px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-3.gif);
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-3.gif);
 	}
 	
 	.f-emailerror {
@@ -193,30 +193,30 @@ make smaller sections for the text to live in.
 		color:#FF0000;
 		font-size:12px;
 		font-weight:bold;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/blue.gif);
+		background-image:url(http://image.minyanville.com/images/newregistration_images/blue.gif);
 	}
 	
 	.f-rightcolumnpassword {
 		height:62px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/blue.gif);
+		background-image:url(http://image.minyanville.com/images/newregistration_images/blue.gif);
 	}
 	
 	.f-rightcolumn4 {
 		height:149px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-4.gif);	
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-4.gif);	
 	}
 	.f-rightcolumn5 {
 		height:215px; /*Orig. 195*/
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-5.gif);	
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-5.gif);	
 	}
 	.f-rightcolumn6 {
 		height:490px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-6.gif);	
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-6.gif);	
 		overflow:hidden;
 	}
 	.f-rightcolumn7 {
 		height:80px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-7.gif);
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-7.gif);
 		text-align:center;
 		padding-right:22px;
 		margin:0px;
@@ -224,7 +224,7 @@ make smaller sections for the text to live in.
 	}
 	.f-rightcolumn8 {
 		height:193px; /*  377, 431px*/
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/right-col-8.gif);
+		background-image:url(http://image.minyanville.com/images/newregistration_images/right-col-8.gif);
 		overflow:hidden;	
 	}
 
@@ -261,7 +261,7 @@ make smaller sections for the text to live in.
 .f-witopheader1 {
 	width:688px;
 	height:107px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p1-top1.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p1-top1.gif);
 }
 .f-witopheader2 {
 	width:400px;
@@ -273,7 +273,7 @@ make smaller sections for the text to live in.
 		padding-top:13px;
 		padding-right:20px;
 		line-height:18px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p1-top2.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p1-top2.gif);
 	background-repeat:no-repeat;
 	padding-bottom:13px;
 }
@@ -293,7 +293,7 @@ margin-right:10px;
 margin-left:20px;
 width:429px;
 height:580px;
-background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/flashInfo.gif);
+background-image:url(http://image.minyanville.com/images/newregistration_images/flashInfo.gif);
 background-repeat:no-repeat;
 background-position:right;
 
@@ -321,14 +321,14 @@ line-height:18px;
 .f-wwtopheader1 {
 	width:688px;
 	height:88px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p2-top1.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p2-top1.gif);
 }
 
 .f-wwtopheader2 {
 	width:688px;
 	height:125px;
 	font-size:13px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p2-top2.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p2-top2.gif);
 	background-repeat:no-repeat;
 	padding-bottom:13px;
 }
@@ -350,7 +350,7 @@ line-height:18px;
 	float:left;
 	margin-left:12px;
 	padding-top:15px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p2-list-background.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p2-list-background.gif);
 	background-repeat:no-repeat;
 	
 
@@ -370,7 +370,7 @@ line-height:18px;
 		color:#FFFFFF;
 		padding-left:25px;
 		padding-right:35px;
-		background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/pointer.gif);
+		background-image:url(http://image.minyanville.com/images/newregistration_images/pointer.gif);
 		background-position:right;
 		background-repeat:no-repeat;
 		font-style:normal;
@@ -390,7 +390,7 @@ line-height:18px;
 	margin-left:5px;
 	margin-top:2px;
 	padding-top:10px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p2-content-background.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p2-content-background.gif);
 	background-repeat:no-repeat;
 	padding-bottom:50px;
 	
@@ -420,14 +420,14 @@ line-height:18px;
 .f-wjtopheader1 {
 	width:688px;
 	height:88px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p4-top1.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p4-top1.gif);
 }
 
 .f-wjtopheader2 {
 	width:688px;
 	height:125px;
 	font-size:13px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/newregistration_images/p4-top2.gif);
+	background-image:url(http://image.minyanville.com/images/newregistration_images/p4-top2.gif);
 }
 
 	.f-wjtopheader2 p {
@@ -478,7 +478,7 @@ height:1200px;
 }
 
 .adLeaderboard {
-background-image : url(http://storage.googleapis.com/mvassets/images/header_town_bg.jpg);
+background-image : url(http://image.minyanville.com/images/header_town_bg.jpg);
 background-repeat : no-repeat;
 margin : 0;
 padding : 0;

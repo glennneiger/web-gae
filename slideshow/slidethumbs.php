@@ -3,6 +3,7 @@ global $D_R, $HTPFX,$HTHOST,$IMG_SERVER;
 include_once($D_R."/lib/_module_data_lib.php");
 include_once($D_R."/lib/_redesign_design_lib.php");
 global $slidesCnt; // now its 4	
+include_once($D_R.'/lib/config/_slideshow_config.php');
 $MAX=$slidesCnt;
 
 if ($_GET['i']=="")

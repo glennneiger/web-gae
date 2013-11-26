@@ -68,6 +68,24 @@ return;
 }
 // for down link
 /* function for down order */
+
+function getFeatured($act)
+{
+     if($act=='Featured')
+    {
+	 $stQuery = "SELECT * FROM homepage_module where module_type='Featured' order by order_type ASC";
+	 $arModuleResult = exec_query($stQuery);
+	}
+	else
+	{
+	  $stQuery = "SELECT h.*,EIM.title,m.title as vtitle FROM homepage_module as h left join articles as EIM
+                  on EIM.id = h.object_id  left join mvtv as m on h.object_id = m.id
+                  where module_type='Recent' order by h.order_type ASC";
+	  $arModuleResult = exec_query($stQuery);
+	}
+	return $arModuleResult;
+}
+
 function down($id)
 {
  $query1   = "select order_type,id from homepage_module where module_type='Recent' ORDER BY order_type ASC";

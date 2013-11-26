@@ -130,7 +130,8 @@ class fbhandler{
 		return 'false';
 	}
 	function autologin($fbId, $isRegister){
-		global $globalPwd;
+		global $globalPwd,$D_R;
+		include_once("$D_R/lib/json.php");
 		$objUser = new user();
 		$json = new Services_JSON();
 		set_sess_vars('userFacebookId',$this->fbId);

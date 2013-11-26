@@ -3542,6 +3542,9 @@ order by author asc";
 	}
 	# create a thread against an article
 	function post_thread($id){
+		global $D_R;
+		include_once("$D_R/lib/layout_functions.php");
+		
 		if($id==""){
 			return 0;
 		}
@@ -5732,7 +5735,7 @@ function mark_article($subscriber_id,$article_id,$markas){
 }
 
 function display_userBlogs($user_login_id){
-global $page_config,$lang,$USER,$HTPFX,$HTHOST;
+global $page_config,$lang,$USER,$HTPFX,$HTHOST,$CDN_SERVER;
 $guest_id=0;
 $retid=0;
 $exobj=new Exchange_Element();
@@ -5762,7 +5765,7 @@ if(isset($user_login_id)){
 if(($guest_id==0)&&($curntuser==0)){
 	echo "User Not Logged In......";
 }else if(($guest_id==0)&&($curntuser!=0)){
-	$usersblogs='<script src="'.$HTPFX.$HTHOST.'/js/blogsubscribe.js" type="text/javascript"></script>';
+	$usersblogs='<script src="'.$CDN_SERVER.'/js/blogsubscribe.js" type="text/javascript"></script>';
 	//echo "$loginuserfullname trying to see his own BLOGS";
    //select those blogs created by u
 	$LIMIT=5;
@@ -5833,7 +5836,7 @@ if(($guest_id==0)&&($curntuser==0)){
 	if($guestfname!='Stranger'){
 	//echo $loginuserfullname." is trying to see ".$guestfname."<br>";
 	// First Try to Display authors Blog
-	$usersblogs='<script src="'.$HTPFX.$HTHOST.'/js/blogsubscribe.js" type="text/javascript"></script>';
+	$usersblogs='<script src="'.$CDN_SERVER.'/js/blogsubscribe.js" type="text/javascript"></script>';
 	//echo "$loginuserfullname trying to see his own BLOGS";
    //select those blogs created by u
 	$LIMIT=5;
@@ -5978,7 +5981,7 @@ if(($guest_id==0)&&($curntuser==0)){
 }
 }
 function follow_subscrbd_blogs($user_login_id,$newemailchk,$msg,$unsubscribeid,$start,$end){
-	global $blogsubscrcnt;
+	global $blogsubscrcnt,$CDN_SERVER;
 
 	if((!isset($start)) && (!isset($end))){$start=0;$end=0+$blogsubscrcnt;$lmt='';}else{
 		$startlmt=$start;
@@ -6065,7 +6068,7 @@ function follow_subscrbd_blogs($user_login_id,$newemailchk,$msg,$unsubscribeid,$
 					 $count=count($qryresultsets);
 
 					 if($count>0){
-						 $ownsubscribedBlogsdetail='<script src="'.$HTPFX.$HTHOST.'/js/followblogedit.js" type="text/javascript"></script>';
+						 $ownsubscribedBlogsdetail='<script src="'.$CDN_SERVER.'/js/followblogedit.js" type="text/javascript"></script>';
 						 $ownsubscribedBlogsdetail.='<table border="0" style="border-left:1px solid #cccccc;padding:0px;margin:0px; border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc; padding:0px;margin:0px;" cellpadding="0" cellspacing="0" align="center" width="100%">
 						 <tr>
 						 <td>
@@ -6313,7 +6316,8 @@ function getSubscriptionInfo($subscription_id)
 
 //function for Display Recomended Articles
 function display_recomendedArticles($user_login_id,$caption){
-	global $SHOW_RECNT_BLOG,$page_config,$lang,$suggestedartlmt;
+	global $SHOW_RECNT_BLOG,$page_config,$lang,$suggestedartlmt,$D_R;
+	include_once("$D_R/lib/layout_functions.php");
 	$caption=$lang[$caption];
 	$qry="select A.id id,A.title,A.contrib_id,A.date created_on from ex_user_stockwatchlist EUSW,subscription S, ex_stock ES, articles A, ex_item_tags EIT,ex_tags ETAGS where EUSW.subscription_id=S.id and EUSW.stock_id=ES.id and ES.stocksymbol=ETAGS.tag and ETAGS.type_id=1 and ETAGS.id =EIT.tag_id and EIT.item_id=A.id and EIT.item_type=1 and  S.id='$user_login_id' group by A.id  order by created_on DESC LIMIT $suggestedartlmt";
 	$qryresultset = exec_query($qry);

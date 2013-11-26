@@ -289,7 +289,7 @@ http://www.minyanville.com/articles/index/a/12892
 http://www.minyanville.com/articles/index.php?a=12140
 http://www.minyanville.com/articles/index.php?a=16080
 http://www.minyanville.com/articles/ethanol-tax-Rebate-AAA-Biofuel-level/index/a/17108
-http://www.minyanville.com/home_load/home_mvtv.swf?caption2=Netflix: Top Gun in Rentals&still2=http://storage.googleapis.com/mvassets/mvtv/stills/Y10_12.19.07_Netflix_rev.jpg&videoid=50
+http://www.minyanville.com/home_load/home_mvtv.swf?caption2=Netflix: Top Gun in Rentals&still2=http://image.minyanville.com/mvtv/stills/Y10_12.19.07_Netflix_rev.jpg&videoid=50
 http://www.minyanville.com/articles/index.php?a=16039
 http://www.minyanville.com/articles/index.php?a=14015
 http://www.minyanville.com/community/Discussion.htm?q=15402
@@ -327,7 +327,7 @@ http://www.minyanville.com/articles/index.php?a=12657
 http://www.minyanville.com/articles/index.php?a=127
 http://www.minyanville.com/articles/index.php?a=12701
 http://www.minyanville.com/articles/index.php?a=12910
-http://www.minyanville.com/entertainment/entertainment_videoplayer.swf?videoURL=http://storage.googleapis.com/mvassets/mvtv/videos/F29_05.09.08_Luxury_Goods_web_FL8_700kb.flv&title=Dear John&still=http://storage.googleapis.com/mvassets/mvtv/stills/F29_05.09.08_Luxury Goods.jpg
+http://www.minyanville.com/entertainment/entertainment_videoplayer.swf?videoURL=http://image.minyanville.com/mvtv/videos/F29_05.09.08_Luxury_Goods_web_FL8_700kb.flv&title=Dear John&still=http://image.minyanville.com/mvtv/stills/F29_05.09.08_Luxury Goods.jpg
 http://www.minyanville.com/assets/modules/off_balance.gif
 http://www.minyanville.com/assets/characters/hoof_boo_laughing.jpg
 http://www.minyanville.com/assets/modules/SUPERBowl-Cartoon Entertainment page.jpg

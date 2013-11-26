@@ -224,6 +224,8 @@ class bitly{
    */
 	private function getResult($bitlyurl, $errors = false )
 	{
+		global $D_R;
+		include_once("$D_R/lib/json.php");
 	$objjson= new Services_JSON();
 
 		if ( $errors ) {

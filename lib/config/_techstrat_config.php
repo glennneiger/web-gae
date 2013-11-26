@@ -11,7 +11,7 @@ $tickerMentionedLimit="30";
 $techStratFrom="TechStrat Report <subscriptions@minyanville.com>";
 $techStratFromName="TechStrat Report";
 $techStratFromEmail="subscriptions@minyanville.com";
-$techStratTemplate=$HTPFX.$HTADMINHOST."/emails/_eml_techstrat_alert.htm";
+$techStratTemplate=$HTPFX.$HTHOST."/emails/_eml_techstrat_alert.htm";
 
 $maxPostDispLimit	=	'50';
 $noPostText = "Welcome to Tech Strat. We will soon publish tech starategies in ";

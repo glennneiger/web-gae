@@ -14,6 +14,7 @@ Class feed{
 			case 'yahooFull':
 			case 'mvpremiumyahoo':
 			case 'googlecurrents':
+			case 'gravity':
 			$this->type=$type;
 			break;
 			case 'articlebuzz':
@@ -51,8 +52,6 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 	}
 	function getFeedData($maxItems,$currentFilter=NULL,$filters=NULL){
 		global $partnerIdYahooLiveStand;
-		$this->type;
-
 		switch($this->type){
 			case '1':
 				// get feed for yahoo livestand
@@ -98,6 +97,7 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 			case 'yahooFull':
 				return $this->getArticleYahooFeedData($maxItems,"1",$currentFilter,$filters);
 				break;
+			case 'gravity':
 			default:
 				return $this->getArticleFeedData($maxItems,$currentFilter,$filters);
 		}
@@ -354,6 +354,10 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 				}
 			}
 		}
+		else
+		{
+			$sqlGetArticles .= " and articles.date>('".mysqlNow()."' - interval 1 month) ";
+		}
 		$maxItemLimit=50;
 		$sqlGetArticles .= " ORDER BY articles.publish_date DESC,articles.date DESC LIMIT 0,".$maxItemLimit;
 		$resGetArticles=exec_query($sqlGetArticles);
@@ -415,7 +419,7 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 		EIT.tickers,A.body articlebody,B.body buzzbody,B.login,EIT.item_type,EIT.url,EIT.description FROM ex_item_meta EIT
 LEFT JOIN articles A ON (A.id=EIT.item_id  AND EIT.item_type='1')
 LEFT JOIN buzzbanter B ON (EIT.item_id=B.id AND EIT.item_type='2')
-WHERE 	EIT.item_type IN ('1','2') and EIT.is_live='1' and EIT.publish_date>'".mysqlNow()."' - interval 2 month ";
+WHERE 	EIT.item_type IN ('1','2') and EIT.is_live='1' and EIT.publish_date>'".mysqlNow()."' - interval 1 week ";
 
 		if($currentFilter){
 			$sqlGetArticleBuzz .= " AND EIT.author_id NOT IN ($contribFilterId) ";
@@ -438,12 +442,14 @@ WHERE 	EIT.item_type IN ('1','2') and EIT.is_live='1' and EIT.publish_date>'".my
 						break;
 				}
 			}
-		}
+		}		
 		$sqlGetArticleBuzz.= $sqlGetBuzzFilter;
 		$sqlGetArticleBuzz .= " ORDER BY  EIT.publish_date DESC ";
 		if(!$flagDuration){
 			$sqlGetArticleBuzz.="LIMIT 0,".$maxItemLimit;
 		}
+
+	
 		$resGetArticleBuzz=exec_query($sqlGetArticleBuzz);
 		$i=0;
 		foreach($resGetArticleBuzz as $articleBuzz){
@@ -509,6 +515,10 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 						break;
 						}
 						}
+					}
+				else
+					{
+						$sqlGetBuzz .= " and B.date>('".mysqlNow()."' - interval 1 month) ";
 					}
 		$sqlGetBuzz .= " ORDER BY pubDate DESC ";
 		if(!$flagDuration){
@@ -587,6 +597,10 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 						break;
 						}
 						}
+					}
+					else
+					{
+						$sqlGetBuzz .= " and B.date>('".mysqlNow()."' - interval 1 month) ";
 					}
 					if (!$maxItemLimit) $maxItemLimit="250";
 					$sqlGetBuzz .= "ORDER BY pubDate DESC LIMIT 0,".$maxItemLimit;
@@ -725,7 +739,8 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 			{
 			$tagId	=	$resultTopic ['id'];
 			$sqlGoogleDailyFeeds	=	"select D.id,D.title,D.body,C.name author,
-		IF(D.publish_date,D.publish_date,D.updation_date) pubDate, D.body as description  from daily_feed D, ex_item_tags T,contributors C where D.is_approved='1' and D.is_deleted='0' and  D.contrib_id=C.id  and T.item_id= D.id and T.tag_id = ".$tagId." and T.item_type='18'";
+		IF(D.publish_date,D.publish_date,D.updation_date) pubDate, D.body as description  from daily_feed D, ex_item_tags T,contributors C
+		 where D.is_approved='1' and D.is_deleted='0' and  D.contrib_id=C.id  and T.item_id= D.id and T.tag_id = ".$tagId." and T.item_type='18'";
 				if(currentFilter){
 				    $contribFilterId=$objContrib->getExcludedPartnerId();
 					$sqlGoogleDailyFeeds .= " and C.id NOT IN ($contribFilterId)) ";
@@ -734,7 +749,8 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 		}
 		else
 		{
-		 $sqlGoogleDailyFeeds = "select D.id,D.title,D.body,C.name author,IF(D.publish_date,D.publish_date,D.updation_date) pubDate, D.body as description FROM daily_feed D,contributors C WHERE D.is_approved='1' and D.is_deleted='0' and  D.contrib_id=C.id $filter";
+		 $sqlGoogleDailyFeeds = "select D.id,D.title,D.body,C.name author,IF(D.publish_date,D.publish_date,D.updation_date) pubDate,
+		  D.body as description FROM daily_feed D,contributors C WHERE D.is_approved='1' and D.is_deleted='0' and  D.contrib_id=C.id $filter";
 			 if($currentFilter){
 			        $contribFilterId=$objContrib->getExcludedPartnerId();
 					$sqlGoogleDailyFeeds .= " and C.id IN (SELECT CGM.contributor_id FROM contributor_groups_mapping CGM,
@@ -781,11 +797,13 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 		global $HTPFX,$HTHOST;
 		$objDailyfeed= new Dailyfeed();
 		$objMemcache= new Cache();
-			$sqlGoogleDailyFeeds = "select D.id,D.title,D.body,C.name author,IF(D.publish_date,D.publish_date,D.updation_date) pubDate,D.excerpt as description FROM daily_feed D,contributors C WHERE D.is_approved='1' and D.is_deleted='0' and  D.contrib_id=C.id";
+			$sqlGoogleDailyFeeds = "select D.id,D.title,D.body,C.name author,IF(D.publish_date,D.publish_date,D.updation_date) pubDate,
+			D.excerpt as description FROM daily_feed D,contributors C WHERE D.is_approved='1' and D.is_deleted='0' and  D.contrib_id=C.id
+			 and D.creation_date>('".mysqlNow()."' - interval 1 month) ";
 			if($this->authorId){
 				$sqlGoogleDailyFeeds .= " and D.contrib_id='".$this->authorId."'";
 			}
-			$sqlGoogleDailyFeeds .= " ORDER BY pubDate DESC LIMIT 0,".$limit;
+		 	$sqlGoogleDailyFeeds .= " ORDER BY pubDate DESC LIMIT 0,".$limit;
 			$result=exec_query($sqlGoogleDailyFeeds);
 
 		foreach($result as $key=>$value){
@@ -923,13 +941,13 @@ AND cs.item_id=daily_feed.id  AND daily_feed.is_yahoofeed='1' AND cs.syndication
 		$objArticle	= new ArticleData();
 		$objContrib= new contributor();
 		$contribFilterId=$objContrib->getExcludedPartnerId();
-		$sqlGetArticles = "select articles.id id, articles.character_text, articles.title, contributors.name author, 
+		$sqlGetArticles = "select '1' type,articles.id id, articles.character_text, articles.title, contributors.name author, 
 		contributors.disclaimer, articles.publish_date pubDate,
 		IF(articles.publish_date = '0000-00-0000:00:00',articles.date,articles.publish_date) AS display_date,
 		articles.date, articles.body, articles.subsection_ids, articles.is_audio";
 		$sqlGetArticles .= " from articles, `contributors`, content_syndication AS cs ";
 		$sqlGetArticles .= " where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1'
-		AND cs.item_id=articles.id ";
+		AND cs.item_id=articles.id  AND articles.date > ('".mysqlNow()."' - INTERVAL 1 MONTH)  ";
 		if($yahooFullBodySyndication=="1")
 		{
 			$sqlGetArticles .= " AND articles.is_yahoofeed='0' AND cs.syndication_channel='yahoo_full_body' AND cs.`is_syndicated`='1' ";
@@ -946,17 +964,18 @@ AND cs.item_id=daily_feed.id  AND daily_feed.is_yahoofeed='1' AND cs.syndication
 contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($contribFilterId)) ";
 		}
 
-		if(!empty($filters)){
-			foreach($filters as $key=>$val){
-				switch($key){
-					case 'durationFilter':
-						$sqlGetArticles .= " and B.date>'".mysqlNow()."' - interval 2 month having articles.publish_date > '".mysqlNow()."' - interval ".$val." minute ";
-					break;
-				}
-			}
-		}
-		$sqlGetArticles .= " ORDER BY display_date DESC LIMIT 0,".$maxItemLimit;
+		$sqlGetArticles .=" UNION SELECT '18' type, daily_feed.id id, daily_feed.`excerpt` AS character_text, daily_feed.title, contributors.name author, 
+	contributors.disclaimer, daily_feed.publish_date pubDate,
+	IF(daily_feed.publish_date = '0000-00-0000:00:00',daily_feed.`creation_date`,daily_feed.publish_date) AS display_date,
+	daily_feed.creation_date AS 'date', daily_feed.body, '' AS subsection_ids, '' AS is_audio 
+	FROM `daily_feed`, `contributors`, content_syndication AS cs 
+	 WHERE daily_feed.contrib_id = contributors.id AND daily_feed.`is_approved`='1'
+	  AND daily_feed.is_live='1'
+	AND cs.item_id=daily_feed.id  AND daily_feed.is_yahoofeed='1' AND cs.syndication_channel='yahoo' AND cs.`is_syndicated`='1' 
+	AND  daily_feed.creation_date > ('".mysqlNow()."' - INTERVAL 1 MONTH) ";  
 		
+		$sqlGetArticles .= " ORDER BY display_date DESC LIMIT 0,".$maxItemLimit;
+
 		$resGetArticles=exec_query($sqlGetArticles);
 		$i=0;
 		foreach($resGetArticles as $article){
@@ -1072,12 +1091,43 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 				{
 					$articleBody .= $relatedLinks;
 				}
-			}		
+			}		  
 
 			$articleFeedData[$i]['desc']=$articleBody;
 			$articleFeedData[$i]['content']=$article['character_text'];
-			$stocksArr=make_stock_array($article['body'],'',$articleDate);
-			foreach($stocksArr as $id=>$value)
+			
+			if($article['type']=="1")
+			{
+				$gettag		=	$objArticle->getTagsOnArticles($article['id'],'1');
+				/*$gettag=$tagobj->get_tags_on_objects($recentArticlerow['id'],'1');*/
+				$tagarray=array();
+				 foreach($gettag as $tagvalue)
+				{
+				    $validatetag=is_stock($tagvalue['tag']);
+					if($validatetag['exchange']){ // if entry in ex_stock table
+				 	$tagarray[]=$tagvalue['tag'];
+					}
+					else // Verify from Yahoo
+					{
+						$validateticker=getstockdetailsfromYahoo($tagvalue['tag']); /*varify ticker from yahoo*/
+						if($validateticker[0])
+						{
+							 $insertTickerid=settStockTickerforYahoo($validateticker); /*Insert data in the ex_stock table if verify from yahoo*/
+							 $tagarray[]=$tagvalue['tag'];
+						}
+					}
+				 }
+				 $unique_stocks=array_unique($tagarray);
+			}
+			else
+			{
+				global $D_R;
+				include_once("$D_R/lib/_content_data_lib.php");
+				$objDailyfeed	=	new Dailyfeed(18,$id);
+				$unique_stocks		=	$objDailyfeed->getTickersExchange($id,'18');
+			}
+			 
+			foreach($unique_stocks as $id=>$value)
 			{
 				$articleFeedData[$i]['ticker'][]=$value;
 			}
@@ -1099,9 +1149,7 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 		$contribFilterId=$objContrib->getExcludedPartnerId();
 		$sqlGetArticles = "select articles.id id, articles.title, contributors.name author, contributors.disclaimer, articles.publish_date pubDate, articles.date, articles.character_text, articles.body, articles.subsection_ids, articles.is_audio";
 		$sqlGetArticles .= " from articles, `contributors`, content_syndication AS cs ";
-		$sqlGetArticles .= " where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1'
-		AND cs.item_id=articles.id ";
-		$sqlGetArticles .= " AND cs.is_nasdaqFeed='1'";
+		$sqlGetArticles .= " where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' AND cs.item_id=articles.id AND cs.is_nasdaqFeed='1'";
 		if($this->authorId){
 			$sqlGetArticles .= " and articles.contrib_id='".$this->authorId."'";
 		}
@@ -1118,6 +1166,10 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 					break;
 				}
 			}
+		}
+		else
+		{
+			$sqlGetArticles .= " and articles.date>('".mysqlNow()."' - interval 1 month)";	
 		}
 
 		$sqlGetArticles .= " ORDER BY articles.publish_date DESC,articles.date DESC LIMIT 0,".$maxItemLimit;

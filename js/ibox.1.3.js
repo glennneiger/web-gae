@@ -4,7 +4,7 @@ Created for iBegin.com - local search done right
 MIT Licensed Style
 *********************************************************/
 var globaparam;
-var image_server= "http://storage.googleapis.com/mvassets";
+var image_server= "http://image.minyanville.com";
 var indicator_img_path = image_server + "/images/community_images/indicator.gif";
 //var indicator_img_path = "/images/community_images/indicator.gif";
 var indicator_img_html = "<img name=\"ibox_indicator\" src=\""+indicator_img_path+"\" alt=\"Loading...\" style=\"width:128px;height:128px;\"/>"; // don't remove the name

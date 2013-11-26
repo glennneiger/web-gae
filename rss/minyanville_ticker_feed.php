@@ -31,7 +31,7 @@ $LBD= date("D, j M Y H:i:s",strtotime($results[0]['date']));
 
 ?>
 <ttl>1</ttl>
-<lastBuildDate><?php echo $LBD;?> EDT</lastBuildDate>
+<lastBuildDate><?php echo $LBD;?> EST</lastBuildDate>
 <?php
 foreach($results as $result)
 {
@@ -54,7 +54,7 @@ foreach($results as $result)
 		<description><![CDATA[<?=$body;?>]]></description>
       	 <link><?=$HTPFX.$HTHOST.makeArticleslink($result['id']).$urlPostFix;?></link>
 		 <author><![CDATA[<?=$result['author'];?>]]></author>
-        <pubDate><?=date('D, j M Y H:i:s',strtotime($result['date'])) ?> EDT</pubDate>
+        <pubDate><?=date('D, j M Y H:i:s',strtotime($result['date'])) ?> EST</pubDate>
         <category domain="keywords"><![CDATA[<?=str_replace("-",",",$result['keyword']);?>]]></category>
 		<category domain="tickers"><? $tags_qry="select concat(ES.exchange,':',ES.stocksymbol) ticker from ex_item_tags EIT,ex_tags ET,ex_stock ES where EIT.tag_id=ET.id and ET.tag=ES.stocksymbol and EIT.item_id=".$result['id']." and EIT.item_type=1 and ET.type_id=1 GROUP BY ES.stocksymbol ";
 			$ticker_result=exec_query($tags_qry);

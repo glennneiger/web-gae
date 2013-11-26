@@ -1,4 +1,5 @@
 <?
+global $CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 ?>
 <script>
@@ -8,7 +9,7 @@ function unlock(id)
 	var postAjax = $.ajax({url:url,success:function(){window.location='';}});
 }
 </script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
 <?php 
 if(!$AD->getPerm("unlock_articles")){
 	admin_error();

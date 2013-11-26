@@ -6,13 +6,6 @@ include_once("$D_R/lib/_db.php");
 $q = strtolower( $_GET["q"] );
 if (!$q) return;
 
-/*$dbhost = "localhost";		// Database Host
-$dbuser = "root";			// User
-$dbpass = "Test";			// Password
-$dbname = "minyanville_stage";			// Name of Database
-
-mysql_connect( $dbhost, $dbuser, $dbpass ) or die( mysql_error() );
-mysql_select_db( $dbname ) or die( mysql_error() );*/
 
 $queryString=$_GET['q'];
 

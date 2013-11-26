@@ -5,6 +5,8 @@ include_once($D_R."/lib/registration/_manageAccountDesignLib.php");
 class registrationFunnelDesign{
 	function registrationFunnel($planCode,$accountCode,$email,$firstName,$lastName,$address1,$address2,$city,$zip,$state,$country,$phone)
 	{
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $IMG_SERVER,$HTPFX,$HTHOST,$viaProductsName;
 		$objManageAccount = new manageAccountDesignLib();
 		if($email!=''){
@@ -160,6 +162,8 @@ class registrationFunnelDesign{
 
 	function crossSell($planCode)
 	{
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $IMG_SERVER,$productDesc,$HTPFX,$HTHOST,$viaProductsName;
 		$objFunnelData = new registrationFunnelData();
 		$planDetail = $objFunnelData->getPlanDetails($planCode);
@@ -255,13 +259,15 @@ class registrationFunnelDesign{
 			echo '</div>';
 	}
 	function registrationPage($product,$id){
-	 global $HTPFX,$HTHOST,$viaProductsName;
-	 $viaProductsName['peterTchir']="Tchir's Fixed Income Report";
-	 if(!empty($product))
-	 {
-		$objFunnelData = new registrationFunnelData();
-		$productData = $objFunnelData->getProductData($product);
-	 }
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
+		 global $HTPFX,$HTHOST,$viaProductsName;
+		 $viaProductsName['peterTchir']="Tchir's Fixed Income Report";
+		 if(!empty($product))
+		 {
+			$objFunnelData = new registrationFunnelData();
+			$productData = $objFunnelData->getProductData($product);
+		 }
 	?>
 		<form name ="productfrm" id="productfrm"  method="POST" >
 		       <table width="200px" border="0" cellpadding="8" cellspacing="0">
@@ -337,6 +343,8 @@ class registrationFunnelDesign{
 
 	function welcomeFunnel()
 	{
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $IMG_SERVER,$viaProductsName;
 	?>
 		<div class="welcome_container">
@@ -524,6 +532,8 @@ class registrationFunnelDesign{
 
 	function welcomeFunnelSoftTrial()
 	{
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $IMG_SERVER,$viaProductsName;
 	?>
 		<div class="welcome_container">
@@ -590,6 +600,8 @@ class registrationFunnelDesign{
 	
 	function registrationFunnelV2($planCode,$accountCode,$email,$firstName,$lastName,$address1,$address2,$city,$zip,$state,$country,$phone)
 	{
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $IMG_SERVER, $HTPFX, $HTHOST, $viaProductsName, $objAmazonSNS;
 		$objManageAccount = new manageAccountDesignLib();
 		if($email!=''){

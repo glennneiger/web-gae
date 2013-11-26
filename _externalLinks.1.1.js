@@ -3,7 +3,7 @@
 //    at http://willmaster.com/possibilities/archives/
 // Also see http://BontragerConnection.com/
 
-var Domains = "minyanville-buzz.appspot.com,storage.googleapis.com,admin.minyanville.com,model.minyanville.com,beta.minyanville.com,cooper.minyanville.com,finance.minyanville.com,qa.minyanville.com,redesign.minyanville.com,videos.minyanville.com,minyanville.com";
+var Domains = "minyanville.com,storage.googleapis.com,admin.minyanville.com,model.minyanville.com,beta.minyanville.com,cooper.minyanville.com,finance.minyanville.com,qa.minyanville.com,redesign.minyanville.com,videos.minyanville.com,minyanville.com";
 ////////////////////////////////////////////
 // No other customizations are necessary. //
 ////////////////////////////////////////////

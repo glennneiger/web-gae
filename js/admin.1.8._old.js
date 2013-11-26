@@ -1,5 +1,5 @@
 var host=window.location.protocol+"//"+window.location.host;
-var image_server="http://storage.googleapis.com/mvassets";	
+var image_server="http://image.minyanville.com";	
 
 function saveLogo(){
 		logoname=$("logoname").value;

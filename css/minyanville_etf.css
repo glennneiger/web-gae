@@ -233,14 +233,14 @@ padding-right:2px;
 .header_buzzbanter_hardtrial{ 
 height:78px; 
 width:990px;
-background-image:url(http://storage.googleapis.com/mvassets/images/buzzTrial/buzz_header_hardtrial.jpg);
+background-image:url(http://image.minyanville.com/images/buzzTrial/buzz_header_hardtrial.jpg);
 background-repeat:no-repeat;
 }
 .mv_logo{ 
  height:107px; 
  width:250px;
  float: left;
- background-image: url("http://storage.googleapis.com/mvassets/images/home_redesign/MVLogoUpdated.jpg");
+ background-image: url("http://image.minyanville.com/images/home_redesign/MVLogoUpdated.jpg");
  background-repeat:no-repeat;
  }
 .mv_logo img{
@@ -254,11 +254,11 @@ width: auto;
 margin-left:2px;
 padding-left:1px;
 margin-right:2px;
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/search_headerleft_corner.jpg);
+background-image:url(http://image.minyanville.com/images/home_redesign/search_headerleft_corner.jpg);
 background-repeat:no-repeat;
 }
 .header_search_inner{ 
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/header_search_bg.jpg);
+background-image:url(http://image.minyanville.com/images/home_redesign/header_search_bg.jpg);
 }
 .go_button{
 padding:0px 15px 0px 5px ;
@@ -281,7 +281,7 @@ width:975px;
 clear:both;
 margin-left:3px;
 #margin-left:2px;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/control_panel_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/control_panel_bg.jpg);
 background-repeat: repeat-x;
 padding-left:10px;
 border-right:solid 0px #000;
@@ -433,7 +433,7 @@ padding-left:8px;
 margin-right:2px;
 padding-right:8px;
 border:solid 1px #8d6922;
-background-image:url(http://storage.googleapis.com/mvassets/images/view_button_bg.jpg);
+background-image:url(http://image.minyanville.com/images/view_button_bg.jpg);
 }
 
 .view_button a{
@@ -564,7 +564,7 @@ height:52px;
 }
 
 .common_middle_container{
-background-image:url("http://storage.googleapis.com/mvassets/images/home_body_bg.gif");
+background-image:url("http://image.minyanville.com/images/home_body_bg.gif");
 width:981px;
 clear:both;
 padding-left:4px;
@@ -575,7 +575,7 @@ _float:none;
 }
 
 .business_common_middle_container{
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/section_middle_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/section_middle_bg.jpg);
 background-repeat:repeat-x;
 }
 
@@ -666,7 +666,7 @@ margin-top:20px;
 height:20px;
 margin-top:20px; 
 clear:both; 
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/ending_line.jpg); 
+background-image:url(http://image.minyanville.com/images/home_redesign/ending_line.jpg); 
 background-repeat:no-repeat; 
 background-position:center;
 }
@@ -753,7 +753,7 @@ margin-top:15px;
 }
 .feature_slideshow_container_bg{
 height:9px;
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/redesign/feature_slide_bottom_bg.jpg);
+background-image:url(http://image.minyanville.com/images/home_redesign/redesign/feature_slide_bottom_bg.jpg);
 background-repeat:repeat-x; 
 clear:both;
 width:665px;
@@ -772,7 +772,7 @@ border:solid 0px red;
 float:right;
 padding-left:25px;
 text-align:left;
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/feature_slide_right_bg.jpg);
+background-image:url(http://image.minyanville.com/images/home_redesign/feature_slide_right_bg.jpg);
 background-position:left;
 background-repeat:no-repeat;
 margin:0px;
@@ -999,7 +999,7 @@ height:208px;
 width:220px; 
 background-position:right; 
 float:left; 
-background-image:url(http://storage.googleapis.com/mvassets/images/comment_post_box.jpg);
+background-image:url(http://image.minyanville.com/images/comment_post_box.jpg);
 }
 .PostComment_section{
 font-family:Arial, Helvetica, sans-serif;
@@ -1234,7 +1234,7 @@ font-family:Arial, Helvetica, sans-serif;
 font-weight: normal;  
 font-size:16px; 
 color:#FFFFFF; 
-background-image:url(http://storage.googleapis.com/mvassets/images/breaking_news_bg.jpg);  
+background-image:url(http://image.minyanville.com/images/breaking_news_bg.jpg);  
 text-transform:uppercase; 
 padding-right:10px; 
 }
@@ -1423,7 +1423,7 @@ border:none;
 margin-top:10px; 
 border:solid 1px #000000;
 clear:both; 
-background-image:url(http://storage.googleapis.com/mvassets/images/launch_button_bg.jpg);
+background-image:url(http://image.minyanville.com/images/launch_button_bg.jpg);
 }
 
 .launch_contant_heading{
@@ -1644,7 +1644,7 @@ line-height:12px;
 .main_footer{
 width:981px;
 clear:both;
-background-image:url("http://storage.googleapis.com/mvassets/images/home_body_bg.gif");
+background-image:url("http://image.minyanville.com/images/home_body_bg.gif");
 margin-right:2px;
 padding-left:4px;
 padding-top:15px;
@@ -1716,7 +1716,7 @@ color:#323232;
  
  .left_container{ 
  padding-left:15px;
- background-image:url(http://storage.googleapis.com/mvassets/images/life_money_title_bg.jpg);
+ background-image:url(http://image.minyanville.com/images/life_money_title_bg.jpg);
  background-position:top;
  background-repeat:repeat-x;
  
@@ -1995,7 +1995,7 @@ border:0px solid red;
 .tab_1 {
 float: left;
 color:#FFFFFF;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/redesign/blue_tab_bg.gif); */
+/*background-image: url(http://image.minyanville.com/images/redesign/blue_tab_bg.gif); */
 background:#002E5A;
 border-left:solid 1px #000;
 border-bottom:solid 1px #000;
@@ -2008,7 +2008,7 @@ font-size:11px;
 .tab_2,.tab_3,.tab_4 {
 float: left;
 color:#FFFFFF;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/redesign/blue_tab_bg.gif); */
+/*background-image: url(http://image.minyanville.com/images/redesign/blue_tab_bg.gif); */
 background:#002E5A;
 border-bottom:solid 1px #000;
 height:23px;
@@ -2030,7 +2030,7 @@ color: white;
 
 .tab_1 a:hover, .tab_1 a.current{
 color:#FFFFFF;
-/*background: transparent url(http://storage.googleapis.com/mvassets/images/redesign/common_rollover.jpg) center center repeat-x;*/
+/*background: transparent url(http://image.minyanville.com/images/redesign/common_rollover.jpg) center center repeat-x;*/
 }
 
  
@@ -2039,8 +2039,8 @@ float: left;
 color:#062f56;
 padding-top:5px;
 background-color:#FFFFFF;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/redesign/tab_1_selected.jpg);*/
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/nav_tab_bg.jpg);
+/*background-image: url(http://image.minyanville.com/images/redesign/tab_1_selected.jpg);*/
+background-image: url(http://image.minyanville.com/images/home_redesign/nav_tab_bg.jpg);
 font-family:Arial, Helvetica, sans-serif;
 border-right:solid 1px #000000;
 font-size:11px;
@@ -2064,7 +2064,7 @@ color: white;
 
 .tab_2 a:hover, .tab_2 a.current{
 color:#FFFFFF;
-/*background: transparent url(http://storage.googleapis.com/mvassets/images/redesign/common_rollover.jpg) center center repeat-x;*/
+/*background: transparent url(http://image.minyanville.com/images/redesign/common_rollover.jpg) center center repeat-x;*/
 }
 
 
@@ -2074,8 +2074,8 @@ float: left;
 color:#062f56;
 padding-top:5px;
 background-color:#FFFFFF;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/redesign/tab_2_selected.jpg);*/
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/nav_tab_bg.jpg);
+/*background-image: url(http://image.minyanville.com/images/redesign/tab_2_selected.jpg);*/
+background-image: url(http://image.minyanville.com/images/home_redesign/nav_tab_bg.jpg);
 font-family:Arial, Helvetica, sans-serif;
 font-size:11px;
 border-left:solid 1px #000000;
@@ -2097,7 +2097,7 @@ color: white;
 
 .tab_4 a:hover, .tab_4 a.current{
 color:#FFFFFF;
-/*background: transparent url(http://storage.googleapis.com/mvassets/images/redesign/common_rollover.jpg) center center repeat-x;*/
+/*background: transparent url(http://image.minyanville.com/images/redesign/common_rollover.jpg) center center repeat-x;*/
 }
 
  
@@ -2106,8 +2106,8 @@ float: left;
 color:#062f56;
 padding-top:5px;
 background-color:#FFFFFF;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/redesign/tab_4_selected.jpg);*/
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/nav_tab_bg.jpg);
+/*background-image: url(http://image.minyanville.com/images/redesign/tab_4_selected.jpg);*/
+background-image: url(http://image.minyanville.com/images/home_redesign/nav_tab_bg.jpg);
 font-family:Arial, Helvetica, sans-serif;
 font-size:11px;
 font-weight:normal;
@@ -2129,15 +2129,15 @@ color: white;
 
 .tab_3 a:hover, .tab_3 a.current{
 color:#FFFFFF;
-/*background: transparent url(http://storage.googleapis.com/mvassets/images/redesign/common_rollover.jpg) center center repeat-x;*/
+/*background: transparent url(http://image.minyanville.com/images/redesign/common_rollover.jpg) center center repeat-x;*/
 }
 .tab_3_selected a{
 float: left;
 color:#062f56;
 padding-top:5px;
 background-color:#FFFFFF;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/redesign/tab_3_selected.jpg);*/
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/nav_tab_bg.jpg);
+/*background-image: url(http://image.minyanville.com/images/redesign/tab_3_selected.jpg);*/
+background-image: url(http://image.minyanville.com/images/home_redesign/nav_tab_bg.jpg);
 font-family:Arial, Helvetica, sans-serif;
 font-size:11px;
 font-weight:normal;
@@ -2153,7 +2153,7 @@ line-height:18px;
 
 .tab_5 {
 float: left;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/subs_tab_bg.gif);
+background-image:url(http://image.minyanville.com/images/redesign/subs_tab_bg.gif);
 border-right:solid 1px #000;
 border-bottom:solid 1px #000;
 height:23px;
@@ -2176,7 +2176,7 @@ color: white;
 
 .tab_5 a:hover, .tab_5 a.current{
 color:#FFFFFF;
-/*background: transparent url(http://storage.googleapis.com/mvassets/images/redesign/common_rollover.jpg) center center repeat-x;*/
+/*background: transparent url(http://image.minyanville.com/images/redesign/common_rollover.jpg) center center repeat-x;*/
 height:24px;
 padding-top:5px;
 }
@@ -2185,8 +2185,8 @@ float: left;
 color:#062f56;
 padding-top:5px;
 background-color:#FFFFFF;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/redesign/tab_5_selected.jpg);*/
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/nav_tab_bg.jpg);
+/*background-image: url(http://image.minyanville.com/images/redesign/tab_5_selected.jpg);*/
+background-image: url(http://image.minyanville.com/images/home_redesign/nav_tab_bg.jpg);
 font-family:Arial, Helvetica, sans-serif;
 font-size:11px;
 font-weight:normal;
@@ -2457,7 +2457,7 @@ color:#062f56;
 /*Style start from here for quint flex folio*/
 
 .header_flexfolio {
-background-image: url(http://storage.googleapis.com/mvassets/images/active-investor/header_adbanner.jpg);
+background-image: url(http://image.minyanville.com/images/active-investor/header_adbanner.jpg);
 background-position:center;
 background-repeat: no-repeat;
 background-color: #FFFFFF;
@@ -2474,7 +2474,7 @@ padding-top:12px;
 }
 .header_flexfolio_hardtrials{
 width:90%;
-background-image: url(http://storage.googleapis.com/mvassets/images/quint_images/flex_folio_header.png);
+background-image: url(http://image.minyanville.com/images/quint_images/flex_folio_header.png);
 height:80px;
 background-repeat: no-repeat;
 background-position: 20px 0px;
@@ -2483,7 +2483,7 @@ float:left;
 }
 .header_optionsmith {
 width:662px;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/option_smith_header.png);
+background-image: url(http://image.minyanville.com/images/redesign/option_smith_header.png);
 height:83px;
 background-repeat: no-repeat;
 background-position: 70% center;
@@ -2492,7 +2492,7 @@ float:left;
 }
 .header_optionsmith_hardtrial {
 width:662px;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/option_smith_header.png);
+background-image: url(http://image.minyanville.com/images/redesign/option_smith_header.png);
 height:83px;
 background-repeat: no-repeat;
 background-position: 20px 0px;
@@ -2501,7 +2501,7 @@ float:left;
 }
 .header_cooper {
 width:728px;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/cooper_header.png);
+background-image: url(http://image.minyanville.com/images/redesign/cooper_header.png);
 background-repeat: no-repeat;
 background-position:left;
 height:106px;
@@ -2509,7 +2509,7 @@ float:right;
 }
 .header_cooper_hardtrial {
 width:90%;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/cooper_header.png);
+background-image: url(http://image.minyanville.com/images/redesign/cooper_header.png);
 background-repeat: no-repeat;
 background-position:15px 0px ;
 height:106px;
@@ -2542,7 +2542,7 @@ text-align:left;
 line-height:12px;
 }
 .quint_article_box{
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/quint_article_bg.gif);
+background-image:url(http://image.minyanville.com/images/redesign/quint_article_bg.gif);
 background-position:top;
 background-repeat:repeat-x;
 padding-top:15px;
@@ -2615,7 +2615,7 @@ height:56px;
 }
 
 .subs_common_middle_container{
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/main_middle_flexfolio_top_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/main_middle_flexfolio_top_bg.jpg);
 
 
 }
@@ -2790,7 +2790,7 @@ text-align:left;
   font-size:13px;
   font-weight:normal;
   padding-bottom:15px;
-  background-image: url(http://storage.googleapis.com/mvassets/images/quint_images/flex_folio_content_top_bg.jpg);
+  background-image: url(http://image.minyanville.com/images/quint_images/flex_folio_content_top_bg.jpg);
   background-position:top;
   background-repeat:repeat-x;
   line-height:25px;
@@ -2888,7 +2888,7 @@ clear:both;
 .recent_part_container{
 padding-left:15px;
 clear:both;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/recent_part_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/recent_part_bg.jpg);
 background-position:center;
 background-repeat:repeat-y;
 margin-top:15px;
@@ -3017,7 +3017,7 @@ font-weight:bold;
 }
 
 .top_left_header{
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/header_search_login_left.jpg);
+background-image:url(http://image.minyanville.com/images/home_redesign/header_search_login_left.jpg);
 background-repeat:no-repeat;
 padding-left:20px;
 height:29px;
@@ -4054,7 +4054,7 @@ border:solid 1px #000;
 margin-bottom:30px;
 height:195px;
 text-align:left;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/fisrt_subs_container_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/fisrt_subs_container_bg.jpg);
 clear:both;
 }
 
@@ -4077,7 +4077,7 @@ color:#000;
 font-weight:bold;
 margin-bottom:30px;
 text-align:left;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/secon_subs_container_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/secon_subs_container_bg.jpg);
 }
 .secon_subs_container td{
 padding-left:10px;
@@ -4096,7 +4096,7 @@ line-height:15px;
 color:#000;
 font-weight:bold;
 text-align:left;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/third_subs_container_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/third_subs_container_bg.jpg);
 }
 .third_subs_container td{
 padding-left:10px;
@@ -4288,7 +4288,7 @@ text-align:right;
 .section_text_main{
 font-family:Arial, Helvetica, sans-serif; 
 text-align:right;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/sp_ads_bg.gif);
+background-image:url(http://image.minyanville.com/images/redesign/sp_ads_bg.gif);
 background-repeat:no-repeat;
 background-position:right;
 font-size:9px; 
@@ -4327,17 +4327,17 @@ border:solid 1px red;
 
 /*style start from for article life & Family*/
 .life_common_middle_container{
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/life_money_title_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/life_money_title_bg.jpg);
 background-position:top;
 background-repeat:repeat-x;
 }
 .family_common_middle_container{
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/family_common_middle_bg.gif);
+background-image: url(http://image.minyanville.com/images/redesign/family_common_middle_bg.gif);
 background-position:top;
 background-repeat:repeat-x;
 }
 .subscription_common_middle_container{
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/main_middle_flexfolio_top_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/main_middle_flexfolio_top_bg.jpg);
 background-position:top;
 background-repeat:repeat-x;
 }
@@ -4570,7 +4570,7 @@ font-size:18px;
 color:#323230;
 clear:both;
 padding-bottom:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_title_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/cooper_title_bg.jpg);
 background-position:bottom;
 background-repeat:repeat-x;
 padding-top:10px;
@@ -4676,7 +4676,7 @@ line-height:20px;
 border:none;
 }
 .cooper_article_box{
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_article_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/cooper_article_bg.jpg);
 background-position:top;
 background-repeat:repeat-x;
 padding-top:15px;
@@ -4923,7 +4923,7 @@ text-align:center;
 
 
 .banter_window_box{
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/buzz_banter_window_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/buzz_banter_window_bg.jpg);
 background-position:top;
 background-repeat:repeat-x;
 width:630px;
@@ -5104,13 +5104,13 @@ text-decoration:none;
 font-weight:bold;
 }
 .main_header_bg_login{
-/*background-image:url(http://storage.googleapis.com/mvassets/images/redesign/header_right_corner.jpg);
+/*background-image:url(http://image.minyanville.com/images/redesign/header_right_corner.jpg);
 background-repeat:no-repeat;
 background-position:right;*/
 }
 .header_main_logout{
 font-family:Arial, Helvetica, sans-serif;
-/*background-image: url(http://storage.googleapis.com/mvassets/images/header_right_corner.jpg);*/
+/*background-image: url(http://image.minyanville.com/images/header_right_corner.jpg);*/
 background-repeat:no-repeat;
 width:auto;
 background-position:top right;
@@ -5257,14 +5257,14 @@ padding-bottom:5px;
 padding-left:10px;
 }
 #login_screen_six ul{
-list-style-image: url(http://storage.googleapis.com/mvassets/images/redesign/login_bullet.gif);
+list-style-image: url(http://image.minyanville.com/images/redesign/login_bullet.gif);
 
 }
 #login_screen_six ul li{
 margin:0px;
 font-family:Arial, Helvetica, sans-serif;
 font-size:12px;
-list-style-image: url(http://storage.googleapis.com/mvassets/images/redesign/login_bullet.gif);
+list-style-image: url(http://image.minyanville.com/images/redesign/login_bullet.gif);
 font-weight:bold;
 line-height:20px;
 color:#6b6b6b;
@@ -5321,7 +5321,7 @@ font-weight:normal;
 }
 /*Style start from here for audio and video section*/
 .audio_common_middle_container{
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/audio_video_middle_bg.gif);
+background-image: url(http://image.minyanville.com/images/redesign/audio_video_middle_bg.gif);
 }
 .left_contant_audio{ 
 padding-left:10px;
@@ -5430,7 +5430,7 @@ margin-top:10px;
 
 .combo_tab {
   padding:0px;
-  background-image: url(http://storage.googleapis.com/mvassets/images/redesign/combo_hide_tab_bg.gif);
+  background-image: url(http://image.minyanville.com/images/redesign/combo_hide_tab_bg.gif);
   margin:0px;
   float:left;
   width:100%;
@@ -5551,13 +5551,13 @@ color:#083d70;
  }
 
  .buuble_top_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_top_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_top_middle.gif);
  background-repeat:repeat-x;
  background-position:top;
  background-color:#eaf1f7;
  }
   .buuble_bottom_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_bottom_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_bottom_middle.gif);
  background-repeat:repeat-x;
  background-position:bottom;
  background-color:#fafbfd;
@@ -5565,17 +5565,17 @@ color:#083d70;
  }
  
  .buuble_left_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_left_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_left_middle.gif);
    }
   .buuble_right_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_right_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_right_middle.gif);
    }
  
  .bubble_text_main
 {
  font-family:Arial, Helvetica, sans-serif;
  font-size:13px;
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_text_main_bg.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_text_main_bg.gif);
  background-repeat:repeat-x;
  color:#8e8b8b;
  font-weight:normal;
@@ -5697,7 +5697,7 @@ font-weight:normal;
 padding-bottom:2px;
 text-align:left;
 text-transform:uppercase;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/sub_common_title_bg.gif); background-position:bottom;
+background-image:url(http://image.minyanville.com/images/redesign/sub_common_title_bg.gif); background-position:bottom;
 background-repeat:repeat-x;
 height:30px;
 margin-bottom:6px;
@@ -6329,14 +6329,14 @@ clear:both;
 font-weight:bold;
 }
 .dictionary_divider{
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/divider_about_us.gif);
+background-image:url(http://image.minyanville.com/images/redesign/divider_about_us.gif);
 background-repeat:repeat-x;
 width:500px;
 clear:both;
 height:4px;
 }
 .shop_cart_divider{
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/divider_about_us.gif);
+background-image:url(http://image.minyanville.com/images/redesign/divider_about_us.gif);
 background-repeat:repeat-x;
 width:100%;
 clear:both;
@@ -6612,7 +6612,7 @@ text-decoration:none;
 	width: 994px;
 	margin: 0px;
 	padding: 0px;
-	background-image: url(http://storage.googleapis.com/mvassets/images/home_bg_leftshadow_twolines.gif);
+	background-image: url(http://image.minyanville.com/images/home_bg_leftshadow_twolines.gif);
 	background-repeat: repeat-y;
 	background-position: left top;
 	background-color: #FFFFFF;
@@ -8078,7 +8078,7 @@ clear:both;
 padding-bottom:10px;
  
 margin-left:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_title_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/cooper_title_bg.jpg);
 background-position:bottom;
 background-repeat:repeat-x;
 padding-top:10px;
@@ -8215,7 +8215,7 @@ padding:0px;
 height:298px;
 background-repeat:repeat-x;
 background-position:bottom;
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/featureslidebarbg.jpg);
+background-image: url(http://image.minyanville.com/images/home_redesign/featureslidebarbg.jpg);
 }
 .video_screen
 {
@@ -8421,7 +8421,7 @@ text-decoration:none;
  width: 224px;
  float:left; 
  text-align:left;
- background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/feed_main_bg.jpg);
+ background-image: url(http://image.minyanville.com/images/home_redesign/feed_main_bg.jpg);
 
 }
  .template_feed_header{ 
@@ -8438,7 +8438,7 @@ text-decoration:none;
  }
 .template_feed_body ul{
 padding:0px;
-list-style-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/feed_bullets.jpg);
+list-style-image:url(http://image.minyanville.com/images/home_redesign/feed_bullets.jpg);
 
 }
 .template_feed_body ul li{
@@ -9108,7 +9108,7 @@ padding:0px;
 .feednewsmain{
 width:202px;
 text-align:center;
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/dailyfeeboxbg.jpg);
+background-image:url(http://image.minyanville.com/images/home_redesign/dailyfeeboxbg.jpg);
 background-repeat:repeat-x;
 padding:0px 5px 3px 6px;
 border:solid 1px #396122;
@@ -9133,7 +9133,7 @@ padding:0px;
 }
 
 .FeatureVideotitle{
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/video_title_bg.gif);
+background-image: url(http://image.minyanville.com/images/home_redesign/video_title_bg.gif);
 background-repeat:no-repeat;
 width:100%;
 background-color:#171c20;
@@ -9146,7 +9146,7 @@ padding-bottom:5px;
 text-align:left;
 }
 .FeatureVideobottom{
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/video_dropshadow.png);
+background-image: url(http://image.minyanville.com/images/home_redesign/video_dropshadow.png);
 background-position:bottom;
 background-repeat:no-repeat;
 width:100%;
@@ -9266,7 +9266,7 @@ color:#083d70;
 background-color: #EEEEEE;
 }
 .quint_hard_trial_article_box{
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/quint_article_bg.gif);
+background-image:url(http://image.minyanville.com/images/redesign/quint_article_bg.gif);
 background-position:top;
 background-repeat:repeat-x;
 padding-top:15px;
@@ -9579,7 +9579,7 @@ vertical-align:top;
 }
 
 .header_cooper_image {
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/cooper_header.png);
+background-image: url(http://image.minyanville.com/images/redesign/cooper_header.png);
 background-position:center;
 background-repeat: no-repeat;
 background-color: #FFFFFF;
@@ -9595,7 +9595,7 @@ box-shadow: 1px 0px #999999;
 }
 
 .header_optionsmith_image {
-    background-image: url("http://storage.googleapis.com/mvassets/images/redesign/option_smith_header.png");
+    background-image: url("http://image.minyanville.com/images/redesign/option_smith_header.png");
 background-position:center;
 background-repeat: no-repeat;
 background-color: #FFFFFF;

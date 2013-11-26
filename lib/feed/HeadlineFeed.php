@@ -65,8 +65,8 @@ class HeadlineFeed
 		<description>The Trusted Choice for the Wall Street Voice</description>
 		<link>http://www.minyanville.com</link>
 		<copyright><?=date('Y')?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
-        <lastBuildDate><?=date('D, j M Y H:i:s',strtotime($this->arFeedResult[0]['pubDate'])) ?> EDT</lastBuildDate>
-		<image><url>http://storage.googleapis.com/mvassets/images/mvLogo.png</url><title>Minyanville Headlines</title><link>http://www.minyanville.com</link><width>144</width><height>88</height></image>
+        <lastBuildDate><?=date('D, j M Y H:i:s',strtotime($this->arFeedResult[0]['pubDate'])) ?> EST</lastBuildDate>
+		<image><url>http://image.minyanville.com/images/mvLogo.png</url><title>Minyanville Headlines</title><link>http://www.minyanville.com</link><width>144</width><height>88</height></image>
 		<? $this->showFeedResult(); ?>
 		</channel>
 		</rss>
@@ -101,7 +101,7 @@ class HeadlineFeed
 			<? } 
 			}?>
 			<guid isPermaLink="true"><?=$link?></guid>
-			<pubDate><?=$pubDate;?> EDT</pubDate>				
+			<pubDate><?=$pubDate;?> EST</pubDate>				
 		 </item>
 <?
 		}		

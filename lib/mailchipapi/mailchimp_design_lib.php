@@ -205,21 +205,21 @@ function displayBuzzFancyBoxPopup($emailId){
 			
 			if(!isset($_COOKIE['ptrFancyBox']) && !isset($_COOKIE['keeneFancyBox'])){
 				// set for peter
-				$setCookieTime=mktime()+1209600;  //14 days
+				$setCookieTime=time()+1209600;  //14 days
 				mcookie("ptrFancyBox",$currentDate,$setCookieTime);
 				$submitBttnImg = 'pt_fBox_btn_.png';
 				$fancyBox = 'peter';
 				$showFancybox=1;
 			}elseif(isset($_COOKIE['ptrFancyBox']) && $ptrCookieDiffVal>=7 && !isset($_COOKIE['keeneFancyBox'])){
 				// set for keene
-				$setCookieTime=mktime()+1209600;  //14 days
+				$setCookieTime=time()+1209600;  //14 days
 				mcookie("keeneFancyBox",$currentDate,$setCookieTime);
 				$submitBttnImg = 'fancybox_keeneOnOptions_btn.png';
 				$fancyBox = 'keene';
 				$showFancybox=1;
 			}elseif(isset($_COOKIE['keeneFancyBox']) && $keeneCookieDiffVal>=7 && !isset($_COOKIE['ptrFancyBox'])){		
 				// set for peter
-				$setCookieTime=mktime()+1209600;  //14 days
+				$setCookieTime=time()+1209600;  //14 days
 				mcookie("ptrFancyBox",$currentDate,$setCookieTime);
 				$submitBttnImg = 'pt_fBox_btn_.png';
 				$fancyBox = 'peter';

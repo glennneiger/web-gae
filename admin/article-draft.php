@@ -43,7 +43,7 @@ $artObj=new ArticleData();
 		$articleData['subsection_ids']=$articleData['subsection_ids'].','.$sectionId['parent_section'];
 		$articleData['section_id']=$sectionId['parent_section'];
 		$articleData['layout_type']=$_POST['articles'][layout_type];
-		$articleData['editor_note']=$_POST['articles'][editor_note];
+		$articleData['editor_note']=addslashes(mswordReplaceSpecialChars(stripslashes($_POST['articles'][editor_note])));
 		$articleData['featureimage']=$_POST['articles'][featureimage];
 		$articleData['is_featured']=($_POST['articles'][is_featured]=="1")?1:0;
 		$articleData['is_buzzalert']=($_POST['articles'][is_buzzalert]=="1")?1:0;

@@ -394,7 +394,7 @@ function showReports(reportName,from,to,productName,pageNumber,colName,orderBy,f
 				if(jQuery('#recordCount').html()!=''){
 					jQuery('#recordCount').empty();
 				}
-				var content = '<center><img src="http://storage.googleapis.com/mvassets/images/recurly/submitting.gif" /></center>';
+				var content = '<center><img src="http://image.minyanville.com/images/recurly/submitting.gif" /></center>';
 				jQuery('#reportContent').html(content);
 			},
 			error : function(){},
@@ -509,7 +509,7 @@ function showMarketReports(reportName,from,to,productName,pageNumber,colName,ord
 			url : host+"/admin/marketReportMod.php",
 			data : "type=marketReport&fromDate="+from+"&toDate="+to+"&product="+productName+"&p="+pageNumber+"&colName="+colName+"&orderBy="+orderBy,
 			beforeSend : function(){
-				var content = '<center><img src="http://storage.googleapis.com/mvassets/images/recurly/submitting.gif" /></center>';
+				var content = '<center><img src="http://image.minyanville.com/images/recurly/submitting.gif" /></center>';
 				jQuery('#reportContent').html(content);
 			},
 			error : function(){},
@@ -554,7 +554,7 @@ function showSummary(reportType,from,to,productName,pageNumber,colName,orderBy,f
 		data : "type=showSummary&fromDate="+from+"&toDate="+to+"&product="+productName+"&freeTrial="+freeTrial+"&inFreeTrial="+inFreeTrial,
 		beforeSend : function(){
 			jQuery('#summaryContent').empty();
-			var content = '<center><img src="http://storage.googleapis.com/mvassets/images/recurly/submitting.gif" /></center>';
+			var content = '<center><img src="http://image.minyanville.com/images/recurly/submitting.gif" /></center>';
 			jQuery('#reportContent').html(content);
 		},
 		error : function(){},
@@ -650,7 +650,7 @@ function showOptSummary(reportType,from,to,productName,pageNumber,colName,orderB
 		data : "type=showSummary&fromDate="+from+"&toDate="+to+"&product="+productName+"&freeTrial="+freeTrial+"&inFreeTrial="+inFreeTrial,
 		beforeSend : function(){
 			jQuery('#summaryContent').empty();
-			var content = '<center><img src="http://storage.googleapis.com/mvassets/images/recurly/submitting.gif" /></center>';
+			var content = '<center><img src="http://image.minyanville.com/images/recurly/submitting.gif" /></center>';
 			jQuery('#reportContent').html(content);
 		},
 		error : function(){},
@@ -679,7 +679,7 @@ function showOptReports(reportName,from,to,productName,pageNumber,colName,orderB
 				if(jQuery('#recordCount').html()!=''){
 					jQuery('#recordCount').empty();
 				}
-				var content = '<center><img src="http://storage.googleapis.com/mvassets/images/recurly/submitting.gif" /></center>';
+				var content = '<center><img src="http://image.minyanville.com/images/recurly/submitting.gif" /></center>';
 				jQuery('#reportContent').html(content);
 			},
 			error : function(){},
@@ -762,7 +762,7 @@ function showRefundReport(reportName,from,to,productName,pageNumber,colName,orde
 				if(jQuery('#recordCount').html()!=''){
 					jQuery('#recordCount').empty();
 				}
-				var content = '<center><img src="http://storage.googleapis.com/mvassets/images/recurly/submitting.gif" /></center>';
+				var content = '<center><img src="http://image.minyanville.com/images/recurly/submitting.gif" /></center>';
 				jQuery('#reportContent').html(content);
 			},
 			error : function(){},
@@ -801,7 +801,7 @@ function showRefundSummary(reportType,from,to,productName,pageNumber,colName,ord
 		data : "type=showSummary&fromDate="+from+"&toDate="+to+"&product="+productName,
 		beforeSend : function(){
 			jQuery('#summaryContent').empty();
-			var content = '<center><img src="http://storage.googleapis.com/mvassets/images/recurly/submitting.gif" /></center>';
+			var content = '<center><img src="http://image.minyanville.com/images/recurly/submitting.gif" /></center>';
 			jQuery('#reportContent').html(content);
 		},
 		error : function(){},

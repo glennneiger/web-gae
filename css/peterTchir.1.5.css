@@ -28,7 +28,7 @@ h2{
 	display: block;
 	margin: 20px 40px;
 	background-position: left center;
-	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/logo-PeterTchir.gif) no-repeat;
+	background: url(http://image.minyanville.com/images/peter-tchir/logo-PeterTchir.gif) no-repeat;
 }
 #ptc_header{
 	float: left;
@@ -179,7 +179,7 @@ h2{
 	float: left;
 	clear:left;
 	padding:0px 0px 15px 0px;
-	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+	background: url(http://image.minyanville.com/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
 	margin:0px 0px 5px 0px;
 }
 
@@ -280,7 +280,7 @@ h2{
 	width: 91px;
 	height: 38px;
 	border:none;
-	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/btn_search.gif) no-repeat;
+	background: url(http://image.minyanville.com/images/peter-tchir/btn_search.gif) no-repeat;
 	cursor:pointer;
 }
 .rght-panel p{
@@ -297,7 +297,7 @@ h2{
 	padding:0px 0px 15px 0px;
 }
 .hr{
-	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+	background: url(http://image.minyanville.com/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
 }
 
 .ptc_position{
@@ -476,7 +476,7 @@ h2{
 	height:24px;
 	width:24px;
 	background-repeat:no-repeat;
-	background: url('http://storage.googleapis.com/mvassets/images/peter-tchir/popup_close.png');
+	background: url('http://image.minyanville.com/images/peter-tchir/popup_close.png');
 }
 
 #heatmapEnlarge{

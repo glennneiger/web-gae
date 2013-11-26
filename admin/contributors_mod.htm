@@ -1,4 +1,5 @@
 <?
+global $bucketPath;
 include_once("./_authenticate.htm");
 
 $id=$_POST['id'];
@@ -19,21 +20,21 @@ if($_POST['cont']['name']!="")
     $cont = $_POST['cont'];
     if($file['size']){
             $imgname="/assets/bios/".str_replace(" ","_",$file[name]);
-            move_uploaded_file($_FILES['bio_img']['tmp_name'],"gs://mvassets".$imgname);
+            move_uploaded_file($_FILES['bio_img']['tmp_name'],$bucketPath.$imgname);
             $cont[bio_asset]=$imgname;
     }
     
     $thumbfile = $_FILES['small_bio_asset'];
     if($thumbfile['size']){
             $thumbimgname="/assets/bios/thumb/".str_replace(" ","_",$thumbfile[name]);
-            move_uploaded_file($_FILES['small_bio_asset']['tmp_name'],"gs://mvassets".$thumbimgname);
+            move_uploaded_file($_FILES['small_bio_asset']['tmp_name'],$bucketPath.$thumbimgname);
             $cont[small_bio_asset]=$thumbimgname;
     }
     
     $file2=$_FILES['logo_img'];
     if($file2['size']){
             $imgname="/assets/bios/".str_replace(" ","_",$file2[name]);
-            move_uploaded_file($_FILES['logo_img']['tmp_name'],"gs://mvassets/".$imgname);
+            move_uploaded_file($_FILES['logo_img']['tmp_name'],$bucketPath.$imgname);
             $cont[logo_asset]=$imgname;
     }
     
@@ -59,7 +60,7 @@ if($_POST['cont']['name']!="")
                     foreach($del as $k=>$v)
                     {
                             $delArr = explode(":",$k);
-                            move_uploaded_file("gs://mvassets".$delArr[0],"gs://mvassets/temp/");
+                            move_uploaded_file($bucketPath.$delArr[0],$bucketPath."/temp/");
                             $cont[$delArr['1']]="";
                             
                     }

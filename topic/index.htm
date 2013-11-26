@@ -47,6 +47,7 @@ if($subSection=="latest"){
    		$subSectionName=$subSectionData['name'];
    }
 }
+
 $sectionId = $subSectionData['section_id'];
 if(!$sectionId || $sectionId==""){
 	Header("Location: ".$HTPFX.$HTHOST."/errors/?code=404");
@@ -69,6 +70,7 @@ else
 {
  $arArticles = $obArticleCache->getLatestSectionArticles($sectionId);
 }
+
 $pageName = $subSectionName;
 
 $topicPageID=$subSectionData['topic_page_id'];
@@ -78,6 +80,7 @@ if(empty($topicPageID)){
 $pageJS=array("config","nav","search","ajax","jquery","topic");
 $pageCSS=array("global","rightColumn","nav","minyanville","topic","fontStylesheet");
 include($D_R."/_header.htm");
+
 ?>
 <div class="shadow">
 <div id="content-container"><!--left contaner start from here-->
@@ -91,6 +94,7 @@ include($D_R."/_header.htm");
 	</div>
 
 	</div>
+	
 <div id="etf-wrap">
 <div class="dottedlinemain">
 	<?php $objTopic->latestArticle($arArticles[0],$subSectionName); ?>

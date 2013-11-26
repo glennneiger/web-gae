@@ -1,5 +1,5 @@
 <?php
-global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R,$tempPath,$bucketPath;
 include($D_R."/lib/peter-tchir/_peterTchir_data_lib.php");
 
 global $contributorId, $contributorName;
@@ -21,7 +21,7 @@ if(!empty($_POST['heatMapTitle'])){
 			if($_FILES['heatMapImg']['name']!="")
 			{
 				$data['heatMapImgName'] = rand().'-'.str_replace(" ","_",$_FILES['heatMapImg']['name']);
-				move_uploaded_file($_FILES["heatMapImg"]["tmp_name"], "gs://mvassets".$heatMapImgPath.$data['heatMapImgName']);
+				move_uploaded_file($_FILES["heatMapImg"]["tmp_name"], $bucketPath.$heatMapImgPath.$data['heatMapImgName']);
 			}
 			else
 			{
@@ -41,7 +41,7 @@ if(!empty($_POST['heatMapTitle'])){
 		if($_FILES['heatMapImg']['name']!="")
 		{
 			$data['heatMapImgName'] = rand().'-'.str_replace(" ","_",$_FILES['heatMapImg']['name']);
-			move_uploaded_file($_FILES["heatMapImg"]["tmp_name"], "gs://mvassets".$heatMapImgPath.$data['heatMapImgName']);
+			move_uploaded_file($_FILES["heatMapImg"]["tmp_name"], $bucketPath.$heatMapImgPath.$data['heatMapImgName']);
 		}
 		else
 		{

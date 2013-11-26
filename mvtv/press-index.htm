@@ -1,4 +1,7 @@
 <?
+global $D_R,$CDN_SERVER;
+include_once("$D_R/lib/layout_functions.php");
+
 $zoneIDSky = $SEC_TO_ZONE['mvtvtop'];
 $zoneIDBottom = $SEC_TO_ZONE['mvtvbottom'];
 $zoneIDBottom2 = $SEC_TO_ZONE['mvtvbottom2'];
@@ -41,7 +44,7 @@ $mvtvvideo=exec_query($sql,1);
 <script type="text/javascript" src="/buzz/includes/prototype.js"></script>
 <script type="text/javascript" src="/buzz/includes/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="/buzz/includes/AnchorPosition.js"></script>
-<script type="text/javascript" src="/js/mvtv.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/mvtv.js"></script>
 <script language="javascript" type="text/javascript">
 function selecttab(tab)
 {	

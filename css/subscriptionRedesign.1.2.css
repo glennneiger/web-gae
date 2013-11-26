@@ -49,7 +49,7 @@
 	width:940px; 
 	height:71px;
 	margin:6px 0px 0px 24px;
-	background:url(http://storage.googleapis.com/mvassets/images/subscription/subDiscountContainer.png) no-repeat;
+	background:url(http://image.minyanville.com/images/subscription/subDiscountContainer.png) no-repeat;
 }
 
 .subRedesignDiscountText{
@@ -90,14 +90,14 @@
     width: 260px;
     min-height:140px;
     padding:10px 20px 10px 20px; 
-	background: url("http://storage.googleapis.com/mvassets/images/subscription/mvp-repeat.png") repeat-y scroll 0 0 transparent;
+	background: url("http://image.minyanville.com/images/subscription/mvp-repeat.png") repeat-y scroll 0 0 transparent;
 }
 
 .subRedesignProductDescBottom{
     float: left;
 	height:71px;
     width: 300px;
-	background: url("http://storage.googleapis.com/mvassets/images/subscription/bottom-img.png") repeat-y scroll 0 0 transparent;
+	background: url("http://image.minyanville.com/images/subscription/bottom-img.png") repeat-y scroll 0 0 transparent;
 }
 
 p{ 
@@ -117,7 +117,7 @@ p{
 	margin-top:19px;
 	margin-left:20px;
     outline: medium none;
-    background:url(http://storage.googleapis.com/mvassets/images/subscription/adsFreeMinyanville.png) no-repeat;
+    background:url(http://image.minyanville.com/images/subscription/adsFreeMinyanville.png) no-repeat;
 }
 
 .subRedesignStartTrial {
@@ -129,7 +129,7 @@ p{
 	margin-top:19px;
 	margin-left:20px;
     outline: medium none;
-    background:url(http://storage.googleapis.com/mvassets/images/subscription/green-btn.png) no-repeat;
+    background:url(http://image.minyanville.com/images/subscription/green-btn.png) no-repeat;
 }
 
 .subRedesignFooter{

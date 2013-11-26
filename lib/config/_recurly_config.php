@@ -2,15 +2,15 @@
 global $recurlyApiKey,$privateKey;
 
 // Required for the API - Prodution
-//$recurlyApiKey='16f21b3f898e44dea3999d4983a8dcac';
+$recurlyApiKey='16f21b3f898e44dea3999d4983a8dcac';
 // Optional for Recurly.js:
-//$privateKey='1b697d9faf9f4134bcbc2eafd3a5d91c';
-//$subdomain = 'minyanville';
+$privateKey='1b697d9faf9f4134bcbc2eafd3a5d91c';
+$subdomain = 'minyanville';
 
 //Key for Free site
-$recurlyApiKey='8f1a8fe801b24e6a9207701bffe4b585';
-$privateKey = '915fc354c4934e9bbb98a7abafad4cc4';
-$subdomain = 'minyanvilleqa';
+//$recurlyApiKey='8f1a8fe801b24e6a9207701bffe4b585';
+//$privateKey = '915fc354c4934e9bbb98a7abafad4cc4';
+//$subdomain = 'minyanvilleqa';
 
 //if email password is blank
 $globalPwd = "Minyan";

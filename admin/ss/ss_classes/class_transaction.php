@@ -2605,10 +2605,11 @@ function addinjsfile(){
 	}
 	$strTags=$strStockTag;
 	$strTags='var customarray=new Array("'.$strTags.'");';
-	$fname="$D_R/js/stock_suggestion.js";
-	$fFile=fopen($fname,"w+");
-	fwrite($fFile,$strTags);
-	fclose($fFile);
+	global $CDN_BUCKET;
+	$fname=$CDN_BUCKET."/js/stock_suggestion.js";
+	$options = [ "gs" => [ "Content-Type" => "text/plain", "acl" => "public-read" ]];
+	$ctx = stream_context_create($options);
+	file_put_contents($fname, $strTags, 0, $ctx);
 	}
 /* Aswini for smith start */
 public function updatetransaction($type,$description=null,$optionunitprice=null,$recordid,$transtype,$quoteid)

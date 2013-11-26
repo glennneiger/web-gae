@@ -3,6 +3,7 @@ global $is_ssl,$IMG_SERVER,$HTHOST,$HTNOSSLDOMAIN,$HTPFXSSL;
 include($D_R."/lib/elliott-wave-insider/_elliottWave_data_lib.php");
 $objElliotWaveData = new elliottWaveData('elliot_alert');
 
+$id = $_GET['id'];
 $data = $objElliotWaveData->getElliottAlertDetails($id);
 $breakPos = strpos($data['body'],'<br /><br />');
 $words=explode(" ",$data['body'],51);

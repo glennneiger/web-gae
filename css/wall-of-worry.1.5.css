@@ -41,7 +41,7 @@
 
 .time-val div{
     width:55px;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/time_bg.gif);
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/time_bg.gif);
     height:44px;
     margin:0px 0px 4px 0px;
     background-repeat:no-repeat;
@@ -106,7 +106,7 @@
     margin:5px 0px 10px 0px;
     padding:8px 0px 0px 4px;
     background-repeat:no-repeat;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/meter.gif);
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/meter.gif);
 }
 .wall-right-meter span{
     color:#b3b3b3;
@@ -136,14 +136,14 @@
 
 .wall-right-meter #arrow{
     width:9px;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/arrowup.png);
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/arrowup.png);
     background-repeat:no-repeat;
 }
 
 .QE2-countdown{
     width: 375px;
     float:left;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/timedscrp_corner.gif);
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/timedscrp_corner.gif);
     background-repeat:no-repeat;
     font-family:HelveticaNeue Roman, Arial, Helvetica, sans-serif;
     background-position:3px 0;
@@ -252,7 +252,7 @@
 
 .archive-share{
     float:right;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/share_archive.png);
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/share_archive.png);
     width:125px;
     height:16px;
     background-repeat:no-repeat;
@@ -346,7 +346,7 @@
 
 .month-detail{
     margin:10px 10px 5px 0px;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/monthdetail_bg.gif);
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/monthdetail_bg.gif);
     background-repeat:no-repeat;
     padding:0px 0px 0px 8px;
     font-size:12px; 
@@ -377,16 +377,16 @@
     display: none;
     position: absolute;
     z-index: 500;
-    background: transparent url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/tipTop1.png) no-repeat top;
+    background: transparent url(http://image.minyanville.com/images/llyods-wall-of-worry/tipTop1.png) no-repeat top;
 }
     
 .tipMid {
-    background: transparent url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/tipMid1.png) repeat-y; 
+    background: transparent url(http://image.minyanville.com/images/llyods-wall-of-worry/tipMid1.png) repeat-y; 
     padding: 0 25px 20px 25px;
 }
 
 .tipBtm {
-    background: transparent url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/tipBtm1.png) no-repeat bottom; 
+    background: transparent url(http://image.minyanville.com/images/llyods-wall-of-worry/tipBtm1.png) no-repeat bottom; 
     height: 59px;
 }
 
@@ -418,7 +418,7 @@ float:left;
     background-color:#999999;
     background-position:top right;
     background-repeat:no-repeat;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/border.gif); 
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/border.gif); 
     *height:25px; 
     *padding:6% 12px 6% 4px; 
 }
@@ -481,7 +481,7 @@ background-position:left top;
     background-color:#999999;
     background-position:top left;
     background-repeat:no-repeat;
-    background-image:url(http://storage.googleapis.com/mvassets/images/llyods-wall-of-worry/border.gif); 
+    background-image:url(http://image.minyanville.com/images/llyods-wall-of-worry/border.gif); 
     *width:155px;
     *height:58px; 
     *padding:6% 10px 6% 10px;

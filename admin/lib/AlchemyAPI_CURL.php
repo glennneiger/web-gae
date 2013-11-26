@@ -601,20 +601,6 @@ class AlchemyAPI
 		$paramObj->resetBaseParams();
 		$hostPrefix = $this->_hostPrefix;
 		
-		$params = array(
-	      'http' => array
-	      (
-	          'method' => 'POST',
-	          'header'=>"Content-Type: multipart/form-data\r\n",
-	          'content' => $param
-	      )
-	   );
-	  /* $endpoint = "http://$hostPrefix.alchemyapi.com/calls/$callPrefix/$callMethod?apikey=".$this->_apiKey;
-	    $ctx = stream_context_create($params);
-	    $fp = fopen($endpoint, 'rb', false, $ctx);
-
-   		$response = stream_get_contents($fp); */
-	   
 	   $endpoint = "http://$hostPrefix.alchemyapi.com/calls/$callPrefix/$callMethod?apikey=".$this->_apiKey;
 	   
 	   $context =
@@ -622,13 +608,12 @@ class AlchemyAPI
               array(
                 "method" => "POST",
               'header'=>"Content-Type: multipart/form-data\r\n",
-                "content" => http_build_query($param)
+                "content" => $param
               )
             );
         
         $context = stream_context_create($context);
         $response = file_get_contents($endpoint, false, $context);
-	   htmlprint_r($response);
 		if (self::XML_OUTPUT_MODE == $outputMode)
 		{
 			$doc = simplexml_load_string($response);

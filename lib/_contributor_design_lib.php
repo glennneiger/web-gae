@@ -63,7 +63,7 @@ class contributorView{
 	}
 	
 	function getBioProfessorsLanding($contributors,$weAreTitle,$groupId)
-	{
+	{ global $D_R,$HTPFX,$HTHOST,$IMG_SERVER;
 	?>
 	<div id="homepage-content">
 	<div class="breadcrumLanding"><?php $this->biosBreadCrumLanding($groupId);?></div>
@@ -87,7 +87,7 @@ class contributorView{
 	<div class="grid-container">
 		<div class="biographies">
 			<?php
-				global $D_R,$HTPFX,$HTHOST,$IMG_SERVER;
+				
 				foreach ($contributors as $row)
 				{
 					$contName		= 	$row['name'];

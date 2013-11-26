@@ -90,7 +90,10 @@ foreach($result_a as $res)
 			&nbsp;&nbsp;<input type="button" name="Update" value="Update Article/Video"  onclick=" save_featured_Component('<?=$_REQUEST['action']?>','<?=$_REQUEST['module_id'] ?>')" class="submit_button" style="cursor: pointer;">
 			<? }
 /*delete cache homepage*/
-$pagename=getPageNameByModuleid($_REQUEST['module_id']);
+$qry="Select LP.page_id, LG.name as pagename from layout_placeholder LP,layout_pages LG where find_in_set('".$_REQUEST['module_id']."',module_order)
+ and LP.page_id=LG.id";
+$pagename=exec_query($qry,1);
+
 if($pagename['pagename']=='home'){
 	$objcache= new Cache();
     $objcache->deleteCacheHomePage();	

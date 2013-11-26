@@ -1,6 +1,5 @@
-<?
-
-
+<?php
+global $CDN_SERVER;
 include_once("./_authenticate.htm");
 include("../../layout/dbconnect.php");
 include("../..//lib/layout_functions.php");
@@ -31,7 +30,7 @@ $printlink=urlqsa($PHP_SELF,array(PHPSESSID=>$PHPSESSID,mvpopup=>1));
 ?>
 <html>
 <head>
-	<link rel="stylesheet" href="../../css/print.1.2.css">
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>css/print.1.2.css">
 </head>
 
 <body onLoad="javascript:window.print();">

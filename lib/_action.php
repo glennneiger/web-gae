@@ -50,6 +50,7 @@ class Action{
 		global $articleListingHomePageSize,$articleListingPageSize,$D_R;
 		include_once $D_R.'/lib/config/_article_config.php';
 		include_once("$D_R/admin/lib/_article_data_lib.php");
+		include_once("$D_R/lib/MemCache.php");
 		
 		$objArticleData = new ArticleData();
 		$objCache= new Cache();
@@ -270,7 +271,7 @@ updated,login,contrib_id,publish_date,branded_img_id FROM `buzzbanter` WHERE id=
 			}
 
 		   $this->setStatusBuzzContentAPI($id,$publish_date,$isDeleted);
-		   $url="http://dev-buzzandbanter.appspot.com/saveBuzzPost.action";
+		   $url="http://buzz.minyanville.com/saveBuzzPost.action";
 		    $postData = 'id='.$id.'&position='.$position.'&body='.$body.'&isLive='.$is_live.'&image='.$image.'&isDeleted='.$isDeleted.'&date='.$date.'&author='.$author.'&sectionId='.$section_id.'&showOnWeb='.$show_on_web.'&approved='.$approved.'&title='.$title.'&showInApp='.$show_in_app.'&updated='.$updated.'&login='.$login.'&contribId='.$contrib_id.'&publishDate='.$publish_date.'&priority='.$priority;
 		try{
 		
@@ -294,7 +295,7 @@ updated,login,contrib_id,publish_date,branded_img_id FROM `buzzbanter` WHERE id=
 
 
 	function googleContentApiDelete(){
-		 $url="http://dev-buzzandbanter.appspot.com/deleteBuzz.action";
+		 $url="http://buzz.minyanville.com/deleteBuzz.action";
 		 $id=$this->data;
 		 $postData = 'id='.$id;
 		 $isDeleted=1;

@@ -1839,6 +1839,8 @@ global $cm8_ads_Button_120x90_pos1,$cm8_ads_Button_120x90_pos2,$cm8_ads_Button_1
 //**********************************************************************************
 // Registration and Manage settings functions
 function displayCooperCombo(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts,$HTPFXSSL,$HTHOST;
@@ -1867,6 +1869,8 @@ function displayCooperCombo(){
 }
 
 function displayFlexFolioCombo(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts,$HTPFXSSL,$HTHOST;
@@ -1895,6 +1899,8 @@ function displayFlexFolioCombo(){
 }
 
 function displayBuzzBanter(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts;
@@ -2000,6 +2006,8 @@ function displayBuzzBanter(){
 }
 
 function displayCooper(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts;
@@ -2182,6 +2190,8 @@ function displayFlexFolio(){
 }
 
 function displayOptionSmith(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts;
@@ -2256,6 +2266,8 @@ function displayOptionSmith(){
 }
 
 function displayBMTP(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts;
@@ -2307,6 +2319,8 @@ function displayBMTP(){
 }
 }
 function displayJack(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts;
@@ -2495,6 +2509,8 @@ function displayETF(){
 
 
 function displayTheStockPlayBook(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION,$lang,$viaProducts;
 
 	$pageId='manage_setting';
@@ -2606,6 +2622,8 @@ function displayTheStockPlayBook(){
 
 
 function displayTheStockPlayBookPremium(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION,$lang,$viaProducts;
 
 	$pageId='manage_setting';
@@ -2782,6 +2800,8 @@ function displayAdFree(){
 }
 
 function displayTechStrat(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION,$lang,$viaProducts;
 
 	$pageId='manage_setting';
@@ -2892,6 +2912,8 @@ function displayTechStrat(){
 }
 
 function displayHousingReport(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION,$lang,$viaProducts;
 
 	$pageId='manage_setting';
@@ -2994,6 +3016,8 @@ function displayHousingReport(){
 
 
 function displayGaryK(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION;
 	global $lang;
 	global $viaProducts;

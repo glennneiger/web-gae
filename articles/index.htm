@@ -6,6 +6,7 @@ session_start();
 $articleArr = getKeyVal('id,a,from',$_SERVER['REQUEST_URI']);
 $articleid = ($articleArr['id']=="" ? $articleArr['a'] : $articleArr['id']);
 $objContent=new Content('1',$articleid);
+
 global $D_R,$gaTrackingAuthor,$HTPFX,$HTHOST,$CDN_SERVER,$gaTrackingTicker,$article_ic_tag,$mobile_itemID,$mobile_itemType,$ad_author,$ad_author_id,$nextUrl,$prevUrl,$articlePages;
 $mobile_itemType="1";
 $mobile_itemID=$articleid;
@@ -29,6 +30,7 @@ if(strlen($from)>1 && strlen($camp)<1)
 }
 
 $articleURL	=makeArticleslink($articleid);
+
 if($articleURL =='')
 {
 	set_sess_vars('notFound','1');
@@ -51,10 +53,13 @@ $disqusTableName="articles";
 $disqusItemType="1";
 
 $objHPDesign = new homeDesign();
+ 
 $article=$articlecache->getArticleCache($articleid);
 
+$articleFullURL = $HTPFX.$HTHOST.$articleURL;
 $articleFullURL = recursive_array_replace($purifier,$articleFullURL);
 
+$page=$_GET['page'];
 $articlePages =  count($article->body);
 $page = recursive_array_replace($purifier,$page);
 if(!is_numeric($page) && $page!="full")
@@ -101,7 +106,13 @@ $pageCSS=array("global","nav","articlepage",'zoomimage',"rightColumn","fontStyle
 
 $cacheRequest = $memCache->getKey('cacheRequest');
 if($cacheRequest=='0' || $cacheRequest==''){
-	$displayArticlePage = $articleContentCache->getArticleContent($articleFullURL,$articleid,'1',$page);
+	$cachePage=$page;
+	if($page==""){
+		$cachePage=1;
+	}
+	$cacheUrl = $articleFullURL."?page=".$cachePage;
+
+	$displayArticlePage = $articleContentCache->getArticleContent($cacheUrl,$articleid,'1',$page);
 }
 if(!empty($displayArticlePage) && $article->is_live=='1'){
 	echo $displayArticlePage;
@@ -179,27 +190,14 @@ if(!empty($displayArticlePage) && $article->is_live=='1'){
 		break;
     	default:
 			$objArticleViewer->articleLayoutNoPhoto($articlecache,$NewEncoding,$articleid,$article,$breadcrum,$page);
-	}?>
-	<script type="text/javascript"> getSetArticleDivHeight(<?=$articleid?>);</script>
-	<? $heightKey = $memCache->getKey("article_height_".$articleid);
-	if($heightKey>1050){
-		switch($layout){
-			case 'no-photo':
-				$arrRightCols	=	array('freeReportModule','show_related_article','show_mostpopular','recommendation','sponsoredlinks','show_MediumRectangle_Art_300x250','twitterWidget','show_markets','financial_product_guide','show_ads');
+	}
+	switch($layout){
+		case 'no-photo':
+			$arrRightCols	=	array('freeReportModule','show_related_article','show_MediumRectangle_Art_300x250','show_mostpopular','recommendation','sponsoredlinks','twitterWidget','show_markets','financial_product_guide','show_ads');
 			break;
-			default:
-				$arrRightCols	=	array('freeReportModule','daily_recap_module','show_art_300x250','show_mostpopular','recommendation','sponsoredlinks','show_MediumRectangle_Art_300x250','twitterWidget','show_markets','financial_product_guide','show_ads');
+		default:
+			$arrRightCols	=	array('freeReportModule','daily_recap_module','show_MediumRectangle_Art_300x250','show_mostpopular','recommendation','sponsoredlinks','twitterWidget','show_markets','financial_product_guide','show_ads');
 			break;
-		}
-	}else{
-		switch($layout){
-			case 'no-photo':
-				$arrRightCols	=	array('freeReportModule','show_related_article','show_MediumRectangle_Art_300x250','show_mostpopular','recommendation','sponsoredlinks','twitterWidget','show_markets','financial_product_guide','show_ads');
-			break;
-			default:
-				$arrRightCols	=	array('freeReportModule','daily_recap_module','show_MediumRectangle_Art_300x250','show_mostpopular','recommendation','sponsoredlinks','twitterWidget','show_markets','financial_product_guide','show_ads');
-			break;
-		}
 	}
 	include("../_rightcolumn.htm"); ?>
 	</div>

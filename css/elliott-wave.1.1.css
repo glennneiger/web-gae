@@ -28,7 +28,7 @@ h2{
 	display: block;
 	margin: 20px 40px;
 	background-position: left center;
-	background: url(http://storage.googleapis.com/mvassets/images/elliott-wave-insider/ewi_logo.jpg) no-repeat;
+	background: url(http://image.minyanville.com/images/elliott-wave-insider/ewi_logo.jpg) no-repeat;
 }
 #ewi_header{
 	float: left;
@@ -180,7 +180,7 @@ h2{
 	float: left;
 	clear:left;
 	padding:0px 0px 14px 0px;
-	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+	background: url(http://image.minyanville.com/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
 }
 
 .ewi_alertDetailBox{
@@ -277,7 +277,7 @@ h2{
 	width: 91px;
 	height: 38px;
 	border:none;
-	background: url(http://storage.googleapis.com/mvassets/images/elliott-wave-insider/ewi_searchicon.jpg) no-repeat;
+	background: url(http://image.minyanville.com/images/elliott-wave-insider/ewi_searchicon.jpg) no-repeat;
 }
 .ewi_rght_panel p{
 	width: 280px;
@@ -296,7 +296,7 @@ h2{
 }
 .hr{
 	width:282px;
-	background: url(http://storage.googleapis.com/mvassets/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
+	background: url(http://image.minyanville.com/images/peter-tchir/border_bttm.gif) center bottom repeat-x;
 }
 
 .ewi_disclaimer{
@@ -469,7 +469,7 @@ h2{
 	height:24px;
 	width:24px;
 	background-repeat:no-repeat;
-	background: url('http://storage.googleapis.com/mvassets/images/peter-tchir/popup_close.png');
+	background: url('http://image.minyanville.com/images/peter-tchir/popup_close.png');
 }
 
 .ewi_rightCol_list{

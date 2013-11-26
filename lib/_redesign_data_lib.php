@@ -364,12 +364,15 @@ function getMenuItems(){
 }
 
 function getBreadCrum($id,$type='page',$breadcrum){
+	global $pgParentId;
 	if($type=='page'){
 		global $objCache;
 		if(!is_object($objCache)){
 			$objCache = new Cache();
 		}
+
 		$resGetParent=$objCache->getParentMenu($id);
+
 		if(count($resGetParent)>0){
 			array_push($breadcrum,$resGetParent);
 			if($resGetParent['parent_id']>0){

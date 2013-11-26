@@ -10,10 +10,12 @@ class eduData{
 		}
 		else
 		{
-			$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
-			$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
-			$this->contentType=$resGetContentTypeId['id'];
-			$this->contentTable=$resGetContentTypeId['item_table'];
+			if($type!=""){
+				$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
+				$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
+				$this->contentType=$resGetContentTypeId['id'];
+				$this->contentTable=$resGetContentTypeId['item_table'];
+			}
 		}
 	}
 
@@ -130,8 +132,7 @@ class eduData{
 	    $qrySearchCount = "select count(distinct eim.item_id) as count from ex_item_meta eim , edu_alerts e WHERE e.id=eim.item_id AND eim.is_live='1'";
 
 		if($searchType=="text" && $q!=''){
-			//$qrySearchCount .= " AND content LIKE '%".$q."%' ";
-			$qrySearchCount .="AND content LIKE '%$q%'";
+			$qrySearchCount .= " AND eim.content LIKE '%".$q."%'";
 		}
 		 
 	    $qrySearchCount .= " AND eim.item_type='".$this->contentType."' ORDER BY eim.publish_date desc ";
@@ -147,8 +148,7 @@ class eduData{
 		$qrySearch = "SELECT DISTINCT eim.item_id AS id, eim.url,eim.title, eim.publish_date, e.body AS body, e.edu_img FROM ex_item_meta eim , edu_alerts e WHERE e.id=eim.item_id AND eim.is_live='1'";
 
 		if($searchType=="text" && $q!=''){
-			$qrySearch .= " AND content LIKE '%$q%'";
-		
+			$qrySearch .= " AND eim.content LIKE '%".$q."%'";
 		}
 		
 		$qrySearch .= " AND eim.item_type='".$this->contentType."' ORDER BY eim.publish_date DESC LIMIT ".$offset.",".$eduPostLimit;
@@ -218,7 +218,7 @@ WHERE e.is_approved='1' AND e.is_live='1' AND e.is_deleted='0' AND e.id=csu.item
 	}
 	
 	function getEduSearchGlossary($searchText){
-		$qrySearchGloss = "SELECT * FROM edu_glossary ed  WHERE ed.value LIKE '%".$searchText."%' OR ed.name  LIKE '%".$searchText."%' ORDER BY ed.name ASC";
+		$qrySearchGloss = "SELECT * FROM edu_glossary ed  WHERE ed.name  LIKE '%".$searchText."%' ORDER BY ed.name ASC";
 		$resSearchGloss = exec_query($qrySearchGloss);
 		if($resSearchGloss){
 			return $resSearchGloss;

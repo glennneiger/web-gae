@@ -1,6 +1,8 @@
 <?
 $hide_ui=1;
+global $D_R;
 include("./_header.php");
+include_once("$D_R/lib/_cart.php");
 $s=new Store();//just use for vars
 
 $fulfillment="SELECT if(`status`='','Undefined Status',`status`)status, count(*) `c`,

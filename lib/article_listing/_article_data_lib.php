@@ -3,6 +3,8 @@ class articleData{
 	
 	function getAllAricles($ID,$start,$end)
 	   {
+	   	global $D_R;
+	   	include_once("$D_R/lib/_layout_design_lib.php");
 	      if (empty($ID))
 		      {
 			  

@@ -1,6 +1,6 @@
 <?
 session_start();
-global $DATE_STR,$D_R,$HTPFX, $HTHOST,$eduItemMeta;
+global $DATE_STR,$D_R,$HTPFX, $HTHOST,$eduItemMeta,$CDN_SERVER;
 include_once($D_R."/lib/_robots.php");
 $page = "gazette";
 $d	=	trim($_REQUEST['d']);
@@ -100,7 +100,7 @@ $pagedata = exec_query($qry);
 
 ?>
 <br>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/edu-admin.css">
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/edu-admin.css">
 <div class=adminheader>Education Center - Approve/Unapprove Alerts</div><br>
 <?  $approveAlert=$AD->getPerm("edu_approve"); //set permission
 if(!$approveAlert){	// Check Permission

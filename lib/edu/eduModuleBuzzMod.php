@@ -3,6 +3,7 @@ global $D_R,$HTPFX,$HTHOST,$IMG_SERVER;
 include_once($D_R.'/lib/MemCache.php');
 include($D_R."/lib/config/_edu_config.php");
 include_once $D_R.'/lib/_layout_design_lib.php';
+include_once("$D_R/lib/_layout_data_lib.php");
 global $eduItemMeta;
 $objCache = new Cache();
 $objMemCache = new memCacheObj();
@@ -20,6 +21,7 @@ switch($action)
 	case 'scrollModule':
 		$moduleId = $_POST['module_id'];
 		$len = $_POST['len'];
+		if($len=='2'){ $len=3; }
 		$data = $objCache->getScrollModuleContent($len,$moduleId);
 		if(!empty($data))
 		{
@@ -27,13 +29,12 @@ switch($action)
 			{
 				$qryDetail = " SELECT url FROM ex_item_meta WHERE item_type='".$eduItemMeta."' AND item_id='".$id."'";
 				$resUrl = exec_query($qryDetail,1);		
-				$eduUrl = getEduArtUrl($val['item_id']);
 				$body=getPartOfBody($val['body'],'16');
 				$imgPath = $IMG_SERVER.'/assets/edu/images/'.$val['edu_img'];
 				$sqlResult .= '<li class="scrollCon'.$module_id.'" ><div class="eduArtListDetail">
 				<h3><a href="'.$resUrl['url'].'">'.mswordReplaceSpecialChars($val['item_title']).'</a></h3>
 				<p class="eduArtListAuthor">
-					<a href="'.$HTPFX.$HTHOST.'/gazette/bios.htm?bio="'.$val['authorId'].'>'.$val['authorname'].'</a><br>'.date("D F j, Y, g:i A",strtotime($val['created_on'])).' EDT</p>
+					<a href="'.$HTPFX.$HTHOST.'/gazette/bios.htm?bio="'.$val['authorId'].'>'.$val['authorname'].'</a><br>'.date("D F j, Y, g:i A",strtotime($val['created_on'])).' EST</p>
 				<div class="eduNthArtDesc">
 					<div class="artImgBox">
 						<img src="'.$imgPath.'">

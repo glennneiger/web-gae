@@ -23,17 +23,17 @@ width:222px;
 float:left;
 background-color:#ffffff;
 border:1px solid #2c2e31;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tickTalkHeader.gif);
+background-image:url(http://image.minyanville.com/images/tickertalk/tickTalkHeader.gif);
 background-repeat:no-repeat;
 /*background-position:center;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/ticker_header.jpg);
+background-image:url(http://image.minyanville.com/images/tickertalk/ticker_header.jpg);
 background-repeat:repeat-x;*/
 }
 
 .Tickertalk_logo{
 float:left;
 width:219px;
-/*background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tickTalkHeader.gif);
+/*background-image:url(http://image.minyanville.com/images/tickertalk/tickTalkHeader.gif);
 background-repeat:no-repeat;*/
 background-position:center;
 margin:1px 0px 0px 1px;
@@ -42,7 +42,7 @@ margin:1px 0px 0px 1px;
 .Tickertalk_logo_option{
 float:left;
 width:100%;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tick-Talk-Header.gif);
+background-image:url(http://image.minyanville.com/images/tickertalk/tick-Talk-Header.gif);
 background-position:center;
 background-repeat:no-repeat;
 height:39px;
@@ -55,11 +55,11 @@ margin:0px;
 width:221px;
 float:left;
 text-align:center;
-/*background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tickTalkHeader.gif);
+/*background-image:url(http://image.minyanville.com/images/tickertalk/tickTalkHeader.gif);
 background-repeat:no-repeat;
 background-position:center;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/ticker_logo_bg.gif);
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/ticker_header.jpg);*/
+background-image:url(http://image.minyanville.com/images/tickertalk/ticker_logo_bg.gif);
+background-image:url(http://image.minyanville.com/images/tickertalk/ticker_header.jpg);*/
 }
 .TickerTalkHeading img{
 padding:0px;
@@ -80,14 +80,14 @@ float:left;
 width:100%;
 border-bottom:solid 1px #979797; 
 background-position:bottom;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/TickerBodybg.jpg);
+background-image:url(http://image.minyanville.com/images/tickertalk/TickerBodybg.jpg);
 background-repeat:repeat-x;
 }
 
 .ticker_nav{
 width:222px;
 letter-spacing:normal;
-/*background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/ticker_nav_gray_bg.jpg);*/
+/*background-image:url(http://image.minyanville.com/images/tickertalk/ticker_nav_gray_bg.jpg);*/
 background-repeat:repeat-x;
 font-size:11px;
 font-weight:bold;
@@ -129,7 +129,7 @@ text-decoration:none;
 .NavBarticker{
 width:100%;
 float:left;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tag_baseline_gray.jpg);
+background-image:url(http://image.minyanville.com/images/tickertalk/tag_baseline_gray.jpg);
 background-repeat:repeat-x;
 background-position:bottom;
 height:32px;
@@ -140,7 +140,7 @@ padding:0px 0px 0px 10px;
 float:left;
 width: auto;
 height:24px;
-/*background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tag_corner_gray.jpg);*/
+/*background-image:url(http://image.minyanville.com/images/tickertalk/tag_corner_gray.jpg);*/
 background-position:top left;
 background-repeat:repeat-x;
 background-color:#2d2f32;
@@ -149,7 +149,7 @@ background-color:#2d2f32;
 float:left;
 width:auto;
 color:#FFFFFF;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/top_tagbg_gray.gif);
+background-image:url(http://image.minyanville.com/images/tickertalk/top_tagbg_gray.gif);
 background-repeat:no-repeat;
 background-position: top right;
 padding-right:10px;
@@ -189,7 +189,7 @@ text-transform:none;
 color:#272727;
 background-color:#eeeeee;
 /*background-attachment:fixed;*/
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/talk_bg.jpg);
+background-image:url(http://image.minyanville.com/images/tickertalk/talk_bg.jpg);
 background-repeat:repeat-x;
 font-weight:normal;
 overflow:auto;
@@ -418,7 +418,7 @@ text-align:left;
 .ShareThisarea{
 width:100%;
 float:left;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/sharethisbg.jpg);
+background-image:url(http://image.minyanville.com/images/tickertalk/sharethisbg.jpg);
 background-repeat:repeat-x;
 background-color:#d8d8d8;
 }
@@ -615,7 +615,7 @@ clear:both;
 background-color:#d7ebfe;
 border-top:solid 1px #000;
 border-bottom:solid 1px #000;
-/*background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/loadMoreBg.jpg);*/
+/*background-image:url(http://image.minyanville.com/images/tickertalk/loadMoreBg.jpg);*/
 }
 
 .TickerLogin{
@@ -833,7 +833,7 @@ margin:0px 0px 5px 0px;
 }
 
 .UploadButton{
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/Uploadimage.jpg);
+background-image:url(http://image.minyanville.com/images/tickertalk/Uploadimage.jpg);
 width:103px; 
 height:30px; 
 border:none;
@@ -1150,7 +1150,7 @@ color:#272727;
 padding:10px;
 background-color:#d0e3f4;
 background-attachment:fixed;
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/tickter_post_bg.jpg);
+background-image:url(http://image.minyanville.com/images/tickertalk/tickter_post_bg.jpg);
 background-repeat:repeat-x;
 text-indent:10px;
 font-weight:normal;
@@ -1427,7 +1427,7 @@ div#fancy_loading div {
 	left: 0;
 	width: 40px;
 	height: 480px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_progress.png') no-repeat;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_progress.png') no-repeat;
 }
 
 div#fancy_loading_overlay {
@@ -1438,7 +1438,7 @@ div#fancy_loading_overlay {
 
 div#fancy_loading_icon {
 	position: absolute;
-	background: url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_loading.gif') no-repeat;
+	background: url('http://image.minyanville.com/images/fancyzoom/fancy_loading.gif') no-repeat;
 	z-index: 35;
 	width: 16px;
 	height: 16px;
@@ -1518,7 +1518,7 @@ div#fancy_close {
 	right: -15px;
 	height: 30px;
 	width: 30px;
-	background: url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_closebox.png') top left no-repeat;
+	background: url('http://image.minyanville.com/images/fancyzoom/fancy_closebox.png') top left no-repeat;
 	cursor: pointer;
 	z-index: 181;
 	display: none;
@@ -1570,12 +1570,12 @@ span.fancy_ico {
 
 span#fancy_left_ico {
 	left: -9999px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_left.png') no-repeat;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_left.png') no-repeat;
 }
 
 span#fancy_right_ico {
 	right: -9999px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_right.png') no-repeat;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_right.png') no-repeat;
 }
 
 a#fancy_left:hover {
@@ -1627,7 +1627,7 @@ div.fancy_bg_n {
 	top: -18px;
 	width: 100%;
 	height: 18px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_n.png') repeat-x;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_n.png') repeat-x;
 }
 
 div.fancy_bg_ne {
@@ -1635,14 +1635,14 @@ div.fancy_bg_ne {
 	right: -13px;
 	width: 13px;
 	height: 18px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_ne.png') no-repeat;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_ne.png') no-repeat;
 }
 
 div.fancy_bg_e {
 	right: -13px;
 	height: 100%;
 	width: 13px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_e.png') repeat-y;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_e.png') repeat-y;
 }
 
 div.fancy_bg_se {
@@ -1650,14 +1650,14 @@ div.fancy_bg_se {
 	right: -13px;
 	width: 13px;
 	height: 18px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_se.png') no-repeat;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_se.png') no-repeat;
 }
 
 div.fancy_bg_s {
 	bottom: -18px;
 	width: 100%;
 	height: 18px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_s.png') repeat-x;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_s.png') repeat-x;
 }
 
 div.fancy_bg_sw {
@@ -1665,14 +1665,14 @@ div.fancy_bg_sw {
 	left: -13px;
 	width: 13px;
 	height: 18px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_sw.png') no-repeat;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_sw.png') no-repeat;
 }
 
 div.fancy_bg_w {
 	left: -13px;
 	height: 100%;
 	width: 13px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_w.png') repeat-y;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_w.png') repeat-y;
 }
 
 div.fancy_bg_nw {
@@ -1680,7 +1680,7 @@ div.fancy_bg_nw {
 	left: -13px;
 	width: 13px;
 	height: 18px;
-	background: transparent url('http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_shadow_nw.png') no-repeat;
+	background: transparent url('http://image.minyanville.com/images/fancyzoom/fancy_shadow_nw.png') no-repeat;
 }
 
 div#fancy_title {
@@ -1710,18 +1710,18 @@ div#fancy_title table td {
 td#fancy_title_left {
 	height: 32px;
 	width: 15px;
-	background: transparent url(http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_title_left.png) repeat-x;
+	background: transparent url(http://image.minyanville.com/images/fancyzoom/fancy_title_left.png) repeat-x;
 }
 
 td#fancy_title_main {
 	height: 32px;
-	background: transparent url(http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_title_main.png) repeat-x;
+	background: transparent url(http://image.minyanville.com/images/fancyzoom/fancy_title_main.png) repeat-x;
 }
 
 td#fancy_title_right {
 	height: 32px;
 	width: 15px;
-	background: transparent url(http://storage.googleapis.com/mvassets/images/fancyzoom/fancy_title_right.png) repeat-x;
+	background: transparent url(http://image.minyanville.com/images/fancyzoom/fancy_title_right.png) repeat-x;
 }
 
 /************ Fancy Box Ends****************/
@@ -1754,7 +1754,7 @@ padding:2px 1px 0px 8px;
 margin:0px 0px 0px 0px;
 color:#292929; 
 font-size:11px; 
-background-image:url(http://storage.googleapis.com/mvassets/images/tickertalk/drop_down.jpg); 
+background-image:url(http://image.minyanville.com/images/tickertalk/drop_down.jpg); 
 background-repeat:no-repeat;
 cursor:pointer;
 text-align:left;

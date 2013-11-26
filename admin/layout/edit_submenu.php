@@ -1,5 +1,8 @@
 <?php
 include("$ADMIN_PATH/_header.htm");
+global $D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
+include_once("$D_R/lib/_layout_data_lib.php");
 include("$ADMIN_PATH/layout/layout_includes.php");
 global $is_ssl;
 $pageno=$_GET[p];

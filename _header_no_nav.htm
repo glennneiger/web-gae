@@ -2,6 +2,7 @@
 global $HTPFX,$HTHOST,$ADS_SIZE,$IMG_SERVER,$D_R,$HTPFXSSL;
 include_once($D_R."/lib/_content_data_lib.php");
 include_once($D_R."/lib/MemCache.php");
+include_once("$D_R/lib/_cart.php");
 handle_ssl();
 session_start();
 mcookie("PHPSESSID",session_id());

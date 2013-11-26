@@ -1,5 +1,5 @@
 <?
-global $D_R;
+global $D_R,$CDN_SERVER;
 if(!$page)$page="gazette";
 $handler="./feed_mod.htm";
 include_once("$ADMIN_PATH/_header.htm");
@@ -103,31 +103,31 @@ if($_REQUEST['restore']==1  && empty($id))
 
 
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
 
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-min.1.2.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-min.1.2.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
 
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/dailyfeed.1.21.css" type="text/css">
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/dailyfeed.1.21.css" type="text/css">
 
-<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="<?=$CDN_SERVER?>/css/jquery.autocomplete.css" />
 <script type="text/javascript" language="javascript">
 var count = 0;
 include_once("<?=$HTPFX.$HTHOST?>/admin/lib/file_upload_dailyfeed/swf/swfupload.js");
 include_once("<?=$HTPFX.$HTHOST?>/admin/lib/file_upload_dailyfeed/js/handlers.js");
-include_once("<?=$HTPFX.$HTHOST?>/js/dailyfeedfileUpload.js");
-include_once("<?=$HTPFX.$HTHOST?>/js/jquery.autocomplete.1.2.js");
+include_once("<?=$CDN_SERVER?>/js/dailyfeedfileUpload.js");
+include_once("<?=$CDN_SERVER?>/js/jquery.autocomplete.1.2.js");
 </script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.jqEasyCharCounter.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/adminFeed.1.3.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/jquery.Jcrop.js"></script>
-<link  type="text/css" rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/jquery.Jcrop.css" />
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.jqEasyCharCounter.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER;?>/js/adminFeed.1.4.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER;?>/js/jquery.Jcrop.js"></script>
+<link  type="text/css" rel="stylesheet" href="<?=$CDN_SERVER?>/css/jquery.Jcrop.css" />
 
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.fancybox-1.3.1.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.fancybox-1.3.1.js"></script>
 
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
 <div>
 <table border="0">
 <?

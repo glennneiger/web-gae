@@ -200,17 +200,15 @@ function mymail($to,$from,$subject,$message_body,$text=null,$file=null,$ftype=" 
 	global $mailClass,$D_R;
 	include_once($D_R."/lib/htmlMimeMail.php");
 	
-	$to="nitin.gupta@mediaagility.com,nidhi.singh@mediaagility.com,varun.naresh@mediaagility.com";
 	if(!is_array($to)){
-   $to=	explode(",",$to);
+		$to=	explode(",",$to);
 	}
-	$from = 'kamal.puri@mediaagility.com';
 
 	/*if(!is_array($to)){$to=array($to);
 	$to = implode(',',$to);}*/	
 	$mail_options = array(
 		"sender" => $from,
-		"subject" => $subject.'testing mail testing 123',
+		"subject" => $subject,
 		"htmlBody" => $message_body
 		);
 	try {
@@ -1073,11 +1071,11 @@ function mOver($upstate,$downstate,$link,$downif=0,$addlimg="",$addllink=""){
 	global $ASSET_PATH,$ABS_PATHS,$D_R,$IMG_SERVER;
 	$downstate=$IMG_SERVER."$ASSET_PATH$downstate";
 	$upstate=($downif?$downstate:"$IMG_SERVER$ASSET_PATH$upstate");
-	list($w,$h)=@getimagesize("$D_R$upstate");
+	list($w,$h)=getimagesize("$D_R$upstate");
 	if(!stristr($addlimg,"width"))
-		$addlimg.=" width=$w";
+		$addlimg.=" width=43";
 	if(!stristr($addlimg,"height"))
-		$addlimg.=" height=$h";
+		$addlimg.=" height=16";
 
 	mouseover($upstate,$downstate,$link,$addlimg,$addllink);
 }
@@ -2232,10 +2230,18 @@ function jack_build_lang($prof_id)
 
 function show_adds_checkmate($pageName,$profile="",$topic_page_id=""){
 	global $_SESSION,$objCache,$cm8Server,$cm8profile,$showFancybox,$showSurveybox,$adsVar,$icTag,$article_ic_tag,$scriptRefresh,$ad_author,$ad_author_id;
+	global $pgCm8Cat,$pgCm8Tag;
 	if(!is_object($objCache)){
 		$objCache = new Cache();
 	}
-	$cm8cat=$objCache->getCM8Cat($pageName,$topic_page_id);
+	if($pgCm8Tag=="")
+	{
+		$cm8cat=$objCache->getCM8Cat($pageName,$topic_page_id);
+	}
+	else
+	{
+		$cm8cat=$pgCm8Tag;
+	}
 	if($article_ic_tag!="")
 	{
 		$icTag=$article_ic_tag;
@@ -2343,19 +2349,7 @@ function CM8_ShowAd($bannername){
 <div id="ut_piggyback"><script type="text/javascript" src="http://cdn.undertone.com/js/piggyback.js?zoneid=37905"></script></div>';
 				break;
 				case 'adbladeNewCode':			//this is an IC ad not adblade.
-					echo '<script type="text/javascript">
-					(function() {
-					    var params =
-					    {
-						id: "2f680ac6-fb97-4b16-b405-da535317ff66",
-						d:  "bWlueWFudmlsbGUuY29t",
-						wid: "7681"
-					    };
-				    
-					    var qs="";for(var key in params){qs+=key+"="+params[key]+"&"}qs=qs.substring(0,qs.length-1);
-					    document.write(\'<script type="text/javascript" src="http://api.content.ad/Scripts/widget2.js?\' + qs + \'"><\'+\'\/script>\');
-					})();
-					</script>';
+					echo '<script type="text/javascript">adsonar_placementId=1593138;adsonar_pid=3167778;adsonar_ps=-1;adsonar_zw=610;adsonar_zh=300;adsonar_jv=\'ads.adsonar.com\';</script><script language="JavaScript" src="http://js.adsonar.com/js/adsonar.js"></script>';
 				break;
 			case 'partnerCenter':
 			case 'button_partnerCenter': ?>
@@ -2371,8 +2365,7 @@ function CM8_ShowAd($bannername){
 			case '1x1_Text': ?>
 				<SCRIPT LANGUAGE="JavaScript">OAS_AD('x13');</SCRIPT>
 				<?php break;
-			case '1x1_TextAd': 
-				echo "<script src='http://ads.investingchannel.com/adtags/minyanville/bottomlink/500x55.js?kval=content_ad&".$strAdsVar."' type='text/javascript' charset='utf-8'></script>";
+			case '1x1_TextAd':
 				break;
 			case 'Button_160x30': ?>
 				<SCRIPT LANGUAGE="JavaScript">OAS_AD('Position1');</SCRIPT>
@@ -2588,7 +2581,7 @@ function sendTopicMailChimp($subject,$mailbody, $interest)
 
 	$objApi = new MCAPI($mailChimpApiKey);
 	$conditions = array();
-	$conditions[] = array('field'=>'interests', 'op'=>'one', 'value'=>'Trading Radar,RANDOM THOUGHTS');
+	$conditions[] = array('field'=>'interests', 'op'=>'one', 'value'=>$interest);
 	
 	$segment_opts = array('match'=>'any', 'conditions'=>$conditions);
 	 $options = array('list_id'=>$authorSubsList,'subject'=>$subject,'from_email'=>'support@minyanville.com',
@@ -2598,6 +2591,7 @@ function sendTopicMailChimp($subject,$mailbody, $interest)
 	if($res=="1")
 	{
 		//$resSend = $objApi->campaignSendNow($res);
+		$resSend="1";
 		if($resSend=="1")
 		{
 			return $resSend;
@@ -2607,6 +2601,7 @@ function sendTopicMailChimp($subject,$mailbody, $interest)
 			return "-1";
 		}	
 	}
+	
 }
 
 function checkInterests($mail,$secNameList)
@@ -2650,7 +2645,6 @@ function subscribeMailChimpUser($email,$listName,$first_name,$last_name)
 	$list = $mailChimpListId[$listName];
 	
 	$merge_vars = array("FNAME"=>$first_name, "LNAME"=>$last_name);
-	htmlprint_r($merge_vars);
 	$resSub = $objApi->listSubscribe($list, $email, $merge_vars);
 	
 	if($resSub!="1")
@@ -2913,6 +2907,8 @@ function settStockTickerforYahoo($validateticker){ /*Insert data in ex_stock tab
 
 
 function generateYahooXml($recentArticlerow,$item_text,$yahooSyndication,$yahooFullBodySyndication){
+	global $D_R;
+	include_once($D_R.'/lib/config/_syndication_config.php');
 	global $HTPFX,$HTHOST,$HTNOSSLDOMAIN,$yahoouser,$yahoopass,$yahoohost,$yahoofullpath,$yahoopath,$D_R,$feed_error_template,$NOTIFY_FEED_ERROR_TO,$NOTIFY_FEED_ERROR_FROM,$NOTIFY_FEED_ERROR_SUBJECT,$ftpError,$relatedArticleArr;
 
 
@@ -2955,6 +2951,29 @@ function generateYahooXml($recentArticlerow,$item_text,$yahooSyndication,$yahooF
 	return $uid.".xml";
 }
 
+function getTagArr($id)
+{
+	$objArticle	= new ArticleData();
+	$gettag		=	$objArticle->getTagsOnArticles($id,'1');
+		$tagarray=array();
+	    foreach($gettag as $tagvalue)
+		{
+		    $validatetag=is_stock($tagvalue['tag']);
+			if($validatetag['exchange']){ // if entry in ex_stock table
+		 	$tagarray[]=$tagvalue['tag'];
+			}
+			else // Verify from Yahoo
+			{
+				$validateticker=getstockdetailsfromYahoo($tagvalue['tag']); /*varify ticker from yahoo*/
+				if($validateticker[0])
+				{
+					 $insertTickerid=settStockTickerforYahoo($validateticker); /*Insert data in the ex_stock table if verify from yahoo*/
+					 $tagarray[]=$tagvalue['tag'];
+				}
+			}
+		 }
+		 return $tagarray;
+}
 
 function setYahooOutboundDataCache($id)
 {
@@ -3045,6 +3064,8 @@ function setYahooOutboundDataCache($id)
 }
 	
 function generateYahooXml_old($recentArticlerow,$item_text,$yahooSyndication,$yahooFullBodySyndication){
+	global $D_R;
+	include_once($D_R.'/lib/config/_syndication_config.php');
     global $HTPFX,$HTHOST,$HTNOSSLDOMAIN,$yahoouser,$yahoopass,$yahoohost,$yahoofullpath,$yahoopath,$D_R,$feed_error_template,$NOTIFY_FEED_ERROR_TO,$NOTIFY_FEED_ERROR_FROM,$NOTIFY_FEED_ERROR_SUBJECT,$ftpError,$relatedArticleArr;
     $title=htmlentities(utf8_decode($recentArticlerow['title']));
 
@@ -3753,7 +3774,7 @@ function setAmeritradeAdsFree(){
 }
 
 function loadjavascriptheader($pageCSS,$pageJS,$pos='H',$noDefaultLoad=FALSE){
-	global $js, $css,$D_R,$HTPFX,$HTHOST,$CDN_SERVER,$HTPFXSSL;
+	global $js, $css,$D_R,$HTPFX,$HTHOST,$CDN_SERVER,$SSL_CDN_SERVER,$HTPFXSSL;
 	include_once($D_R."/lib/config/_js_css_lib.php");
 	?><!-- CSS Configuration Start--><?
 	foreach($css as $styleSheet)
@@ -3761,23 +3782,30 @@ function loadjavascriptheader($pageCSS,$pageJS,$pos='H',$noDefaultLoad=FALSE){
 		if(in_array($styleSheet['name'],$pageCSS) || (!$noDefaultLoad && $styleSheet['defaultLoad']==TRUE))
 		{
 			if($styleSheet['linkType']=="external"){
-				echo "<link rel='stylesheet' href='".$styleSheet['file']."' type='text/css' media='all' />\n";
+				if($_SERVER['HTTPS']=="on")
+				{
+					echo "<link rel='stylesheet' href='".$CDN_SERVER.$styleSheet['file']."' type='text/css' media='all' />\n";
+				}
+				else
+				{
+					echo "<link rel='stylesheet' href='".$CDN_SERVER.$styleSheet['file']."' type='text/css' media='all' />\n";
+				}
 			}
 			else{
 				if($styleSheet['name']=='fontStylesheet')
 				{
 					if($_SERVER['HTTPS']=="on")
 					{
-						echo "<link rel='stylesheet' href='".$HTPFXSSL.$HTHOST.$styleSheet['file']."' type='text/css' media='all' />\n";
+						echo "<link rel='stylesheet' href='".$CDN_SERVER.$styleSheet['file']."' type='text/css' media='all' />\n";
 					}
 					else 
 					{
-						echo "<link rel='stylesheet' href='".$HTPFX.$HTHOST.$styleSheet['file']."' type='text/css' media='all' />\n";
+						echo "<link rel='stylesheet' href='".$CDN_SERVER.$styleSheet['file']."' type='text/css' media='all' />\n";
 					}
 				}else{
 					if($_SERVER['HTTPS']=="on")
 					{
-						echo "<link rel='stylesheet' href='".$HTPFXSSL.$HTHOST.$styleSheet['file']."' type='text/css' media='all' />\n";
+						echo "<link rel='stylesheet' href='".$CDN_SERVER.$styleSheet['file']."' type='text/css' media='all' />\n";
 					}
 					else 
 					{
@@ -3796,7 +3824,7 @@ function loadjavascriptheader($pageCSS,$pageJS,$pos='H',$noDefaultLoad=FALSE){
 	}else{
 	if($_SERVER['HTTPS']=="on")
 	{
-	echo "<script src='".$HTPFXSSL.$HTHOST.$javaScript['file']."' type='text/javascript' ></script>\n";
+	echo "<script src='".$CDN_SERVER.$javaScript['file']."' type='text/javascript' ></script>\n";
 	}
 	else 
 	{
@@ -4243,7 +4271,7 @@ function arraytoxml( $data , $root_title ,$keys="",$append = true ) {
 					</li>
 				<li class="icon">
 					<a href="https://twitter.com/intent/follow?original_referer=&region=follow_link&screen_name=minyanville&tw_p=followbutton&variant=2.0" target="_blank"><img class="fade" src="<?=$IMG_SERVER;?>/images/newsletter/twtrBtn.png" alt="Twitter" height="" width="" /></a>
-					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=host+'/js/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script> 
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script> 
 				</li>
 
 				<li class="icon">
@@ -4427,5 +4455,68 @@ function arraytoxml( $data , $root_title ,$keys="",$append = true ) {
 		fclose($feedFile);
 		chmod($feedName, 0777);
 	}
+
+	function displayCurrentDate() {
+		$dateInfo = getDate();
+		$todaysDate = $dateInfo['weekday'] . " " . $dateInfo['month'] . " " . $dateInfo['mday'] . ", " . $dateInfo['year'];
+		return $todaysDate;
+	}
+	
+	function getItemURL($item_type,$item_id)
+	{
+		global $D_R;
+		include_once("$D_R/admin/lib/_dailyfeed_data_lib.php");
+		$objDailyfeed = new Dailyfeed();
+		global $HTPFX,$HTHOST;
+		if($item_type == 1)
+		{
+			$stQuery = "SELECT id,keyword,blurb FROM articles WHERE id ='$item_id'";
+			$arResult = exec_query($stQuery,1);
+			//  function defined in web/lib/layout_functions.php
+			return makeArticleslink($arResult['id'],$arResult['keyword'],$arResult['blurb']);
+		}
+		if($item_type == 18)
+		{
+			$urltitle=$objDailyfeed->getDailyFeedUrl($item_id);
+			return $urltitle;
+		}
+		else
+		{
+			$stQuery = "SELECT url FROM ex_item_meta WHERE item_type= '$item_type' AND item_id ='$item_id'";
+			$arResult = exec_query($stQuery,1);
+			return $arResult['url'];
+		}
+	}
+	function getlayoutmenu(){
+		$sql    =   "SELECT COUNT(l2.id) as cnt,l1.id,l1.title,l1.parent_id,l1.level,l1.menuorder,l1.active,l1.page_id
+			     from layout_menu as l1 , layout_menu as l2  WHERE l1.id = l2.parent_id AND l1.parent_id='0' and
+					 l1.navigation_type='H' Group By l1.id
+				     ORDER BY l1.menuorder ASC";
+		$result  =  exec_query($sql);
+		if($result)
+		{
+			return $result;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+	
+	function getModules() {
+		$listmodules = exec_query("SELECT id, name FROM layout_modules");
+		foreach($listmodules as $row){
+		$modules[$row['id']] = $row['name'];
+		}
+		
+		return $modules;
+	}
+	
+	function displayDate() {
+		$dateInfo = getDate();
+		$todaysDate = $dateInfo['weekday'] . " " . $dateInfo['month'] . " " . $dateInfo['mday'] . ", " . $dateInfo['year'];
+		return $todaysDate;
+	}
+		
 
   ?>

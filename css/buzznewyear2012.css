@@ -35,12 +35,12 @@ body {
 }
 
 .header-box {
-	background: #044788 url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/gradientBkg.jpg) left top repeat-x;
+	background: #044788 url(http://image.minyanville.com/images/buzzTrial/2012/gradientBkg.jpg) left top repeat-x;
 	padding: 20px;
 }
 
 .buzz-tagline {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png) 0px -3px no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/2012/sprites.png) 0px -3px no-repeat;
 	height: 86px;
 	width: 512px;
 	margin: 0;
@@ -50,7 +50,7 @@ body {
 }
 
 .mv-logo {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png) 0px -93px no-repeat;
+	background: url(http://image.minyanville.com/images/buzzTrial/2012/sprites.png) 0px -93px no-repeat;
 	float: right;
 	height: 33px;
 	width: 90px;
@@ -98,7 +98,7 @@ body {
 }
 
 .registration-form {
-	background: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png) -100px -89px no-repeat;	
+	background: url(http://image.minyanville.com/images/buzzTrial/2012/sprites.png) -100px -89px no-repeat;	
 }
 
 .labels, .openFields {
@@ -133,7 +133,7 @@ body {
 
 .submit-button {
 	background: none;
-	background-image: url(http://storage.googleapis.com/mvassets/images/buzzTrial/2012/sprites.png);
+	background-image: url(http://image.minyanville.com/images/buzzTrial/2012/sprites.png);
 	background-position:  -430px -89px ;
 	cursor: pointer;
 	float: right;

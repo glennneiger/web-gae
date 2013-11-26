@@ -373,6 +373,7 @@ class Cache extends memCacheObj {
 	public function setDailyfeedCache($urlorid){
 		global $dailyfeedCacheExpiry,$D_R;
 		include_once($D_R.'/lib/_exchange_lib.php');
+		include_once($D_R.'/admin/lib/_dailyfeed_data_lib.php');
 		$dailyfeed=$this->getDailyfeedData($urlorid);
 		$objDailyfeed = new Dailyfeed();
 		if($dailyfeed){
@@ -472,8 +473,7 @@ class Cache extends memCacheObj {
 	public function deleteArticleContentCache($articleId){
 		$pageId = $this->getArticlePageCount($articleId);
 		foreach($pageId as $k=>$page){
-			$page=$page['pageCount']-1;
-			$this->setKey("articleContent_".$articleId."_1_".$page,"","0");
+			$this->setKey("articleContent_".$articleId."_1_".$page['pageCount'],"","0");
 		}
 		if(count($pageId)>1){
 			$this->setKey("articleContent_".$articleId."_1_full","","0");
@@ -495,7 +495,8 @@ class Cache extends memCacheObj {
 	}
 
 	public function setFooterQuickLinksCache(){
-	 global $footerCacheExpiry;
+	 global $footerCacheExpiry,$D_R;
+	 include_once("$D_R/lib/_layout_data_lib.php");
 	 $arFooterLinks = getfootermenu('active','');
 	 $this->arFooterLinks=$arFooterLinks;
 	 $this->setKey("mv_nav_footer",$this,$footerCacheExpiry);
@@ -1168,6 +1169,7 @@ ORDER BY publish_date DESC LIMIT ".$start.",".$limit;
 	function setPageModuleCache($module_id)
 	{
 		global $D_R,$pageModulesCacheExpiry;
+		include_once("$D_R/lib/_layout_design_lib.php");
 		$stKey="module_".$module_id;
 		include_once $D_R.'/lib/_layout_design_lib.php';
 		$module=renderTemplateContent($module_id);
@@ -1699,8 +1701,10 @@ ORDER BY publish_date DESC LIMIT ".$start.",".$limit;
 	function setItemLink($itemID,$ItemType){
 		global $itemLinkCacheExpiry,$D_R;
 		include_once $D_R.'/lib/config/_cache_config.php';
-		$sqlItemLink = "SELECT url,is_live from ex_item_meta WHERE item_type = '".$ItemType."' AND item_id = ".$itemID;
-		$resItemLink = exec_query($sqlItemLink,1);
+		if($ItemType!="" && $itemID!=""){
+			$sqlItemLink = "SELECT url,is_live from ex_item_meta WHERE item_type = '".$ItemType."' AND item_id = ".$itemID;
+			$resItemLink = exec_query($sqlItemLink,1);
+		}
 		if(!empty($resItemLink['url']) && $resItemLink['is_live']=='1'){
 			$this->setKey("url_".$ItemType."_".$itemID,$resItemLink['url'],$itemLinkCacheExpiry);
 		}
@@ -1857,6 +1861,7 @@ ORDER BY publish_date DESC LIMIT ".$start.",".$limit;
 		}else{
 			return $this->setPageDetails($pageID,$topicPageID);
 		}
+
 	}
 
 	function setPageDetails($pageID,$topicPageID=NULL){
@@ -2272,7 +2277,7 @@ ORDER BY publish_date DESC LIMIT ".$start.",".$limit;
   xmlns:wp="http://wordpress.org/export/1.0/">
   <channel>
   <ttl>1</ttl>
-  <lastBuildDate>'.$LBD.' EDT</lastBuildDate>';
+  <lastBuildDate>'.$LBD.' EST</lastBuildDate>';
 
 
 		foreach($list as $keyVal){
@@ -2372,7 +2377,7 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
 		  xmlns:wp="http://wordpress.org/export/1.0/">
 		<channel>
 		<ttl>1</ttl>
-		  <lastBuildDate>'.$LBD.' EDT</lastBuildDate>';
+		  <lastBuildDate>'.$LBD.' EST</lastBuildDate>';
 
 		foreach($list as $keyVal){
 		$content	=	strip_tags($keyVal['content']);
@@ -2531,9 +2536,11 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
 
 		$keyCache="MinyanFeedData_".$currentFilter;
 
-		$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, articles.publish_date, blurb,EIM.description as 'desc', body, position, character_text ";
+		$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, 
+		contrib_id authorid, articles.publish_date, blurb,EIM.description as 'desc', body,  character_text ";
 		$sql .= "from articles, contributors, ex_item_meta EIM ";
-		$sql .= "where articles.contrib_id = contributors.id and EIM.item_id=articles.id and EIM.item_type=1 and articles.approved='1' and articles.is_live='1' ";
+		$sql .= "where EIM.item_id=articles.id and articles.contrib_id = contributors.id and EIM.item_type=1
+		 and articles.approved='1' and articles.is_live='1' and articles.date>('".mysqlNow()."' - interval 1 month)  ";
 
 		if($currentFilter){
 			$contribFilterId=$objContrib->getExcludedPartnerId();
@@ -2542,6 +2549,7 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
 		$urlPostFix = "?from=".$currentFilter;
 		}
 		$sql .= "ORDER BY articles.publish_date DESC LIMIT 0,15";
+
 		$results = exec_query($sql);
 
 		$LBD= date("D, j M Y H:i:s",strtotime($results[0]['publish_date']));
@@ -2558,7 +2566,7 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
    		<title>Minyanville.com - All Articles</title>
     	<link>'.$HTPFX.$HTHOST.'</link>
  		</image>
-		<lastBuildDate>'.$LBD.' EDT</lastBuildDate>';
+		<lastBuildDate>'.$LBD.' EST</lastBuildDate>';
 
 		$showAd=FALSE;
 		foreach ($results as $resVal) {
@@ -2589,7 +2597,7 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
 		<description><![CDATA['.$body.']]></description>
        	 <link>'.$HTPFX.$HTHOST.makeArticleslink($resVal['id']).$urlPostFix.'</link>
 		 <author>'.$resVal['author'].'</author>
-        <pubDate>'.date('D, j M Y H:i:s',strtotime($resVal['publish_date'])).' EDT</pubDate>
+        <pubDate>'.date('D, j M Y H:i:s',strtotime($resVal['publish_date'])).' EST</pubDate>
         <guid isPermaLink="true">'.$HTPFX.$HTHOST.makeArticleslink($resVal['id']).'</guid>
 	     </item>';
 		$body = "";
@@ -2679,20 +2687,15 @@ WHERE item_type IN('1') AND is_live='1' AND publish_date > ('".date('Y-m-d',strt
 		{
 			global $topicCacheExpiry;
 			$keyName= "latest_section_articles_".$section_id;
-			$qryArticles = "SELECT id, IF(publish_date,publish_date,date) AS display_date FROM articles WHERE is_live = '1' and approved = '1' AND IF(publish_date,publish_date,DATE)>=('".mysqlNow()."' - INTERVAL 1 YEAR) AND FIND_IN_SET('".$section_id."',subsection_ids) ORDER BY display_date DESC LIMIT 0,31";
 
-			$resItems = exec_query($qryArticles);
-			if(count($resItems) > 0)
-			{
-				foreach($resItems as $arItems)
-				{
-					$arArticleIds[] = $arItems['id'];
-				}
-				$stArticles = implode(',',$arArticleIds);
-				$qryArticle = "SELECT item_id id,title,description,author_name author,author_id,publish_date,url FROM ex_item_meta EIT
-				WHERE item_type IN('1') and item_id IN (".$stArticles.") and is_live='1' ORDER BY publish_date desc";
-				$arArticles = exec_query($qryArticle);
-			}
+			$qryArticles = "SELECT a.id, IF(a.publish_date,a.publish_date,a.date) AS display_date,
+			EIM.title,EIM.description,EIM.author_name author,EIM.author_id,EIM.publish_date,EIM.url
+			 FROM articles a
+			LEFT JOIN ex_item_meta AS EIM ON EIM.item_id=a.id AND EIM.item_type='1'
+			WHERE a.is_live = '1' AND a.approved = '1' AND IF(a.publish_date,a.publish_date,a.date)>=('".mysqlNow()."' - INTERVAL 1 YEAR)
+			AND FIND_IN_SET('".$section_id."',a.subsection_ids) ORDER BY display_date DESC LIMIT 0,31 ";
+
+			$arArticles = exec_query($qryArticles);
 			if(count($arArticles) > 0){
 				$this->setKey($keyName,$arArticles,$topicCacheExpiry);
 			}
@@ -2732,8 +2735,9 @@ WHERE item_type IN('1') AND is_live='1' AND publish_date > ('".date('Y-m-d',strt
 	}
 	
 	function getArticleContent($articleUrl,$articleId,$itemType,$page){
+		global $D_R;
 		if($page==""){
-			$page=0;
+			$page=1;
 		}
 		$contentKey = 'articleContent_'.$articleId.'_'.$itemType.'_'.$page;
 			
@@ -2741,13 +2745,14 @@ WHERE item_type IN('1') AND is_live='1' AND publish_date > ('".date('Y-m-d',strt
 		if(!empty($articleHtm)){
 			return $articleHtm;
 		}else{
-			return $this->setArticleContent($articleUrl,$articleId,$itemType);
+			return $this->setArticleContent($articleUrl,$articleId,$itemType,$page);
 		}
 	}
 	
-	function setArticleContent($articleUrl,$articleId,$itemType){
-		global $articleContentCacheExpiry;
+	function setArticleContent($articleUrl,$articleId,$itemType,$page){
+		global $articleContentCacheExpiry,$D_R;
 		$keyName = 'articleContent_'.$articleId.'_'.$itemType.'_'.$page;
+		
 		$this->setKey("cacheRequest",'1',$articleContentCacheExpiry);
 		$resArticleHtm = stripslashes(file_get_contents($articleUrl,1));
 		if(!empty($resArticleHtm)){

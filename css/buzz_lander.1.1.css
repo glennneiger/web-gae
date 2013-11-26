@@ -60,22 +60,22 @@ a {
 }
 
 .top-borders {
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px 0px; no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px 0px; no-repeat;
 	height: 10px;
 }
 
 .bottom-borders {
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px -129px; no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px -129px; no-repeat;
 	height: 10px;
 }
 
 .header-main {
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px -10px; no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px -10px; no-repeat;
 	height: 119px;
 }
 
 .buzz-tagline {
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px -3px no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px -3px no-repeat;
 	height: 86px;
 	width: 512px;
 	margin: 0;
@@ -128,16 +128,16 @@ color:#41812A;
 	width: 780px;
 	margin:  0 10px 0 0;
 	float: left;
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px -161px no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px -161px no-repeat;
 }
 
 .hl-borders-top {
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px -141px no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px -141px no-repeat;
 	height: 8px;
 }
 
 .hl-borders-btm{
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px -151px no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px -151px no-repeat;
 	height: 8px;
 }
 
@@ -155,7 +155,7 @@ color:#41812A;
 }
 
 .trialButton {
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) no-repeat;
 	background-position: 0px -615px;
 	float: left;
 	height: 30px;
@@ -182,7 +182,7 @@ color:#41812A;
 
 
 .subscribe-box {
-	background: url(http://storage.googleapis.com/mvassets/images/subscription/sprites.png) 0px -647px no-repeat;
+	background: url(http://image.minyanville.com/images/subscription/sprites.png) 0px -647px no-repeat;
 	float: left;
 	height: 198px;
 	width: 900px;

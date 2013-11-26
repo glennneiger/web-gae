@@ -13,7 +13,7 @@ $bannername=$cm8_ads_1x1_Text;
 $bannermicro=$cm8_ads_MicroBar;
 $bannernameMR="MediumRectangle_300x250_300x600_bottom";
 $noDefaultLoad=TRUE;
-$pageJS=array('config','dailyfeed','jquery','global','featuredslider','mobileredirect','emailalert','Articles','stickycontent','sticky','stickyscroller','getset','fancybox','mailchimp','modernizr','selectivizr');
+$pageJS=array('config','dailyfeed','jquery','global','featuredslider','mobileredirect','emailalert','Articles','stickycontent','sticky','stickyscroller','getset','fancybox','mailchimp','modernizr');
 $pageCSS=array("global","layout","nav","codaslider","fontStylesheet","homepage","rightColumn","fancybox","mailchimp","sub_homepage");
 $objCache = new Cache();
 
@@ -24,43 +24,43 @@ include_once($D_R."/lib/_homepage_design.php");
 include_once($D_R."/lib/mailchipapi/mailchimp_data_lib.php");
 $objMailChimp= new mailChimp();
 $objHPDesign = new homeDesign();
+
 include("_header.htm");
+
 echo $objHPDesign->freeModuleFancyBox();
 if($_SESSION['email']) {
 
-?>
+	?>
 <script>
 $j(document).ready(function() {
 	$j("#emailAddress").attr("value", "<? echo $_SESSION['email']; ?>");
 });
 </script>
-<?php } ?>
-
+	<?php } ?>
 <!-- end feature-container -->
 
 <div class="shadow">
-  <div id="content-container">
-    <div id="article-left">
-      <div id="homepage-top">
+<div id="content-container">
+<div id="article-left">
+<div id="homepage-top">
         <div id="feature-container">
           <?php
           if(isset($_SESSION['AdsFree']))
           {
-          	echo $objCache->getFeaturedSliderNoAd();
+          	 echo $objCache->getFeaturedSliderNoAd();
           }
           else
           {
             //$exp_time = time(23,0,0,date('m'),date('j'),date('Y'));
             if(!isset($_COOKIE['slider_ad_frequency_cap']) || $_COOKIE['slider_ad_frequency_cap'] > $_COOKIE['slider_ad_viewed'])
             {
-            	echo $objCache->getFeaturedSlider();
-            }
-            else
-            {
-                echo $objCache->getFeaturedSliderNoAd();
-            }
-          }
-	  
+            	 echo $objCache->getFeaturedSlider();
+                    }
+                    else
+                    {
+              	 echo $objCache->getFeaturedSliderNoAd();
+                    }
+                }
 		  ?>
           <script type="text/javascript">
 				_xMainFeature.init('main-feature','655');
@@ -81,25 +81,16 @@ $j(document).ready(function() {
 						viewed_cookie_count = parseInt(viewed_cookie_count)+1;
 					}
 					setCookie("slider_ad_viewed",viewed_cookie_count,'midnight');
-				}
-         </script>
-        </div>
-        <?php
-          $objHPDesign->homeNewsletter();
-	 ?>
-        <!-- <div class="wercmmnd_section"> <?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Recommend'); ?> </div>  -->
+          		}
+            </script>
+	</div>
         <div class="top-module-article" id="all-articles-module">
           <?php
-			$objHPDesign->homeAllArticles();
+			 $objHPDesign->homeAllArticles();
 			?>
 	</div>
 		 <div id="daily-feed-module" class="top-module-df">
-          <div class="hpBorder" id="hpBuzz"><?php  echo $objCache->getPageModules($pageDetail['id'],'Home Buzz Banter'); ?></div>
-          <script>
-			var pageId="<?=$pageDetail['id']?>";
-           setInterval("realHpBuzz('"+pageId+"','Home Buzz Banter')",60000);</script>
-          <?php echo $objCache->getPageModules($pageDetail['id'],'Home Edu'); ?>
-           <div class="hpBorder"><?php echo $objCache->getPageModules($pageDetail['id'],'Home Daily Feed'); ?></div>
+           <div class="hpBorder"><?php echo $objCache->getPageModules($pageMetaData['id'],'Home Daily Feed'); ?></div>
 		</div>
 </div>
       <!-- end homepage-top -->
@@ -107,25 +98,23 @@ $j(document).ready(function() {
 <!-- end homepage-middle -->
 <div id="homepage-bottom">
         <div class="homepage-bottom-module">
-          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 1') ?></div>
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageMetaData['id'],'New Home Page Module 1');  ?></div>
 		  <div class="ltBtmPanel-btmDiv"></div>
-          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 2') ?></div>
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageMetaData['id'],'New Home Page Module 2') ?></div>
         </div> <!--left end -->
         <div class="hompg-rght-module">
-          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 3') ?></div>
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageMetaData['id'],'New Home Page Module 3') ?></div>
 		  <div class="ltBtmPanel-btmDiv"></div>
-          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageDetail['id'],'New Home Page Module 4') ?></div>
+          <div class="hmpg-section borderRtSolid"><?php echo $objCache->getPageModules($pageMetaData['id'],'New Home Page Module 4') ?></div>
         </div><!--right end -->
-      </div>
+</div>
       <!-- end homepage-bottom -->
     </div>
     <?php
-$arrRightCols	=	array('freeReportModule','show_300x250','trading_calendar','show_300x250','daily_recap_module','show_mostpopular','show_300x100','ticker_widget','financial_product_guide','sponsoredlinks','recommendation','twitterWidget','show_ads');
+$arrRightCols	=	array('freeReportModule','show_300x250','trading_calendar','show_300x250','daily_recap_module','show_mostpopular','show_300x100','financial_product_guide','sponsoredlinks','recommendation','twitterWidget','show_ads');
 include("_rightcolumn.htm"); ?>
   </div>
   <!--Content contaner end here-->
 </div>
 <!-- shadow end -->
-<?php
-include("_footer.htm"); ?>
-
+<?php include("_footer.htm"); ?>

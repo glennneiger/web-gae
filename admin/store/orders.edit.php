@@ -1,7 +1,8 @@
 <?
 $hide_ui=1;
-global $cloudStorageTool,$HTPFX,$HTHOST;
+global $cloudStorageTool,$HTPFX,$HTHOST,$D_R;
 include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/_cart.php");
 
 /*============set up permissions=================*/
 $adminall=$AD->getPerm("admin_users_all");

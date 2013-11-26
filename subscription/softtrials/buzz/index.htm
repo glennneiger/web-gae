@@ -2,8 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <?php
 session_start();
-global $D_R,$STORAGE_SERVER;
+global $D_R,$STORAGE_SERVER,$CDN_SERVER;
 include_once($D_R."/lib/_content_data_lib.php");
+global $D_R;
+include_once($D_R.'/lib/config/_products_config.php');
 include_once("$D_R/lib/_includes.php");
 global $viaProducts,$HTHOST,$HTPFX,$IMG_SERVER;
 $productName="subBuzzBanter";
@@ -38,16 +40,16 @@ if(strtolower($from) == 'google' ){
 <title><?=$pageMetaData['title']?>-Minyanville</title>
 <meta name="description" content="<?=$pageMetaData['description']?>" >
 <meta name="keywords" content="<?=$pageMetaData['keywords']?>">
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
-<script src="<?=$HTPFX.$HTHOST?>/js/min/ibox.1.1-min.js" type="text/javascript"></script>
-<link href="<?=$HTPFX.$HTHOST?>/css/buzzSoft.css" rel="stylesheet" type="text/css" />
-<script src="<?=$HTPFX.$HTHOST?>/js/soft_trials.1.4.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/ibox.1.1.css" type="text/css" />
+<script src="<?=$CDN_SERVER?>/js/min/ibox.1.1-min.js" type="text/javascript"></script>
+<link href="<?=$CDN_SERVER?>/css/buzzSoft.css" rel="stylesheet" type="text/css" />
+<script src="<?=$CDN_SERVER?>/js/soft_trials.1.4.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
 <script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST;?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST;?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/redesign.1.26.js" type="text/javascript"></script>
 <!-- google anaytics  code -->
 
 

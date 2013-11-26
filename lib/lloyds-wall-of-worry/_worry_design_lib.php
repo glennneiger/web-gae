@@ -1,5 +1,5 @@
 <?
-global $D_R;
+global $D_R,$CDN_SERVER;
 include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
 $objWorryData = new worryData();
 class worryDesign{
@@ -79,8 +79,7 @@ government spending. Here we go again. Let the political games begin! </span></d
 					$i = $key+1;
 					if($key=="2" || $key==$chkThirdWall+4){
 					   $chkThirdWall=$key;
-					  
-					   echo $val['worry_img'];
+
 					?>
 						<img id="third-img" class="tTip" name="<?=$val['title']?>" title="<?=$val['worry_summary']?>" src="<?=$IMG_SERVER?>/assets/lloyds-wall-of-worry/<?=$val['worry_img']?>" width="169px" height="144px" />
                      <?
@@ -258,7 +257,7 @@ government spending. Here we go again. Let the political games begin! </span></d
 						'<div class="time-val"><div>00</div><span>MINUTES</span></div>'+
 						'<div class="time-val"><div>00</div><span>SECONDS</span></div>';
 		</script>
-		<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/worry-timer.1.4.js"></script>
+		<script type="text/javascript" src="<?=$CDN_SERVER?>/js/worry-timer.1.4.js"></script>
 <?	}
 } // class End
 

@@ -1,12 +1,12 @@
 <?
-global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER;
+global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER,$tempPath,$CDN_SERVER;
 $page="mvtv";
 $allperms=array("mvtv");
 include("$ADMIN_PATH/_header.htm");
 
 $handler = $HTPFX.$HTHOST."/admin/upload_video_ajax.php";
 
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' => $tempPath ];
 $frm_url = $cloudStorageTool->createUploadUrl($handler, $options);
 
 $uploadvideo=$AD->getPerm("mvtv_upload");
@@ -32,10 +32,10 @@ function displayDropdown($name,$sql,$key,$value,$chk,$type,$size,$class,$width)
 }
 ?>
 <html>
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
 <script language="JavaScript">
-include_once("<?=$HTPFX.$HTHOST?>/js/jquery-1.9.1.min.js");
-include_once("<?=$HTPFX.$HTHOST?>/js/fileUpload.js");
+include_once("<?=$CDN_SERVER?>/js/jquery-1.9.1.min.js");
+include_once("<?=$CDN_SERVER?>/js/fileUpload.js");
 function addVideo(frm)
 {
 	var error_msg = "";

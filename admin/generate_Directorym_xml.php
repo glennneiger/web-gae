@@ -1,4 +1,6 @@
 <?
+global $D_R;
+include_once($D_R.'/lib/config/_syndication_config.php');
 			// The query will get rows for the past 7 days.
 			$qry="select * from articles where date between DATE_SUB('".mysqlNow()."',INTERVAL 7 DAY) and '".mysqlNow()."' and is_live='1' and approved='1'";
 			$results=exec_query($qry);

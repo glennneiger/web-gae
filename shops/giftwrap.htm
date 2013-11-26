@@ -5,10 +5,12 @@ $pageName ="shops";
 $HEADER="/assets/checkoutbanner.jpg";
 $contrib_id=1;
 $cat_id=5;
+global $D_R;
 
 $pageJS=array("config","ibox","registration","iboxregistration","nav","search");
 $pageCSS=array("ibox","global","rightColumn","nav","minyanville");
 include("../_header.htm");
+include_once("$D_R/lib/_cart.php");
 $store=new StoreDisplay();
 //$cart is created in the _header.php file- needed for persistent cart msg
 $cart->setLastProductUrl();

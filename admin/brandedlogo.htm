@@ -1,5 +1,5 @@
 <?
-global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER;
+global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER,$tempPath,$bucketPath,$CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 $handler= $D_R."/admin/barndedlogo_mod.htm";
 if(!$AD->getPerm("branded_logo")){
@@ -10,13 +10,13 @@ if(!$logo_id){
 	$logo_id=$_GET['id'];
 }
 $result=getBrandedLogo($logo_id);
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' => $tempPath];
 $frm1_url = $cloudStorageTool->createUploadUrl($PHP_SELF, $options);
 $frm2_url = $cloudStorageTool->createUploadUrl($HTPFX.$HTHOST."/admin/barndedlogo_mod.htm", $options);
 
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/admin.1.9.js" type="text/javascript"></script>
 <br>
 <div style="padding-bottom:20px;" class=adminheader>
 	Articles Branded Logos

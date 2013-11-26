@@ -1,6 +1,8 @@
 <?php
 include("$ADMIN_PATH/_header.htm");
 include("$ADMIN_PATH/layout/layout_includes.php");
+global $D_R;
+include_once("$D_R/lib/_layout_data_lib.php");
 global $is_ssl;
 $pageno=$_GET[p];
 if($pageno==""){

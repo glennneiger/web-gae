@@ -1,7 +1,8 @@
 <?
-include("../_header.htm");
-include("../layout/dbconnect.php");
-include("../lib/layout_functions.php");
+global $D_R, $IMG_SERVER;
+include("$D_R/_header.htm");
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/layout_functions.php");
 
 $title= "TRADING RADAR";
 $pageName = "trading_radar";
@@ -14,10 +15,10 @@ $modules = getModules();
 		
 		<!-- begin news area -->
 		<table id="home-news" cellpadding="0" cellspacing="0"><tr>
-		<td><img src="../images/lc.gif" width="10" alt="" /></td>
+		<td><img src="<?=$IMG_SERVER?>/images/lc.gif" width="10" alt="" /></td>
 		<td class="top"><img src="<?= $pfx; ?>/images/10x1.gif" /></td>
 		
-		<td><img src="../images/cr.gif" width="13" alt="" /></td>
+		<td><img src="<?=$IMG_SERVER?>/images/cr.gif" width="13" alt="" /></td>
 		</tr>
 		<tr>
 		<td class="left-border">&nbsp;</td>
@@ -56,7 +57,7 @@ $modules = getModules();
 				<p class="simple-separator">&nbsp;</p>
 				 <? call_Column_Module_List($pageName,"lowerbox",$modules,'show','lowerbox'); ?>
 				 </div>
-				 <img src="../images/spacer.gif" width="400" height="1" alt="" /> 
+				 <img src="<?=$IMG_SERVER?>/images/spacer.gif" width="400" height="1" alt="" /> 
 				</td>
 				</tr>
 				</table>
@@ -75,7 +76,7 @@ $modules = getModules();
 				</div>
 				
 				<!--spacer for fixed column width; do not delete -->
-				<img src="../images/spacer.gif" width="186" border="2" height="1" alt="" /> 
+				<img src="<?=$IMG_SERVER?>/images/spacer.gif" width="186" border="2" height="1" alt="" /> 
 			  </td>
 			  </tr>
 			  </table>
@@ -85,10 +86,10 @@ $modules = getModules();
 		  </td>
 		<td class="right-border">&nbsp;</td></tr>
 		<tr>
-		<td><img src="../images/lr_corner.gif" width="10" alt="" /></td>
+		<td><img src="<?=$IMG_SERVER?>/images/lr_corner.gif" width="10" alt="" /></td>
 <td class="bottom"><img src="<?=$pfx; ?>/images/10x1.gif" /></td>
-		<td><img src="../images/rb_corner.gif" width="13" alt="" /></td>
+		<td><img src="<?=$IMG_SERVER?>/images/rb_corner.gif" width="13" alt="" /></td>
 		</table>
 		<!-- end news area -->
 		
-<? include("../_footer.htm"); ?>
+<? include("$D_R/_footer.htm"); ?>

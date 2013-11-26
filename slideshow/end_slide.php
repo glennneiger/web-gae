@@ -1,6 +1,8 @@
  <?
-include_once("../lib/_module_data_lib.php");
-include_once("../lib/_redesign_design_lib.php");
+ global $D_R;
+include_once("$D_R/lib/_module_data_lib.php");
+include_once("$D_R/lib/_redesign_design_lib.php");
+include_once($D_R.'/lib/config/_slideshow_config.php');
 global $slidesCnt,$endSlideCount,$IMG_SERVER;; // now its 4
 
 $slide_title = $_GET['title'];

@@ -3,7 +3,7 @@ include_once("$D_R/lib/_content_data_lib.php");
 include($D_R."/lib/config/_edu_config.php");
 include_once($D_R."/lib/_image_rsync.php");
 
-global $D_R, $eduItemMeta;
+global $D_R, $eduItemMeta,$bucketPath;
 
 $bounceback="./edu-product.htm";
 
@@ -18,7 +18,7 @@ if(!empty($_POST)){
 	if(!empty($_FILES['eduproductImg']['name'])){
 		$eduImgPath="/assets/edu/images/";
 		$eduproductImg = rand().'-'.str_replace(" ","_",$_FILES['eduproductImg']['name']);
-		move_uploaded_file($_FILES["eduproductImg"]["tmp_name"], "gs://mvassets".$eduImgPath.$eduproductImg);
+		move_uploaded_file($_FILES["eduproductImg"]["tmp_name"], $bucketPath.$eduImgPath.$eduproductImg);
 	}
 	if($_POST['actionType']=='save'){
 		if($_POST['id']==''){

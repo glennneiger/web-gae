@@ -1,8 +1,8 @@
 <?php
 global $lang, $EX_INVALIDLOGIN, $HTPFX, $HTHOST, $page_config,$D_R ;
-$STOCKACTBJSSCRIPT="http://admin.minyanville.com/js/stock_actb.js";
-$ACTB_COMMONJSSCRIPT=$HTPFX.$HTHOST."/js/actb_common.js";
-$STOCKSUGGESTIONJSSCRIPT="http://admin.minyanville.com/js/stock_suggestion.js";
+$STOCKACTBJSSCRIPT=$CDN_SERVER."/js/stock_actb.js";
+$ACTB_COMMONJSSCRIPT=$CDN_SERVER."/js/actb_common.js";
+$STOCKSUGGESTIONJSSCRIPT=$CDN_SERVER."/js/stock_suggestion.js";
 $transactioncnt=5;
 $videoOffset = 5;
 $page_config['sshome']['URL']=$HTPFX.$HTHOST."/optionsmith/home.htm";

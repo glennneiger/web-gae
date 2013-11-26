@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include_once("$D_R/lib/json.php");
 	include_once("$D_R/lib/_includes.php");
 	include_once("$D_R/lib/_via_data_lib.php");
 	include_once("$D_R/lib/_via_controller_lib.php");

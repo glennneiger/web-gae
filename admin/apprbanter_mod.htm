@@ -50,7 +50,7 @@ if(!$viewapproved)
 
 		$publish_date=strtotime($publishdatefield[year][$article_id]."-".$publishdatefield[mo][$article_id]."-".$publishdatefield[day][$article_id]." ".$publishdatefield[hour][$article_id].":".$publishdatefield["min"][$article_id].":0");
 
-		if($publish_date > strtotime(date('Y-m-d H:i:s'))
+		if($publish_date > strtotime(date('Y-m-d H:i:s')))
 		{
 			$publish_date=mysqlNow($publish_date);
 			update_query(buzzbanter,array(is_live=>'0',publish_date=>$publish_date),array(id=>$article_id));

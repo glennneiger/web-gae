@@ -1,19 +1,19 @@
 <?php
 include_once("$D_R/lib/_content_data_lib.php");
 include($D_R."/lib/config/_edu_config.php");
-global $D_R, $eduItemMeta, $VIDEO_SERVER;
+global $D_R, $eduItemMeta, $VIDEO_SERVER,$bucketPath;
 
 if(!empty($_POST)){
 	/* Publish Alerts */
 	if(!empty($_FILES['eduImgFile']['name'])){
 		$eduImgPath="/assets/edu/images/";
 		$eduImgName = rand().'-'.str_replace(" ","_",$_FILES['eduImgFile']['name']);
-		move_uploaded_file($_FILES["eduImgFile"]["tmp_name"], "gs://mvassets".$eduImgPath.$eduImgName);
+		move_uploaded_file($_FILES["eduImgFile"]["tmp_name"], $bucketPath.$eduImgPath.$eduImgName);
 	}
 	if(!empty($_FILES['eduVidFile']['name'])){
 		$eduImgPath="/assets/edu/video/";
 		$eduImgName = rand().'-'.str_replace(" ","_",$_FILES['eduImgFile']['name']);
-		move_uploaded_file($_FILES["eduImgFile"]["tmp_name"], "gs://mvassets".$eduImgPath.$eduImgName);
+		move_uploaded_file($_FILES["eduImgFile"]["tmp_name"], $bucketPath.$eduImgPath.$eduImgName);
 	}
 	if($_POST['submit_type']== 'save'){
 		$catId = implode(",",$_POST['alert']['category_id']);

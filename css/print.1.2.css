@@ -369,13 +369,13 @@ clear:both;
  font-size:12px;
  }
 .buuble_top_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_top_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_top_middle.gif);
  background-repeat:repeat-x;
  background-position:top;
  background-color:#eaf1f7;
  }
   .buuble_bottom_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_bottom_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_bottom_middle.gif);
  background-repeat:repeat-x;
  background-position:bottom;
  background-color:#fafbfd;
@@ -383,17 +383,17 @@ clear:both;
  }
  
  .buuble_left_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_left_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_left_middle.gif);
    }
   .buuble_right_middle{
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_right_middle.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_right_middle.gif);
    }
  
  .bubble_text_main
 {
  font-family:Arial, Helvetica, sans-serif;
  font-size:13px;
- background-image:url(http://storage.googleapis.com/mvassets/images/redesign/bubble_text_main_bg.gif);
+ background-image:url(http://image.minyanville.com/images/redesign/bubble_text_main_bg.gif);
  background-repeat:repeat-x;
  color:#8e8b8b;
  font-weight:normal;

@@ -1,6 +1,7 @@
 <?php
 global $D_R;
 include_once($D_R."/lib/_includes.php");
+include_once("$D_R/lib/json.php");
 session_start();
 $json = new Services_JSON();
 

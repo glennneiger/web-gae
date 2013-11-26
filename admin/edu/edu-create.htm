@@ -1,5 +1,5 @@
 <?
-global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R,$bucketPath, $tempPath.$CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include($D_R."/lib/config/_edu_config.php");
 include($D_R."/lib/edu/_edu_data_lib.php");
@@ -11,17 +11,17 @@ $id = $_GET['id'];
 $eduImgPath="/assets/edu/images/";
 
 $handler = $HTPFX.$HTHOST."/admin/edu/alert_mod.php";
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' => $tempPath ];
 $frm_url = $cloudStorageTool->createUploadUrl($handler , $options);
 
 ?>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/edu-admin.css">
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/edu.js" ></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/edu-admin.css">
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/edu.js" ></script>
 
 <div class=adminheader>Education Center - Create/Edit Alert</div><br>
 <?  $createAlert=$AD->getPerm("edu_create"); //set permission
@@ -75,7 +75,7 @@ if($alertData['id']!=""){
 			</div>
 			<div class="eduAuthor">
 				<p class="alertCreateLabel">Author:</p>
-				<select name="alert[contributor_id]" id="alertContributor">
+				<select name="alert[contributor_id]" id="alertContributor" onchange="loadContibData(this.value);">
 					<option value="">--Select Contributor--</option>
 					<? $arAllContributors = get_active_contributors();
 					foreach($arAllContributors as $row)
@@ -92,6 +92,7 @@ if($alertData['id']!=""){
 					?>
 
 				</select>
+				<div id="load_contributor" style="float:left; padding:0px 0px 0px 15px;"></div>
 			</div>
 		</div>
 		<div class="eduMoreOptions">
@@ -119,7 +120,7 @@ if($alertData['id']!=""){
 				</select>
 			</div>
 		</div>
-		<div class="eduMoreOptions" >
+		<div class="eduMoreOptions">
 			<p class="alertCreateLabel">Video:</p>
 			<div id="showerr" class="eduVideoErr">
 			<? if($alertData['is_video']=="1"){

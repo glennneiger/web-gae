@@ -18,7 +18,7 @@ foreach ($articleData as $article) {
         <title> <?php echo htmlentities($article['title']); ?></title>
 		<description><?=htmlentities($article['desc']);?></description>
         <link><?=$article['link'];?></link>
-        <pubDate><?=$article['pubDate']; ?> EDT</pubDate>
+        <pubDate><?=$article['pubDate']; ?> EST</pubDate>
 		<tickers>
 		<?
 			foreach($article['ticker'] as $value)

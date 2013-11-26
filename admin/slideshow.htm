@@ -1,5 +1,5 @@
 <?
-global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER;
+global $D_R,$cloudStorageTool,$HTPFX,$HTHOST,$IMG_SERVER,$tempPath,$CDN_SERVER;
 include_once("$D_R/lib/_news.php");
 /*--page  authentication----------------------------*/
 $page="gazette";
@@ -65,7 +65,7 @@ $page_dataslides=get_full_slideshowcontent($id,0);
 }
 
 $handler = $HTPFX.$HTHOST."/admin/slideshow_mod.htm";
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' =>$tempPath ];
 $frm_url = $cloudStorageTool->createUploadUrl($handler , $options);
 
   /*===== The first time page is viewed====*/
@@ -164,10 +164,10 @@ if($y=="2000" || $y=="1969"){//invalid date
 	$datefield=array(mo=>$m,day=>$d,year=>$y,hour=>$h,"min"=>$min);
 }
 ?>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin_slideshow.1.1.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin_slideshow.1.1.js"></script>
 <script>
 
 function actionname(frm){
@@ -403,7 +403,7 @@ $sel=($totalslides==$tot_slides?"selected":"");
 <script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
-<script language="javascript" type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/suggestion.js"></script>
+<script language="javascript" type="text/javascript" src="<?=$CDN_SERVER?>/js/suggestion.js"></script>
 <TD width=1% align=right><label for="pagetag[tag]"><b>Tag</b>:</label></TD>
 <TD width=99%><?php input_text("pagetag[tag]",$pagetag[tag], 0, 500," style='width:45%' autocomplete='off' ")?></TD></TR>
 <script>

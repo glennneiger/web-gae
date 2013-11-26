@@ -116,6 +116,8 @@ class ViaCart  {
 	* @param int : ID of the item to be checked
 	**/
 	public function in_cart($id, $orderItemType){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		session_start();
 		global $_SESSION,$productAd,$viaProducts,$arrcases;
 		$orderItemType = trim($orderItemType);

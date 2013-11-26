@@ -1,0 +1,1 @@
+directories=overview,projects,bios,press,laurenmerkin,dodgeball,m3,flavorpill,disruption,dooker,doctorjaeger,moodring2,ill,logo,pr,journal

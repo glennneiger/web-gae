@@ -103,7 +103,7 @@ CkEditorImageBrowser.initFolderSwitcher = function () {
 					parFolNameId = parFolNameId.split(' ');
 					parFolNameId = parFolNameId.join('_');
 					var folderUlPath = '#sub_'+parFolNameId+'_fol';
-					img = '<img class=" img_'+parFolNameId+' folderItemImg" onclick="showFolder(\''+folderUlPath+'\',\''+folderName.folderPath+'\',\''+parFolNameId+'\')" src="'+imgPath+'/images/ckfplus.gif" style="position: relative;right: -5px;">';
+					img = '<img class=" img_'+parFolNameId+' folderItemImg" onclick="showFolder(\''+folderUlPath+'\',\''+folderName.folderPath+'\',\''+parFolNameId+'\')" src="'+imgPath+'/images/ckfplus.gif" style="position: relative;right: -5px;width: inherit;height: inherit;">';
 				}
 				$option = $option+'<li class="foldersList"><div class="folderImg">'+img+'</div><div id="'+folderName.folderPath+'" class="folList '+parFolNameId+'">'+folName+'</div></li><br/>';
 			}
@@ -208,7 +208,7 @@ CkEditorImageBrowser.renderImagesForFolder = function (folderName,folderPath,Cur
 								parFolNameIds = parFolNameIds.split(' ');
 								parFolNameIds = parFolNameIds.join('_');
 								var folderUlPath = '#sub_'+parFolNameIds+'_fol';
-								img = '<img class=" img_'+parFolNameIds+' folderItemImg" onclick="showFolder(\''+folderUlPath+'\',\''+folderName.folderPath+'\',\''+parFolNameIds+'\')" src="'+imgPath+'/images/ckfplus.gif" style="position: relative;right: -5px;">';
+								img = '<img class=" img_'+parFolNameIds+' folderItemImg" onclick="showFolder(\''+folderUlPath+'\',\''+folderName.folderPath+'\',\''+parFolNameIds+'\')" src="'+imgPath+'/images/ckfplus.gif" style="position: relative;right: -5px;width: inherit;height: inherit;">';
 							}	
 							html = html+'<li class="foldersList" ><div class="folderImg">'+img+'</div><div id="'+folderData.folderPath+'" class="folList s '+parFolNameIds+'">'+folName+'</div></li><br/>';
 						});

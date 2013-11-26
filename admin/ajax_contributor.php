@@ -1,5 +1,6 @@
 <?php
 $cont_id = $_POST['cont_id'];
+include_once("$D_R/lib/json.php");
 include_once($D_R."/admin/lib/_contributor_class.php");
 $json = new Services_JSON();
 $obCont = new contributor();

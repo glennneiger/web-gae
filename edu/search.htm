@@ -13,6 +13,7 @@ $pageJS=array("config","redesign","fancybox","edu");
 $pageCSS=array("ibox","global","layout","section","rightColumn","nav","minyanville","fancybox","edu");
 
 $objEduData = new eduData('edu_alerts');
+$obOuterTemplate = new OuterTemplate($pageName);
 $objEduDesign = new eduDesign();
 $objArticle = new articleViewer();
 loadjavascriptheader($pageCSS,$pageJS,'H',$noDefaultLoad);
@@ -39,6 +40,30 @@ if($p>1){
 }
 ?>
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<script type="text/javascript">jQuery.noConflict() ;</script>
+<script type="text/javascript">
+	var startTimer;
+	jQuery(document).ready(function(){
+		jQuery.fancybox.init();
+		jQuery('.productFancy').fancybox({
+			showCloseButton : false,
+	        type: 'inline',
+	        content: '#eduLeavingWindow',
+	        overlayOpacity : 0.8,
+			overlayColor : '#000',
+			onClosed : function(){
+				//Close timer
+				try{
+					clearTimeout(startTimer);
+					startTimer = null;
+				}catch(err){
+					
+				}
+			}
+	    });
+		jQuery('#fancybox-wrap').css('top','100px');
+	});
+</script>
 <body>
 <div id="eduOuterContainer">
 	<?php echo $objEduDesign->displayEduHeader($sectionName);?>

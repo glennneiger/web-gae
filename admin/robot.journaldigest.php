@@ -46,10 +46,6 @@ if(!$is_dev){
 			$resCampaign = sendDailyDigestMails($msgurl,$subject);
 			if($resCampaign!="" && $resCampaign!="-1")
 			{
-				$to=$NOTIFY_JOURNAL_TO;
-				$from=$NOTIFY_JOURNAL_FROM;
-				write_file($msghtmlfile,$mailbody);
-				write_file($msgfile, mymail2str($to,$from,$subject,$mailbody) );
 
 				$id=$result['id'];
 				$daily_digest['sent_on']=date('Y-m-d H:i:s');

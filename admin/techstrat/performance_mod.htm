@@ -1,5 +1,5 @@
 <?php
-    global $HTPFX,$HTHOST,$D_R;
+    global $HTPFX,$HTHOST,$D_R,$tempPath,$bucketPath;
     include_once("$D_R/lib/techstrat/_techstratData.php");
     $objSean= new techstartData("techstrat_posts");
 
@@ -32,7 +32,7 @@
 	$newFileName = "performance_".$front_name.".".$fileExt;
         $newFileName = str_replace(" ","_",$newFileName);
 
-        $filePath ="gs://mvassets/assets/techstrat/pdf_performance";
+        $filePath =$bucketPath."/assets/techstrat/pdf_performance";
 	$savePath = $filePath."/".$newFileName;
         move_uploaded_file($_FILES['performance']['tmp_name'],$savePath);
         $id=$objSean->setPerformance($newFileName);

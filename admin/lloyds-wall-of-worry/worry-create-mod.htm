@@ -1,5 +1,5 @@
 <?
-global $D_R,$HTPFX,$HTHOST,$cloudStorageTool,$IMG_SERVER;
+global $D_R,$HTPFX,$HTHOST,$cloudStorageTool,$IMG_SERVER,$tempPath,$bucketPath;
 include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
 
 $bounceback = $HTPFX.$HTHOST."/admin/lloyds-wall-of-worry/worry-create.htm";
@@ -20,8 +20,8 @@ if(!empty($_POST['worryTitle'])){
 
 			$data['worryImgName'] = rand().'-'.str_replace(" ","_",$_FILES['worryImg']['name']);
 			$data['archiveImgName'] = rand().'-'.str_replace(" ","_",$_FILES['archiveImg']['name']);
-			move_uploaded_file($_FILES["worryImg"]["tmp_name"],"gs://mvassets/assets/lloyds-wall-of-worry/".$data['worryImgName']);
-			move_uploaded_file($_FILES["archiveImg"]["tmp_name"], "gs://mvassets/assets/lloyds-wall-of-worry/".$data['archiveImgName']);
+			move_uploaded_file($_FILES["worryImg"]["tmp_name"], $bucketPath."/assets/lloyds-wall-of-worry/".$data['worryImgName']);
+			move_uploaded_file($_FILES["archiveImg"]["tmp_name"], $bucketPath."/assets/lloyds-wall-of-worry/".$data['archiveImgName']);
 			if($worryId){
 				$data['worryid']=$worryId;
 			}
@@ -35,8 +35,8 @@ if(!empty($_POST['worryTitle'])){
 		$data['worryImgName'] = rand().'-'.str_replace(" ","_",$_FILES['worryImg']['name']);
 		$data['archiveImgName'] = rand().'-'.str_replace(" ","_",$_FILES['archiveImg']['name']);
 	
-		move_uploaded_file($_FILES["worryImg"]["tmp_name"], "gs://mvassets/assets/lloyds-wall-of-worry/".$data['worryImgName']);
-		move_uploaded_file($_FILES["archiveImg"]["tmp_name"], "gs://mvassets/assets/lloyds-wall-of-worry/".$data['archiveImgName']);
+		move_uploaded_file($_FILES["worryImg"]["tmp_name"], $bucketPath."/assets/lloyds-wall-of-worry/".$data['worryImgName']);
+		move_uploaded_file($_FILES["archiveImg"]["tmp_name"], $bucketPath."/assets/lloyds-wall-of-worry/".$data['archiveImgName']);
         if($worryId){
         	$data['worryid']=$worryId;
         }

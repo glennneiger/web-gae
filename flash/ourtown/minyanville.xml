@@ -1,0 +1,40 @@
+<xml>
+<characters>
+<character1text>Hey, I'm Hoofy. Let's check out what's hot in Minyanwood.</character1text>
+<character2text>Yo, I'm Boo. Let's go kick it at the University of Minyanville.</character2text>
+<building1text>Click here for free classes taught by Wall Street's finest professors.</building1text>
+<building2text>Click here to research the Minyanville archives and learn more about the Ruby Peck Foundation for Children's Education.</building2text>
+<building3text>Visit Main Street's finest shops; Spirited Sweets, Harrison's Department Store, Toddo's Toys and Gallery for the Arts</building3text>
+<building4text>Click here to find out more about our community and become a part of the Minyan adventure!</building4text>
+<building5text>Click here to read the latest in creative financial commentary and real-time chatter from Wall Street's finest professors.</building5text>
+<building6text>Click here for a glimpse into the entertainment capital of Minyanville and the upcoming Critter's Choice Awards.</building6text>
+<building7text>Click here to join the critter kids for some free creative education!</building7text>
+<building8text>Welcome to Minyanville: a creative education community for critters of all ages! Our mission is simple - to build an animated learning ladder from pre-school to old school and the ABC's to 401(K)'s. While our roots will always remain in finance, we know that there's more to life than the bottom line. That's why we're committed to a fiscally fun experience that allows our Minyanship to grow with us. Critter kids can assemble at Minyanville Elementary School for miles worth of smiles. High school and college critters can attend free classes with Wall Street's finest at the University of Minyanville. Sophisticated Minyans can enjoy a free two week trial offer to the Minyanville Gazette, where dynamic real-time financial commentary and the latest in Buzz & Banter converge. Minyanville is also a proud sponsor of the Ruby Peck Foundation for Children's Education and the broad based charitable efforts it supports. Please join us and become a part of the Minyan adventure. It promises to be quite a ride!</building8text>
+<character9text>Hi, I'm Daisy. Join me for a stroll down Main Street.</character9text>
+<character10text>Hey Critter kids. I'm Sammy and it's time for school!</character10text>
+<character11text>Wasabi! I'm Snapper. Click here to read the latest in real-time financial infotainment.</character11text> </characters>
+          <links>
+                <univLink>/university/</univLink>
+                <libraryLink>/library/</libraryLink>   
+                <storeLink>/shops/</storeLink>
+               <tHallLink>/townhall/</tHallLink>
+               <gazetteLink>/gazette/</gazetteLink>
+               <mwoodLink>/minyanwood/</mwoodLink>
+               <houseLink>/schoolhouse/</houseLink>
+
+               <signLink>/preview/</signLink>
+               <group1Link>/minyanwood/</group1Link>
+                <group2Link>/university/</group2Link>
+ <group3Link>/shops/</group3Link>
+ <group4Link>/schoolhouse/</group4Link>
+ <group5Link>/gazette/</group5Link>
+
+           </links>
+</xml>       
+
+       
+          
+          
+          
+          
+          

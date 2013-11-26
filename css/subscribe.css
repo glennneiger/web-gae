@@ -4,11 +4,11 @@
 body { margin:0; padding:0; }
 body, p, td, label, li, select, option, input { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; }
 .col_ii { padding: 0 4px; }
-body { background:#ebf7fd url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/top_bg.png) repeat-x 0 0; }
+body { background:#ebf7fd url(http://image.minyanville.com/images/newregistration_images/images/top_bg.png) repeat-x 0 0; }
 #center { width: 992px; margin:0 auto; }
 #header { border-bottom:2px solid #000; }
-#wrap01 { background:#2c8abc url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/bg_bluFade.jpg) repeat-x 0 0; height: 660px;  }
-#wrap02 { background:#aedee4 url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/subscribe.png) no-repeat -1px 0; position:relative; height: 580px; width: 961px; margin:0 auto; }
+#wrap01 { background:#2c8abc url(http://image.minyanville.com/images/newregistration_images/images/bg_bluFade.jpg) repeat-x 0 0; height: 660px;  }
+#wrap02 { background:#aedee4 url(http://image.minyanville.com/images/newregistration_images/images/subscribe.png) no-repeat -1px 0; position:relative; height: 580px; width: 961px; margin:0 auto; }
 table { position:absolute; top:94px; width:300px; }
 td { padding-bottom: 2px; }
 .txtFld { width: 150px; }
@@ -17,10 +17,10 @@ td { padding-bottom: 2px; }
 #rtCol { left:650px; }
 table h2 { width: 300px; height: 28px; position: relative; text-indent:-100em; overflow:hidden; margin:0; }
 table h2 span { position: absolute;	width: 100%; height: 100%; left:-3px; }
-table h2#sect01 span { background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 -56px; }
-table h2#sect02 span { background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 -84px; }
-table h2#sect03 span { background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 0; }
-table h2#sect04 span { background: url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 -28px; }
+table h2#sect01 span { background: url(http://image.minyanville.com/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 -56px; }
+table h2#sect02 span { background: url(http://image.minyanville.com/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 -84px; }
+table h2#sect03 span { background: url(http://image.minyanville.com/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 0; }
+table h2#sect04 span { background: url(http://image.minyanville.com/images/newregistration_images/images/subsc_hdrs.png) no-repeat 0 -28px; }
 .submitBtn { 
 	display: block;
 	width: 190px;
@@ -31,12 +31,12 @@ table h2#sect04 span { background: url(http://storage.googleapis.com/mvassets/im
 	cursor: hand;
 	border:none;
 	}
-#submit  { background: transparent url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/submit.png) no-repeat 0 0; margin-top:40px; }
+#submit  { background: transparent url(http://image.minyanville.com/images/newregistration_images/images/submit.png) no-repeat 0 0; margin-top:40px; }
 .corner { 
 	width: 7px; 
 	height: 8px; 
 	position: absolute; 
-	background:url(http://storage.googleapis.com/mvassets/images/newregistration_images/images/corners.png) no-repeat 0 0; 
+	background:url(http://image.minyanville.com/images/newregistration_images/images/corners.png) no-repeat 0 0; 
 	padding:0; }
 .br { bottom: 0; right: 0; background-position:bottom right; }
 .bl { bottom: 0; left: 0; background-position:bottom left; }

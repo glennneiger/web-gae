@@ -1,6 +1,8 @@
 <?
 global $_SESSION, $cm8_ads_MediumRectangle,$STORAGE_SERVER;
 $bannername =$cm8_ads_MediumRectangle;
+global $D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
 $referer_url=parse_url($_SESSION['referer']);
 list($subdomain, $domain, $domaintype) = explode(".", $referer_url['host']);
 ?>
@@ -94,12 +96,12 @@ if($Right_panel_buzz=='buzz')
 print '
 <table width="300" border="0" cellpadding="0" cellspacing="0" class="buzz_add_to_cart_box_right">
 <tr>
- <td valign="top"  colspan="3" ><img src="http://storage.googleapis.com/mvassets/images/redesign/buzz_cart_header.jpg"  border="0" /></td>
+ <td valign="top"  colspan="3" ><img src="http://image.minyanville.com/images/redesign/buzz_cart_header.jpg"  border="0" /></td>
 
   </tr>
       <tr>
         <td class="buzz_recurring">'.$lang["Monthly"].'</td>
-        <td width="1px" rowspan="3" valign="bottom"><img src="http://storage.googleapis.com/mvassets/images/redesign/cart_divider.jpg" width="1" height="70" /></td>
+        <td width="1px" rowspan="3" valign="bottom"><img src="http://image.minyanville.com/images/redesign/cart_divider.jpg" width="1" height="70" /></td>
         <td  class="buzz_recurring">'.$lang["Annual"].'</td>
       </tr>
       <tr>
@@ -109,7 +111,7 @@ print '
        '.getaAddtoCartbtns_buzz("buzzbanter","add_to_cart.gif","subscription").'
       </tr>
     <tr>
-    <td colspan="3"><img src="http://storage.googleapis.com/mvassets/images/redesign/14day_freetrial_buzz.jpg" alt="14 Days Free Trail" border="0" /></td>
+    <td colspan="3"><img src="http://image.minyanville.com/images/redesign/14day_freetrial_buzz.jpg" alt="14 Days Free Trail" border="0" /></td>
     </tr>
     </table>';
 

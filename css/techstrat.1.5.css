@@ -648,7 +648,7 @@ line-height:20px;
 margin:30px 0px 0px 0px;
 padding:10px 25px 10px 25px;
 background-repeat:repeat-x;
-background-image:url(http://storage.googleapis.com/mvassets/images/techstrat/seannote_bgblue.jpg);
+background-image:url(http://image.minyanville.com/images/techstrat/seannote_bgblue.jpg);
 font-family:Helvetica, "Myriad Pro", Arial, Helvetica, sans-serif ;
 }
 
@@ -663,7 +663,7 @@ text-transform:none;
 
 .header_techstart {
 width:662px;
-background-image: url(http://storage.googleapis.com/mvassets/images/techstrat/banner_techstrat.gif);
+background-image: url(http://image.minyanville.com/images/techstrat/banner_techstrat.gif);
 height:83px;
 background-repeat: no-repeat;
 background-position: 70% center;
@@ -729,7 +729,7 @@ text-transform:uppercase;
 }
 
 .header_techstart_image {
-    background-image: url("http://storage.googleapis.com/mvassets/images/techstrat/banner_techstrat.gif");
+    background-image: url("http://image.minyanville.com/images/techstrat/banner_techstrat.gif");
     background-position:center;
     background-repeat: no-repeat;
 	background-color: #FFFFFF;

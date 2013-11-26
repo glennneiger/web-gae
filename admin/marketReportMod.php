@@ -1,6 +1,7 @@
 <?php
 global $D_R,$IMG_SERVER;
 set_time_limit ( 600*300 );
+include_once("$D_R/lib/json.php");
 include_once("$D_R/lib/registration/_report_design_lib.php");
 $objReportDesign=new reportDesign();
 $json = new Services_JSON();

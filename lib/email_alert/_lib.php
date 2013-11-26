@@ -4,7 +4,8 @@
    {
     	global $HTPFX,$HTHOST,$D_R;
     	$interest='';
-    	if($category_ids=="5")
+    	$category_id = explode(",", $category_ids);
+    	if(in_array("5",$category_id))
     	{
     		$interest[]="Trading Radar";
     	}
@@ -12,7 +13,8 @@
     	$sec_id = explode(',',$subsectionid);
 		$sec_id = array_filter($sec_id);
 		$sec_id = implode("','",$sec_id);
-		$sqlSec = "SELECT `name` FROM section WHERE is_active='1' AND TYPE='subsection' AND subsection_type='article' AND section_id IN ('".$sec_id."') ";
+		$sqlSec = "SELECT `name` FROM section WHERE is_active='1' AND TYPE='subsection' AND subsection_type='article'
+		 AND section_id IN ('".$sec_id."') ";
 		$userSecResult=exec_query($sqlSec);
 		foreach($userSecResult as $k=>$v)
 		{
@@ -26,7 +28,76 @@
 		//write out file
 		$mailbody=inc_web($msgurl);
 		sendTopicMailChimp($atitle,$mailbody, $interest);
+		sendAuthorMail($NOTIFY_JOURNAL_TO,$NOTIFY_JOURNAL_FROM,$atitle,$SPAM_EML_SUBS_ALERT_TMPL,$aid,$contrib_id,$category_ids,$subsectionid,$size_emailalert);
 		
+   }
+   
+   function sendAuthorMail($NOTIFY_JOURNAL_TO,$NOTIFY_JOURNAL_FROM,$atitle,$SPAM_EML_SUBS_ALERT_TMPL,$aid,$contrib_id,$category_ids,$subsectionid,$size_emailalert)
+   {
+		global $HTPFX,$HTHOST,$D_R,$SPAM_EML_SUBS_ALERT_TMPL;
+
+		$category_ids="5";	
+		$contribStr=" FIND_IN_SET($contrib_id,author_id)";
+		
+		$categoryid=explode(",",$category_ids);
+		if(count($categoryid)==1){
+			$catStr=" FIND_IN_SET($categoryid[0],category_ids)";
+		}else{
+		    $countCat=count($categoryid);
+			foreach($categoryid as $keyCat=>$catrow){
+				$catStr.=" FIND_IN_SET($catrow,category_ids)";
+				if($keyCat!=$countCat-1){
+					$catStr.=" or";
+				}
+			}
+		}
+
+		$subsection_id=explode(",",$subsectionid);
+		if(count($subsection_id)==1){
+			$subsectionStr=" FIND_IN_SET($subsection_id[0],section_ids)";
+		}else{
+		    $countSec=count($subsection_id);
+		    foreach($subsection_id as $keySec=>$secVal){
+		    	
+				$subsectionStr.=" FIND_IN_SET($secVal,section_ids)";
+				if($keySec!=$countSec-1){
+					$subsectionStr.=" or";
+				}
+			}
+		}
+
+		$qry="select S.email from subscription S,email_alert_authorsubscribe EA where S.id=EA.subscriber_id
+		 and EA.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and EA.subscriber_id in
+		  (select subscriber_id from email_alert_authorsubscribe where ".$contribStr.")";
+	
+		if($categoryid[0]!=""){
+		$qry .=" AND EA.subscriber_id NOT IN(
+		select S.id from subscription S,email_alert_categorysubscribe EC where S.id=EC.subscriber_id 
+		and EC.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and EC.subscriber_id in 
+		(select subscriber_id from email_alert_categorysubscribe where ".$catStr."))";
+		}
+		if($subsection_id[0]!=""){
+		$qry .=" AND EA.subscriber_id NOT IN( select S.id from subscription S,email_alert_sectionsubscribe ES where S.id=ES.subscriber_id 
+		and ES.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and ES.subscriber_id in 
+		(select subscriber_id from email_alert_sectionsubscribe where ".$subsectionStr."))";
+		}
+
+	   	$emaildata=exec_query($qry);
+   		foreach($emaildata as $key=>$row)
+   		{
+				$to[] = $row['email'];	   		
+	   	}
+	   	if(!$aid)
+			return;
+	   	$to = implode(',',$to);    
+		$from= $NOTIFY_JOURNAL_FROM;  // mail to Minyanville Mailing List <support@minyanville.com>
+		$subject=$atitle;
+		$msgfile="/tmp/spam_".mrand().".eml";   // mrand function in _misc.php give getmicrotime();
+		$msghtmlfile="$D_R/assets/data/".basename($msgfile);
+		$msgurl=$SPAM_EML_SUBS_ALERT_TMPL."?aid=$aid";   // $SPAM_EML_SUBS_ALERT_TMPL in lib/_exchange_config.php
+		//write out file
+		$mailbody=inc_web($msgurl);
+		mymail($to,$from,$subject,$mailbody);
    }
    function send_approved_article_mail_old($NOTIFY_JOURNAL_TO,$NOTIFY_JOURNAL_FROM,$atitle,$SPAM_EML_SUBS_ALERT_TMPL,$aid,$contrib_id,$category_ids,$subsectionid,$size_emailalert)
    {
@@ -61,14 +132,20 @@
 		}
 
 
-	$qry="select S.id, S.email from subscription S,email_alert_authorsubscribe EA where S.id=EA.subscriber_id and EA.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and EA.subscriber_id in (select subscriber_id from email_alert_authorsubscribe where ".$contribStr.")";
+	$qry="select S.id, S.email from subscription S,email_alert_authorsubscribe EA where S.id=EA.subscriber_id
+	 and EA.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and EA.subscriber_id in
+	  (select subscriber_id from email_alert_authorsubscribe where ".$contribStr.")";
 
 if($categoryid[0]!=""){
 $qry .=" union
-select S.id, S.email from subscription S,email_alert_categorysubscribe EC where S.id=EC.subscriber_id and EC.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and EC.subscriber_id in (select subscriber_id from email_alert_categorysubscribe where ".$catStr.")";
+select S.id, S.email from subscription S,email_alert_categorysubscribe EC where S.id=EC.subscriber_id 
+and EC.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and EC.subscriber_id in 
+(select subscriber_id from email_alert_categorysubscribe where ".$catStr.")";
 }
 if($subsection_id[0]!=""){
-$qry .=" union select S.id, S.email from subscription S,email_alert_sectionsubscribe ES where S.id=ES.subscriber_id and ES.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and ES.subscriber_id in (select subscriber_id from email_alert_sectionsubscribe where ".$subsectionStr.")";
+$qry .=" union select S.id, S.email from subscription S,email_alert_sectionsubscribe ES where S.id=ES.subscriber_id 
+and ES.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and ES.subscriber_id in 
+(select subscriber_id from email_alert_sectionsubscribe where ".$subsectionStr.")";
 }
 
 $emaildata=exec_query($qry);

@@ -1,5 +1,5 @@
 <?
-global $ADMIN_PATH,$HTPFX,$HTHOST;
+global $ADMIN_PATH,$HTPFX,$HTHOST,$CDN_SERVER;
 $page="trad_calen";
 include($ADMIN_PATH."/_header.htm");
 $objCache= new Cache();
@@ -14,9 +14,9 @@ if($_POST['action']=="addTicker")
 
 $curStock = $objCache->getTradCalenStock();
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.ticker.autocomplete.js"></script>
-<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.ticker.autocomplete.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=$CDN_SERVER?>/css/jquery.autocomplete.css" />
 <script type="text/javascript">
 function submitTradCalenForm(){
 	jQuery('#error_ticker').empty();

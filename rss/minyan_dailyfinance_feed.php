@@ -24,7 +24,7 @@ foreach ($articleData as $article) {
         <title><![CDATA[<?php echo htmlentities(utf8_decode($article['title'])); ?>]]></title>
 		<description><![CDATA[<?=htmlentities($article['desc']);?>]]></description>
         <link><?=$article['link'];?></link>
-        <pubDate><?=$pubDate; ?> EDT</pubDate>
+        <pubDate><?=$pubDate; ?> EST</pubDate>
 		<?
 			foreach($article['ticker'] as $value)
 			{

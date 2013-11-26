@@ -1990,10 +1990,11 @@ class techstratTransaction
 		$strTags=$strStockTag;
 		$strTags='var customarray=new Array("'.$strTags.'");';
 		//***$fname="$HTPFX"."$HTHOST"."/js/stock_suggestion.js";
-		$fname="$D_R/js/stock_suggestion.js";
-		$fFile=fopen($fname,"w+");
-		fwrite($fFile,$strTags);
-		fclose($fFile);
+		global $CDN_BUCKET;
+		$fname=$CDN_BUCKET."/js/stock_suggestion.js";
+		$options = [ "gs" => [ "Content-Type" => "text/plain", "acl" => "public-read" ]];
+		$ctx = stream_context_create($options);
+		file_put_contents($fname, $strTags, 0, $ctx);
 	}
 
 	public function displayOpenPositions()
@@ -2106,6 +2107,7 @@ class techstratTransaction
 				{
 					$this->openPosition[$symbol]['currentQuote']=number_format($currentOpenStocks[$symbol],2);
 					$this->openPosition[$symbol]['currentValue']=round($currentOpenStocks[$symbol]*$this->openPosition[$symbol]['contracts']);
+					$this->openPosition[$symbol]['currentQuote'] = str_replace(',', '', $this->openPosition[$symbol]['currentQuote']);
 					$this->openPosition[$symbol]['gainorloss']=round(($this->openPosition[$symbol]['currentQuote'] - $this->openPosition[$symbol]['costBasis'])*$this->openPosition[$symbol]['contracts']);
 				}
 			}

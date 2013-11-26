@@ -1,0 +1,1 @@
+description=About the People&bubbleWidth=80

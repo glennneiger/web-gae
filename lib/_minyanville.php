@@ -788,7 +788,8 @@ function change_ssl_url($body)
 {
      global $IMG_SERVER;
      $replacement = $IMG_SERVER;
-     $body=preg_replace ("/https:\/\/storage.googleapis.com\/mvassets/",$replacement,$body);
+     
+     $body=preg_replace ("/http:\/\/image.minyanville.com/",$replacement,$body);
 	 return $body;
 }
 

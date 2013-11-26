@@ -1,5 +1,5 @@
 <?
-global $D_R, $HTPFX,$HTHOST;
+global $D_R, $HTPFX,$HTHOST,$CDN_SERVER;
 //phpAdServe zone ID
 $zoneIDSky = 118;
 $zoneIDSign = 119;
@@ -26,7 +26,11 @@ if (($_GET['a'] != "") && (is_numeric($_GET['a']))) {
 	  $slide_no = $_GET['slide_no'];
 	 }
 
-	$slide = getFullslideshow($slideshow_id);
+	 $sql = "select s.id id, s.title,s.total_slides, contributors.name author, s.contributor, s.contrib_id authorid, s.date, sc.body, sc.slideshow_id,sc.slide_title,sc.slide_no
+	from slideshow s, contributors,slideshow_content sc
+	where s.id=" . $slideshow_id . "  and  sc.slideshow_id=s.id and  s.contrib_id = contributors.id order by slide_no";
+
+	$slide = exec_query($sql);
 
 	if ($slideshow != 0) {
 		$slideSet = true;
@@ -50,7 +54,7 @@ $slide['body'] = str_replace("gazette/newsviews/?id","slideshow/index.php?a",$sl
 ?>
 <html>
 <head>
-	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/print.1.2.css">
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/print.1.2.css">
 </head>
 
 <body onLoad="javascript:window.print();">

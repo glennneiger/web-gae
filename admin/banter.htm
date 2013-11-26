@@ -1,7 +1,7 @@
 <?php
-global $IMG_SERVER;
+global $IMG_SERVER,$CDN_SERVER;
 if(!$page)$page="gazette";
-$handler="./banter_mod.htm";
+$handler=$HTPFX.$HTHOST."/admin/banter_mod.htm";
 include("$ADMIN_PATH/_header.htm");
 include_once($D_R."/admin/lib/_admin_data_lib.php");
 $upload_url = "/admin/lib/uploadFileBucket.php";
@@ -145,21 +145,16 @@ $contributors=get_buzzactive_contributors();
 $sectionquery="SELECT id,sectionname from ex_sections order by sectionname";
 $section=exec_query($sectionquery);
 
-foreach($assets as $i=>$row){
-	if(!is_file("$D_R${row[asset]}"))
-		unset($assets[$i]);
-}
-
 ?>
-<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?=$CDN_SERVER?>/css/jquery.autocomplete.css" />
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
 
 <script>
 var count = 0;
-include_once("<?=$HTPFX.$HTHOST?>/js/jquery.buzzautocomplete.js");
-include_once("<?=$HTPFX.$HTHOST?>/js/buzz_admin.js");
+include_once("<?=$CDN_SERVER?>/js/jquery.buzzautocomplete.js");
+include_once("<?=$CDN_SERVER?>/js/buzz_admin.1.4.js");
 </script>
 <br><br>
 <?if($canapprovebanter){?>
@@ -260,6 +255,10 @@ include_once("<?=$HTPFX.$HTHOST?>/js/buzz_admin.js");
 <TD align=right><b>Banter Title</b>:</TD>
 <TD><?input_text("banter[title]",$pagedata[title],255,255,"style=width:100%")?></TD>
 </TR>
+<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script language="javascript" type="text/javascript" src="<?php echo $ACTBJSSCRIPT; ?>"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $ACTB_COMMONJSSCRIPT; ?>"></script>
 <script language="javascript" type="text/javascript" src="<?php echo $SUGGESTIONJSSCRIPT; ?>"></script>
@@ -361,7 +360,13 @@ if(count($buzzCharts)>0){
 <!-- End Upload Charts -->
 <TR valign=top>
 <TD align=right><b>Banter Text</b>:</TD>
-<TD><?rich_editor("banter[body]",strip($pagedata[body]),"100%",400,array(img_dir=>"/assets/characters",hideimage=>true))?></TD>
+<TD>
+<?php
+input_textarea("banter[body]",strip($pagedata[body]),"600");
+?>
+<script language="javascript">
+showEditor('banter[body]',800,100);
+</script>
 </TR>
 <TR valign=top>
 <TD align=right><label for="banter[position]">Position</label>:</TD>

@@ -6,30 +6,51 @@ global $HTTP_HOST,$PHP_SELF;
 	//$is_ssl=($_SERVER['HTTP_X_FORWARDED_PORT']==443);
 	$HTPFX=($is_ssl?"https://":"http://");
 	$HTPFX="http://";
-	$HTPFXSSL="https://";
+	//$HTPFXSSL="https://";
+	$HTPFXSSL="http://";
 	$HTPFXNSSL="http://"; /*For Non SSL*/
 	$HTPORT="";
 	$NOSSLPORT="";
 	if($_SERVER['HTTP_HOST'] =="localhost:8080")
 	{
-		$IMG_SERVER="http://storage.googleapis.com/mvassets";
+		$IMG_SERVER="http://image.minyanville.com";
 		$SSL_IMG_SERVER="http://localhost:8080";
-		$CDN_SERVER=$HTPFX."localhost:8080";
+		if($_SERVER['HTTPS']=="on")
+		{
+			$CDN_SERVER="https://localhost:8080";
+		}
+		else 
+		{
+			$CDN_SERVER="http://localhost:8080";
+		}
 		$HTHOST="localhost:8080";
 		$VIDEOHOST="localhost:8080";
 		$HTADMINHOST="localhost:8080";
-		$STORAGE_SERVER = "http://storage.googleapis.com/mvassets";
+		$SSL_CDN_SERVER="https://image.minyanville.com";
+		$STORAGE_SERVER = "http://image.minyanville.com";
 	}
 	else
 	{
-		$IMG_SERVER="http://storage.googleapis.com/mvassets";
-		$SSL_IMG_SERVER="http://storage.googleapis.com/mvassets";
-		$CDN_SERVER="http://minyanville-buzz.appspot.com";
-		$HTHOST="minyanville-buzz.appspot.com";
-		$VIDEOHOST="minyanville-buzz.appspot.com";
-		$HTADMINHOST="minyanville-buzz.appspot.com";
-		$STORAGE_SERVER = "http://storage.googleapis.com/mvassets";
+		$IMG_SERVER="http://image.minyanville.com";
+		$SSL_IMG_SERVER="https://storage.googleapis.com/image.minyanville.com/";
+		if($_SERVER['HTTPS']=="on")
+		{
+			$CDN_SERVER="https://www.minyanville.com";
+		}
+		else 
+		{
+			$CDN_SERVER="http://cdn.minyanville.com";
+		}
+		$HTHOST="www.minyanville.com";
+		$VIDEOHOST="video.minyanville.com";
+		$HTADMINHOST="www.minyanville.com";
+		$STORAGE_SERVER = "http://image.minyanville.com";
 	} 
+	
+	$CDN_BUCKET = "gs://image.minyanville.com";        //   later will become gs://cdn.minyanville.com
+	$bucketPath = "gs://image.minyanville.com"; 
+	$tempPath = "image.minyanville.com/temp";
+	$bucketName = "image.minyanville.com";
 	$HTDOMAIN="$HTPFX$HTHOST$HTPORT";
 	$HTNOSSLDOMAIN="http://$HTHOST$NOSSLPORT";
 	
@@ -40,7 +61,7 @@ global $HTTP_HOST,$PHP_SELF;
 			"path"=> "/home/sites/minyanville/web" //remote user is chrooted. rel path
 		);
 
-	$StorageListPath = "https://www.googleapis.com/storage/v1beta2/b/mvassets/o";
+	$StorageListPath = "https://www.googleapis.com/storage/v1beta2/b/".$bucketName."/o";
 	$CKRootPath = "assets/FCK_Jan2011/images/";
 
 
@@ -136,22 +157,6 @@ global $HTTP_HOST,$PHP_SELF;
 			"gazette" => "$SCRIPT_DIR/recv_daily_gazette.list",
 			"promo"   => "$SCRIPT_DIR/recv_promo.list"
 		);
-
-
-
-	$SLIDESHOW_QUERY="SELECT s.*,sc.slideshow_id,sc.slide_title,sc.body
-		     FROM
-				 slideshow s,slideshow_content sc,contributors c
-		     WHERE
-				 sc.slideshow_id=s.id and
-			     s.contrib_id=c.id ";
-
-	$SLIDESHOWCONT_QUERY="SELECT s.id,sc.id,sc.slideshow_id,sc.slide_title,sc.body,sc.slide_image
-		     FROM
-				 slideshow s,slideshow_content sc,contributors c
-		     WHERE
-				 sc.slideshow_id=s.id and
-			     s.contrib_id=c.id ";
 
 	$ARTICLE_QUERY="
 		SELECT a.*, a.id article_id, cont.bio_asset,
@@ -256,7 +261,7 @@ LEFT JOIN characters c ON(c.id=ci.character_id)
 					$Still_file_path='mvtv/stills/'; //Still file path
 					$Thumb_file_path='mvtv/thumbs/'; //Thumb file path
 					$MVTVURL="/mvtv/";
-					$VIDEO_SERVER="http://storage.googleapis.com/mvassets/";
+					$VIDEO_SERVER="http://image.minyanville.com/";
 
 /*========= Memcache Configuration ======*/
 $MEMCACHE_SERVERS = array(
@@ -330,39 +335,11 @@ include_once($D_R.'/lib/config/_db_config.php');
 /*==============Tracking Configuration ======*/
 
 /*==============Tracking Configuration ======*/
-include_once($D_R.'/lib/config/_exchange_config.php');
-/*==============Tracking Configuration ======*/
-
-/*==============Tracking Configuration ======*/
-include_once($D_R.'/lib/config/_google_referral_config.php');
-/*==============Tracking Configuration ======*/
-
-/*==============Tracking Configuration ======*/
-include_once($D_R.'/lib/config/_googleadwords_config.php');
-/*==============Tracking Configuration ======*/
-
-/*==============Tracking Configuration ======*/
-include_once($D_R.'/lib/config/_gpom_config.php');
-/*==============Tracking Configuration ======*/
-
-/*==============Tracking Configuration ======*/
 include_once($D_R.'/lib/config/_products_config.php');
 /*==============Tracking Configuration ======*/
 
 /*==============Tracking Configuration ======*/
-include_once($D_R.'/lib/config/_slideshow_config.php');
-/*==============Tracking Configuration ======*/
-
-/*==============Tracking Configuration ======*/
 include_once($D_R.'/lib/config/_store_config.php');
-/*==============Tracking Configuration ======*/
-
-/*==============Tracking Configuration ======*/
-include_once($D_R.'/lib/config/_exchange_config.php');
-/*==============Tracking Configuration ======*/
-
-/*==============Tracking Configuration ======*/
-include_once($D_R.'/lib/config/_syndication_config.php');
 /*==============Tracking Configuration ======*/
 
 /*==============Tracking Configuration ======*/

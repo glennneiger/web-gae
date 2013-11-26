@@ -1,14 +1,14 @@
 <?php
-global $HTPFX,$HTHOST,$cloudStorageTool;
+global $HTPFX,$HTHOST,$cloudStorageTool,$tempPath,$CDN_SERVER;
 
 $handler = $HTPFX.$HTHOST."/admin/uploadBucket_mod.php";
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' => $tempPath ];
 $frm_url = $cloudStorageTool->createUploadUrl($handler , $options);
 
 $status = $_GET['status'];
 
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 function checkUpload()
 {

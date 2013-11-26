@@ -74,7 +74,7 @@ a, a:visited, a:hover, a:active {
 
 #logoBar {
 	height:52px;
-	background:transparent url(http://storage.googleapis.com/mvassets/images/header_bg.gif) top left repeat-x;
+	background:transparent url(http://image.minyanville.com/images/header_bg.gif) top left repeat-x;
 	text-align:center;
 	}
 
@@ -86,7 +86,7 @@ a, a:visited, a:hover, a:active {
 	}
 
 #flashBar {
-	background:transparent url(http://storage.googleapis.com/mvassets/images/flashbar_bg.gif) top left repeat-x;
+	background:transparent url(http://image.minyanville.com/images/flashbar_bg.gif) top left repeat-x;
 	}
 
 #flashLasso {width:300px; margin:0px auto;}
@@ -110,7 +110,7 @@ a, a:visited, a:hover, a:active {
 .mainLayer {
 	position: relative;
 	background-color:#04517a;
-	background-image: url(http://storage.googleapis.com/mvassets/images/msgBox.gif);
+	background-image: url(http://image.minyanville.com/images/msgBox.gif);
 	background-position: top center;
 	background-repeat: no-repeat;
 }

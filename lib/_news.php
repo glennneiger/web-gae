@@ -77,10 +77,16 @@
 	}
 	function get_full_slideshow($slide_id, $approvedonly=1){
 			global $_GET,
-					$JOURNAL_URL,$NEWSVIEWS_URL,$HTTP_HOST,$SLIDESHOW_QUERY,$HTNOSSLDOMAIN;
+					$JOURNAL_URL,$NEWSVIEWS_URL,$HTTP_HOST,$HTNOSSLDOMAIN;
 			if($_GET[AMADMIN])$approvedonly=0;
 			if(!$slide_id)return array();
-			$qry="$SLIDESHOW_QUERY AND s.id='$slide_id'";
+			$qry="SELECT s.*,sc.slideshow_id,sc.slide_title,sc.body
+		     FROM
+				 slideshow s,slideshow_content sc,contributors c
+		     WHERE
+				 sc.slideshow_id=s.id and
+			     s.contrib_id=c.id ";
+			$qry.=" AND s.id='$slide_id'";
 			if($approvedonly)
 				$qry.=" AND s.approved='1'";
 			$ret=exec_query($qry,1);
@@ -96,7 +102,13 @@
 					$JOURNAL_URL,$NEWSVIEWS_URL,$HTTP_HOST,$SLIDESHOWCONT_QUERY,$HTNOSSLDOMAIN;
 			if($_GET[AMADMIN])$approvedonly=0;
 			if(!$slide_id)return array();
-			$qry="$SLIDESHOWCONT_QUERY AND s.id='$slide_id'";
+			$qry = "SELECT s.id,sc.id,sc.slideshow_id,sc.slide_title,sc.body,sc.slide_image
+		     FROM
+				 slideshow s,slideshow_content sc,contributors c
+		     WHERE
+				 sc.slideshow_id=s.id and
+			     s.contrib_id=c.id ";
+			$qry.=" AND s.id='$slide_id'";
 			if($approvedonly)
 				$qry.=" AND s.approved='1'";
 				$qry.="Order by slide_no";

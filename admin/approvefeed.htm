@@ -1,5 +1,5 @@
 <?
-global $DATE_STR, $D_R;
+global $DATE_STR, $D_R,$CDN_SERVER;
 include_once($D_R."/lib/_robots.php");
 $page = "gazette";
 function togD($d){
@@ -129,7 +129,7 @@ $pagedata = exec_query($qry);
 <?if($AD->getPerm("feed_edit_approve")){?>
 	<a href="feed.htm">Create/ Edit MV Premium</a><br>
 <?}?>
-<script src='<?php echo $HTPFX.$HTHOST;?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
+<script src='<?php echo $CDN_SERVER?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
 <script language="javascript">
 function searchArticles(){
 	$('#errMsg').text('');

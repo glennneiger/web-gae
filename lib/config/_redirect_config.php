@@ -20,7 +20,6 @@ $redirectArr['/politics-and-regulation/'] = $HTPFX.$HTHOST.'/business-news/polit
 $redirectArr['/latest/'] = $HTPFX.$HTHOST.'/business-news/latest/';
 $redirectArr['/community/active-discussion.htm'] = $HTPFX.$HTHOST.'/';
 $redirectArr['/company/events.php'] = $HTPFX.$HTHOST.'/';
-$redirectArr['/company/disclaimers.htm'] = $HTPFX.$HTHOST.'/';
 $redirectArr['/company/press.htm'] = $HTPFX.$HTHOST.'/';
 $redirectArr['/dawn-of-the-decade/'] = $HTPFX.$HTHOST.'/';
 $redirectArr['/derivatives/'] = $HTPFX.$HTHOST.'/';

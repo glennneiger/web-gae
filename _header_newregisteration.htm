@@ -1,5 +1,5 @@
 <?
-global $D_R,$IMG_SERVER;
+global $D_R,$IMG_SERVER,$CDN_SERVER;
 include_once("$D_R/lib/_register_config.php");
 $zoneIDNavCustomProduct = $SEC_TO_ZONE['NavCustomProduct'];
 $zoneIDNavNV = $SEC_TO_ZONE['NavNV'];
@@ -101,14 +101,14 @@ var ord = axel * 1000000000000000000;
 
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<?= $pfx; ?>/rss/minyanfeed.php" />
 
-<link rel="stylesheet" media="all" type="text/css" href="<?$D_R?>/css/mv.css" />
-<script src="<?$D_R?>/js/register_js/AC_ActiveX.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?$D_R?>/js/register_js/prototype.js"></script>
-<script type="text/javascript" src="<?$D_R?>/js/register_js/effects.js"></script>
-<script type="text/javascript" src="<?$D_R?>/js/register_js/accordion.js"></script>
-<script type="text/javascript" src="<?$D_R?>/js/register_js/scriptaculous.js"></script>
-<script src="<?$D_R?>/_script.js" language=JavaScript></script>
-<script src="<?$D_R?>/register/reg.js" language=JavaScript></script>
+<link rel="stylesheet" media="all" type="text/css" href="<?=$CDN_SERVER?>/css/mv.css" />
+<script src="<?=$CDN_SERVER?>/js/register_js/AC_ActiveX.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/register_js/prototype.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/register_js/effects.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/register_js/accordion.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/register_js/scriptaculous.js"></script>
+<script src="<?=$CDN_SERVER?>/_script.js" language=JavaScript></script>
+<script src="<?=$CDN_SERVER?>/register/reg.js" language=JavaScript></script>
 <script type="text/javascript">
 <!--
 function MM_preloadImages() { //v3.0

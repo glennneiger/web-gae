@@ -103,7 +103,7 @@ var arFrnd = new Array();
             function streamPublish(name, description, hrefTitle, hrefLink, userPrompt, randomNumber, articleImage, badwords){
 				var authorImage = articleImage;
 				if(authorImage =="" || authorImage ==null ){
-					authorImage = 'http://storage.googleapis.com/mvassets/images/logo.png';
+					authorImage = 'http://image.minyanville.com/images/logo.png';
 				}
 				
 				var searchtext=hrefLink.search(/slideshow/i);

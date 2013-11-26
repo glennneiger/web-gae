@@ -6,7 +6,9 @@ include_once($D_R.'/lib/_exchange_lib.php');
 include_once("$D_R/lib/_content_data_lib.php");
 $bounceback = "./alerts.htm";
 $alert_TABLE = "ss_alerts";
+$alerts = $_POST['alerts'];
 $alerts[title]=addslashes(mswordReplaceSpecialChars(stripslashes($alerts[title])));
+$alerts[body]=addslashes(mswordReplaceSpecialChars(stripslashes($alerts[body])));
 
 /*============set up permissions=================*/
 $editanyuser=$AD->getPerm("ss_alerts_all");
@@ -20,7 +22,7 @@ if(!$editanyuser && !$candelete && !$edit_date){
 }
 $datefield = $_POST['datefield'];
 $id = $_POST['id'];
-$alerts = $_POST['alerts'];
+
 $deletealert = $_POST['deletealert'];
 
 $alerts[sent]=($alerts[sent]?1:0);

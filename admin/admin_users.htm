@@ -1,5 +1,5 @@
 <?
-
+global $CDN_SERVER;
 $page="admintools";
 
 $allperms=array("admin_users_all","admin_users_self");
@@ -24,9 +24,9 @@ $handler="./admin_users_mod.htm";
 $notcontrib_filter=array("articles_own","articles_chars","contrib_self");
 
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <br><br>
 <div class=adminheader>Administer Users</div><br>
 <?if($error){?><div class=error><?=strip($error)?></div><?}?>

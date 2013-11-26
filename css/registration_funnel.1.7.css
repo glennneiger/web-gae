@@ -16,14 +16,14 @@
 	float:left;
 	width:820px;
 	height:11px;
-    background-image: url("http://storage.googleapis.com/mvassets/images/registration/registration_top.png");
+    background-image: url("http://image.minyanville.com/images/registration/registration_top.png");
 }
 
 #reg_bottom{
 	float:left;
 	width:820px;
 	height:11px;
-    background-image: url("http://storage.googleapis.com/mvassets/images/registration/registration_bottom.png");
+    background-image: url("http://image.minyanville.com/images/registration/registration_bottom.png");
 }
 
 .input_fields_error{
@@ -43,7 +43,7 @@
 	padding:43px 0px 0px 0px;
 	font-family:Helvetica,Arial,sans-serif;
     background-repeat: repeat-y;
-	background-image: url("http://storage.googleapis.com/mvassets/images/registration/registration_mid.png");
+	background-image: url("http://image.minyanville.com/images/registration/registration_mid.png");
 }
 
 .error_middle a{
@@ -79,7 +79,7 @@
 }
 
 .funnel_loading_img{
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/submitting.gif") no-repeat 180px 28px;
+	background: url("http://image.minyanville.com/images/recurly/submitting.gif") no-repeat 180px 28px;
 }
 
 .headerInfo a{
@@ -183,14 +183,14 @@
 	float:left;
 	width:460px;
 	height:10px;
-    background-image: url("http://storage.googleapis.com/mvassets/images/registration/funnelTop.png");
+    background-image: url("http://image.minyanville.com/images/registration/funnelTop.png");
 }
 
 .funnel_bottom{
 	float:left;
 	width:460px;
 	height:10px;
-    background-image: url("http://storage.googleapis.com/mvassets/images/registration/funnelBtm.png");
+    background-image: url("http://image.minyanville.com/images/registration/funnelBtm.png");
 }
 .funnel_mid{
 	float:left;
@@ -199,7 +199,7 @@
 	overflow-y:auto;
 	overflow-x:hidden;
 	background-repeat: repeat-y;
-	background-image: url("http://storage.googleapis.com/mvassets/images/registration/funnelMid.png");
+	background-image: url("http://image.minyanville.com/images/registration/funnelMid.png");
 }
 
 .funnel_trial_text{
@@ -234,7 +234,7 @@
     padding:0px 0px 20px 30px;
     background-position: 0 0px;
     background-repeat: no-repeat;
-    background-image: url("http://storage.googleapis.com/mvassets/images/registration/li_bullet.jpg");
+    background-image: url("http://image.minyanville.com/images/registration/li_bullet.jpg");
 }
 
 .funnel_product_desc{
@@ -404,7 +404,7 @@
 	width:820px;
 	min-height:451px;
     background-repeat: repeat-y;
-	background-image: url("http://storage.googleapis.com/mvassets/images/registration/registration_mid.png");
+	background-image: url("http://image.minyanville.com/images/registration/registration_mid.png");
 }
 
 .cross_sell_heading{
@@ -496,7 +496,7 @@
 	font-family: arial !important;
 	font-weight: bold !important;
 	text-transform: uppercase !important;
-	background-image: url("http://storage.googleapis.com/mvassets/images/registration/bttn_continue_blank.jpg") !important;
+	background-image: url("http://image.minyanville.com/images/registration/bttn_continue_blank.jpg") !important;
 }
 	
 
@@ -592,7 +592,7 @@
 	width:820px;
 	min-height:345px;
     background-repeat: repeat-y;
-	background-image: url("http://storage.googleapis.com/mvassets/images/registration/registration_mid.png");
+	background-image: url("http://image.minyanville.com/images/registration/registration_mid.png");
 }
 
 .welcome_thanks{
@@ -942,7 +942,7 @@
 	padding: 4px 0px 0px 0px;
 	margin: -25px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/country.jpg");
+	background: url("http://image.minyanville.com/images/registration/country.jpg");
 }
 
 .funnel_user_info span.select{
@@ -960,7 +960,7 @@
 	margin: -32px 0px 0px 0px;
 	padding: 4px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/country.jpg");
+	background: url("http://image.minyanville.com/images/registration/country.jpg");
 }
 
 .funnel_user_info span.select_yr{
@@ -978,7 +978,7 @@
 	margin: 0px 0px 0px -84px;
 	padding: 4px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/year.jpg");
+	background: url("http://image.minyanville.com/images/registration/year.jpg");
 }
 
 .funnel_user_info span.select_month{
@@ -996,7 +996,7 @@
 	margin: 0px 0px 0px -60px;
 	padding: 4px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/month.jpg");
+	background: url("http://image.minyanville.com/images/registration/month.jpg");
 }
 
 .errorFunnel{
@@ -1103,7 +1103,7 @@ p.funnelNewLineV2{
     padding:0px 0px 20px 36px;
     background-position: 0 0px;
     background-repeat: no-repeat;
-    background-image: url("http://storage.googleapis.com/mvassets/images/registration/li_bullet.jpg");
+    background-image: url("http://image.minyanville.com/images/registration/li_bullet.jpg");
 }
 
 .funnelOpt{
@@ -1351,7 +1351,7 @@ p.funnelNewLineV2{
 	padding: 4px 0px 0px 0px;
 	margin: -25px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/country.jpg");
+	background: url("http://image.minyanville.com/images/registration/country.jpg");
 }
 
 .funnelUserInfoFrstV2 span.select{
@@ -1369,7 +1369,7 @@ p.funnelNewLineV2{
 	margin: -32px 0px 0px 0px;
 	padding: 4px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/country.jpg");
+	background: url("http://image.minyanville.com/images/registration/country.jpg");
 }
 
 .funnelUserInfoV2 span.select_yr{
@@ -1387,7 +1387,7 @@ p.funnelNewLineV2{
 	margin: 0px 0px 0px -84px;
 	padding: 4px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/year.jpg");
+	background: url("http://image.minyanville.com/images/registration/year.jpg");
 }
 
 .funnelUserInfoV2 span.select_month{
@@ -1405,7 +1405,7 @@ p.funnelNewLineV2{
 	margin: 0px 0px 0px -60px;
 	padding: 4px 0px 0px 0px;
 	background-repeat: no-repeat;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/month.jpg");
+	background: url("http://image.minyanville.com/images/registration/month.jpg");
 }
 
 .funnelAmtChargedV2{

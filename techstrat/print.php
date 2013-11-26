@@ -1,6 +1,6 @@
 <?
 session_start();
-global $HTPFX,$HTHOST;
+global $HTPFX,$HTHOST,$CDN_SERVER;
 include_once("$D_R/lib/_auth.php");
 include_once($D_R."/lib/techstrat/_techstratDesign.php");
 include_once($D_R."/lib/techstrat/_techstratData.php");
@@ -23,7 +23,7 @@ if(($_GET['a'] != "") && (is_numeric($_GET['a'])))
 ?>
 <html>
 <head>
-	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/techstrat.1.5.css">
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/techstrat.1.5.css">
 	<script language="javascript" type="text/javascript">
 	function docKeyDown1(oEvent){ // controls keyboard navigation
 	var oEvent = (typeof oEvent != "undefined")? oEvent : event;

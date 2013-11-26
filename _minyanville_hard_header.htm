@@ -1,5 +1,7 @@
 <?
-global $HTPFX,$HTHOST,$ADS_SIZE,$IMG_SERVER;
+global $HTPFX,$HTHOST,$ADS_SIZE,$IMG_SERVER,$CDN_SERVER;
+global $D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
 if(stristr($_SERVER['HTTP_HOST'],"buzzandbanter.com")){
 	location("http://$HTHOST/register/");
 	exit();
@@ -11,6 +13,8 @@ session_start();
 if($_COOKIE['introad']!='1' && $pageName=='home')
 	include_once("_introad.htm");
 */
+global $D_R;
+include_once("$D_R/lib/_cart.php");
 mcookie("PHPSESSID",session_id());
 $cart=new CartDisplay();
  if(!$_SESSION['referer'])
@@ -118,16 +122,16 @@ if(!($pageName=='article_template' || strpos($_SERVER[REQUEST_URI],'register') |
 <meta name="keywords" content="<?=$pageMetaData['keywords']?>">
 <!-- Meta Data Ends -->
 <!-- Ibox Files loaded First-->
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/ibox.1.1.css" type="text/css" />
 <?if ($pageName=="jack_home"){?>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/jack.1.6.css" type="text/css" />
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/jack.1.6.css" type="text/css" />
 <? } if (($pageName=="bmtp_home")or($pageName=="bmtp_alert")) {?>
-	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/bmtp.1.4.css" type="text/css" />
-	<script src="<?=$HTPFX.$HTHOST?>/js/bmtp.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/bmtp.1.4.css" type="text/css" />
+	<script src="<?=$CDN_SERVER?>/js/bmtp.js" type="text/javascript"></script>
 <?}?>
 
-<script src="<?=$HTPFX.$HTHOST?>/js/ibox.1.3.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/ibox.1.3.js" type="text/javascript"></script>
 <!-- Share This script for Daily Feed individual feeds-->
 <!-- <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#publisher=c33749e3-a8dd-48d6-af73-7568c530a7f8&amp;type=website&amp;buttonText=Share&amp;embeds=true"></script> -->
 <!-- Ibox Ends --->
@@ -144,37 +148,37 @@ if(!($pageName=='article_template' || strpos($_SERVER[REQUEST_URI],'register') |
 
 <!-- RSS Configuration Ends-->
 <!-- StyleSheets Starts -->
-<link href="<?=$HTPFX.$HTHOST?>/css/minyanville.1.52.css" rel="stylesheet" type="text/css" />
-<link href="<?=$HTPFX.$HTHOST?>/css/layout_main.1.24.css" rel="stylesheet" type="text/css" />
+<link href="<?=$CDN_SERVER?>/css/minyanville.1.52.css" rel="stylesheet" type="text/css" />
+<link href="<?=$CDN_SERVER?>/css/layout_main.1.24.css" rel="stylesheet" type="text/css" />
 <? if ($pageName=="sshome") {?>
-	<link href="<?=$HTPFX.$HTHOST?>/css/option_smith.1.6.css" rel="stylesheet" type="text/css" />
+	<link href="<?=$CDN_SERVER?>/css/option_smith.1.6.css" rel="stylesheet" type="text/css" />
 <?}?>
 <!-- StyleSheets Ends -->
 <!-- JS Starts -->
-<!-- <script src="<?=$HTPFX.$HTHOST?>/js/registration_ajax_1.20.js" language="JavaScript" type="text/javascript"></script> -->
+<!-- <script src="<?=$CDN_SERVER?>/js/registration_ajax_1.20.js" language="JavaScript" type="text/javascript"></script> -->
 <!-- google anaytics  code -->
 
 
-<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.3-min.js" type="text/javascript"></script>
-<!-- <script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/prototype.1.3-min.js" type="text/javascript"></script>
+<!-- <script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js" type="text/javascript"></script>
  --><? if($pageName=='home')
 { ?>
-	<script src="<?=$HTPFX.$HTHOST?>/js/min/AC_RunActiveContent-min.js" type="text/javascript"></script>
-	<script src="<?=$HTPFX.$HTHOST?>/js/stepcarousel2.1.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/min/AC_RunActiveContent-min.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/stepcarousel2.1.js" type="text/javascript"></script>
 
-	<script src="<?=$HTPFX.$HTHOST?>/js/slider/slider.1.12.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/coda-slider.1.8.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script src="<?=$CDN_SERVER?>/js/slider/slider.1.12.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/coda-slider.1.8.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
 
 <? } ?>
-<!-- <script src="<?=$HTPFX.$HTHOST?>/js/ajax_basic_1.2.js" type="text/javascript"></script>
- --><script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/creditcard.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/email_alert.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/redesign.1.26.js" type="text/javascript"></script>
-<script language="javascript"  type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/header.js" ></script>
+<!-- <script src="<?=$CDN_SERVER?>/js/ajax_basic_1.2.js" type="text/javascript"></script>
+ --><script src="<?=$CDN_SERVER?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/creditcard.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/email_alert.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script language="javascript"  type="text/javascript" src="<?=$CDN_SERVER?>/js/header.js" ></script>
 <!-- <script src="<?=$HTPFX.$HTHOST?>/buzz/includes/scriptaculous.js?load=effects" type="text/javascript"></script> -->
-<!-- <script src="<?=$HTPFX.$HTHOST?>/js/daily_feed.1.1.js" type="text/javascript"></script> -->
+<!-- <script src="<?=$CDN_SERVER?>/js/daily_feed.1.1.js" type="text/javascript"></script> -->
 <!--  <script type="text/javascript">jQuery.noConflict() ;</script> -->
 <!-- OpenX Configuration Starts-->
 <script language="javascript">
@@ -186,7 +190,7 @@ $path_info=pathinfo($_SERVER[PHP_SELF]); ?>
 
 -->
 </script>
-<!-- <script src="<?=$HTPFX.$HTHOST?>/js/ads.js" type="text/javascript"></script> -->
+<!-- <script src="<?=$CDN_SERVER?>/js/ads.js" type="text/javascript"></script> -->
 <!-- OpenX Configuration Ends-->
 <!-- Operative Configuration Starts-->
 <script language="Javascript" type="text/javascript">

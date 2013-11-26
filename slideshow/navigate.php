@@ -1,6 +1,7 @@
 <?php
-include_once("../layout/dbconnect.php");
-include_once("../lib/layout_functions.php");
+global $D_R;
+include_once("$D_R/layout/dbconnect.php");
+include_once("$D_R/lib/layout_functions.php");
 if($_POST['requestForses']==1)
 {
 if($_POST['ses']!=''){

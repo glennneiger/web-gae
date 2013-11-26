@@ -1,25 +1,13 @@
 <?php
 include_once("$ADMIN_PATH/lib/_dailyfeed_data_lib.php");
 include_once($D_R."/lib/config/_email_config.php");
-function getModulesList($page_id,$placeholder) {
-	$stQuery = "SELECT module_order FROM layout_placeholder WHERE page_id = '$page_id' AND placeholder='$placeholder'";
-	$arModulesResult = exec_query($stQuery,1);
-	return $arModulesResult;
-}
+
 function getTempModulesList($page_id,$placeholder) {
 	$stQuery = "SELECT module_order_temp AS module_order FROM layout_placeholder WHERE page_id = '$page_id' AND placeholder='$placeholder'";
 	$arModulesResult = exec_query($stQuery,1);
 	return $arModulesResult;
 }
 
-function getFeaturedArticleDetail($link)
-{
-	$sql="SELECT title, `author_name`, `description` FROM ex_item_meta WHERE 
-url ='".$link."' ";
-	$arResult = exec_query($sql,1);
-	return $arResult;
-	
-}
 
 function getModuleTemplateDetail($module_id)
 {
@@ -40,7 +28,7 @@ function getModuleComponent($module_id,$template_id)
 	$stQuery = "SELECT ltc.component_name, lmc.component_type,lmc.content,lmc.target,lmc.link,lmc.content_sql
 				FROM layout_template_component AS ltc LEFT JOIN layout_module_component AS lmc
 				ON lmc.component_id = ltc.id AND lmc.module_id = '$module_id'
-				WHERE ltc.template_id = '$template_id'";
+				WHERE ltc.template_id = '$template_id' GROUP BY lmc.component_id ";
 	$arResult = exec_query($stQuery);
 	return $arResult;
 }
@@ -49,7 +37,7 @@ function getTempModuleComponent($module_id,$template_id)
 	$stQuery = "SELECT ltc.component_name, lmc.component_type,lmc.content,lmc.target,lmc.link,lmc.content_sql
 				FROM layout_template_component AS ltc LEFT JOIN layout_module_component_temp AS lmc
 				ON lmc.component_id = ltc.id AND lmc.module_id = '$module_id'
-				WHERE ltc.template_id = '$template_id'";
+				WHERE ltc.template_id = '$template_id' GROUP BY lmc.component_id ";
 
 
 	$arResult = exec_query($stQuery);
@@ -245,7 +233,13 @@ function addEditModule($action,$temp_module_id,$module_name,$template_id)
 }
 function getArticleDetail($article_id)
 {
-	$stQuery = "SELECT ar.title, ar.body ,ar.contrib_id  AS author_id, con.name AS author, ar.character_text, chi.asset, IF(ar.publish_date= '0000-00-0000:00:00',ar.date,ar.publish_date) AS publish_date, ar.body FROM contributors AS con, articles AS ar LEFT JOIN character_images AS chi ON ar.character_img_id = chi.id WHERE ar.id='$article_id' AND ar.contrib_id = con.id";
+	$stQuery = "SELECT ar.id,ar.keyword,ar.blurb,EIM.url,ar.title, ar.body ,ar.contrib_id AS author_id, con.name AS author,
+	 ar.character_text, chi.asset, IF(ar.publish_date= '0000-00-0000:00:00',ar.date,ar.publish_date) 
+	 AS publish_date, ar.body 
+	 FROM `contributors` AS con, articles AS ar 
+	 LEFT JOIN character_images AS chi ON ar.character_img_id = chi.id 
+	 LEFT JOIN ex_item_meta AS EIM ON EIM.item_id=ar.id AND item_type='1'
+	 WHERE ar.id='$article_id' AND ar.contrib_id = con.id";
 	$arResult = exec_query($stQuery,1);
 	return $arResult;
 }
@@ -348,52 +342,6 @@ function getProfessorDetail($contrib_id)
 
 }
 
-function getAllitems()
-{
-	$stQuery = "SELECT * FROM ex_item_type";
-	$arModuleResult = exec_query($stQuery);
-	return $arModuleResult;
-}
-function getItemURL($item_type,$item_id)
-{
-   $objDailyfeed = new Dailyfeed();
-	global $HTPFX,$HTHOST;
-	if($item_type == 1)
-	{
-		$stQuery = "SELECT id,keyword,blurb FROM articles WHERE id ='$item_id'";
-		$arResult = exec_query($stQuery,1);
-		//  function defined in web/lib/layout_functions.php
-		return makeArticleslink($arResult['id'],$arResult['keyword'],$arResult['blurb']);
-	}
-	if($item_type == 18)
-	{
-		$urltitle=$objDailyfeed->getDailyFeedUrl($item_id);
-		return $urltitle;
-	}
-	else
-	{
-		$stQuery = "SELECT url FROM ex_item_meta WHERE item_type= '$item_type' AND item_id ='$item_id'";
-		$arResult = exec_query($stQuery,1);
-		return $arResult['url'];
-	}
-}
-function getFeatured($act)
-{
-     if($act=='Featured')
-    {
-	 $stQuery = "SELECT * FROM homepage_module where module_type='Featured' order by order_type ASC";
-	 $arModuleResult = exec_query($stQuery);
-	}
-	else
-	{
-	  $stQuery = "SELECT h.*,EIM.title,m.title as vtitle FROM homepage_module as h left join articles as EIM
-                  on EIM.id = h.object_id  left join mvtv as m on h.object_id = m.id
-                  where module_type='Recent' order by h.order_type ASC";
-	  $arModuleResult = exec_query($stQuery);
-	}
-	return $arModuleResult;
-}
-
 function getlayoutmodule()
 {
 
@@ -439,21 +387,6 @@ function get_Branded_Buzz($id)
 //  listing menu functions(3/12/2008)
 //-----------------------------------------------
 
-function getlayoutmenu(){
-$sql    =   "SELECT COUNT(l2.id) as cnt,l1.id,l1.title,l1.parent_id,l1.level,l1.menuorder,l1.active,l1.page_id
-             from layout_menu as l1 , layout_menu as l2  WHERE l1.id = l2.parent_id AND l1.parent_id='0' and
-			 l1.navigation_type='H' Group By l1.id
-		     ORDER BY l1.menuorder ASC";
-$result  =  exec_query($sql);
-	if($result)
-	{
-		return $result;
-	}
-	else
-	{
-		return NULL;
-	}
-}
 
 function getfootermenu($act,$id)
 {
@@ -644,72 +577,7 @@ function getSubsectionList($section_id)
 	return exec_query($qry);
 }
 
-function getfeaturearticle()
-{
-    if($_GET['act']=='Preview' and $_GET['mod']=='featured')
-	{
-      $qry  =   "Select object_id,object_type,module_type from homepage_module
-	            where module_type='Featured' order by order_type";
-     return exec_query($qry);
-	 }
-	 else
-	 {
-	 $qry  =   "Select object_id,object_type,module_type from homepage_module
-	            where module_type='Featured' and commit_status='P' order by order_type";
-     return exec_query($qry);
-	 }
-	//$qry        =   "select a.*,h.object_title from  homepage_module as h left join  articles as a
-                     //on h.object_id = a.id where a.is_live='1' and h.module_type='Featured' order by a.date Desc";
-	return exec_query($qry);
-}
-function getarticle_video($moduletype , $moduleid)
-{
 
-  if($moduletype=='1')
-  {
-   $qry        =   "select id,contrib_id,approved,date,title,blurb,featureimage,keyword from articles
-                    where id='$moduleid'";
-          return exec_query($qry);
-  }
-  else
-  {
-     $qry        = "Select id,title,description as blurb,uploaded_by as contrib_id,thumbfile as featureimage,
-	                  keywords as  keywords,
-	                   publish_time as date  from mvtv where id='$moduleid'";
-                    return exec_query($qry);
-  }
-
-}
-function gettagarticle($id, $moduleid)
-{
-    if($moduleid=='1')
-	{
-	$qry      =   "Select tag_id from ex_item_tags where item_id='$id'";
-	$artag_1  = exec_query($qry);
-	$artag_2  = $artag_1[0]['tag_id'];
-	if(count($artag)>0)
-	{
-	 $qry      =   "select contributor,title,contrib_id,id,date,title,blurb,featureimage,keyword
-	                from articles where id='$artag_2' order by date Desc LIMIT 0,3";
-	return exec_query($qry);
-	}
-	else
-	{
-	  $qry      =   "Select contributor from articles where id='$id'";
-	  $artag    = exec_query($qry);
-	  $artag1   =  $artag[0]['contributor'];
-	  $qry      =   "select contributor,title,contrib_id,id,date,title,blurb,featureimage,keyword
-	                from articles where contributor='$artag1' order by date Desc LIMIT 0,3";
-	  return exec_query($qry);
-	}
-	}
-	else
-	{
-	  $qry      =   "select id,title,description as blurb,uploaded_by as contrib_id,thumbfile as featureimage,
-                     keywords as  keywords, publish_time as date  from mvtv  order by publish_time  Desc LIMIT 0,3";
-	return exec_query($qry);
-	}
-}
 function getMetalist($id){
   	$qry="SELECT LM.id,LM.page_id,LM.title,LM.metadesc,LM.metakeywords,LP.url FROM layout_pages AS LP LEFT JOIN layout_meta AS LM
 ON LM.page_id = LP.id WHERE LP.id='$id'";
@@ -839,28 +707,6 @@ function dailyfeed_count()
 	return $total_count;
 }
 
-function getDailyFeed_yday($yday)
-{
-	$yday=date("Y-m-d", time()-86400);
-	$stQuery = "SELECT id,title,body,title_link,creation_date,updation_date from daily_feed where is_approved='1' and is_deleted='0' and date_format(creation_date,'%Y-%m-%d') ='".$yday."' order by id desc";
-	$FeedResult = exec_query($stQuery);
-
-	$count = count($FeedResult);
-
-		if($count == '0') {
-		$stQuery = "SELECT id,title,body,title_link,creation_date,updation_date from daily_feed where is_approved='1' and is_deleted='0' order by creation_date desc limit 0,10";
-		$FeedResult = exec_query($stQuery);
-
-	}
-
-	return $FeedResult;
-}
-function getDailyFeed_search($feedid)
-{
-	$stQuery = "SELECT id,title,body,title_link,creation_date,updation_date from daily_feed where id='$feedid'   and is_deleted='0' and is_live='1'";
-	$FeedResult = exec_query($stQuery);
-	return $FeedResult;
-}
 function getURL($url)
 {
 $url = "http://".$url;
@@ -1064,18 +910,6 @@ function daily_feed_welcome_email($user_type,$feed_email,$password) {
 		   mymail($user_email,$from,$subject,inc_web("$EML_TMPL"));
   }
 
-  function getPageNameByModuleid($moduleid){
-  	$qry="Select LP.page_id, LG.name as pagename from layout_placeholder LP,layout_pages LG where find_in_set('".$moduleid."',module_order) and LP.page_id=LG.id";
-	$result=exec_query($qry,1);
-	if(isset($result)){
-		return $result;
-	}else{
-		return 0;
-	}
-
-
-  }
-
  function updateDailyDigestEmail($feed_uid) {
  	global $D_R,$mailChimpApiKey,$dailyDigestListId;
 	$qry = "select recv_daily_gazette,email,fname,lname from subscription where id = '$feed_uid'";
@@ -1102,14 +936,7 @@ function daily_feed_welcome_email($user_type,$feed_email,$password) {
 				$subject = 'Daily Digest MailChimp Exception';
  				$body = var_dump($e);
                 mymail($to,$from,$subject,$body);
-				/*require_once $D_R.'/lib/swift/lib/swift_required.php';
-				$mailer = Swift_MailTransport::newInstance();
-				$message = Swift_Message::newInstance();
-				$message->setSubject($subject);
-				$message->setBody($body);
-       			$message->setFrom($from);
-       			$message->setTo($to);
-       			$mailer->send($message);*/
+
 			}
 		}
 		return $id;
@@ -1129,14 +956,7 @@ function dailyDigestWelcomeEmail($user_type,$feed_email,$password) {
  	$msgurl=$dailyDigestWelcomeTmpl.qsa(array(user_type=>$user_type,user_id=>$feed_email,pwd=>$password));
 	  	$mailbody=inc_web($msgurl);
          mymail($to,$from,$subject,$mailbody);
- 		/*require_once $D_R.'/lib/swift/lib/swift_required.php';
-		$mailer = Swift_MailTransport::newInstance();
-		$message = Swift_Message::newInstance();
-		$message->setSubject($subject);
-		$message->setBody($mailbody, 'text/html');
-		$message->setSender($from);
-		$message->setTo($feed_email);
-		$mailer->send($message);*/
+
 }
 
 

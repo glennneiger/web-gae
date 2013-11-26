@@ -525,9 +525,22 @@ WHERE `item_key`='ad_zone' AND `item_type`='1'
 		}
 
 	}
-	function setArticleTags(){
-		$sqlDelTags="delete from ex_item_tags where item_id='".$this->id."' and item_type='1'";
-		$resDelTags=exec_query($sqlDelTags);
+function setArticleTags(){
+		$sqlSelQry = " SELECT id FROM ex_item_tags WHERE item_id='".$this->id."' AND item_type='1'";
+		$resSelTags=exec_query($sqlSelQry);
+		if(!empty($resSelTags))
+		{
+			foreach($resSelTags as $k=>$v)
+			{
+				$delQry[] = $v['id'];
+			}
+			if(!empty($delQry))
+			{
+				$delList = implode("','",$delQry);
+				$sqlDelTags="delete from ex_item_tags where id IN ('".$delList."') and item_type='1'";
+				$resDelTags=exec_query($sqlDelTags);
+			}
+		}
 		foreach($this->tags as $tag){
 			if(trim($tag)=="")
 					continue;
@@ -546,7 +559,6 @@ WHERE `item_key`='ad_zone' AND `item_type`='1'
 			insert_query("ex_item_tags",$exItemTag);
 		}
 	}
-
 	function getArticlePageRevision(){
 		$sqlGetPageRevision="SELECT MAX(revision_number) number FROM article_revision WHERE article_id='".$this->id."'";
 		$resGetPageRevision=exec_query($sqlGetPageRevision,1);
@@ -615,7 +627,7 @@ WHERE `item_key`='ad_zone' AND `item_type`='1'
 		{
 			$this->is_audio="0";
 		}
-		$this->editor_note=$data[editor_note];
+		$this->editor_note=addslashes(mswordReplaceSpecialChars(stripslashes($data[editor_note])));
 		$this->featureimage=$data[featureimage];
 		$this->is_featured=($data[is_featured]=="1")?1:0;
 		$this->is_buzzalert=($data[is_buzzalert]=="1")?1:0;
@@ -721,6 +733,8 @@ WHERE `item_key`='ad_zone' AND `item_type`='1'
 
 	function getAllAricles($ID,$start,$end)
 	   {
+	   	global $D_R;
+	   	include_once("$D_R/lib/_layout_design_lib.php");
 	      if (empty($ID))
 		      {
 
@@ -756,7 +770,10 @@ IF(articles.publish_date,articles.publish_date,articles.date) AS date, EIT.url, 
 	 function getMostUsedTicker($ID)
 	   {
 
-	  $sql ="select ET.tag,A.id, count(ET.tag) counttag from articles A, ex_item_tags EIT, ex_tags ET where EIT.item_type='1' and EIT.item_id=A.id and ET.type_id='1' and FIND_IN_SET('".$ID."', A.subsection_ids) and EIT.tag_id= ET.id group by ET.tag order by counttag desc limit 12
+	  $sql ="select ET.tag,A.id, count(ET.tag) counttag from articles A,
+	   ex_item_tags EIT, ex_tags ET where EIT.item_type='1' and EIT.item_id=A.id and 
+	   ET.type_id='1' and FIND_IN_SET('".$ID."', A.subsection_ids) and EIT.tag_id= ET.id
+	    group by ET.tag order by counttag desc limit 12
 ";
 		$results = exec_query($sql);
 		 return $results;

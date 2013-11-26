@@ -47,7 +47,6 @@ class OuterTemplate
 			case 'funnel_error':
 				$this->blankFooter();
 				break;
-			case 'cooperhome':
 			case 'buyhedge_landing':
 			case 'housingMarketReport_landing':
 			case 'buzzbanter':
@@ -80,13 +79,13 @@ class OuterTemplate
 	{
 
 	global $D_R,$HTPFX,$HTHOST,$IMG_SERVER;
-	$fb_image =  "http://www.minyanville.com/images/mv_social_icon.jpg";
+	$fb_image =  $IMG_SERVER."/images/mv_social_icon.jpg";
 	$fb_sitename = "Minyanville";
 	$fb_userid = "152555418092812";
 	$fb_desc = mswordReplaceSpecialChars($pageMetaData['description']);
 	$fb_url = $pageMetaData['url']==""?$_SERVER['SCRIPT_URI']:$HTPFX.$HTHOST.$pageMetaData['url'];
 	$objCache = new Cache();
-	$rsMetaType=$objCache->getLayoutFbMeta($page_name);
+	$rsMetaType=$pageMetaData['fbmeta_type'];
 
 	$fb_type = $rsMetaType['fbmeta_type'];
 	$fb_title = isset($pageMetaData['content_title'])?$pageMetaData['content_title']:str_replace(" - Minyanville.com","",$pageMetaData['title']);
@@ -222,6 +221,7 @@ global $HTPFXNSSL,$HTHOST,$HTPFX,$IMG_SERVER,$productUrl;
                 <li><a href="<?=$HTPFX.$HTHOST ?>/sectors/">Sectors</a></li>
                 <li><a href="<?=$HTPFX.$HTHOST ?>/special-features">Special Features</a></li>
                 <li><a href="<?=$HTPFX.$HTHOST ?>/mvpremium">MV PREMIUM</a></li>
+				<li><a href="<?=$HTPFX.$HTHOST ?>/edu">MV Education Center</a></li>
                  <li><a href="<?=$HTPFX.$HTHOST?>/video/">Video</a></li>
 		 <li>
 		<?php
@@ -381,7 +381,7 @@ global $HTPFXNSSL,$HTHOST,$HTPFX,$IMG_SERVER,$productUrl;
                     <ul class="footer_social_icons">
                     <li class="footer_social_img"><a href="https://twitter.com/intent/follow?original_referer=&region=follow_link&screen_name=minyanville&tw_p=followbutton&variant=2.0" target="_blank" id="follow-button" title="Follow @minyanville on Twitter"><img src="<?=$IMG_SERVER;?>/images/footer/footerTwtr_icon.png" alt="" /></a></li>
                     <li class="footer_social_text"><a href="https://twitter.com/intent/follow?original_referer=&region=follow_link&screen_name=minyanville&tw_p=followbutton&variant=2.0" target="_blank" id="follow-button" title="Follow @minyanville on Twitter">Follow minyanville on Twitter</a>
-					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=host+'/js/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
                     </ul>
                 </li>
                 <li class="footer_bar"><div>&nbsp;</div></li>
@@ -787,7 +787,19 @@ results are not necessarily indicative of future performance.
 						<?php  foreach ($getMenu as $key=>$menu){ 
 							if ($key==$countMenuItem-1){ ?>
 				        		<li><a href="<?php echo $HTPFX.$HTHOST.'/edu/'.$menu['menu_alias']?>"><?php echo $menu['menu_name'];?></a></li>
-			        		<?php  } else { ?>
+			        		<?php  } elseif (strtolower($menu['menu_name'])=="buzz & banter"){
+		        						if(empty($_SESSION['Buzz'])){ ?>
+											<li><a href="http://mvp.minyanville.com/buzz-banter-landing-page-homepage-module/?utm_source=Homepage Modules&utm_medium=website&utm_content=Homepage Modules&utm_campaign=buzz" target="_blank"><?php echo $menu['menu_name'];?></a></li>
+									<?php } elseif(!empty($_SESSION['Buzz'])){
+											$buzzLaunchUrl=buzzAppUrlEncryption(); ?>
+											<li><a href="javascript:;" onclick="window.open('<?php echo $buzzLaunchUrl;?>','Banter','width=455,height=708,resizable=yes,toolbar=no,scrollbars=no'); "><?php echo $menu['menu_name'];?></a></li>
+									<?php } ?>
+									<li><img src="<?php echo $IMG_SERVER;?>/images/education/footer-li-line.png"></li>
+						 <?php } elseif (strtolower($menu['menu_name'])=="products"){ 
+			        			$academyUrl='http://www.tradingacademy.net'; ?>
+			        			<li>  <a class="productFancy" href="" onclick="javascript:displayLeavingWindow('<?php  echo $academyUrl ?>');"><?php echo $menu['menu_name'];?></a></li>
+			        			<li><img src="<?php echo $IMG_SERVER;?>/images/education/footer-li-line.png"></li>
+			 				<?php  }else { ?>
 			        			<li><a href="<?php echo $HTPFX.$HTHOST.'/edu/'.$menu['menu_alias']?>"><?php echo $menu['menu_name'];?></a></li>
 			        			<li><img src="<?php echo $IMG_SERVER;?>/images/education/footer-li-line.png"></li>
 			        		<?php } 

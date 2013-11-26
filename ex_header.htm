@@ -1,4 +1,6 @@
 <?
+	global $D_R;
+	include_once("$D_R/lib/layout_functions.php");
     $USER= new user();
 	$serverip=$_SERVER['REMOTE_ADDR'];
 		$blockiplist=checkblockip();  /*Field discard from subscription*/

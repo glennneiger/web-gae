@@ -39,7 +39,7 @@ border:solid 0px red;
 float:left;
 padding-left:9px;
 padding-right:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/BuzzmainBg.jpg);
+background-image:url(http://image.minyanville.com/images/cooperTrial/BuzzmainBg.jpg);
 background-repeat:repeat-y;
 background-position:center;
 padding-bottom:50px;
@@ -48,7 +48,7 @@ padding-bottom:50px;
 .CooperHeader{
 text-align:left;
 text-indent:60px;
-background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/CooperHeaderbg.jpg);
+background-image:url(http://image.minyanville.com/images/cooperTrial/CooperHeaderbg.jpg);
 background-repeat:repeat-x;
 width:100%;
 float:left;
@@ -59,7 +59,7 @@ border:solid 0px red;
 float:left;
 width:955px;
 background-color:#fff;
-background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/bodyContentBg.jpg);
+background-image:url(http://image.minyanville.com/images/cooperTrial/bodyContentBg.jpg);
 background-repeat:repeat-x;
 background-position:50% 0%;
 }
@@ -114,7 +114,7 @@ background-color:#329dc1;
 color:#FFFFFF;
 width:540px;
 border:solid 1px #000;
-background-image: url(http://storage.googleapis.com/mvassets/images/cooperTrial/CooperTrialBoxBg.jpg);
+background-image: url(http://image.minyanville.com/images/cooperTrial/CooperTrialBoxBg.jpg);
 background-repeat:repeat-x;
 }
 
@@ -192,7 +192,7 @@ text-align:left;
 }
 .banter_window_trial_boxRight{
 float:left;
-background-image:url(http://storage.googleapis.com/mvassets/images/cooperTrial/cooper_article_bg.jpg);
+background-image:url(http://image.minyanville.com/images/cooperTrial/cooper_article_bg.jpg);
 background-position:top;
 background-repeat:repeat-x;
 width:48%;

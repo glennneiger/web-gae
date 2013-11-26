@@ -1,8 +1,9 @@
-
-<script src="http://localhost:8080/js/jquery-1.9.1.min.js"></script>
+<?php  global $CDN_SERVER; ?>
+<script src="<?=$CDN_SERVER?>/js/jquery-1.9.1.min.js"></script>
 <?php
-
+	global $bucketName;
     function signedURL( $filename, $bucket, $method = 'PUT' ) {
+    	global $bucket,$bucketName;
         $signature  = "";
         $duration   = 30;
         $emailID    = "980000000000-ytyertyr@developer.gserviceaccount.com";
@@ -33,10 +34,10 @@
     } 
     ?>
     <script>
-
+		var bucketName = '<?=$bucketName?>';
         var xhr        = new XMLHttpRequest();
         //PUT test - PUT status "(Canceled)" - OPTION status 200 (OK)
-        xhr.open("PUT", "<?php echo signedURL('C:/keys/Doug-Casey.mp3', 'mvassets'); ?>");
+        xhr.open("PUT", "<?php echo signedURL('C:/keys/Doug-Casey.mp3', bucketName); ?>");
         //xhr.setRequestHeader("Content-type", "image/png");
         xhr.setRequestHeader("x-goog-acl", "public-read"); //try to set public read on file
         xhr.setRequestHeader("Content-Length", fsize); // Chrome throws error (Refused to set unsafe header "Content-Length" )

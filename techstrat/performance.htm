@@ -1,5 +1,5 @@
 <?php
-global $D_R,$HTHOST,$HTPFX;
+global $D_R,$HTHOST,$HTPFX,$CDN_SERVER;
 session_start();
 include_once($D_R."/lib/techstrat/_techstratDesign.php");
 include_once($D_R."/lib/techstrat/_techstratData.php");
@@ -16,7 +16,7 @@ include("$D_R/_header.htm");
 $objTechStartDesign= new techstartDesign();
 $categoryName="Positions and Performance";
 ?>
-<!-- <script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/techstrat_performance.js" language="javascript"></script> -->
+<!-- <script type="text/javascript" src="<?=$CDN_SERVER?>/js/techstrat_performance.js" language="javascript"></script> -->
 <script language="javascript">
 fetchTechStartObject('techstrat_performance','630','930','embed_object');
 </script>

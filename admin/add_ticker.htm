@@ -1,5 +1,5 @@
 <?
-global $ADMIN_PATH,$HTPFX,$HTHOST;
+global $ADMIN_PATH,$HTPFX,$HTHOST,$CDN_SERVER;
 $page="ticker";
 include($ADMIN_PATH."/_header.htm");
 $handler="stock_mod.htm";
@@ -18,7 +18,7 @@ $addticker=$AD->getPerm("admin_users_all");
 }*/
 
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 function submitTickerForm(){
 	jQuery('#error').empty();

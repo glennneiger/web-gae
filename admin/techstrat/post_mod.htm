@@ -156,7 +156,7 @@ if(!empty($post_id)){
 
 /*Send email alert*/
 
-if($post['is_approved']=='1' && $post['is_live']=="1" && ($_POST['post']['is_sent']=="" || $_POST['post']['is_sent']=="0")){
+if($post['is_approved']=='1' && $post['is_live']=="1" && $post_id!="" && ($_POST['post']['is_sent']=="" || $_POST['post']['is_sent']=="0")){
 	/*Send email to subscribers using via*/
            	global $techStratFromName,$techStratFromEmail, $techStratTemplate;
 			$from[$techStratFromEmail]= $techStratFromName;

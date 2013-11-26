@@ -1,6 +1,8 @@
 <?php
 global $D_R,$VIDEO_SERVER;
 include_once("$D_R/lib/_content_data_lib.php");
+include_once($D_R.'/lib/config/_syndication_config.php');
+
 $port=21;
 $host="ftp.minyanville.com";
 $user="radio";

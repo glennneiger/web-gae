@@ -1,6 +1,7 @@
 <?php
 global $D_R,$recurlyApiKey,$IMG_SERVER;
 set_time_limit ( 600*300 );
+include_once("$D_R/lib/json.php");
 include_once($D_R."/lib/recurly/_recurly_data_lib.php");
 include_once($D_R."/lib/config/_recurly_config.php");
 include_once($D_R."/lib/recurly/recurly.php");

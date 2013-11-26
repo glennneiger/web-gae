@@ -1,4 +1,7 @@
 <?php
+global $D_R;
+include_once("$D_R/lib/json.php");
+include_once("$D_R/lib/_layout_data_lib.php");
 $json = new Services_JSON();
 $stAction = $_POST['action'];
 if($stAction  == 'delete')
@@ -43,13 +46,14 @@ if($stAction  == 'delete')
 				}elseif($stItemOrder=='mostpopular'){
 					$stItemTable='article_recent';
 				}
-				$stDynamicQuery = "SELECT itm.id AS item_id, $inItemType AS item_type, itm.title AS item_title,
+				$stDynamicQuery = "SELECT itm.id AS item_id, $inItemType AS item_type,itm.keyword,itm.blurb,EIM.url,
+				 itm.title AS item_title,
 				itm.contrib_id AS author_id,ct.name AS author_name,'contributor' AS author_type, itm.date AS created_on";
 				if($stItemOrder=='mostpopular' || $stItemOrder=='mostemailed'){
 					$stDynamicQuery .=",total ";
 				}
-				$stDynamicQuery .=" FROM $stItemTable AS itm , contributors AS ct
-				WHERE itm.contrib_id = ct.id ANd itm.is_live = '1' AND itm.approved ='1'";
+				$stDynamicQuery .=" FROM $stItemTable AS itm , `contributors` AS ct, ex_item_meta EIM
+				WHERE itm.contrib_id = ct.id AND EIM.item_id = itm.id AND EIM.item_type='$inItemType' AND  itm.is_live = '1' AND itm.approved ='1'";
 				if($inItemType == 1 && $inItemCat != "")
 				{
 					$arSectionDetail = explode(":",$inItemCat);
@@ -88,10 +92,16 @@ if($stAction  == 'delete')
 			}
 			elseif($inItemType == 18)
 			{
-				/*$stDynamicQuery = "SELECT itm.id AS item_id, $inItemType AS item_type, itm.title AS item_title,itm.title_link,
-				itm.source,itm.source_link,itm.creation_date as created_on
-				FROM $stItemTable AS itm WHERE is_approved = '1' AND is_deleted = '0'";*/
-				$stDynamicQuery="SELECT itm.id AS item_id, $inItemType AS item_type, itm.title AS item_title,itm.body,itm.title_link,itm.contrib_id,itm.publish_date as created_on, C.name authorname, itm.excerpt FROM $stItemTable AS itm,contributors C  WHERE itm.is_approved = '1' AND itm.is_deleted = '0' and itm.is_live='1' and itm.contrib_id=C.id";
+
+				$stDynamicQuery="SELECT itm.id AS item_id, $inItemType AS item_type,EIM.url,EQT.quick_title,EII.url image_url,itm.title AS
+				 item_title,itm.body,itm.title_link,itm.contrib_id,itm.publish_date AS 
+				 created_on, C.name authorname, itm.excerpt 
+				FROM $stItemTable AS itm,contributors C ,ex_item_meta EIM, ex_item_image EII, ex_quick_title  EQT
+				 WHERE itm.is_approved = '1' AND EIM.item_id = itm.id AND EIM.item_type='$inItemType' 
+				 AND EII.item_id = itm.id AND EII.item_type='$inItemType' 
+				 AND EQT.item_id = itm.id AND EQT.item_type='$inItemType' 
+				  AND itm.is_deleted = '0' and 
+				 itm.is_live='1' and itm.contrib_id=C.id";
 
 			}elseif($inItemType == 32){
 				$stDynamicQuery="SELECT itm.id AS item_id, $inItemType AS item_type, itm.title AS item_title,itm.body,itm.contrib_id,itm.publish_date as created_on, C.name authorname, C.id as authorId, itm.edu_img FROM $stItemTable AS itm,`contributors` C  WHERE itm.is_approved = '1' AND itm.is_deleted = '0' and itm.is_live='1' and itm.contrib_id=C.id";

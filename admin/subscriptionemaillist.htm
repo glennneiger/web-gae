@@ -1,5 +1,5 @@
 <?php
-global $D_R,$HTPFX,$HTHOST,$IMG_SERVER,$productOrder;
+global $D_R,$HTPFX,$HTHOST,$IMG_SERVER,$productOrder,$CDN_SERVER;
 include_once("$D_R/lib/_via_data_lib.php");
 include_once("$D_R/lib/config/_via_config.php");
 include("$ADMIN_PATH/_header.htm");
@@ -10,8 +10,8 @@ if(!$AD->getPerm("download_product_subscriber_report")){
 	admin_error("You're not allowed to use this page.");
 }
 ?>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/jquery-1.9.1.min.js" ></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery-1.9.1.min.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 
 
 <div class=adminheader>

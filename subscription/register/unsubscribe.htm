@@ -1,5 +1,5 @@
 <?php
-global $D_R,$HTPFX,$HTHOST;
+global $D_R,$HTPFX,$HTHOST,$CDN_SERVER;
 include_once("$D_R/lib/email_alert/_lib.php");
 $pageName="emailunsubscribe";
 $ib_tracking_zone=$pageName;
@@ -22,7 +22,7 @@ if(isset($_GET['unsub_id'])) {
 }
 ?>
 
-<script src="<?=$HTPFX.$HTHOST?>/js/unsubscribe.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/unsubscribe.js" language="JavaScript" type="text/javascript"></script>
 <!--Body area start from here-->
 <div class="shadow">
 <div id="content-container">

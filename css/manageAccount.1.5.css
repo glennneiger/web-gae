@@ -92,7 +92,7 @@
 	font-weight:bold;
 	text-align:right;
 	padding:14px 5px 0 0;
-	background-image:url("http://storage.googleapis.com/mvassets/images/registration/ic_astrix.gif");
+	background-image:url("http://image.minyanville.com/images/registration/ic_astrix.gif");
 	background-repeat: no-repeat;
 	background-position: 170px 3px;
 	font-family:arial, helvetica, sans-serif, verdana;
@@ -117,7 +117,7 @@
 	font-weight:bold;
 	text-align:right;
 	padding:14px 5px 0 0;
-	background-image:url("http://storage.googleapis.com/mvassets/images/registration/ic_astrix.gif");
+	background-image:url("http://image.minyanville.com/images/registration/ic_astrix.gif");
 	background-repeat: no-repeat;
 	background-position: 170px 3px;
 	font-family:arial, helvetica, sans-serif, verdana;
@@ -131,7 +131,7 @@
 	font-weight:bold;
 	text-align:right;
 	padding:14px 5px 0 0;
-	background-image:url("http://storage.googleapis.com/mvassets/images/registration/ic_astrix.gif");
+	background-image:url("http://image.minyanville.com/images/registration/ic_astrix.gif");
 	background-repeat: no-repeat;
 	background-position: 86px 3px;
 	font-family:arial, helvetica, sans-serif, verdana;
@@ -153,7 +153,7 @@
 	font-size:12px;
 	font-family:arial, helvetica, sans-serif, verdana;
 	font-weight: bold;
-	background-image:url("http://storage.googleapis.com/mvassets/images/registration/sp_myac_bttn_downarrw.jpg");
+	background-image:url("http://image.minyanville.com/images/registration/sp_myac_bttn_downarrw.jpg");
 	background-repeat: repeat-y;
 	background-position: right;
 	color: #4D4D4D;
@@ -212,7 +212,7 @@
 	text-align:left;
 	padding: 10px 12px 0 0;
 	font-family:arial,helvetica,sans-serif,verdana;
-	background-image:url(http://storage.googleapis.com/mvassets/images/registration/ic_astrix.gif);
+	background-image:url(http://image.minyanville.com/images/registration/ic_astrix.gif);
 	background-repeat: no-repeat;
 	background-position: 160px 17px;
 	}
@@ -452,7 +452,7 @@
 
 .manageAccountRequired{
 	float:right;
-	background-image:url("http://storage.googleapis.com/mvassets/images/registration/ic_astrix.gif");
+	background-image:url("http://image.minyanville.com/images/registration/ic_astrix.gif");
 	background-repeat: no-repeat;
 	background-position: 1px 3px;
 	color:#009dff;
@@ -537,7 +537,7 @@ span.select{
 	height: 30px;
 	line-height: 26px;
 	text-indent: 10px;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/card.jpg");
+	background: url("http://image.minyanville.com/images/registration/card.jpg");
 	cursor: default;
 	z-index: 1;
 	background-repeat: no-repeat;
@@ -556,7 +556,7 @@ span.select_yr{
 	height: 35px;
 	line-height: 26px;
 	text-indent: 10px;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/year.jpg");
+	background: url("http://image.minyanville.com/images/registration/year.jpg");
 	cursor: default;
 	z-index: 1;
 	background-repeat: no-repeat;
@@ -575,7 +575,7 @@ span.select_month{
 	height: 34px;
 	line-height: 26px;
 	text-indent: 10px;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/month.jpg");
+	background: url("http://image.minyanville.com/images/registration/month.jpg");
 	cursor: default;
 	z-index: 1;
 	background-repeat: no-repeat;
@@ -594,7 +594,7 @@ span.select_country{
 	height: 42px;
 	line-height: 26px;
 	text-indent: 10px;
-	background: url("http://storage.googleapis.com/mvassets/images/registration/country.jpg");
+	background: url("http://image.minyanville.com/images/registration/country.jpg");
 	cursor: default;
 	z-index: 1;
 	background-repeat: no-repeat;

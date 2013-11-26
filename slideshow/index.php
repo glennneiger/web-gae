@@ -36,7 +36,12 @@ if (($_GET['a'] != "") && (is_numeric($_GET['a']))) {
 	} else {
 		 $slideSet = false;
 		/*again redirect to slide1*/
-		  $slideshowid=slideshow_exists($slideid);
+		$results = exec_query("select * from slideshow where id=".$slideid);
+	    foreach($results as $row)
+		   {
+			$slideid[id]=$row[id];
+		   }
+		  $slideshowid=$slideid[id];
 		  if (($_GET['a'] != "") && (is_numeric($_GET['a'])) && $slideshowid)
 		   {
 		   ?>

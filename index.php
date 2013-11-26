@@ -2,9 +2,10 @@
 
 header("location:index.htm");
 exit;
-include("_header.htm");
-include("layout/dbconnect.php");
-include("layout/layout_functions.php");
+global $D_R;
+include("$D_R/_header.htm");
+include("$D_R/layout/dbconnect.php");
+include("$D_R/layout/layout_functions.php");
 
 $modules = getModules();
 
@@ -33,9 +34,9 @@ $pageName = 1;
               <embed src="mv_mvtv_april07.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="625" height="219"></embed>
             </object></div>
 		<table id="home-news" cellpadding="0" cellspacing="0"><tr>
-		<td><img src="http://storage.googleapis.com/mvassets/images/lc.gif" width="10" alt="" /></td>
+		<td><img src="http://image.minyanville.com/images/lc.gif" width="10" alt="" /></td>
 		<td class="top"><img src="<?= $pfx; ?>/images/10x1.gif" /></td>
-		<td><img src="http://storage.googleapis.com/mvassets/images/cr.gif" width="13" alt="" /></td>
+		<td><img src="http://image.minyanville.com/images/cr.gif" width="13" alt="" /></td>
 		</tr>
 		<tr>
 		<td class="left-border">&nbsp;</td>
@@ -75,7 +76,7 @@ $pageName = 1;
 				<div id="white-area">
 				<p class="top-adv">&nbsp;</p>
 				   <div id="frame-bg">
-				     <img src="http://storage.googleapis.com/mvassets/images/comic_300x250.gif" width="301" height="251" alt="" /><br />
+				     <img src="http://image.minyanville.com/images/comic_300x250.gif" width="301" height="251" alt="" /><br />
 					 <p><strong>Interested in advertising on minyanville.com?</strong></p>
 					 <p><a href="#">Click here</a> for rates and informations about the Portlets all need to be divided and Styled according to their own
 						reference files (see portlets folder and portlets_overview)</p>
@@ -104,7 +105,7 @@ $pageName = 1;
 				<p class="sections-divider">&nbsp;</p>
 				
 				<!--spacer for fixed line width; do not delete -->
-				<img src="http://storage.googleapis.com/mvassets/images/spacer.gif" width="186" height="1" alt="" /> 
+				<img src="http://image.minyanville.com/images/spacer.gif" width="186" height="1" alt="" /> 
 				</div>
 				
 			  </td>
@@ -116,9 +117,9 @@ $pageName = 1;
 		</td>
 		<td class="right-border">&nbsp;</td></tr>
 		<tr>
-		<td><img src="http://storage.googleapis.com/mvassets/images/lr_corner.gif" width="10" alt="" /></td>
+		<td><img src="http://image.minyanville.com/images/lr_corner.gif" width="10" alt="" /></td>
 		<td class="bottom"><img src="<?=$pfx; ?>/images/10x1.gif" /></td>
-		<td><img src="http://storage.googleapis.com/mvassets/images/rb_corner.gif" width="13" alt="" /></td>
+		<td><img src="http://image.minyanville.com/images/rb_corner.gif" width="13" alt="" /></td>
 		</table>
 		<!-- end news area -->
 		

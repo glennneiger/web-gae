@@ -113,6 +113,8 @@ class ticker{
 	}
 
 	function showSearchTicker($subid,$uniqueName){ /* Show the design of search ticker */
+		global $D_R;
+		include_once($D_R.'/lib/config/_tickertalk_config.php');
 		global $lang,$autoFillCount,$tickertalk_size;
 	    build_lang($uniqueName);
 		$getblockeduser=$this->getBlockUser($subid);
@@ -141,8 +143,10 @@ class ticker{
 	<? }
 
 	function showCommentArea($uniqueName,$stockid,$topicid,$postid,$stocksymbol){ /*show the design of comment post */
+		global $D_R,$CDN_SERVER;
+		include_once($D_R.'/lib/config/_tickertalk_config.php');
 	    global $tickerchatcharlimit,$lang,$HTPFX,$HTHOST,$D_R,$_SESSION,$autoFillCount;
-		$fileProfanity = "$D_R/js/profanity.txt";
+		$fileProfanity = $CDN_SERVER."/js/profanity.txt";
 		$handle = fopen ($fileProfanity, "r");
 		$badwords = fread ($handle, filesize ($fileProfanity));
 		fclose ($handle);
@@ -950,9 +954,9 @@ WHERE ttc.chat_id = tc.id AND tc.subscription_id = sub.id AND tc.is_suspended = 
 	}
 
 	function setTickerSuggestionJs($ticker){
-	      global $D_R;
+	      global $D_R,$CDN_SERVER;
 		  $addticker=",'".$ticker."');";
-		  $filename=$D_R."/js/suggestion.js";
+		  $filename=$CDN_SERVER."/js/suggestion.js";
           $f=fopen($filename,"r");
           $data=fread($f,filesize($filename));
 		  $pos = strpos($data,$ticker,1);
@@ -1458,9 +1462,11 @@ function getMWMemCachePosts($maxId){
 	}
 
 	function showFeedBackForm($email){
+		global $D_R,$CDN_SERVER;
+		include_once($D_R.'/lib/config/_tickertalk_config.php');
 	    global $tickerchatcharlimit,$lang,$HTPFX,$HTHOST,$D_R,$_SESSION;
 		$stUserName=ucwords(strtolower($_SESSION['nameFirst']." ".$_SESSION['nameLast']));
-		$fileProfanity = "$D_R/js/profanity.txt";
+		$fileProfanity = "$CDN_SERVER/js/profanity.txt";
 		$handle = fopen ($fileProfanity, "r");
 		$badwords = fread ($handle, filesize ($fileProfanity));
 		fclose ($handle);

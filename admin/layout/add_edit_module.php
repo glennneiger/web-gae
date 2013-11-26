@@ -1,5 +1,8 @@
 <?php
 // Only save final module if form is not submited from FCK editor ibox
+global $D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
+include_once("$D_R/lib/_layout_data_lib.php");
 
 if(isset($_POST['hidModuleId']) && !isset($_POST['hidFCKContent']))
 {

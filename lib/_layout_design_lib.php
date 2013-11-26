@@ -1,12 +1,10 @@
 <?php
-function displayCurrentDate() {
-	$dateInfo = getDate();
-	$todaysDate = $dateInfo['weekday'] . " " . $dateInfo['month'] . " " . $dateInfo['mday'] . ", " . $dateInfo['year'];
-	return $todaysDate;
-}
-
+global $D_R;
+include_once("$D_R/lib/_layout_data_lib.php");
 
 function getAllArticles($start,$end) {
+	global $D_R;
+	include_once("$D_R/lib/layout_functions.php");
 $sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,
                 articles.position, contrib_id authorid,IF(publish_date,publish_date,date) as date, blurb, keyword,body, position, character_text from articles, contributors where
                 articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' ORDER BY date DESC LIMIT " . $start . "," . $end;
@@ -24,34 +22,6 @@ $results = exec_query($sql);
 	}
 }
 
-function getAllArticlesBySubSection($section, $start,$end) {
-$sql = "select id, title, contributor, contrib_id, keyword from articles where approved = '1' and is_live = '1' and (subsection_ids like '".$section.",%' or subsection_ids = '".$section."' or subsection_ids like '%,".$section."' or subsection_ids like '%,".$section.",%') ORDER BY date DESC LIMIT ".$start.", ".$end;
-$results = exec_query($sql);
-//print_r($results);
-        foreach($results as $article) {
-                //$url = makeArticleslink($article['id']);
-				$link_info= makeArticleslink_sql($article['id']);
-				$linkurl=makeArticleslink($article['id'],$link_info['keyword'],$link_info['blurb']);
-
-                $headline = mswordReplaceSpecialChars($article['title']);
-                $author = $article['contributor'];
-                echo "<li><a href='".$linkurl."'>".$headline."</a><br>".$author."</li>";
-        }
-}
-
-function getAllDailyFeed($start,$end) {
-$sql = "select title, id, source from daily_feed where is_approved = '1' ORDER BY creation_date DESC LIMIT " . $start . "," . $end;
-$results = exec_query($sql);
-//print_r($results);
-        foreach($results as $article) {
-                $url = "/dailyfeed/index.htm#".$article['id'];
-                $headline = "<div id='df-kicker'><a href='".$url."'>".mswordReplaceSpecialChars($article['title'])."</a>";
-		$headline = str_replace(":", ":</div><a href='".$url."'>", $headline);
-                $author = $article['source'];
-                echo "<li>".$headline."<br>".$author."</li>";
-        }
-}
-
 function renderPageModules($page_id,$placeholder)
 {
 	global $pageModulesCacheExpiry;
@@ -64,6 +34,7 @@ function renderPageModules($page_id,$placeholder)
 	{
 		$arModuleResult['module_order'] = $memCache->getModulesListCache($page_id,$placeholder);
 	}
+
 	if(!$arModuleResult || $arModuleResult['module_order'] == "")
 	{
 		return;
@@ -109,7 +80,9 @@ function renderTemplateContent($module_id,$template_id = NULL)
 		$strHTML = $arTemplateDetail['design'];
 		// To get Layout Component of the Module
 		$arModuleComponent = getTempModuleComponent($module_id,$template_id);
+		
 	}
+
 	foreach($arModuleComponent as $componentDetail)
 	{
 
@@ -173,14 +146,19 @@ function renderTemplateContent($module_id,$template_id = NULL)
 							}else{
 								$liClass = " class='edu_wli'";
 							}
-							$stContent .="<li".$liClass."><div><p class='edu_title'><a href='".$HTPFX.$HTHOST.getItemURL($arItemDetail[1],$arItemDetail['0'])."'>".mswordReplaceSpecialChars($arItemData['title'])."</a></p><p class='edu_author'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arItemData['author_id'].">".$arItemData['author']."</a></p><p class='edu_author'>".date('D F j, Y, g:i A',strtotime($arItemData['publish_date']))." EDT</p></div><p class='edu_img'><img src='".$IMG_SERVER."/images/education/edu_sample.jpg' /></p><p class='edu_desc'>".$body."</p></li>";
+							$stContent .="<li".$liClass."><div><p class='edu_title'><a href='".$HTPFX.$HTHOST.getItemURL($arItemDetail[1],$arItemDetail['0'])."'>".mswordReplaceSpecialChars($arItemData['title'])."</a></p><p class='edu_author'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arItemData['author_id'].">".$arItemData['author']."</a></p><p class='edu_author'>".date('D F j, Y, g:i A',strtotime($arItemData['publish_date']))." EST</p></div><p class='edu_img'><img src='".$IMG_SERVER."/images/education/edu_sample.jpg' /></p><p class='edu_desc'>".$body."</p></li>";
 						}
 						else if($componentDetail['component_name'] == 'TEMPLATE22_ARTICLE')
 						{
 							$artBody = $obContent->getEduBody($arItemDetail[1]);
 							$body=getPartOfBody($artBody['body'],'25');
-							$stContent .= '<br><a href="'.$HTPFX.$HTHOST.getItemURL($arItemDetail[1],$arItemDetail['0']).'?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=edu" >
-							<span class="article_title">'.mswordReplaceSpecialChars($arItemData['title']).'</span> <p class="article_desc">'.mswordReplaceSpecialChars($body).'</p></a>';
+							$sliderTitle = $arItemData['title'];
+							$sliderTitleCount = str_word_count($arItemData['title']);
+							if($sliderTitleCount>8){
+								$sliderTitle = getPartOfBody($sliderTitle,'8');
+							}
+							$stContent .= '<br><a href="'.$HTPFX.$HTHOST.getItemURL($arItemDetail[1],$arItemDetail['0']).'" >
+							<span class="article_title">'.mswordReplaceSpecialChars($sliderTitle).'</span> <p class="article_desc">'.mswordReplaceSpecialChars($body).'</p></a>';
 						}
 						else
 						{
@@ -212,7 +190,7 @@ function renderTemplateContent($module_id,$template_id = NULL)
 							{
 								$stContent .="<div class='author-by'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arItemData['author_id'].">".$arItemData['author']."</a></div>";
 							}elseif ($componentDetail['component_name'] == 'TEMPLATE21_ARTICLE_LIST'){
-								$stContent .="<div class='author-by'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arItemData['author_id'].">".$arItemData['author']."</a> - ".date('D F j, Y, g:i A',strtotime($arItemData['date']))." EDT</div>";
+								$stContent .="<div class='author-by'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arItemData['author_id'].">".$arItemData['author']."</a> - ".date('D F j, Y, g:i A',strtotime($arItemData['date']))." EST</div>";
 							}
 							else
 							if($arItemDetail[1] != 11 && ($componentDetail['component_name'] != 'TEMPLATE9_ARTICLE1' ||  $componentDetail['component_name'] != 'TEMPLATE22_ARTICLE')) // Not to display author name for video
@@ -278,7 +256,21 @@ function renderTemplateContent($module_id,$template_id = NULL)
 						$sqlResult .="<h3><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arQueryRow['author_id'].">".$arQueryRow['author_name']."</a></h3><h4>".$arItemData['description']."</h4>";
 						$sqlResult .="<a href='".$HTPFX.$HTHOST.getItemURL($arQueryRow['item_type'],$arQueryRow['item_id'])."'>READ MORE &raquo;</a>";
 
-					}
+					}elseif ($componentDetail['component_name'] == 'TEMPLATE20_ARTICLE_LIST'){
+							if($arQuerykey!='2'){
+								$liClass = " class='edu_li'";
+							}else{
+								$liClass = " class='edu_wli'";
+							}
+							$body = getPartOfBody($arQueryRow['body'],'20');
+							if($arQueryRow['edu_img']==false){
+								$imgPath = $IMG_SERVER.'/images/education/edu_sample.jpg';
+							} else {
+								$imgPath = $IMG_SERVER.'/assets/edu/images/'.$arQueryRow['edu_img'];
+							}
+						
+							$sqlResult .="<li".$liClass."><div><p class='edu_title'><a href='".$HTPFX.$HTHOST.getItemURL($arQueryRow['item_type'],$arQueryRow['item_id'])."'>".mswordReplaceSpecialChars($arQueryRow['item_title'])."</a></p><p class='edu_author'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arQueryRow['authorId'].">".$arQueryRow['authorname']."</a></p><p class='edu_author'>".date('D F j, Y, g:i A',strtotime($arQueryRow['created_on']))." EST</p></div><p class='edu_img'><img src='".$imgPath."' /></p><p class='edu_desc'>".$body."</p></li>";
+						}
 					else
 					{
 						$sourceLink = "";
@@ -421,7 +413,12 @@ function renderTemplateContent($module_id,$template_id = NULL)
 							elseif ($componentDetail['component_name'] == 'TEMPLATE22_ARTICLE'){
 								$body=getPartOfBody($arQueryRow['body'],'25');
 								$sliderUrl = getEduArtUrl($arQueryRow['item_id']);
-								$sqlResult .= '<br><a href="'.$HTPFX.$HTHOST.$sliderUrl['url'].'?utm_source=navigation&utm_medium=website&utm_content=navigation&utm_campaign=edu" ><span class="article_title">'.mswordReplaceSpecialChars($arQueryRow['item_title']).'</span>
+								$sliderTitle = $arQueryRow['item_title'];
+								$sliderTitleCount = str_word_count($sliderTitle);
+								if($sliderTitleCount>8){
+									$sliderTitle = getPartOfBody($sliderTitle,'8');
+								}
+								$sqlResult .= '<br><a href="'.$HTPFX.$HTHOST.$sliderUrl['url'].'" ><span class="article_title">'.mswordReplaceSpecialChars($sliderTitle).'</span>
 <p class="article_desc">'.mswordReplaceSpecialChars($body).'</p></a>';
 							}elseif ($componentDetail['component_name'] == 'TEMPLATE23_ARTICLE_LIST'){
 								if($arQueryRow['edu_img']==false){
@@ -431,10 +428,10 @@ function renderTemplateContent($module_id,$template_id = NULL)
 								}
 								$eduUrl = getEduArtUrl($arQueryRow['item_id']);
 								if($arQuerykey=="0"){
-									$body=getPartOfBody($arQueryRow['body'],'25');
+									$body=getPartOfBody($arQueryRow['body'],'18');
 									$sqlResult .= '<div class="eduArtList"><div class="eduArtListDetail">
 										<h3><a href="'.$HTPFX.$HTHOST.$eduUrl['url'].'">'.mswordReplaceSpecialChars($arQueryRow['item_title']).'</a></h3>
-										<p class="eduArtListAuthor"><a href="'.$HTPFX.$HTHOST.'/gazette/bios.htm?bio="'.$arQueryRow['authorId'].'">'.$arQueryRow['authorname'].'</a><br>'.date("D F j, Y, g:i A",strtotime($arQueryRow['created_on'])).' EDT</p>
+										<p class="eduArtListAuthor"><a href="'.$HTPFX.$HTHOST.'/gazette/bios.htm?bio="'.$arQueryRow['authorId'].'">'.$arQueryRow['authorname'].'</a><br>'.date("D F j, Y, g:i A",strtotime($arQueryRow['created_on'])).' EST</p>
 										<div class="eduFirstArtImg"><a href="'.$HTPFX.$HTHOST.$eduUrl['url'].'"><img src="'.$imgPath.'"></a></div>
 										<p class="eduFirstArtDesc"><a href="'.$HTPFX.$HTHOST.$eduUrl['url'].'">'.$body.'</a></p>
 										</div></div>';
@@ -446,7 +443,7 @@ function renderTemplateContent($module_id,$template_id = NULL)
 									$sqlResult .= '<li class="scrollCon'.$module_id.'" ><div class="eduArtListDetail">
 										<h3><a href="'.$HTPFX.$HTHOST.$eduUrl['url'].'">'.mswordReplaceSpecialChars($arQueryRow['item_title']).'</a></h3>
 										<p class="eduArtListAuthor">
-											<a href="'.$HTPFX.$HTHOST.'/gazette/bios.htm?bio="'.$arQueryRow['authorId'].'>'.$arQueryRow['authorname'].'</a><br>'.date("D F j, Y, g:i A",strtotime($arQueryRow['created_on'])).' EDT</p>
+											<a href="'.$HTPFX.$HTHOST.'/gazette/bios.htm?bio="'.$arQueryRow['authorId'].'>'.$arQueryRow['authorname'].'</a><br>'.date("D F j, Y, g:i A",strtotime($arQueryRow['created_on'])).' EST</p>
 										<div class="eduNthArtDesc">
 											<div class="artImgBox">
 												<a href="'.$HTPFX.$HTHOST.$eduUrl['url'].'"><img src="'.$imgPath.'"></a>
@@ -511,7 +508,7 @@ function renderTemplateContent($module_id,$template_id = NULL)
 							$sqlResult .="<div class='author-by'><a href=".$videoUrl.">".$arQueryRow['author_name']."</a></div>";
 							}else{
 								if($componentDetail['component_name'] == 'TEMPLATE21_ARTICLE_LIST'){
-									$sqlResult .="<div class='author-by'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arQueryRow['author_id'].">".$arQueryRow['author_name']."</a> - ".date('D F j, Y, g:i A',strtotime($arQueryRow['created_on']))." EDT</div>";
+									$sqlResult .="<div class='author-by'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arQueryRow['author_id'].">".$arQueryRow['author_name']."</a> - ".date('D F j, Y, g:i A',strtotime($arQueryRow['created_on']))." EST</div>";
 								}else{
 									$sqlResult .="<div class='author-by'><a href=".$HTPFX.$HTHOST."/gazette/bios.htm?bio=".$arQueryRow['author_id'].">".$arQueryRow['author_name']."</a></div>";
 								}
@@ -523,7 +520,7 @@ function renderTemplateContent($module_id,$template_id = NULL)
 					}
 				}
 
-				if($componentDetail['component_name'] != 'TEMPLATE6_BODY' && $componentDetail['component_name'] != 'TEMPLATE16_BODY' && $componentDetail['component_name'] != 'TEMPLATE22_ARTICLE' && $componentDetail['component_name'] && 'TEMPLATE23_ARTICLE_LIST')
+				if($componentDetail['component_name'] != 'TEMPLATE6_BODY' && $componentDetail['component_name'] != 'TEMPLATE16_BODY' && $componentDetail['component_name'] != 'TEMPLATE22_ARTICLE' && $componentDetail['component_name'] != 'TEMPLATE23_ARTICLE_LIST')
 				{
 					$sqlResult .="</ul>";
 				}
@@ -558,6 +555,8 @@ function renderTemplateContent($module_id,$template_id = NULL)
 				if($componentDetail['component_name'] == 'TEMPLATE19_TEXT'){
 					$arcontDecode[]="";
 					$arcont[]="";
+					global $D_R;
+					include_once("$D_R/lib/json.php");
 					$json = new Services_JSON();
 					$arcontDecode[] =  $json->decode($arReplacement['0'],true);
 					$arcont[] = $arcontDecode['1'] -> content;
@@ -582,159 +581,7 @@ function renderTemplateContent($module_id,$template_id = NULL)
 	return $strHTML;
 
 }
-//for Feature article
-function renderFeatureModule()
-{
-$arrFeature = getfeaturearticle();
-?>
-<div id="mygallery" class="stepcarousel">
-<div class="belt">
-<?
- $i = 1;
- foreach($arrFeature as $Feature)
- {
-    $article_v = getarticle_video($Feature['object_type'], $Feature['object_id']);
-    $tagarticle= gettagarticle($article_v[0]['id'],$Feature['object_type']);
-	if($Feature['object_type']=='1')
-	{
-	 $readmore =  makeArticleslinkTemp($article_v[0]['id'],$article_v[0]['keyword'],$article_v[0]['blurb'],$from=NULL,$page=NULL);
-	 $urlauthor = $article_v[0]['contrib_id'];
-	 $authorurl = $HTPFX.$HTHOST."/gazette/bios.htm?bio=$urlauthor";
-	}
-	else
-	{
-	 $videoid  =  $article_v[0]['id'];
 
-	  $readmore  =  $HTPFX.$HTHOST."/mvtv/audio_video.htm?videoid=$videoid";
-	  $urlauthor = '#';
-	  $authorurl = '#';
-	  $sectionid =getVideoSubsectionid($videoid);
-      $pageDetail['id']=$sectionid['page_id'];
-      $section_id=$sectionid['section_id'];
-      $sec_name=$sectionid['name'];
-
-
-
-
-	}
-	 if($article_v[0]['featureimage']!='')
-	 {
-	   $img       = $IMG_SERVER.$article_v[0]['featureimage'];
-	  }
-	  else
-	  {
-	   $img ="images/feature_slide.jpg";
-	  }
-    // Code for Selected Slide
-	$stClassSlide1 = $stClassSlide2 = $stClassSlide3 = $stClassSlide4 =	$stClassSlide5 =  'feature_nav_button';
-	switch($i)
-	{
-	case '1':
-	$stClassSlide1 = "feature_nav_button_selected";
-	break;
-	case '2':
-	$stClassSlide2 = "feature_nav_button_selected";
-	break;
-	case '3':
-	$stClassSlide3 = "feature_nav_button_selected";
-	break;
-	case '4':
-	$stClassSlide4 = "feature_nav_button_selected";
-	break;
-	case '5':
-	$stClassSlide5 = "feature_nav_button_selected";
-	break;
-	}
-	$i++;
-?>
-<div class="panel">
-<table  cellpadding="0" cellpadding="0" border="0">
-<tr><td>
-<div class="feature_slideshow_container" >
-<div class="feature_top_container">
-<div class="feature_slideshow_left" ><img src="<?=$img ?>"  border="0"  /></div>
-<div class="feature_slideshow_right">
-<div style="width:auto; float:right; z-index:1000;">
-<a href="JavaScript:void(0);" onclick="javascript:stepcarousel.stepTo('mygallery',5)"><div class="<?=$stClassSlide5?>">5</div></a>
-<a href="JavaScript:void(0);" onclick="javascript:stepcarousel.stepTo('mygallery', 4)"><div class="<?=$stClassSlide4?>">4</div></a>
-<a href="JavaScript:void(0);" onclick="javascript:stepcarousel.stepTo('mygallery', 3)"><div class="<?=$stClassSlide3?>">3</div></a>
-<a href="JavaScript:void(0);" onclick="javascript:stepcarousel.stepTo('mygallery', 2)"><div class="<?=$stClassSlide2?>">2</div></a>
-<a href="JavaScript:void(0);" onclick="javascript:stepcarousel.stepTo('mygallery', 1)"><div class="<?=$stClassSlide1?>">1</div></a>
-</div>
-<div class="time_feature"><?=date("F j, Y",strtotime($article_v[0]['date']));?></div>
-<span id="main_heading"><?= stripcslashes(mswordReplaceSpecialChars($article_v[0]['title']))?></span>
-<br />
-<?
-// for contributer id
-  if($Feature['object_type']=='1')
-  {
-      $qry      =  "Select name from contributors where id='".$article_v[0]['contrib_id']."'";
-	  $artag    =  exec_query($qry);
-	  $artag1   =  $artag[0]['name'];
-	}
-	else
-	{
-	 $artag1 = $sec_name;
-	}
-
-?>
-
-<span class="byline_heading"><h3><a href="<?=$authorurl?>"><?=$artag1 ?></a></h3></span>
-<br />
-<? if($article_v[0]['blurb']!=''){$body =stripcslashes($article_v[0]['blurb']); }else{$body ="&nbsp;";}
-    $body1 = substr($body, 0,30);
-?>
-<span class="main_sub_heading"><?=$body1?></span>
-<br />
-<h5><a href="<?=$readmore ?>">read more &#187;</a></h5>
-</div>
-</div>
-<div class="feature_bottom_container">
-<?
-foreach($tagarticle as $tagarticle)
-{
- if(strlen($tagarticle['title'])>35)
- {
-  $subtitle = substr($tagarticle['title'],0,34)."..";
- }
-  else
-  {
-   $subtitle = $tagarticle['title'];
-  }
-   if($Feature['object_type']=='1')
-   {
-   $urlauthorsecond = $tagarticle['contrib_id'];
-   $authorurlsecond = $HTPFX.$HTHOST."/gazette/bios.htm?bio=$urlauthorsecond";
-   $contid = $tagarticle['contributor'];
-   }
-   else
-   {
-    $urlauthorsecond='#';
-	$sectionid =getVideoSubsectionid($tagarticle['id']);
-      $pageDetail['id']=$sectionid['page_id'];
-      $section_id=$sectionid['section_id'];
-      $sec_name=$sectionid['name'];
-	   $contid = $sec_name;
-   }
- ?>
-<div class="feature_title_slide"><?= mswordReplaceSpecialChars($subtitle);?>
-<div id="feature_small_heading"><a href="<?=$authorurlsecond ?>"><?=$contid;?></a></div></div>
-<? }?>
-
-</div>
-</div>
-<div class="feature_slideshow_container_bg"></div>
-</td></tr></table>
-</div>
-
-<?
-}// end of for loop
-?>
-</div>
-</div>
-
-<?
-}
 function manageModulesForPlaceholder($place_holder_id,$module_id,$action)
 {
 	$stModuleOrder = getTempModulesDetail($place_holder_id,$type);
@@ -965,11 +812,11 @@ function displayfooter()
 	                    <td valign='middle'>".stripslashes($footer['title'])."</td>";
 					       if($footer['active']=='1')
 				           {
-				             $img = "<img src='../http://storage.googleapis.com/mvassets/images/redesign/tick.png'  />";
+				             $img = "<img src='../http://image.minyanville.com/images/redesign/tick.png'  />";
 				            }
 				          else
 				               {
-				                 $img = "<img src='../http://storage.googleapis.com/mvassets/images/redesign/publish_x.png'  />";
+				                 $img = "<img src='../http://image.minyanville.com/images/redesign/publish_x.png'  />";
 				               }
 
 	                $content  .= "<td valign='middle'>".$img." </td>
@@ -1080,50 +927,7 @@ return  $content;
 	return  $content;
  }
 
- function make_ajax_pagination_photo($divid,$link,$count,$MAX,$numrows1)
-{
-
-	$strPage="<div class='sliding_controller'><table  cellspacing='5' cellpadding='1' border='0' align='center'><tr>";
-	$lastrowtfollowme=$MAX+$count;
-	if($count > 0)
-	{
-		$prevpagetfollowme=$count - $MAX;
-		$url=$link."?count=$prevpagetfollowme";
-		$strPage.="<td><a onclick=\"Javascript:getPhotos('$divid','$url');\" style='cursor:pointer;' ><img src=$IMG_SERVER/images/previous_slide_button.jpg border=0 /></a></td>";
-	}
-	else
-	{
-		$strPage.="<td><img src=$IMG_SERVER/images/previous_slide_button.jpg border=0 /></td>";
-	}
-
-	for($pagelooptfollowme=1;$pagelooptfollowme<=ceil($numrows1/$MAX);$pagelooptfollowme++)
-	{
-		$pagedatatfollowme=($pagelooptfollowme-1)*$MAX;
-		if($count!=$pagedatatfollowme)
-		{
-			$url=$link."?count=$pagedatatfollowme";
-			$strPage.="<td><a onclick=\"Javascript:getPhotos('$divid','$url');\"  style='cursor:pointer;'><img src=\"$IMG_SERVER/images/hide_slide_button.jpg\" border=\"0\" /></a></td>";
-		}
-		else
-		{
-			$strPage.="<td><img src=\"$IMG_SERVER/images/selected_slide_button.jpg\" border=\"0\"/></td>";
-		}
-	}
-	if($numrows1 > $lastrowtfollowme)
-	{
-			$url=$link."?count=$lastrowtfollowme";
-			$strPage.="<td><a onclick=\"Javascript:getPhotos('$divid','$url');\" style='cursor:pointer;' ><img src=$IMG_SERVER/images/forward_slide_button.jpg border=0 /></a></td>";
-	}
-	else
-	{
-			$strPage.="<td><img src=$IMG_SERVER/images/forward_slide_button.jpg border=0 /></td>";
-	}
-	$strPage.="</tr></table></div>";
-
-return $strPage;
-
-}//end of function function make_ajax_pagination_photo()
-
+ 
  function getLayoutPages($metalist,$pageid){
  global $HTPFX,$HTHOST;
 	$page_id=$pageid;
@@ -1175,99 +979,6 @@ return $strPage;
  <?
  }
 
-
-
-
-
-function renderFeatureModule_2()
-{
-$arrFeature = getfeaturearticle();
-?><!-- <div id="mygallery" class="stepcarousel">
-<div class="belt"> -->
-<?
- $i = 1;
-$data ='';
-//$wrapperDivStart = '<div id="deepika"><div id="wrapper">';
-//$sliderDivStart = '  <div id="slider">';
- //$navigatorStart = '<ul class="navigation">';
- foreach($arrFeature as $Feature)
- {
-    $article_v = getarticle_video($Feature['object_type'], $Feature['object_id']);
-    $tagarticle= gettagarticle($article_v[0]['id'],$Feature['object_type']);
-	if($Feature['object_type']=='1')
-	{
-	 $readmore =  makeArticleslinkTemp($article_v[0]['id'],$article_v[0]['keyword'],$article_v[0]['blurb'],$from=NULL,$page=NULL);
-	 $urlauthor = $article_v[0]['contrib_id'];
-	 $authorurl = $HTPFX.$HTHOST."/gazette/bios.htm?bio=$urlauthor";
-	}
-	else
-	{
-	 $videoid  =  $article_v[0]['id'];
-
-	  $readmore  =  $HTPFX.$HTHOST."/mvtv/audio_video.htm?videoid=$videoid";
-	  $urlauthor = '#';
-	  $authorurl = '#';
-	  $sectionid =getVideoSubsectionid($videoid);
-      $pageDetail['id']=$sectionid['page_id'];
-      $section_id=$sectionid['section_id'];
-      $sec_name=$sectionid['name'];
-	}
-	 if($article_v[0]['featureimage']!='')
-	 {
-	   $img       = $IMG_SERVER.$article_v[0]['featureimage'];
-	  }
-	  else
-	  {
-	   $img ="images/feature_slide.jpg";
-	  }
-    // Code for Selected Slide
-	$stClassSlide1 = $stClassSlide2 = $stClassSlide3 = $stClassSlide4 =	$stClassSlide5 =  'feature_nav_button';
-	switch($i)
-	{
-	case '1':
-	$stClassSlide1 = "feature_nav_button_selected";
-	break;
-	case '2':
-	$stClassSlide2 = "feature_nav_button_selected";
-	break;
-	case '3':
-	$stClassSlide3 = "feature_nav_button_selected";
-	break;
-	case '4':
-	$stClassSlide4 = "feature_nav_button_selected";
-	break;
-	case '5':
-	$stClassSlide5 = "feature_nav_button_selected";
-	break;
-	}
-
-//$navigatorLi .= '<li><a href="#nav_'.$i.'">'.$i.'</a></li>';
-
-$data .= '<div class="panel" id="nav_'.$i.'"<img src="images/featureslide.jpg" border="0" /></div>';
-
- $i++;
-
-}// end of for loop
-
-//$navigatorEnd  = '</ul>';
-//$leftScroll= '<img src="images/slideprivButtom.jpg" class="scrollButtons left"/>';
-$scrollContainerStart = '<div class="scroll"><div class="scrollContainer">';
-$scrollContainerEnd= ' </div></div>';
-//$rightScroll = '<img src="images/slidenextButton.jpg" class="scrollButtons right"/>';
-//$shade = ' <div id="shade"></div>';
-//$wrapperAndsliderClose = ' </div></div>';
-
-
-//return $data;
-$content = $scrollContainerStart.$data.$scrollContainerEnd;
-	//$wrapperDivStart.$sliderDivStart.$navigatorStart.$navigatorLi.$navigatorEnd.$leftScroll.$scrollContainerStart.$data.$scrollContainerEnd.$rightScroll.$shade.$wrapperAndsliderClose;
-
-
-
-
-return $content;
-
-}
 function renderFeatureModuleSlidesBuyHedge(){
 	 global $HTPFX,$HTHOST,$IMG_SERVER, $D_R;
 include_once($D_R."/lib/_content_data_lib.php");
@@ -1390,6 +1101,7 @@ function renderFeatureModuleSlides($preview=false){
 		{
 			continue;
 		}
+
 		foreach($moduleData as $component)
 		{
 			switch($component['component_name'])
@@ -1501,6 +1213,8 @@ function renderFeatureModuleSlides($preview=false){
 
 				case 'TEMPLATE19_TEXT':
 					$arslideDecode[]="";
+							global $D_R;
+							include_once("$D_R/lib/json.php");
 							$json = new Services_JSON();
 							$arslideDecode[] =  $json->decode($component['content'],true);
 							$slides[$i]['FeaturedSlide'] = $arslideDecode['1']->content;

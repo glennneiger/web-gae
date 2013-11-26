@@ -1,5 +1,5 @@
 <?
-global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R,$CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include($D_R."/lib/config/_elliottWave_config.php");
 include($D_R."/lib/elliott-wave-insider/_elliottWave_data_lib.php");
@@ -9,13 +9,13 @@ $msg = $_GET['message'];
 $id = $_GET['id'];
 
 ?>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/elliot-wave-admin.1.1.css">
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/elliot-wave-admin.1.1.css">
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/elliottWave.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/elliottWave.js" ></script>
 
 <div class=adminheader>Elliott Wave Insider - Create/Edit Alert</div><br>
 <?  $createAlert=$AD->getPerm("elliotWave_alerts"); //set permission

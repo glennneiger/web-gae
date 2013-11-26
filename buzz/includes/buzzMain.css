@@ -17,7 +17,7 @@ body {
 
 #logoBar {
 	height:52px;
-	background:transparent url(http://storage.googleapis.com/mvassets/images/header_bg.gif) top left repeat-x;
+	background:transparent url(http://image.minyanville.com/images/header_bg.gif) top left repeat-x;
 	text-align:center;
 	}
 
@@ -29,7 +29,7 @@ body {
 	}
 
 #flashBar {
-	background:transparent url(http://storage.googleapis.com/mvassets/images/flashbar_bg.gif) top left repeat-x;
+	background:transparent url(http://image.minyanville.com/images/flashbar_bg.gif) top left repeat-x;
 	}
 
 #flashLasso {width:300px; margin:0px auto;}
@@ -60,12 +60,12 @@ body {
 #jumpToPost {
 	width:165px;
 	margin-right:8px;
-	background:transparent url(http://storage.googleapis.com/mvassets/images/jump_to_post.gif) top left no-repeat;
+	background:transparent url(http://image.minyanville.com/images/jump_to_post.gif) top left no-repeat;
 }
 
 #bookmark {
 	width:159px;
-	background:transparent url(http://storage.googleapis.com/mvassets/images/bookmarks_dropdown.gif) top left no-repeat;
+	background:transparent url(http://image.minyanville.com/images/bookmarks_dropdown.gif) top left no-repeat;
 	}
 
 .popupMenu {
@@ -96,13 +96,13 @@ body {
 /* Tab Bar Module */
 #tabBar {
 	height:24px;
-	background:#fff url(http://storage.googleapis.com/mvassets/images/tab_bg.gif) top left repeat-x;
+	background:#fff url(http://image.minyanville.com/images/tab_bg.gif) top left repeat-x;
 }
 
 #tabBar a img {border:none;}
 
-#tabBuzz {width:114px;height:24px;background-image:url(http://storage.googleapis.com/mvassets/images/tab_buzz.gif);}
-#tabSearch {width:123px;height:24px;background-image:url(http://storage.googleapis.com/mvassets/images/tab_search.gif);}
+#tabBuzz {width:114px;height:24px;background-image:url(http://image.minyanville.com/images/tab_buzz.gif);}
+#tabSearch {width:123px;height:24px;background-image:url(http://image.minyanville.com/images/tab_search.gif);}
 #tabBuzz, #tabSearch {position:relative;border:none;float:left;cursor:pointer;}
 .buzzOn {background-position:0px 0px;}
 .buzzBlue{background-position:0px 24px;}
@@ -214,7 +214,7 @@ body {
 	padding: 0 0 0 0;
 }
 
-/*	background:transparent url(http://storage.googleapis.com/mvassets/images/bullet_blue.gif) 2px 4px no-repeat;
+/*	background:transparent url(http://image.minyanville.com/images/bullet_blue.gif) 2px 4px no-repeat;
 	padding-left:15px;
 	}*/
 	
@@ -361,12 +361,12 @@ input#searchButton {
 	cursor:pointer;
 	}
 
-.prefButtonOn {background:transparent url(http://storage.googleapis.com/mvassets/images/preferences.gif) top left no-repeat;}
-.prefButtonOver {background:transparent url(http://storage.googleapis.com/mvassets/images/preferences_over.gif) top left no-repeat;}
+.prefButtonOn {background:transparent url(http://image.minyanville.com/images/preferences.gif) top left no-repeat;}
+.prefButtonOver {background:transparent url(http://image.minyanville.com/images/preferences_over.gif) top left no-repeat;}
 
 #prefs {
 	font-size:13px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/prefs_bg.gif);
+	background-image:url(http://image.minyanville.com/images/prefs_bg.gif);
 	background-position:top left;
 	background-repeat:repeat-x;
 	height:412px;
@@ -502,7 +502,7 @@ a.filterDeselected {padding:10px 8px 6px 6px; border-right:1px solid #04517a;}
 	}
 
 #viewFeatures {
-	background:transparent url(http://storage.googleapis.com/mvassets/images/view_features.gif) top left no-repeat;
+	background:transparent url(http://image.minyanville.com/images/view_features.gif) top left no-repeat;
 	width:233px;
 	height:18px;
 	margin-top:1px;

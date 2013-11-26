@@ -273,7 +273,7 @@ padding:0px;
 .feednewsmain{
 width:202px;
 text-align:center;
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/dailyfeeboxbg.jpg);
+background-image:url(http://image.minyanville.com/images/home_redesign/dailyfeeboxbg.jpg);
 background-repeat:repeat-x;
 padding:0px 5px 3px 6px;
 border:solid 1px #396122;
@@ -298,7 +298,7 @@ padding:0px;
 }
 
 .FeatureVideotitle{
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/video_title_bg.gif);
+background-image: url(http://image.minyanville.com/images/home_redesign/video_title_bg.gif);
 background-repeat:no-repeat;
 width:100%;
 background-color:#171c20;
@@ -311,7 +311,7 @@ padding-bottom:5px;
 text-align:left;
 }
 .FeatureVideobottom{
-background-image: url(http://storage.googleapis.com/mvassets/images/home_redesign/video_dropshadow.png);
+background-image: url(http://image.minyanville.com/images/home_redesign/video_dropshadow.png);
 background-position:bottom;
 background-repeat:no-repeat;
 width:100%;
@@ -550,7 +550,7 @@ float:left;
 	font-weight:normal;
 	padding:3px 0px 0px 25px;
 	font-family:Arial, Helvetica, sans-serif;
-	background:url(http://storage.googleapis.com/mvassets/images/DailyFeed/mv_dailyfeed_commentbg.jpg) 0 0 no-repeat;
+	background:url(http://image.minyanville.com/images/DailyFeed/mv_dailyfeed_commentbg.jpg) 0 0 no-repeat;
 }
 .cmmttxt{
 	width:22px;
@@ -561,7 +561,7 @@ float:left;
 	font-weight:normal;
 	padding:3px 0px 0px 20px;
 	font-family:Arial, Helvetica, sans-serif;
-	background:url(http://storage.googleapis.com/mvassets/images/DailyFeed/mv_dailyfeed_commentnumberbg.jpg) 0 0 no-repeat;
+	background:url(http://image.minyanville.com/images/DailyFeed/mv_dailyfeed_commentnumberbg.jpg) 0 0 no-repeat;
 }
 .fb_iframe_widget{
 display:inline !important;
@@ -1088,7 +1088,7 @@ width:640px;
 	width:624px;
 	height:40px;
 	padding:10px 10px;
-	background:url(http://storage.googleapis.com/mvassets/images/DailyFeed/mv_dailyfeed_bnnrBG.jpg) 0 0 repeat-x;
+	background:url(http://image.minyanville.com/images/DailyFeed/mv_dailyfeed_bnnrBG.jpg) 0 0 repeat-x;
 }
 
 .dailyfeedlogo a {
@@ -1103,7 +1103,7 @@ margin-bottom:4px;
 font-size:11px;
 font-weight:bold;
 padding:0px 3px 3px 3px;
-background:url(http://storage.googleapis.com/mvassets/images/DailyFeed/dailyfeed_borderbttm.jpg) center bottom no-repeat;*/
+background:url(http://image.minyanville.com/images/DailyFeed/dailyfeed_borderbttm.jpg) center bottom no-repeat;*/
 color:#000000;
 text-align:left;
 width:142px;
@@ -1113,7 +1113,7 @@ padding-bottom:4px;
 margin-bottom:4px;
 height:22px;
 line-height:11px;
-background:url(http://storage.googleapis.com/mvassets/images/DailyFeed/dailyfeed_borderbttm.jpg) center bottom no-repeat;
+background:url(http://image.minyanville.com/images/DailyFeed/dailyfeed_borderbttm.jpg) center bottom no-repeat;
 }
 
 .quicktitle a {

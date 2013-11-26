@@ -3,6 +3,8 @@
 // and sends the list back to be put in the 'navigation' div on buzz.php.
 
 // load and instantiate JSON services object
+global $D_R;
+include_once("$D_R/lib/json.php");
 
 $json = new Services_JSON();
 

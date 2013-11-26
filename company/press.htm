@@ -1,0 +1,37 @@
+<?
+
+$SECTION="company";
+//$PAGE="help";
+$HEADER="/assets/Companybanner.jpg";
+//$title="Minyanville : Company : Help";
+$pageName ="press";
+include("$D_R/_header.htm");
+include("$D_R/layout/dbconnect.php");
+include("$D_R/layout/layout_functions.php");
+
+?>
+<tr><td class="underheader">
+<div class="ArticleColumnContainer">
+<div class="ThreeColumnWide">
+<table border="0" width="100%" cellpadding="0" cellspacing="0" >
+  <tr>
+	<tr><td class=	"articletitlehome"><center>Press Room</center></td></tr>
+	<tr><td class="date" align="center"><?= displayDate() ?></td></tr>   
+   </tr>
+</table>
+
+<table border="0" width="100%"  cellspacing="0" cellpadding="0" >
+     <TR valign=top><TD>
+	    <!--<div id="home-news-main">
+		    <div id="home-news-content">-->
+			    <tr><td width="100%" valign="top"><? call_Column_Module_List($pageName,"leftcolumn",$modules,'show','home-news-content');?></td>
+			   <td><? call_Column_Module_List($pageName,"rightcolumn",$modules,'show','home-news-content'); ?></td></tr>
+			<!--</div></div> -->
+		  </TD>
+	 	</TR>	 				
+				</div></td></tr>
+   </table>
+   </div>
+
+
+<?include("$D_R/_footer.htm");?>

@@ -6,7 +6,7 @@ $draft_data=exec_query("select * from drafts where userid=$admin_id");
 foreach($draft_data as $row) {
 $draft_text = $row[text];
 }
-
+include_once("$D_R/admin/FCKeditor/fckeditor.php") ;
 ?>
 <br>
 <div class=adminheader>Recover Post</div>

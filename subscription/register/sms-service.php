@@ -4,6 +4,7 @@ global $D_R;
 require_once($D_R."/lib/registration/_register_funnel_data_lib.php");
 require_once($D_R.'/lib/aws-sns/lib/amazonsns.class.php');
 require_once($D_R."/lib/config/_aws_config.php");
+include_once("$D_R/lib/json.php");
 
 $json = new Services_JSON();
 $objAmazonSNS = new AmazonSNS($snsAccessKeyId, $snsSecretAccessKey);

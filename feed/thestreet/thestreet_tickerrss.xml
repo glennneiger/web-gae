@@ -36,7 +36,7 @@ $LBD= date("D, j M Y H:i:s",strtotime($results[0]['date']));
 	<link><?=$HTPFX.$HTHOST?>?from=thestreet</link>
 	<copyright><?=date("Y")?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
 	<ttl>1</ttl>
-	<lastBuildDate><?php echo $LBD;?> EDT</lastBuildDate>
+	<lastBuildDate><?php echo $LBD;?> EST</lastBuildDate>
 	<?php
 	foreach ($results as $result) {
 	$articleId	=	$result['id'];
@@ -94,7 +94,7 @@ real-time <a href='http://www.minyanville.com/buzzbanter/?utm_source=thestreet&u
 			$display_date	=	$result['publish_date'];
 		}
 		?>
-        <pubDate><?=date('D, j M Y H:i:s',strtotime($display_date)) ?> EDT</pubDate>
+        <pubDate><?=date('D, j M Y H:i:s',strtotime($display_date)) ?> EST</pubDate>
 		<tickers>
 			<?php
 			foreach($tickers as $value) {

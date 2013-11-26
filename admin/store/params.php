@@ -1,6 +1,8 @@
 <?
 $hide_ui=1;
+global $D_R;
 include("./_header.php");
+include_once("$D_R/lib/_cart.php");
 $store=new Store();
 $store->admin=1;
 $postto="params.mod.php";

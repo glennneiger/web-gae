@@ -2,10 +2,11 @@
 <?
 session_start();
 handle_ssl();
-global $IMG_SERVER,$HTPFX,$HTHOST;
+global $IMG_SERVER,$HTPFX,$HTHOST,$CDN_SERVER;
 $pageName = "eduPrint";
 global $D_R;
 include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/layout_functions.php");
 $objContent=new Content('31',$_GET['a']);
 $pageMetaData=$objContent->getMetaData();
 
@@ -37,13 +38,13 @@ else
 <!-- Checkm8 script added to load ads in print page -->
 <? show_adds_checkmate('print'); ?>
 <!-- Checkm8 script ends -->
-<link rel="stylesheet" href="../css/edu.css">
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/edu.css">
 <script language="javascript">
 	<? $path_info=pathinfo($_SERVER[PHP_SELF]); ?>
 	var OA_channel = '<?=substr($path_info[dirname],1)?>';
 </script>
-<script src="<?=$pfx?>/js/ads.js" type="text/javascript"></script>
-<script src="../js/print.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/ads.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/print.js" type="text/javascript"></script>
 </head>
 <body>
 <SCRIPT language="JavaScript" src="http://minyanvilledigital.checkm8.com/adam/cm8adam_1_call.js"></SCRIPT>

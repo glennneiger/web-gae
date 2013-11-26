@@ -3,6 +3,8 @@ if($_GET['pagename'])
 {
 	$pageName=$_GET['pagename'];
 }
+global $D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
 include_once($D_R."/lib/ads/_indstrybrains_class.php");
 include("../_minyanville_header.htm");
 global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle;

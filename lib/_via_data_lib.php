@@ -4,6 +4,7 @@ This class contains functions to communicate with
 Via web service.
 *******************************************/
 include_once("$D_R/lib/_via_exceptionhandler.php");
+include_once($D_R.'/lib/config/_google_referral_config.php');
 
 class Via{
 
@@ -330,7 +331,8 @@ order_item.customer_id = customer_address.customer_id ','whereClause'=>'order_co
 	// custIdent  >>>>>>>>>>>>>> merchant login, merchantPassword and customerIdVia
 	// cart >>>>>>>>>>>>>>>>>>>>>> order information, typical cart details
 	function addOrder($viacart){
-
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $_SESSION,$viaProducts, $operations,$productAd;
 		$operation = $operations['OrderAdd'];
 		$logObj=new ViaException();

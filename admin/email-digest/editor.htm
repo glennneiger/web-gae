@@ -1,5 +1,5 @@
 <?php
-global $D_R,$HTPFX,$HTADMINHOST;
+global $D_R,$HTPFX,$HTADMINHOST,$CDN_SERVER;
 $div_id = $_GET['id'];
 $edit_id = $_GET['edit_id'];
 $strip = $_GET['strip'];
@@ -10,9 +10,9 @@ $text_id = $_GET['val'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Editor</title>
-<script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST;?>/js/admin.1.8.js" ></script>
-<script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST; ?>/js/min/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST;?>/js/config.1.2.js"></script>
+<script type="text/javascript" src="<?php echo $CDN_SERVER;?>/js/admin.1.9.js" ></script>
+<script type="text/javascript" src="<?php echo $CDN_SERVER; ?>/js/min/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?php echo $CDN_SERVER;?>/js/config.1.2.js"></script>
 <script type="text/javascript" src="<?php echo $HTPFX.$HTADMINHOST;?>/admin/ckeditor/ckeditor.js"></script>
 <style>
 #content_iframe{

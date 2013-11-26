@@ -1,5 +1,5 @@
 <?php
-global $HTHOST,$HTPFX;
+global $HTHOST,$HTPFX,$CDN_SERVER;
 $newURL=$HTPFX.$HTHOST.makeArticleslink($_GET['a']);
 if($page)
 {
@@ -51,14 +51,14 @@ $metadescription = strip_tags($metadescription);
 <meta name="keywords" content="<?=$pageMetaData['keywords']?>">
 <!-- legacy javascript needs to be optimized -->
 
-<script src="/js/prototype.1.3.js" type="text/javascript"></script>
-<script src="/js/config.1.2.js" type="text/javascript"></script>
-<script src="/js/redesign.1.26.js" type="text/javascript"></script>
-<script src="/js/Articles.1.9.js" type="text/javascript"></script>
-<script src="/js/ibox.1.3.js" type="text/javascript"></script>
-<script src="/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/prototype.1.3.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/redesign.1.26.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/Articles.1.9.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/ibox.1.3.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
 
-<script src="/js/ajax_basic_1.9.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/ajax_basic_1.9.js" type="text/javascript"></script>
 
 
 <script type="text/javascript" src="/newpages/js/jquery-1.3.1.min.js"></script>
@@ -74,7 +74,7 @@ $metadescription = strip_tags($metadescription);
 
 
 <!-- legacy css -->
-<link rel="stylesheet" media="screen" type="text/css" href="/css/ibox.1.1.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="<?=$CDN_SERVER?>/css/ibox.1.1.css" />
 
 
 <!-- checkm8 add stuff -->

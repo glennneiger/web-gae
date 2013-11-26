@@ -44,7 +44,7 @@
 	width:400px;
 	float:left;
 	background-repeat:repeat-y; 
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/newLoginMid.png);
+	background-image:url(http://image.minyanville.com/images/subscription/newLoginMid.png);
 }
 
 .logInHeading{
@@ -148,7 +148,7 @@
 	width:195px;
 	float:left;
 	padding:0px 0px 0px 5px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/loginInput.gif);
+	background-image:url(http://image.minyanville.com/images/subscription/loginInput.gif);
 }
 
 .inputImageProfile input{
@@ -167,7 +167,7 @@
 	width:174px;
 	float:left;
 	padding:4px 13px 9px 13px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/select_box.gif);
+	background-image:url(http://image.minyanville.com/images/subscription/select_box.gif);
 	background-repeat:no-repeat;
 	text-align:left;
 	font-family:Arial, Helvetica, sans-serif;
@@ -207,7 +207,7 @@ color: #000000;
 	width:200px;
 	float:left;
 	height:22px;
-	/*background-image:url(http://storage.googleapis.com/mvassets/images/subscription/select_box.gif);*/
+	/*background-image:url(http://image.minyanville.com/images/subscription/select_box.gif);*/
 	padding:0px 0px 0px 0px;
 	border: 0px solid;
 }
@@ -393,7 +393,7 @@ padding:0px 0px 0px 0px;
 	float:left;
 	padding:0px 0px 0px 2px;
 	margin:0px 0px 0px 5px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/loginInput.gif);
+	background-image:url(http://image.minyanville.com/images/subscription/loginInput.gif);
 	background-repeat:no-repeat;
 }
 

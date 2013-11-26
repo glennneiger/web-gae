@@ -29,7 +29,9 @@ $arFeedPartners = array( "c4ca4238a0b923820dcc509a6f75849b" => array("tracking_n
                 "PraJ6keqe57stEzu2ethuyAdr6thU6up" => array("tracking_name"=>"yahooFull",
 																	 "portal_name" => "yahooFull"),
 				"qbvlNGTcW7e0FTJLHVIT2Mfpq20vVlMU" => array("tracking_name"=>"mvpremiumyahoo",
-																	 "portal_name" => "mvpremiumyahoo")    
+																	 "portal_name" => "mvpremiumyahoo"),
+				"UwX8053S76293TY171Y33581HRn32U87" => array("tracking_name"=>"gravity",
+																	 "portal_name" => "gravity")      
 				);
 
 // array key is autoincrement prepend with tracking name's first letter

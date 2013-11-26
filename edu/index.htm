@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-global $D_R,$HTPFX,$HTHOST,$pageName,$sectionName;
+global $D_R,$HTPFX,$HTHOST,$pageName,$sectionName,$CDN_SERVERs;
 session_start();
 
 $pageName="edu-home";
@@ -35,6 +35,50 @@ width:198px;
 }
 </style>
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+<script type="text/javascript">jQuery.noConflict() ;</script>
+<script type="text/javascript">
+	var startTimer;
+	jQuery(document).ready(function(){
+		jQuery.fancybox.init();
+		jQuery('div#eduSubMain ul').find('li').each(function(index){
+			jQuery('#fancy-'+index).fancybox({
+				showCloseButton : false,
+		        type: 'inline',
+		        content: '#eduLeavingWindow',
+		        overlayOpacity : 0.8,
+				overlayColor : '#000',
+				onClosed : function(){
+					//Close timer
+					try{
+						clearTimeout(startTimer);
+						startTimer = null;
+					}catch(err){
+						
+					}
+				}
+		    });
+		});
+		jQuery('.productFancy').fancybox({
+			showCloseButton : false,
+	        type: 'inline',
+	        content: '#eduLeavingWindow',
+	        overlayOpacity : 0.8,
+			overlayColor : '#000',
+			onClosed : function(){
+				//Close timer
+				try{
+					clearTimeout(startTimer);
+					startTimer = null;
+				}catch(err){
+					
+				}
+			}
+	    });
+		
+		jQuery('#fancybox-wrap').css('top','100px');
+	});
+</script>
+	
 <body>
 <div id="eduOuterContainer">
 	<div class="articleNotFound" id="eduNotFound">Sorry!! The article you are trying to read is not available now.</div>
@@ -52,7 +96,7 @@ width:198px;
 				<div class="eduSlider"><?php echo $objCache->getEduSliderModuleCache('Edu Slider'); ?></div>
 			      
 				<!-- SlidesJS Required: Link to jquery.slides.js -->
-				<script src="<?php echo $HTPFX.$HTHOST; ?>/js/jquery.slides.min.js"></script>
+				<script src="<?php echo $CDN_SERVER; ?>/js/jquery.slides.min.js"></script>
 				<!-- End SlidesJS Required -->
 			      
 				<!-- SlidesJS Required: Initialize SlidesJS with a jQuery doc ready -->

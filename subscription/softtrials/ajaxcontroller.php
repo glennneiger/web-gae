@@ -6,7 +6,11 @@ header("cache-control: no-cache, must-revalidate, no-store\n\n");
 header("Expires: 0");
 
 session_start();
-global $_SESSION,$refSourceCodes,$viaDefaultAddr,$viaMaintainenceMsg,$viaProducts;
+global $_SESSION,$refSourceCodes,$D_R,$viaDefaultAddr,$viaMaintainenceMsg,$viaProducts;
+global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
+include_once("$D_R/lib/json.php");
+include_once($D_R.'/lib/config/_google_referral_config.php');
 
 $json = new Services_JSON();
 $objVia=new Via();

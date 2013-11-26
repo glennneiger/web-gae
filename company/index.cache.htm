@@ -1,0 +1,110 @@
+<?
+$sections=array(
+	left=>array(//articles for left side
+		"univ_tech"=>array(name=>"Technical Analysis"),
+		"univ_fund"=>array(name=>"Fundamental Analysis"),
+		"univ_currencies"=>array(name=>"Currencies and Commodities")
+	),
+	right=>array(//articles for right side
+		"univ_trading"=>array(name=>"Trading"),
+		"univ_derivatives"=>array(name=>"Derivatives"),
+		"univ_fixedincome"=>array(name=>"Fixed Income and Economics")
+	)
+);
+$DATE_STR="F j, Y g:i a";
+foreach($sections as $side=>$section){//populate the sections with the articles
+	foreach($section as $section_name=>$label){
+		$data=get_classroom_articles($section_name,($side=="left"?"2":"3"));
+		if(count($data))
+			$sections[$side][$section_name][data]=$data;
+	}
+}
+
+$lounge=get_newest_article(get_category_id("univ_lounge"),1,0);
+$lounge[blurb]=trim(strip_tags($lounge[blurb]));
+if(strlen($lounge[blurb]>75))$louge[blurb]=substr($lounge[blurb],0,75)."...";
+$lounge[article_url]=str_replace("gazette/newsviews/","university/lounge.htm",$lounge[article_url]);
+?>
+<div style="margin-right:82px;margin-left:43px">
+	<table cellpadding=0 cellspacing=0 border=0>
+	<TR valign=top>
+	<TD width=295>
+	<!-- STUDNET LOUNGE -->
+		<div style="margin-top:10px;background-color:#85CBEF;font-size:18px;font-weight:bold;padding:5px">
+			Student Lounge
+		</div>
+		<div style="padding:10px;padding-right:0px;">
+			<span class="dateline"><?=date($DATE_STR,$lounge[udate])?></span><br>
+			<table cellpadding=0 cellspacing=0 border=0>
+			<TR valign=top>
+			<TD width=99%>
+				<b><?=$lounge[title]?></b><br>
+				by <?=href("/gazette/bios.htm?id=${lounge[contrib_id]}",$lounge[contributor])?>
+			<?if($lounge[blurb]){?>
+				<div class="blurbline"><?=$lounge[blurb]?></div>
+			<?}?>
+			</TD>
+			<TD width=1% align=right valign=bottom><?=href($lounge[article_url],"more...")?></TD>
+			</TR>
+			</table>
+		</div>
+	<div style="border:1px black solid;border-width:1px 0px 0px 0px"></div>
+		
+		<!-- INSIDE EDITION -->
+		<div style="margin-left:10px">
+		<br><b style="font-size:14px">INSIDE EDITION</b><br>
+		<br>
+<?foreach($sections[left] as $classname=>$lessons){?>
+	<?if($lessons[data]){?>
+		<span class="sectitle2"><?=uc($lessons[name])?></span><br>
+		<?foreach($lessons[data] as $row){?>
+			<span class="dateline"><?=date($DATE_STR,$row[udate])?></span><br>
+			<table cellpadding=0 cellspacing=0 border=0>
+			<TR valign=top>
+			<TD width=99%>
+				<b><?=$row[title]?></b><br>
+				by <?=href("/gazette/bios.htm?id=${row[contrib_id]}",$row[name])?>
+			</TD>
+			<TD width=1% align=right valign=bottom><?=href($row[article_url],"more...")?></TD>
+			</TR>
+			</table>
+			<br><br>
+		<?}?>
+	<?}?>
+<?}?>
+	</div>
+	</TD>
+	<TD><?=spacer(17)?></TD>
+	<TD width=246>
+		<div id="rightborderarea">
+
+<?foreach($sections[right] as $classname=>$lessons){?>
+	<?if($lessons[data]){?>
+		<span class="sectitle"><?=uc($lessons[name])?></span><br><?=spacer(1,5)?><br>
+		<?foreach($lessons[data] as $row){
+			$blurb=trim(strip_tags($row[blurb]));
+			if(strlen($blurb)>75)$blurb=substr($blurb,0,75)."...";
+		?>
+			<span class="dateline"><?=date($DATE_STR,$row[udate])?></span><br>
+			<table cellpadding=0 cellspacing=0 border=0 width=90%>
+			<TR valign=top>
+			<TD width=99%>
+				<b><?=$row[title]?></b><br>
+				by <?=href("/gazette/bios.htm?id=${row[contrib_id]}",$row[name])?>
+			<?if($blurb){?>
+				<div class="blurbline"><?=$blurb?></div>
+			<?}?>
+			</TD>
+			<TD width=1% align=right valign=bottom><?=href($row[article_url],"more...")?></TD>
+			</TR>
+			</table>
+			<br><br>
+		<?}?>
+	<?}?>
+<?}?>
+
+		</div>
+	</TD>
+	</TR>
+	</table>
+	</div>

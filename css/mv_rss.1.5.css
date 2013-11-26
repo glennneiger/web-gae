@@ -17,23 +17,23 @@
 .large-box 						{ height: 420px; }
 .medium-box						{ height: 400px; }
 .small-box						{ height: 62px; }
-.rss-box .divider1				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 94px; }
-.rss-box .divider2				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 125px; }
-.rss-box .divider3				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 156px; }
-.rss-box .divider4				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 187px; }
-.rss-box .divider5				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 218px; }
-.rss-box .divider6				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 249px; }
-.rss-box .divider7				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 280px; }
-.rss-box .divider8				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 311px; }
-.rss-box .divider9				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 342px; }
-.rss-box .divider10				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 373px; }
-.rss-box .divider11				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 404px; }
-.rss-box .divider12				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 435px; }
-.rss-box .divider13				{ margin:0; padding: 0;	background: url(http://storage.googleapis.com/mvassets/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 466px; }
+.rss-box .divider1				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 94px; }
+.rss-box .divider2				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 125px; }
+.rss-box .divider3				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 156px; }
+.rss-box .divider4				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 187px; }
+.rss-box .divider5				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 218px; }
+.rss-box .divider6				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 249px; }
+.rss-box .divider7				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 280px; }
+.rss-box .divider8				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 311px; }
+.rss-box .divider9				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 342px; }
+.rss-box .divider10				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 373px; }
+.rss-box .divider11				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 404px; }
+.rss-box .divider12				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 435px; }
+.rss-box .divider13				{ margin:0; padding: 0;	background: url(http://image.minyanville.com/images/rss/horizontalDiv.gif) repeat-x top left; background-position: 0 466px; }
 
 
 
-.rss-box .namePanel				{ width: 440px; background: url(http://storage.googleapis.com/mvassets/images/rss/rrs_bnr_top_bkg.png) repeat-x top left; padding: 6px 10px 0 10px; color:#4c4c4c;}
+.rss-box .namePanel				{ width: 440px; background: url(http://image.minyanville.com/images/rss/rrs_bnr_top_bkg.png) repeat-x top left; padding: 6px 10px 0 10px; color:#4c4c4c;}
 .rss-box .namePanel .bnr-labels 	{ height:57px; margin: 0; padding: 0; list-style-type: none; font-family: Arial, helvetica, sans-serif; color: rgb(8,108,26); font-size: 11px; font-weight: bold; }
 .rss-box .namePanel .bnr-labels li {}
 .rss-box .namePanel .bnr-labels  .label-one { width: 55px; margin-right: 81px; float: left; font-weight:bold;}
@@ -51,12 +51,12 @@
 .rss-box .rows .feed-url form 	{ margin: 4px 0 9px 0; padding: 0; height: 22px; }
 .rss-box .rows .feed-icon	{ margin: 5px 0 0 5px; padding: 0; list-style-type: none; float: left;width: 90px; }
 .rss-box .rows .feed-icon li	{ width: 100px; height: 20px; margin-bottom: 11px; padding: 0;}
-.rss-box .rCnr-tl			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-tl-g1.png); top: -1px; left: -1px; position: absolute;}
-.rss-box .rCnr-tr			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-tr-g1.png); top: -1px; right: -1px; position: absolute;}
-.rss-box .rCnr-bl			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-bl.png); bottom: -1px; left: -1px; position: absolute;}
-.rss-box .rCnr-br			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-br.png); bottom: -1px; right: -1px; position: absolute;}
-.rss-box .rCnr-bl-g			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-bl-g1.png); bottom: -1px; left: -1px; position: absolute;}
-.rss-box .rCnr-br-g			{ width: 8px; height: 8px; background: url(http://storage.googleapis.com/mvassets/images/rss/box-rss-br-g1.png); bottom: -1px; right: -1px; position: absolute;}
+.rss-box .rCnr-tl			{ width: 8px; height: 8px; background: url(http://image.minyanville.com/images/rss/box-rss-tl-g1.png); top: -1px; left: -1px; position: absolute;}
+.rss-box .rCnr-tr			{ width: 8px; height: 8px; background: url(http://image.minyanville.com/images/rss/box-rss-tr-g1.png); top: -1px; right: -1px; position: absolute;}
+.rss-box .rCnr-bl			{ width: 8px; height: 8px; background: url(http://image.minyanville.com/images/rss/box-rss-bl.png); bottom: -1px; left: -1px; position: absolute;}
+.rss-box .rCnr-br			{ width: 8px; height: 8px; background: url(http://image.minyanville.com/images/rss/box-rss-br.png); bottom: -1px; right: -1px; position: absolute;}
+.rss-box .rCnr-bl-g			{ width: 8px; height: 8px; background: url(http://image.minyanville.com/images/rss/box-rss-bl-g1.png); bottom: -1px; left: -1px; position: absolute;}
+.rss-box .rCnr-br-g			{ width: 8px; height: 8px; background: url(http://image.minyanville.com/images/rss/box-rss-br-g1.png); bottom: -1px; right: -1px; position: absolute;}
 /*///// BOX STYLE END /////*/
 
 /*///// BOX PLACEMENT START /////*/

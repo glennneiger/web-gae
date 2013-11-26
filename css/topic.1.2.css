@@ -26,7 +26,7 @@
 }
 
 #etf-wrap #etfPg-hdr .socialHdr_btns a {
-	background-image: url(http://storage.googleapis.com/mvassets/images/topic/allETFs_hdr_sprites.png);
+	background-image: url(http://image.minyanville.com/images/topic/allETFs_hdr_sprites.png);
 	float: left;
 	text-indent: -9999px;
 	padding: 0 :
@@ -195,7 +195,7 @@
 	margin: 0px 0px 4px 0px;
 	padding: 0px 0px 0px 10px;
 	font-family: Arial, Helvetica, sans-serif;
-	background: url("http://storage.googleapis.com/mvassets/images/topic/etf_bullet.gif") 0 6px no-repeat;
+	background: url("http://image.minyanville.com/images/topic/etf_bullet.gif") 0 6px no-repeat;
 }
 
 .articletitle a {
@@ -290,7 +290,7 @@ padding:0;
 	padding: 20px 0 1px 0;
 	border: 1px solid #000000;
 	text-align: left;
-	list-style-image: url("http://storage.googleapis.com/mvassets/images/topic/yellowSquare1.gif");
+	list-style-image: url("http://image.minyanville.com/images/topic/yellowSquare1.gif");
 	list-style-type: square;
 }
 

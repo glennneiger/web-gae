@@ -1,5 +1,5 @@
 <?
-global $D_R,$HTPFX,$HTHOST;
+global $D_R,$HTPFX,$HTHOST,$CDN_SERVER;
 $page="gazette";
 include("$ADMIN_PATH/_header.htm");
 include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
@@ -10,7 +10,7 @@ if(!$AD->getPerm(qw("upload_worry create_worry approve_worry"))){
 	admin_error();
 }
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
 <script>
 function saveWorryImg(){
 	var worryTitle = $("worryTitle").value;

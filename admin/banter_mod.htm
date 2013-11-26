@@ -32,6 +32,7 @@ $approve=$_POST['approve'];
 
 $banter[title]=addslashes(mswordReplaceSpecialChars(stripslashes($banter[title])));
 $banter[position]=addslashes(mswordReplaceSpecialChars(stripslashes($banter[position])));
+$banter[body]=addslashes(mswordReplaceSpecialChars(stripslashes($banter[body])));
 
 $bounceback="./banter.htm";
 if(stristr($banter[image],"space.gif"))$banter[image]="";

@@ -1,0 +1,50 @@
+<?php
+global $D_R,$errorconfig;
+$errorcode = recursive_array_replace($purifier,$_GET['code']);
+if(!is_numeric($errorcode))
+{
+	$errorcode="";
+}
+
+$pageJS=array("config","registration","iboxregistration","creditcard","nav");
+$pageCSS=array("global","layout","section","rightColumn","nav");
+$pageName="error";
+$hideCanonical=TRUE;
+include_once($D_R."/lib/config/_errors_config.php");
+include("../_header.htm");
+global $cm8_ads_MediumRectangle;
+$bannernameMR =$cm8_ads_MediumRectangle;
+?>
+<div class="shadow">
+<div id="content-container">
+			<div style="text-align:center;">
+					<h1 style="padding-left:5px;">Oops! We apologize for the inconvenience. <br /><?=$errorconfig[$errorcode];?></h1>
+					<h2 style="padding-left:5px;">Many of our URLs have changed during our latest redesign.<br />
+					*You may have to update your bookmarks to our new URLs, which we have listed below.</h2>
+					<?
+					$data=getMenuItems();
+					?>
+					<ul class="error_page" style="list-style:none outside none;">
+					<? foreach($data as $value){
+                    if(substr($value['alias'],0,1) == "/")
+                    {
+                    	$url = $HTPFX.$HTHOST.$value['alias'];
+                    }
+                    else
+                    {
+                    	$url = "http://".$value['alias'];
+                    }
+					?>
+					<li><a class="product_heading" style="font-size:14px;color:#113B61;text-decoration:underline;" href="<?=$url;?>"><?=ucwords($value['title']); ?></a></li>
+					<? } ?>
+					<li><a class="product_heading" style="font-size:14px;color:#113B61;text-decoration:underline;" href="<?=$HTPFX.$HTHOST?>/buzzbanter">Buzz &amp; Banter</a></li>
+					</ul>
+				<? //displayQuickLinks(); ?>
+			</div>
+</div>
+</div>
+<?
+$trackingName='"/errors/?code='.$errorcode.'&page=" + document.location.pathname + document.location.search + "&from=" + document.referrer';
+$isCustomTracking=TRUE;
+
+include("../_footer.htm"); ?>

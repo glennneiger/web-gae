@@ -1,7 +1,8 @@
 <?
 session_start();
 include_once($D_R."/lib/_content_data_lib.php");
-global $VIDEO_SERVER,$Video_file_path,$Still_file_path,$Thumb_file_path;
+global $VIDEO_SERVER,$Video_file_path,$Still_file_path,$Thumb_file_path,$bucketPath;
+include_once("$D_R/lib/json.php");
 $json = new Services_JSON();
 
 $bounceback=$HTPFX.$HTHOST."/admin/upload_video.htm";
@@ -13,21 +14,21 @@ $arData['description'] =  $_POST['video_desc'];
 if($_FILES['uploadVideo']['name'] != "")
 {
 	$arData['videofile'] =  $VIDEO_SERVER.$Video_file_path.str_replace(" ","_",$_FILES['uploadVideo']['name']);
-	move_uploaded_file($_FILES['uploadVideo']['tmp_name'],"gs://mvassets/".$Video_file_path.str_replace(" ","_",$_FILES['uploadVideo']['name']));
+	move_uploaded_file($_FILES['uploadVideo']['tmp_name'],$bucketPath."/".$Video_file_path.str_replace(" ","_",$_FILES['uploadVideo']['name']));
 	
 }
 if($_FILES['uploadPodcastVideo']['name'] != "")
 {
 	$arData['podcasturl'] =  $VIDEO_SERVER.$Podcast_video_file_path.str_replace(" ","_",$_FILES['uploadPodcastVideo']['name']);
-	move_uploaded_file($_FILES['uploadPodcastVideo']['tmp_name'],"gs://mvassets/".$Podcast_video_file_path.str_replace(" ","_",$_FILES['uploadPodcastVideo']['name']));
+	move_uploaded_file($_FILES['uploadPodcastVideo']['tmp_name'],$bucketPath."/".$Podcast_video_file_path.str_replace(" ","_",$_FILES['uploadPodcastVideo']['name']));
 }
 if($_FILES['uploadStill']['name']!="")
 {
 	$arData['stillfile'] =  $VIDEO_SERVER.$Still_file_path.str_replace(" ","_",$_FILES['uploadStill']['name']);
 	$arData['thumbfile'] =  $VIDEO_SERVER.$Thumb_file_path.str_replace(" ","_",$_FILES['uploadStill']['name']);
 
-	copy($_FILES['uploadStill']['tmp_name'],"gs://mvassets/".$Still_file_path.str_replace(" ","_",$_FILES['uploadStill']['name']));
-	copy($_FILES['uploadStill']['tmp_name'],"gs://mvassets/".$Thumb_file_path.str_replace(" ","_",$_FILES['uploadStill']['name']));
+	copy($_FILES['uploadStill']['tmp_name'],$bucketPath."/".$Still_file_path.str_replace(" ","_",$_FILES['uploadStill']['name']));
+	copy($_FILES['uploadStill']['tmp_name'],$bucketPath."/".$Thumb_file_path.str_replace(" ","_",$_FILES['uploadStill']['name']));
 }
 $arData['aol'] =  $_POST['chkAol'];
 $arData['ameritrade'] =  $_POST['ckhAmeritrade'];

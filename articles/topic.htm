@@ -1,5 +1,6 @@
 <?
 $pageName = "articlelisting";
+global $CDN_SERVER; 
 $pageJS=array("config","registration","iboxregistration","nav","search");
 $pageCSS=array("global","rightColumn","nav","minyanville");
 include($D_R."/_header.htm");
@@ -38,7 +39,7 @@ and articles.approved='1' and articles.is_live='1' ORDER BY date DESC LIMIT " . 
 $results = exec_query($sql);
 ?>
 
-<link rel='stylesheet' href='<?=$HTPFX.$HTHOST?>/css/topic.css' type='text/css' media='all' />
+<link rel='stylesheet' href='<?=$CDN_SERVER?>/css/topic.css' type='text/css' media='all' />
 
 <div class="shadow">
 <div id="content-container">

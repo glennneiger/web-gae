@@ -1,7 +1,8 @@
 <?
-include("../_header.htm");
-include("../layout/dbconnect.php");
-include("../lib/layout_functions.php");
+global $D_R;
+include("$D_R/_header.htm");
+include("$D_R/layout/dbconnect.php");
+include("$D_R/lib/layout_functions.php");
 
 $modules = getModules();
 
@@ -20,13 +21,13 @@ $pageName = 15; //PAGE NAME 'university' didn't work
 		<td class="left-border">&nbsp;</td>
 		<td width="616">
 		  <div id="fixed-center-area-main">
-		  	<div style="background: #FFF url(http://storage.googleapis.com/mvassets/images/university_header2.gif) top left no-repeat;">
+		  	<div style="background: #FFF url(http://image.minyanville.com/images/university_header2.gif) top left no-repeat;">
 				   	<div id="university-date">
-						<img src="http://storage.googleapis.com/mvassets/images/1x52.gif" alt="" /><br>
+						<img src="http://image.minyanville.com/images/1x52.gif" alt="" /><br>
 						<h3><?= displayDate() ?></h3>					
 					</div>
 			</div>
-			<div id="home-news-content"> <!-- style="background: #FFF url(http://storage.googleapis.com/mvassets/images/university_header_btm.gif) top left no-repeat;" -->
+			<div id="home-news-content"> <!-- style="background: #FFF url(http://image.minyanville.com/images/university_header_btm.gif) top left no-repeat;" -->
 			<div class="space-right">
 			  
 				 <table id="news" cellpadding="0" cellspacing="0">
@@ -63,7 +64,7 @@ $pageName = 15; //PAGE NAME 'university' didn't work
 				<div id="white-area">
 				<p class="top-adv">&nbsp;</p>
 				   <div id="frame-bg">
-				     <img src="http://storage.googleapis.com/mvassets/images/comic_300x250.gif" width="301" height="251" alt="" /><br />
+				     <img src="http://image.minyanville.com/images/comic_300x250.gif" width="301" height="251" alt="" /><br />
 					 <p><strong>Interested in advertising on minyanville.com?</strong></p>
 					 <p><a href="#">Click here</a> for rates and informations about the Portlets all need to be divided and Styled according to their own
 						reference files (see portlets folder and portlets_overview)</p>
@@ -77,7 +78,7 @@ $pageName = 15; //PAGE NAME 'university' didn't work
 				<p class="simple-separator">&nbsp;</p>
 				 <? call_Column_Module_List($pageName,"lowerbox",$modules,'show','lowerbox'); ?>
 				 </div>
-				 <img src="http://storage.googleapis.com/mvassets/images/spacer.gif" width="400" height="1" alt="" /> 
+				 <img src="http://image.minyanville.com/images/spacer.gif" width="400" height="1" alt="" /> 
 				</td>
 				</tr></table>
 				<!-- end left-bottom area-->
@@ -92,7 +93,7 @@ $pageName = 15; //PAGE NAME 'university' didn't work
 				<p class="sections-divider">&nbsp;</p>
 				
 				<!--spacer for fixed line width; do not delete -->
-				<img src="http://storage.googleapis.com/mvassets/images/spacer.gif" width="186" height="1" alt="" /> 
+				<img src="http://image.minyanville.com/images/spacer.gif" width="186" height="1" alt="" /> 
 				</div>
 				
 			  </td>

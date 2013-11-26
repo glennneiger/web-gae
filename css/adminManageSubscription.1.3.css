@@ -245,14 +245,14 @@
 	width:100px;
 	height:28px;
 	cursor:pointer;
-	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_down.jpg') no-repeat 82px 8px;
+	background:url('http://image.minyanville.com/images/recurly/arrow_down.jpg') no-repeat 82px 8px;
 }
 
 .labelHeadingDesc{
 	width:100px;
 	height:28px;
 	cursor:pointer;
-	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_up.jpg') no-repeat 82px 8px;
+	background:url('http://image.minyanville.com/images/recurly/arrow_up.jpg') no-repeat 82px 8px;
 }
 
 .labelHeading{
@@ -375,7 +375,7 @@
 	height:28px;
 	cursor:pointer;
 	padding:0px 0px 0px 5px;
-	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_up.jpg') no-repeat 82px 8px;
+	background:url('http://image.minyanville.com/images/recurly/arrow_up.jpg') no-repeat 82px 8px;
 }
 
 .refundLabelHeadingAsc{
@@ -383,5 +383,5 @@
 	height:28px;
 	cursor:pointer;
 	padding:0px 0px 0px 5px;
-	background:url('http://storage.googleapis.com/mvassets/images/recurly/arrow_down.jpg') no-repeat 82px 8px;
+	background:url('http://image.minyanville.com/images/recurly/arrow_down.jpg') no-repeat 82px 8px;
 }

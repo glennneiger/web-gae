@@ -164,6 +164,8 @@ class manageAccountDesignLib{
 	}
 
 	function displaySubscribedSubscriptions(){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $IMG_SERVER,$viaProductsName;
 		$objDatafunnel= new registrationFunnelData();
 		$getActiveProduct=$objDatafunnel->getCurrentProducts($_SESSION['SID']);
@@ -256,6 +258,8 @@ class manageAccountDesignLib{
 	}
 
 	function displayAvailableSybscriptions(){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $IMG_SERVER,$viaProductsName,$productStep2Url;
 		$objDatafunnel= new registrationFunnelData();
 		$activeProductArray=array();
@@ -357,8 +361,8 @@ class manageAccountDesignLib{
 	}
 
 	function displayCountryManageAccount(){
-		global $D_R,$STORAGE_SERVER;
-		$countryData = file_get_contents("gs://mvassets/assets/data/country.txt");
+		global $D_R,$STORAGE_SERVER,$bucketPath;
+		$countryData = file_get_contents($bucketPath."/assets/data/countries.txt");
 		htmlprint_r($countryData);
 		$data=implode("",$countryData);
 		$data=stripslashes($data);

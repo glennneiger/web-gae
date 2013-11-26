@@ -1,7 +1,11 @@
 <?php
 	ini_set("max_execution_time",3600);
 	session_start();
+	global $D_R;
+	include_once($D_R.'/lib/config/_products_config.php');
 	include_once("$D_R/lib/_includes.php");
+	
+	include_once("$D_R/lib/json.php");
 	global $errViaMessage,$viaDefaultAddr,$_SESSION;
 	$json = new Services_JSON();
 	// Via library object
@@ -81,6 +85,8 @@
 			exit;
 		// registration step 1
 		case 'register':
+			global $D_R;
+			include_once("$D_R/lib/_layout_data_lib.php");
 			//============================================
 			// check if cart is empty
 			if(!$_SESSION['viacart'] || count($_SESSION['viacart'])==0){
@@ -1514,6 +1520,8 @@
 			echo strip_tags($output);
 			exit;
 		case 'daily_feed_newsletter':
+				global $D_R;
+				include_once("$D_R/lib/_layout_data_lib.php");
 				$feed_email = $_POST['checkemail'];
 				$fuser_id = $_POST['sessuserid'];
 				$user_type = 'olduser';
@@ -1644,6 +1652,8 @@
 						echo strip_tags($output);
 						exit;
 			case 'dailydigest':
+				global $D_R;
+				include_once("$D_R/lib/_layout_data_lib.php");
 				$feed_email = $_POST['checkemail'];
 				$fuser_id = $_POST['sessuserid'];
 				$user_type = 'olduser';
@@ -1747,6 +1757,9 @@
 						echo strip_tags($output);
 						exit;
 			case 'dailyrecap':
+				global $D_R;
+				include_once("$D_R/lib/_layout_data_lib.php");
+				
 				$feed_email = $_POST['checkemail'];
 				$fuser_id = $_POST['sessuserid'];
 				$user_type = 'olduser';
@@ -1861,6 +1874,8 @@
 			
 
 			 case 'articletopic_newsletter':
+			 	global $D_R;
+			 	include_once("$D_R/lib/_layout_data_lib.php");
 				$feed_email = $_POST['checkemail'];
 				$fuser_id = $_POST['sessuserid'];
 				$section_id = $_POST['section_id'];
@@ -1992,6 +2007,8 @@
 						exit;
 
 			            case 'gogleAdWorld':
+			            global $D_R;
+			            include_once($D_R.'/lib/config/_googleadwords_config.php');
 						global $GOOGLEADWORDTRACKING;
 						$prodAd = $_REQUEST['prod'];
 						$prodValAd = explode(",",$prodAd);
@@ -2006,7 +2023,9 @@
 						return true;
 						exit;
       case 'registerUser':
-
+			global $D_R;
+			include_once("$D_R/lib/_layout_data_lib.php");
+      	
 			// check login availability
 			$email = $_POST['uid'];
 			$fieldsArray['customerLogin']=$email;
@@ -2136,6 +2155,8 @@
 			exit;
 
 		 case 'purchase_housing_report':
+		 	global $D_R;
+		 	include_once("$D_R/lib/_layout_data_lib.php");
 			//============================================
 			// check if cart is empty
 			if(!$_SESSION['viacart'] || count($_SESSION['viacart'])==0){

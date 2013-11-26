@@ -32,7 +32,7 @@ border:solid 0px red;
 float:left;
 padding-left:9px;
 padding-right:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/flexfolioTrial/BuzzmainBg.jpg);
+background-image:url(http://image.minyanville.com/images/flexfolioTrial/BuzzmainBg.jpg);
 background-repeat:repeat-y;
 background-position:center;
 padding-bottom:50px;
@@ -40,7 +40,7 @@ padding-bottom:50px;
 
 .FlexfolioHeader{
 text-align:center;
-background-image:url(http://storage.googleapis.com/mvassets/images/flexfolioTrial/CooperHeaderbg.jpg);
+background-image:url(http://image.minyanville.com/images/flexfolioTrial/CooperHeaderbg.jpg);
 background-repeat:repeat-x;
 width:100%;
 float:left;
@@ -51,7 +51,7 @@ border:solid 0px red;
 float:left;
 width:955px;
 background-color:#fff;
-background-image:url(http://storage.googleapis.com/mvassets/images/flexfolioTrial/bodyContentBg.jpg);
+background-image:url(http://image.minyanville.com/images/flexfolioTrial/bodyContentBg.jpg);
 background-repeat:repeat-x;
 background-position:top;
 }
@@ -121,7 +121,7 @@ background-color:#6f903f;
 color:#FFFFFF;
 width:540px;
 border:solid 1px #000;
-background-image: url(http://storage.googleapis.com/mvassets/images/flexfolioTrial/FlexTrialBoxBg.jpg);
+background-image: url(http://image.minyanville.com/images/flexfolioTrial/FlexTrialBoxBg.jpg);
 background-repeat:repeat-x;
 }
 
@@ -197,7 +197,7 @@ float:left;
 
 .Flex_window_trial_boxRight{
 float:left;
-background-image:url(http://storage.googleapis.com/mvassets/images/flexfolioTrial/Flex_article_bg.gif);
+background-image:url(http://image.minyanville.com/images/flexfolioTrial/Flex_article_bg.gif);
 background-position:top;
 background-repeat:repeat-x;
 width:80%;

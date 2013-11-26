@@ -6,7 +6,7 @@
 }
 
 .grey {
-	background: #cacbcd url(http://storage.googleapis.com/mvassets/images/home_redesign/free-trial-button.gif)
+	background: #cacbcd url(http://image.minyanville.com/images/home_redesign/free-trial-button.gif)
 		!important;
 	background-repeat:no-repeat !important;
 	background-position: right  !important;
@@ -20,7 +20,7 @@
 
 .grey:hover {
 	background: #999999
-		url(http://storage.googleapis.com/mvassets/images/home_redesign/free-trial-button-hover.gif) !important;
+		url(http://image.minyanville.com/images/home_redesign/free-trial-button-hover.gif) !important;
 	background-repeat:no-repeat !important;
 	background-position: right !important;
 }
@@ -660,7 +660,7 @@ ul#all-articles li {
 	padding: 0px 0px 0px 10px;
 	vertical-align: text-top;
 	color: #999999;
-	background: url('http://storage.googleapis.com/mvassets/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
+	background: url('http://image.minyanville.com/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
 }
 
 ul#all-articles li a {
@@ -693,7 +693,7 @@ ul#all-articles-home li {
 	padding: 0px 0px 0px 10px;
 	vertical-align: text-top;
 	color: #999999;
-	background: url('http://storage.googleapis.com/mvassets/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
+	background: url('http://image.minyanville.com/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
 }
 
 ul#all-articles-home li a {
@@ -738,7 +738,7 @@ ul#subscription-products li {
         margin:0;
         padding:0;
         height: 17px;
-        background:#4f9130 url(http://storage.googleapis.com/mvassets/images/home_redesign/go-button.gif);
+        background:#4f9130 url(http://image.minyanville.com/images/home_redesign/go-button.gif);
         background-repeat:no-repeat;
         background-position: right;
         margin: 0px 0px 2px 0px;
@@ -760,13 +760,13 @@ ul#subscription-products li img {
 }
 
 ul#subscription-products li:hover {
-        background:#a2ea80 url(http://storage.googleapis.com/mvassets/images/home_redesign/go-button-hover.gif);
+        background:#a2ea80 url(http://image.minyanville.com/images/home_redesign/go-button-hover.gif);
         background-repeat:no-repeat;
         background-position: right;
 }
 
 .grey {
-	background: #cacbcd url(http://storage.googleapis.com/mvassets/images/home_redesign/free-trial-button.gif)
+	background: #cacbcd url(http://image.minyanville.com/images/home_redesign/free-trial-button.gif)
 		!important;
         background-repeat:no-repeat !important;
         background-position: right  !important;
@@ -780,7 +780,7 @@ ul#subscription-products li:hover {
 
 .grey:hover {
 	background: #DFDFDF
-		url(http://storage.googleapis.com/mvassets/images/home_redesign/free-trial-button-hover.gif) !important;
+		url(http://image.minyanville.com/images/home_redesign/free-trial-button-hover.gif) !important;
         background-repeat:no-repeat !important;
         background-position: right !important;
 }
@@ -985,7 +985,7 @@ ul#subscription-products li:hover {
 	margin: 0px 10px 5px 0px;
 	padding: 0px 0 0px 10px;
 	vertical-align: text-top;
-	background: url('http://storage.googleapis.com/mvassets/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
+	background: url('http://image.minyanville.com/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
 	width: 300px;
 }
 
@@ -1040,7 +1040,7 @@ ul#subscription-products li:hover {
 	margin: 0px 10px 5px 0px;
 	padding: 0px 0 0px 10px;
 	vertical-align: text-top;
-	background: url('http://storage.googleapis.com/mvassets/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
+	background: url('http://image.minyanville.com/images/redesign/mv_homePage_bullet.gif') 0px 5px no-repeat;
 	width: 298px;
 }
 
@@ -1100,7 +1100,7 @@ ul#subscription-products li:hover {
 
 .FeatureVideotitle {
 background-color:#171C20;
-background-image:url(http://storage.googleapis.com/mvassets/images/home_redesign/video_title_bg.gif);
+background-image:url(http://image.minyanville.com/images/home_redesign/video_title_bg.gif);
 background-position:5% 50%;
 background-repeat:no-repeat;
 color:#FFFFFF;
@@ -1151,7 +1151,7 @@ img.sub-header {
 
 /* legacy slider styles */
 .Alsoby{
-	background: #efefef url(http://storage.googleapis.com/mvassets/images/alsoArtcl_bkg.jpg) repeat-x left top;
+	background: #efefef url(http://image.minyanville.com/images/alsoArtcl_bkg.jpg) repeat-x left top;
 float:left;
 width:300px;
 text-align:left;
@@ -1459,7 +1459,7 @@ height:54px;
 
 
 #product-box-head {
-	/*background-image:url('http://storage.googleapis.com/mvassets/images/redesign/mv_homePage_MVP.png');
+	/*background-image:url('http://image.minyanville.com/images/redesign/mv_homePage_MVP.png');
 background-repeat:no-repeat;*/
 	color: #000000;
 	font-family: Arial;
@@ -1497,7 +1497,7 @@ background-repeat:no-repeat;*/
 }
 
 #product-box-free-trial {
-	background-image: url('http://storage.googleapis.com/mvassets/images/redesign/mv_homePage_bttnblue.gif');
+	background-image: url('http://image.minyanville.com/images/redesign/mv_homePage_bttnblue.gif');
 	background-repeat: no-repeat;
 	text-align: center;
 	margin: 2px 0px 0px 0px;

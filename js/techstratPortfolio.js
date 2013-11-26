@@ -327,7 +327,7 @@ function techStratSearchSell(){
 				if(jQuery('#techSearchStockDetail').html()!=''){
 					jQuery('#techSearchStockDetail').empty();
 				}
-				var content = "<center><img src='http://storage.googleapis.com/mvassets/images/recurly/submitting.gif' /></center>";
+				var content = "<center><img src='http://image.minyanville.com/images/recurly/submitting.gif' /></center>";
 				jQuery('#techSearchStockDetail').html(content);
 			},
 			success : function(res){

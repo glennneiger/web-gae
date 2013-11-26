@@ -1,5 +1,6 @@
 <?php
 session_start();
+global $CDN_SERVER;
 if($_POST['show']=="1"){
   $appcommentcount=$_POST['appcommentcount'];
   $articleid=$_POST['articleid'];
@@ -16,7 +17,7 @@ if($_POST['show']=="1"){
     
 }else{
 	# getting bad words from profanity filter file.
-	$fileProfanity = "../js/profanity.txt";
+	$fileProfanity = $CDN_SERVER."/js/profanity.txt";
 	
 	$handle = fopen ($fileProfanity, "r");
 	$badwords = fread ($handle, filesize ($fileProfanity));

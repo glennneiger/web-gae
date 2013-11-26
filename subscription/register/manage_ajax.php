@@ -4,6 +4,7 @@ require_once($D_R.'/lib/recurly/recurly.php');
 include_once($D_R."/lib/config/_recurly_config.php");
 include_once($D_R."/lib/recurly/_recurly_data_lib.php");
 include_once($D_R."/lib/_user_data_lib.php");
+include_once("$D_R/lib/json.php");
 session_start();
 $json = new Services_JSON();
 Recurly_Client::$apiKey = $recurlyApiKey;

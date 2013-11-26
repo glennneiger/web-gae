@@ -1,4 +1,5 @@
-<?
+<?php
+global $IMG_SERVER;
 foreach($data as $k=>$v){ ${$k}=$v; }
 $inv_items=count($inventory);
 global $ADD_CHECK_JS;

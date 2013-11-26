@@ -66,7 +66,7 @@
 	position:absolute;
 	top:10px;
 	right:10px;
-	background:#fff url(http://storage.googleapis.com/mvassets/images/subscription/cross.png) no-repeat center center;
+	background:#fff url(http://image.minyanville.com/images/subscription/cross.png) no-repeat center center;
 	width:27px;
 	height:27px;
 	text-indent:-9000px;
@@ -103,51 +103,51 @@
 	height:190px;
 	position:relative;
 	margin:0 auto;
-	background:transparent url(http://storage.googleapis.com/mvassets/images/subscription/subWave.png) no-repeat center center;
+	background:transparent url(http://image.minyanville.com/images/subscription/subWave.png) no-repeat center center;
 }
 
 .ca-item-1 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subWave.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subWave.png);
 }
 
 .ca-item-2 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/mvp_pT_icon.png);
+	background-image:url(http://image.minyanville.com/images/subscription/mvp_pT_icon.png);
 }
 .ca-item-3 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subBuzz.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subBuzz.png);
 }
 .ca-item-4 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subJeff.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subJeff.png);
 }
 .ca-item-5 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subOption.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subOption.png);
 }
 .ca-item-6 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subTech.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subTech.png);
 }
 .ca-item-7 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subStock.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subStock.png);
 }
 .ca-item-8 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subAdFreeNew.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subAdFreeNew.png);
 }
 .ca-item-9 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/subKeene.png);
+	background-image:url(http://image.minyanville.com/images/subscription/subKeene.png);
 }
 .ca-item-10 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/sub03.png);
+	background-image:url(http://image.minyanville.com/images/subscription/sub03.png);
 }
 .ca-item-11 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/sub04.png);
+	background-image:url(http://image.minyanville.com/images/subscription/sub04.png);
 }
 .ca-item-12 .ca-icon{
-	background-image:url(http://storage.googleapis.com/mvassets/images/subscription/sub01.png);
+	background-image:url(http://image.minyanville.com/images/subscription/sub01.png);
 }
 
 .ca-nav span{
 	width:28px;
 	height:40px;
-	background:transparent url(http://storage.googleapis.com/mvassets/images/subscription/arrows.png) no-repeat top left;
+	background:transparent url(http://image.minyanville.com/images/subscription/arrows.png) no-repeat top left;
 	position:absolute;
 	top:50%;
 	margin-top:-19px;

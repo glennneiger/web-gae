@@ -255,40 +255,40 @@ class redirectPage{
 				$this->redirectUrl($HTPFX.$HTHOST.'/mvpremium/index.htm?category='.$matches[1]);
 				break;
 			case (preg_match('/^\/rss\/articlerss\.rss\?sec_id=([0-9]*)/', $_SERVER['REQUEST_URI'],$matches) ? true : false):
-			//	if(preg_match('/!^MediafedMetrics/', $agent))
-				//{
+				if(preg_match('/!^MediafedMetrics/', $agent))
+				{
 					$this->redirectUrl($HTPFX.$HTHOST.'/rss/articlerss.rss/sec_id/'.$matches[1].'/');
-			//	}
+				}
 				break;
 			case (preg_match('/^\/rss\/podCastFeed\.xml\?cat_id=([0-9]*)/', $_SERVER['REQUEST_URI'],$matches) ? true : false):
-			//	if(preg_match('/!^MediafedMetrics/', $agent))
-				//{
+				if(preg_match('/!^MediafedMetrics/', $agent))
+				{
 					$this->redirectUrl($HTPFX.$HTHOST.'/rss/podCastFeed.xml/cat_id/'.$matches[1].'/');
-			//	}
+				}
 				break;
 			case (preg_match('/^\/rss\/minyanfeed\.php$/', $_SERVER['REQUEST_URI'],$matches) ? true : false):
-			//	if(preg_match('/!^MediafedMetrics/', $agent))
-				//{
+				if(preg_match('/!^MediafedMetrics/', $agent))
+				{
 					$this->redirectUrl('http://minyanville.com.feedsportal.com/c/35270/f/656247/index.rss');
-			//	}
+				}
 				break;
 			case (preg_match('/^\/rss\//', $_SERVER['REQUEST_URI'],$matches) ? true : false):
-			//	if(preg_match('/!^MediafedMetrics/', $agent))
-				//{
+				if(preg_match('/!^MediafedMetrics/', $agent))
+				{
 					$this->redirectUrl('http://minyanville.com.feedsportal.com/c/35270/f/657508/index.rss');
-			//	}
+				}
 				break;
 			case (preg_match('/^\/rss/podCastFeed\.xml$/', $_SERVER['REQUEST_URI'],$matches) ? true : false):
-			//	if(preg_match('/!^MediafedMetrics/', $agent))
-				//{
+				if(preg_match('/!^MediafedMetrics/', $agent))
+				{
 					$this->redirectUrl('http://minyanville.com.feedsportal.com/c/35270/f/657543/index.rss');
-			//	}
+				}
 				break;
 			case (preg_match('/^\/rss/dailyfeed\.rss$/', $_SERVER['REQUEST_URI'],$matches) ? true : false):
-			//	if(preg_match('/!^MediafedMetrics/', $agent))
-				//{
+				if(preg_match('/!^MediafedMetrics/', $agent))
+				{
 					$this->redirectUrl('http://minyanville.com.feedsportal.com/c/35270/f/657509/index.rss');
-			//	}
+				}
 				break;
 			default:
 				break;
@@ -305,6 +305,12 @@ class redirectPage{
 				break;
 			case 'feed/':
 				return "/feed/getFeed.htm";
+				break;
+			case 'manual_sitemap.xml':
+				return "manual_sitemap.xml";
+				break;
+			case 'sitemap/':
+				return "/sitemap/gsitemap.xml";
 				break;
 			case (preg_match('/^[^\/\.]+$/', $url,$matches) ? true : false):		
 					return $matches[0]."/index.htm";

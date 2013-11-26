@@ -7,7 +7,7 @@ include_once($D_R.'/lib/config/_article_config.php');
 include_once($D_R.'/lib/_action.php');
 include_once($D_R."/lib/config/_rsync_config.php");
 $objAction= new Action();
-global $D_R,$serverRsync,$serverS8PublicDns,$serverS9PublicDns;
+global $D_R,$serverRsync,$serverS8PublicDns,$serverS9PublicDns,$SPAM_EML_SUBS_ALERT_TMPL;
 $objArticleCache= new Cache();
 set_time_limit ( 60*30 );//1 hour
 
@@ -28,7 +28,7 @@ while($row=$db->getRow()){
 		echo "Article ID : ".$row[id]." send email alert<br>\n";
 
 		$articles['sent']='1';
-		//$uid=update_query("articles",$articles,array(id=>$row[id]));
+		$uid=update_query("articles",$articles,array(id=>$row[id]));
 		send_approved_article_mail($NOTIFY_JOURNAL_TO,$NOTIFY_JOURNAL_FROM,$row['title'],$SPAM_EML_SUBS_ALERT_TMPL,$row['id'],$row['contrib_id'],$row['email_category_ids'],$row['subsection_ids'],$size_emailalert);
 	}
 	else

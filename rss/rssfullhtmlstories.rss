@@ -2,6 +2,7 @@
 header( 'Content-Type: application/rss+xml; charset=utf-8' );
 include_once("$D_R/lib/config/_article_config.php");
 include_once("$D_R/lib/config/_rss_config.php");
+include_once("$D_R/lib/_news.php");
 include_once("$D_R/admin/lib/_contributor_class.php");
 include_once("$D_R/admin/lib/_article_data_lib.php");
 $objContrib= new contributor();
@@ -17,9 +18,11 @@ $currentFilter=$_GET['from'];
 <copyright><?=date('y');?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
 <?
 
-$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, if(publish_date,publish_date,date) as publish_date, blurb, body, position, character_text, articles.layout_type ";
+$sql = "select articles.id id, articles.title, contributors.name author,
+ articles.contributor, contrib_id authorid, if(publish_date,publish_date,date) as publish_date, blurb, body, character_text, articles.layout_type ";
 $sql .= " from articles, contributors ";
-$sql .= " where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' ";
+$sql .= " where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1'
+ and articles.date>('".mysqlNow()."' - interval 1 month) ";
 if($currentFilter){
     $contribFilterId=$objContrib->getExcludedPartnerId();
 	$sql .= " and contributors.id IN (SELECT CGM.contributor_id FROM contributor_groups_mapping CGM,

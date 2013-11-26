@@ -1,5 +1,5 @@
 <?
-global $IMG_SERVER;
+global $IMG_SERVER,$HTPFX,$HTHOST,$CDN_SERVER;
 //phpAdServe zone ID
 $zoneIDSky = $SEC_TO_ZONE['dictstop'];
 $zoneIDFooter = $SEC_TO_ZONE['dictfooter'];
@@ -19,7 +19,11 @@ $pageJS=array("config","registration","iboxregistration","nav");
 $pageCSS=array("global","rightColumn","nav","minyanville");
 $HEADER="/assets/dict_banner.jpg";
 $contrib_id=1;
-
+?>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script src="<?=$HTPFX.$HTHOST?>/_script.js"></script>
+<?
 $abc=qw(uc("a b c d e f g h i j k l m n o p q r s t u v w x y z"));
 $seenletters=array();
 include("../_header.htm");

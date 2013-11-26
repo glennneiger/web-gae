@@ -17,10 +17,11 @@ function stripSlashes(str) {
 }
 
 function popupViewer(index) {
+	var host = "";
 	if (index==1) {
-		window.open("http://storage.googleapis.com/mvassets/flash/ourtown/index.html","Book","width=800,height=600,resizable=yes,toolbar=no,scrollbars=no");
+		window.open("http://image.minyanville.com/flash/ourtown/index.html","Book","width=800,height=600,resizable=yes,toolbar=no,scrollbars=no");
 	} else if(index==2) {
-		window.open("http://storage.googleapis.com/mvassets/flash/ourtown/scenicPopup.html","Viewer","width=640,height=400,resizable=yes,toolbar=no,scrollbars=no");
+		window.open("http://image.minyanville.com/flash/ourtown/scenicPopup.html","Viewer","width=640,height=400,resizable=yes,toolbar=no,scrollbars=no");
 	}
 }
 

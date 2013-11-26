@@ -1,16 +1,16 @@
 <?php
-global $HTPFX,$HTHOST;
+global $HTPFX,$HTHOST,$CDN_SERVER;
  $Minyanville_logo_image = "<a href='".$HTPFX.$HTHOST."'><img src='".$IMG_SERVER."/images/redesign/spacer.gif' alt='Minyanville Logo' width='253px' height='107px'/></a>";
  $emailId = $_REQUEST['email'];
 
 ?>
-<link href="<?=$HTPFX.$HTHOST?>/css/minyanville.1.52.css" rel="stylesheet" type="text/css" />
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/registration_ajax_1.20.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/redesign.1.26.js" type="text/javascript"></script>
+<link href="<?=$CDN_SERVER?>/css/minyanville.1.52.css" rel="stylesheet" type="text/css" />
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/ibox_registration.1.20.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/registration_ajax_1.20.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/redesign.1.26.js" type="text/javascript"></script>
 <div class="mv_logo"><?=$Minyanville_logo_image ?></div>
  <div id="Registrationstep1" class="1st_step_container">
 		<div class="register_title_first"><span id="regstep1" class="erordiv"></span><span id="statusmsgstep1" class="erordiv"></span></div>

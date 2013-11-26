@@ -10,7 +10,8 @@
 					  26=> array('display_name'=> 'Wall of Worry','is_product' => '0'),
 					  29=> array('display_name'=> 'Tchir\'s Fixed Income Report', 'is_product'=>'1' ,'author_name'=>'Peter Tchir'),
 					30=> array('display_name'=> 'Elliott Wave Insider', 'is_product'=>'1'),
-					31=> array('display_name'=> 'Keene On Options', 'is_product'=>'1' ,'author_name'=>'Andrew Keene')
+					31=> array('display_name'=> 'Keene On Options', 'is_product'=>'1' ,'author_name'=>'Andrew Keene'),
+					32=> array('display_name'=> 'Education Center', 'is_product'=>'0')
 					 );
 
 ?>

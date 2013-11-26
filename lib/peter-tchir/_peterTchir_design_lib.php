@@ -326,7 +326,7 @@ class peterTchirDesign{
 
 	function displayPeterFancyBoxPopUp(){
 		global $IMG_SERVER,$objPeterData; ?>
-		<div><a id="heatMapWindow" href="#inline1"></a></div>
+		<div><a id="heatMapWindow" href="inline1"></a></div>
 		<div style="display:none;">
 			<div id="inline1" class="ptc_fancyBox">
 				<div id="ptc_fancyboxContainer">

@@ -46,6 +46,7 @@ function uploadDFFile(fileInput,postUrl){
 					var post = eval('('+req+')');
 					jQuery("#output").html(post.msg);
 					jQuery("#chkImage").val(post.file);
+					jQuery("#upImage").val('1');
 					jQuery("#image_directory_name").val(post.image_directory_name);
 				    },
 				    error: function () {
@@ -151,7 +152,8 @@ function validate_Tag(){
 function setImage(){
 
 	var image_upload = false;
-	if( $('#dailyFeedFile').val()!="") //if file is uploaded and check box is selected
+	alert($('#upImage').val());
+	if( $('#upImage').val()=="1") //if file is uploaded and check box is selected
 	{
 		image_upload = true;
 	}
@@ -167,16 +169,21 @@ function setImage(){
 	}
 	else
 	{
+		alert(image_upload);
 		if(image_upload)
 		{
+			alert('sssss');
 			var img_name = $('#chkImage').val();
 			var img_src = '/assets/dailyfeed/uploadimage/'+$('#image_directory_name').val()+'/'+img_name;
 		}
 		else
 		{
+			alert('wwwww');
 			var img_name = $("#dailyfeedimage option:selected").text();
 			var img_src =$('#image_preview').attr("src");
 		}
+		alert(img_name);
+		alert(img_src);
 		$('#imageuploaded').html('Image uploaded successfully');
 		$('#dfuploaddedimage').hide();
 		image_link = '<input type="checkbox" checked="checked" value="'+img_name+'" name="chkImageupload" id="chkImageupload"/>'+ img_name+'&nbsp;&nbsp;<img src="'+image_server+img_src+'"width="80" height="80" >';
@@ -195,6 +202,7 @@ function dailyFeedImageselect(){
 	if($(dailyfeedimage).val().length>0){
 		$('input[name=chkImage]').attr('checked', false);
 		$(imagenamedf).val('');
+		$('#upImage').val('0');
 	}
 }
 function HostYahoo()
@@ -294,7 +302,7 @@ jQuery(document).ready(function(){
 
 function callTags(val)
 {
-	var img_server = "http://storage.googleapis.com/mvassets";
+	var img_server = "http://image.minyanville.com";
 	if(!val)
 	{
 		alert("Please enter some data in 'Full Entry' box.");
@@ -333,7 +341,7 @@ function callTags(val)
 
 function callTickers(val)
 {
-	var img_server = "http://storage.googleapis.com/mvassets";
+	var img_server = "http://image.minyanville.com";
 	
 	if(!val)
 	{

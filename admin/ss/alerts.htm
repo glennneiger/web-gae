@@ -1,4 +1,5 @@
 <?
+global $CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include("$ADMIN_PATH/ss/ss_classes/class_admin.php");
 /*============set up permissions=================*/
@@ -6,7 +7,7 @@ $editanyuser=$AD->getPerm("ss_alerts_all");
 $candelete=$AD->getPerm("ss_alerts_manage");
 $edit_date=$AD->getPerm("alerts_date");
 $id = $_GET['id'];
-
+$error=$_GET['error'];
 /*=============throw error if they're not allowed anything on this page====*/
 if(!$editanyuser && !$candelete && !$edit_date){
 	admin_error("You're not allowed to use this page.");
@@ -81,7 +82,7 @@ function setFormSubmitMarker(frm,value)
 }
 
 </script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
 <br><br>
 <?if($AD->getPerm("ss_alerts_manage")){?>

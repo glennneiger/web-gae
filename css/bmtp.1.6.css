@@ -42,7 +42,7 @@ color:#323230;
 clear:both;
 width:400px;
 padding-bottom:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_title_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/cooper_title_bg.jpg);
 background-position:bottom;
 background-repeat:repeat-x;
 padding-top:10px;
@@ -164,7 +164,7 @@ color:#e1c8c3;
 font-weight:bold;
 }
 .bmtp_article_box{
-/*background-image:url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_article.gif);
+/*background-image:url(http://image.minyanville.com/images/bmtp/bmtp_article.gif);
 background-position:top;
 background-repeat:repeat-x;*/
 width:100%;
@@ -354,7 +354,7 @@ text-transform:none;
 }
 
 .bmtp_articlemessage_box{
-background-image:url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_article.gif);
+background-image:url(http://image.minyanville.com/images/bmtp/bmtp_article.gif);
 background-position:top;
 background-repeat:repeat-x;
 padding-top:15px;
@@ -397,7 +397,7 @@ line-height:15px;
 color:#000;
 font-weight:bold;
 text-align:left;
-background-image: url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_sub_cont_bg.gif);
+background-image: url(http://image.minyanville.com/images/bmtp/bmtp_sub_cont_bg.gif);
 }
 .bmtp_subs_container td{
 padding-left:0px;
@@ -468,7 +468,7 @@ margin:0px;
   }
   .video_part_cont{
   font-size:12px;
-  background-image: url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_part_bg.gif);
+  background-image: url(http://image.minyanville.com/images/bmtp/bmtp_part_bg.gif);
   background-repeat:repeat-x;
   float:left;
   clear:both;
@@ -523,7 +523,7 @@ font-size:18px;
 color:#323230;
 clear:both;
 padding-bottom:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_title_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/cooper_title_bg.jpg);
 background-position:bottom;
 background-repeat:repeat-x;
 padding-top:10px;
@@ -554,7 +554,7 @@ text-align:center;
 
 }
 .bmtp_articlemessage_bebefits{
-background-image:url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_article.gif);
+background-image:url(http://image.minyanville.com/images/bmtp/bmtp_article.gif);
 background-position:top;
 background-repeat:repeat-x;
 padding-top:12px;
@@ -656,7 +656,7 @@ height:90px;
 font-family:Arial, Helvetica, sans-serif;
 font-size:30px;
 color:#000;
-background-image:url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_add_to_cart.gif);
+background-image:url(http://image.minyanville.com/images/bmtp/bmtp_add_to_cart.gif);
 background-repeat:no-repeat;
 background-position:right;
 font-weight:bold;
@@ -671,7 +671,7 @@ height:90px;
 font-family:Arial, Helvetica, sans-serif;
 font-size:30px;
 color:#000;
-background-image:url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_add_to_cart_2.gif);
+background-image:url(http://image.minyanville.com/images/bmtp/bmtp_add_to_cart_2.gif);
 background-repeat:no-repeat;
 background-position:right;
 font-weight:bold;
@@ -704,7 +704,7 @@ float:left;
 }
 
 .video_nav_container{
-background-image: url(../http://storage.googleapis.com/mvassets/images/bmtp/bmtp_part_bg.gif);
+background-image: url(../http://image.minyanville.com/images/bmtp/bmtp_part_bg.gif);
 background-repeat:repeat-x;
 width:895px;
 float:left;
@@ -791,7 +791,7 @@ padding-top:5px;
 }
 .header_bmtp {
 width:662px;
-background-image: url(http://storage.googleapis.com/mvassets/images/bmtp/bmtp_header_main.png);
+background-image: url(http://image.minyanville.com/images/bmtp/bmtp_header_main.png);
 height:102px;
 background-repeat: no-repeat;
 background-position: 70% center;
@@ -858,7 +858,7 @@ text-transform:none;
 }
 
 .header_bmtp_image {
-    background-image: url("http://storage.googleapis.com/mvassets/images/bmtp/bmtp_header_main.png");
+    background-image: url("http://image.minyanville.com/images/bmtp/bmtp_header_main.png");
 background-position:center;
 background-repeat: no-repeat;
 background-color: #FFFFFF;

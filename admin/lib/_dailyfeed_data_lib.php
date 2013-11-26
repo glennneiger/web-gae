@@ -13,9 +13,11 @@ class Dailyfeed{
 		}
 		else
 		{
-			$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
-			$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
-			$this->contentType=$resGetContentTypeId['id'];
+			if($type!=""){
+				$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
+				$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
+				$this->contentType=$resGetContentTypeId['id'];
+			}
 		}
 	}
 
@@ -329,7 +331,10 @@ class Dailyfeed{
 		{
 			$url	= $url."/";
 		}
-		$qry="SELECT xbt.item_id FROM ex_item_tags xbt, ex_tags xt,daily_feed DF  where xt.id = xbt.tag_id and xbt.item_type ='18' and DF.id=xbt.item_id and DF.is_approved='1' and DF.is_deleted='0' and xt.url='".$url."' order by xbt.item_id desc limit ".$offset.",".$dailyfeedLandingItems;
+		$qry="SELECT xbt.item_id FROM ex_item_tags xbt, ex_tags xt,daily_feed DF 
+		 where xt.id = xbt.tag_id and xbt.item_type ='18' and DF.id=xbt.item_id and 
+		 DF.is_approved='1' and DF.is_deleted='0' and xt.url='".$url."' 
+		 order by xbt.item_id desc limit ".$offset.",".$dailyfeedLandingItems;
 		$itemvalue=array();
 		$result=exec_query($qry);
 		foreach($result as $row){ $itemvalue[]=$row['item_id'];}
@@ -659,8 +664,9 @@ $qry="Select DF.id,DF.creation_date,DF.updation_date,IF(publish_date = '0000-00-
 							<div id="enable_submit" class="talkreplyLeft">
 								<div id="uploaded_image">&nbsp;</div>
 									<div class="btn_addchart" style="">
-									<input style="float:left;" type="file" name="dailyFeedFile" id="dailyFeedFile" onClick="uploadDFFile('dailyFeedFile','<?=$upload_url?>');"> &nbsp;&nbsp;&nbsp;&nbsp;<div id="output"></div>
+									<input style="float:left;" type="file" name="dailyFeedFile" id="dailyFeedFile" onChange="uploadDFFile('dailyFeedFile','<?=$upload_url?>');"> &nbsp;&nbsp;&nbsp;&nbsp;<div id="output"></div>
 								    <input type="hidden" name="chkImage" id="chkImage">
+									<input type="hidden" name="upImage" id="upImage">
 								</div></div>
 								
 				</td>
@@ -1040,6 +1046,48 @@ EP.id=EPC.post_id AND ET.content_table='daily_feed' and ET.title <>'' and EP.sus
 	}
 
 	function sendDailyFeedArticleMail($NotifyDailyFeedTo,$NotifyDailyFeedFrom,$dfTitle,$DAILYFEED_EML_TMPL,$dfId,$contribId,$dfSizeEmailAlert)
+	{
+		global $HTPFX,$HTHOST,$D_R,$NotifyDailyFeedTo,$NotifyDailyFeedFrom,$dfSizeEmailAlert,$DAILYFEED_EML_TMPL;
+		include_once("$D_R/lib/email_alert/_lib.php");
+		$qry="select S.id, S.email from subscription S,email_alert_authorsubscribe EA where S.id=EA.subscriber_id and EA.email_alert='1' and (S.trial_status<>'inactive' or S.trial_status is null) and EA.subscriber_id in (select subscriber_id from email_alert_authorsubscribe where author_id regexp ',$contribId,')";
+
+		$result = exec_query($qry);
+		$numrows = count($result);
+		$leftrows=$numrows;
+		$size=$dfSizeEmailAlert;
+		if($numrows != 0)
+		{
+			foreach($result as $key=>$value)
+			{
+				if($to==''){
+					$to	= $value['email'];
+			  	}else{
+					$to = $to.",".$value['email'];
+			  	}
+				if(($numrows>$dfSizeEmailAlert) && ($key==$size-1) && ($leftrows>$dfSizeEmailAlert)){
+					$fileList=$this->dfEmailList($to);
+					$leftrows=$numrows-$key;
+					$size=$size + $dfSizeEmailAlert;
+					$this->callbulkmailer($NotifyDailyFeedTo,$dailyFeedFrom,$dfTitle,$DAILYFEED_EML_TMPL,$dfId,$fileList);
+					$to='';
+			    }
+			  // file size > no. of emails in the file list and no. of records left < no. of emails in the file list
+			  	if(($numrows>$dfSizeEmailAlert) && ($key==$numrows-1) && ($leftrows<=$dfSizeEmailAlert)){
+					$fileList=$this->dfEmailList($to);
+					$this->callbulkmailer($NotifyDailyFeedTo,$dailyFeedFrom,$dfTitle,$DAILYFEED_EML_TMPL,$dfId,$fileList);
+					$to='';
+			  	}
+			  // file size < no. of emails in the file list
+			    if(($numrows<=$dfSizeEmailAlert) && ($key==$numrows-1)){
+					$fileList=$this->dfEmailList($to);
+					$this->callbulkmailer($NotifyDailyFeedTo,$dailyFeedFrom,$dfTitle,$DAILYFEED_EML_TMPL,$dfId,$fileList);
+			  	}
+				//$this->sendMail($to,'support@minyanville.com',$dfTitle,$dfId);
+			}
+		}
+	}
+	
+	function sendDailyFeedArticleMail_old($NotifyDailyFeedTo,$NotifyDailyFeedFrom,$dfTitle,$DAILYFEED_EML_TMPL,$dfId,$contribId,$dfSizeEmailAlert)
 	{
 		global $HTPFX,$HTHOST,$D_R,$NotifyDailyFeedTo,$NotifyDailyFeedFrom,$dfSizeEmailAlert,$DAILYFEED_EML_TMPL;
 		include_once("$D_R/lib/email_alert/_lib.php");

@@ -5,6 +5,7 @@ include_once("$D_R/lib/_module_data_lib.php");
 include_once("$D_R/lib/_module_design_lib.php");
 include_once("$D_R/lib/_via_data_lib.php");
 include_once("$D_R/lib/_via_controller_lib.php");
+include_once($D_R.'/lib/config/_products_config.php');
 include_once("$D_R/subscription/cart.php");
 include_once("$D_R/lib/registration/_register_product_design_lib.php");
 

@@ -1,5 +1,5 @@
 <?
-global $D_R,$HTPFX,$HTHOST;
+global $D_R,$HTPFX,$HTHOST,$CDN_SERVER;
 $pageName = "dailyfeed";
 $pageId=142;
 include_once($D_R."/lib/MemCache.php");
@@ -75,7 +75,7 @@ function trackTSClick(linkOut,url,label)
 show_adds_checkmate('print');
 ?>
 <!-- Checkm8 script ends -->
-	<link href="<?=$HTPFX.$HTHOST?>/css/dailyfeed.1.21.css" type="text/css" rel="stylesheet" />
+	<link href="<?=$CDN_SERVER?>/css/dailyfeed.1.21.css" type="text/css" rel="stylesheet" />
 	<script language="javascript">
 	<!--// <![CDATA[
 	<?
@@ -85,9 +85,9 @@ show_adds_checkmate('print');
 
 	-->
 	</script>
-	<script src="<?=$pfx?>/js/ads.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/ads.js" type="text/javascript"></script>
 
-	<script src="../js/print.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/print.js" type="text/javascript"></script>
 
 
 

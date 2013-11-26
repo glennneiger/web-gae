@@ -3,7 +3,7 @@ include_once("$D_R/admin/_authenticate.htm");
 include_once("$D_R/lib/_richedit.php");
 include_once("$D_R/admin/FCKeditor/fckeditor.php");
 
-global $HTPFX,$IMG_SERVER;
+global $HTPFX,$IMG_SERVER,$CDN_SERVER;
 
 // Add banter_all banter_own banter_delete banter_approve authorizations for buzz and banter.
 	$navpages = array(
@@ -47,9 +47,9 @@ global $HTPFX,$IMG_SERVER;
 <html>
 <head>
 <title><?=($title?$title:"Minyanville Administration Area")?> </title>
-<link rel="stylesheet" href="<?=$HTPFX.$HTADMINHOST;?>/admin/_style.1.3.css">
+<link rel="stylesheet" href="<?=$HTPFX.$HTHOST;?>/admin/_style.1.3.css">
 
-<script src="<?=$HTPFX.$HTHOST;?>/js/config.1.2.js" language="JavaScript"></script>
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" language="JavaScript"></script>
 <script src="<?=$HTPFX.$HTHOST;?>/lib/_script.js" language="JavaScript"></script>
 </head>
 <?if(!$hide_ui){?>

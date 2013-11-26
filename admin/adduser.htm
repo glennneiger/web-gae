@@ -1,5 +1,5 @@
 <?php
-global $D_R,$HTPFX,$HTHOST;
+global $D_R,$HTPFX,$HTHOST,$CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include_once("$D_R/admin/_authenticate.htm");
 include_once("$D_R/lib/config/_products_config.php");
@@ -27,9 +27,9 @@ if($id!=''){
 <html>
 <head>
 	<title>Add User</title>
-	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/adminManageSubscription.1.3.css">
-	<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/adminManageSubscription.1.4.js"></script>
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/adminManageSubscription.1.3.css">
+	<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?=$CDN_SERVER?>/js/adminManageSubscription.1.4.js"></script>
 </head>
 
 <body onload=window.focus() style="border:0px">

@@ -6,7 +6,7 @@ header("Expires: 0");
 ?>
 <adservercode>
 <advid>2</advid>
-<videoad>http://storage.googleapis.com/mvassets/mvtv/ads/TDameritrade/questions.flv</videoad>
+<videoad>http://image.minyanville.com/mvtv/ads/TDameritrade/questions.flv</videoad>
 <videoclickthru>http://ad.doubleclick.net/clk;213086863;33868276;t?http://www.tdameritrade.com/o.cgi?DFAID=1&amp;a=XEC&amp;o=177&amp;p=/offer/special.html</videoclickthru>
 <duration>25</duration>
 <title>Your video will play shortly.</title>

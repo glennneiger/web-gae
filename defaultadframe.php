@@ -1,13 +1,14 @@
 <?php
+global $D_R,$CDN_SERVER;
 include_once($D_R.'/lib/_includes.php');
 session_start();
 $localSessionId=session_id();
 $_SESSION['localsession']=$localSessionId;
 ?>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/ibox.1.1.css" type="text/css" />
-<link href="<?=$D_R?>/css/main.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/ibox.1.1.css" type="text/css" />
+<link href="<?=$CDN_SERVER?>/css/main.css" rel="stylesheet" type="text/css" />
 <script language="javascript">AC_FL_RunContent = 0;</script>
-<script src="js/AC_RunActiveContent.js" language="javascript"></script>
+<script src="<?=$CDN_SERVER?>js/AC_RunActiveContent.js" language="javascript"></script>
 
 <script language="javascript">
 	if (AC_FL_RunContent == 0) {

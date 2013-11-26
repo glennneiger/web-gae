@@ -9,11 +9,13 @@ class pepFil{
 		}
 		else
 		{
-			$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
-			$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
-			$this->contentType=$resGetContentTypeId['id'];
-			$this->contentTable=$resGetContentTypeId['item_table'];
-			$this->contribId=get_contributor_id_byname("Pep & Fil");
+			if($type!=""){
+				$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
+				$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
+				$this->contentType=$resGetContentTypeId['id'];
+				$this->contentTable=$resGetContentTypeId['item_table'];
+				$this->contribId=get_contributor_id_byname("Pep & Fil");
+			}
 		}
 	}
 

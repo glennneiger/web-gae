@@ -1,5 +1,6 @@
 <?
    	   include_once("$D_R/lib/email_alert/_lib.php");
+   	   include_once("$D_R/lib/json.php");
 
    	   $json = new Services_JSON();
 	   $userObj = new user();

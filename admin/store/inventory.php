@@ -1,5 +1,7 @@
-<?	include("./_header.php");
-
+<?	
+global $D_R;
+include("./_header.php");
+include_once("$D_R/lib/_cart.php");
 /*============set up permissions=================*/
 $adminall=$AD->getPerm("admin_users_all");
 

@@ -12,14 +12,14 @@ class eduDesign{
 				        	<li class="activeNav"><a href="<?php echo $HTPFX.$HTHOST.'/edu/'.$menu['menu_alias']?>"><?php echo $menu['menu_name'];?></a></li>
 			        <?php } elseif (strtolower($menu['menu_name'])=="buzz & banter"){
 		        				if(empty($_SESSION['Buzz'])){ ?>
-									<li><a href="http://mvp.minyanville.com/buzz-banter-landing-page-homepage-module/?utm_source=Homepage Modules&utm_medium=website&utm_content=Homepage Modules&utm_campaign=buzz"><?php echo $menu['menu_name'];?></a></li>
+									<li><a href="http://mvp.minyanville.com/buzz-banter-landing-page-homepage-module/?utm_source=Homepage Modules&utm_medium=website&utm_content=Homepage Modules&utm_campaign=buzz" target="_blank"><?php echo $menu['menu_name'];?></a></li>
 							<?php } elseif(!empty($_SESSION['Buzz'])){
 									$buzzLaunchUrl=buzzAppUrlEncryption(); ?>
-									<li><a href="javascript:;" onclick="window.open('<?php echo $buzzLaunchUrl;?>',\'Banter\',\'width=455,height=708,resizable=yes,toolbar=no,scrollbars=no\'); banterWindow.focus();"><?php echo $menu['menu_name'];?></a></li>
+									<li><a href="javascript:;" onclick="window.open('<?php echo $buzzLaunchUrl;?>','Banter','width=455,height=708,resizable=yes,toolbar=no,scrollbars=no');"><?php echo $menu['menu_name'];?></a></li>
 						<?php }
 			        } elseif (strtolower($menu['menu_name'])=="products"){ 
 			        	$academyUrl='http://www.tradingacademy.net'; ?>
-			        	<li>  <a href="javascript:displayLeavingWindow('<?php  echo $academyUrl ?>');"><?php echo $menu['menu_name'];?></a></li>
+			        	<li><a class="productFancy" href="" onclick="javascript:displayLeavingWindow('<?php  echo $academyUrl ?>');"><?php echo $menu['menu_name'];?></a></li>
 			 <?php  } else { ?>
 				        	<li><a href="<?php echo $HTPFX.$HTHOST.'/edu/'.$menu['menu_alias']?>"><?php echo $menu['menu_name'];?></a></li>
 				        <?php } 
@@ -89,14 +89,14 @@ class eduDesign{
 						<?php  }else{ 
 									if (strtolower($menu['menu_name'])=="buzz & banter"){
 		        						if(empty($_SESSION['Buzz'])){ ?>
-											<div class="eduRightList"><a href="http://mvp.minyanville.com/buzz-banter-landing-page-homepage-module/?utm_source=Edu&utm_medium=website&utm_content=Edu&utm_campaign=buzz"><?php echo $menu['menu_name'];?></a></div>
+											<div class="eduRightList"><a href="http://mvp.minyanville.com/buzz-banter-landing-page-homepage-module/?utm_source=Edu&utm_medium=website&utm_content=Edu&utm_campaign=buzz" target="_blank"><?php echo $menu['menu_name'];?></a></div>
 										<?php } elseif(!empty($_SESSION['Buzz'])){
 											$buzzLaunchUrl=buzzAppUrlEncryption(); ?>
-											<div class="eduRightList"><a href="javascript:;" onclick="window.open('<?php echo $buzzLaunchUrl;?>',\'Banter\',\'width=455,height=708,resizable=yes,toolbar=no,scrollbars=no\'); banterWindow.focus();"><?php echo $menu['menu_name'];?></a></div>
+											<div class="eduRightList"><a href="javascript:;" onclick="window.open('<?php echo $buzzLaunchUrl;?>','Banter','width=455,height=708,resizable=yes,toolbar=no,scrollbars=no'); banterWindow.focus();"><?php echo $menu['menu_name'];?></a></div>
 										<?php }
 			        				} elseif (strtolower($menu['menu_name'])=="products"){ 
 			        					$academyUrl='http://www.tradingacademy.net'; ?>
-			        					<div class="eduRightList"><a href="javascript:displayLeavingWindow('<?php  echo $academyUrl ?>');"><?php echo $menu['menu_name'];?></a></div>
+			        					<div class="eduRightList"><a class="productFancy" href="" onclick="javascript:displayLeavingWindow('<?php  echo $academyUrl ?>');"><?php echo $menu['menu_name'];?></a></div>
 			 					<?php }else{ ?>
 									<div class="eduRightList"><a href="<?php echo $HTPFX.$HTHOST.'/edu/'.$menu['menu_alias'];?>"><?php echo $menu['menu_name'];?></a></div>
 						<?php  }
@@ -106,7 +106,7 @@ class eduDesign{
 	
 			<div class="eduAds">
 				<?php if($_SESSION['AdsFree']!="1"){
-						CM8_ShowAd("MediumRectangle_300x250_300x600");
+						CM8_ShowAd("MediumRectangle_300x250");
 				}?>	
 			</div>
 		<?php } ?>
@@ -120,6 +120,7 @@ class eduDesign{
 			<div class="eduLeftArtList">
 				<div class="eduCategoryHeading">
 					<?php
+						$moreTxt = "Read More";
 						if($sectionName=="How to Trade")
 						{
 							echo "<h1>Trade Like a Pro:</h1>
@@ -132,6 +133,7 @@ class eduDesign{
 						}
 						else if($sectionName=="Trading Videos")
 						{
+							$moreTxt = "Watch Here";
 							echo "<h1>Trading Videos:</h1>
 						<p>Let Veteran Traders Show You How to Analyze the Market.</p>";
 						}
@@ -153,11 +155,11 @@ class eduDesign{
 							<div class="educatArtImg"><img src="<?php echo $imgPath;?>"></div>
 							<div class="eduCatArtContent">
 								<h1><a href="<?php echo $HTPFX.$HTHOST.$val['url'];?>"><?php echo $val['title'];?></a></h1>
-								<p><?php echo $val['name'];?><br><?php echo date('D M d, Y h:i',strtotime($val['publish_date']));?> EDT</p>
+								<p><?php echo $val['name'];?><br><?php echo date('D M d, Y h:i',strtotime($val['publish_date']));?> EST</p>
 								<div class="eduCatArtDesc"><?php
 									$body = $this->getPartOfEduBody($val['body'],60);
 									echo $body;?>..</div>
-								<div class="eduReadMore"><a href="<?php echo $HTPFX.$HTHOST.$val['url'];?>">Read More</a></div>
+								<div class="eduReadMore"><a href="<?php echo $HTPFX.$HTHOST.$val['url'];?>"><?php echo $moreTxt;?></a></div>
 							</div>
 						</div>
 					<?php }
@@ -249,6 +251,7 @@ class eduDesign{
 	
 	function displayEduLeftArtCol($id){ 
 		global $HTPFX, $HTHOST, $IMG_SERVER, $objEduData, $objArticle,$pageurl; 
+		$objCache = new Cache();
 		$eduArtDetail = $objEduData->getEduAlertDetails($id);
 		$getArtContrib = $objEduData->getContributorById($eduArtDetail['contrib_id']);
 		if($eduArtDetail['edu_img']==false){
@@ -269,11 +272,11 @@ class eduDesign{
 					<div class="eduArtSocialSharing">
 						<h1><?php echo $eduArtDetail['title'];?></h1>
 						<p><?php echo $getArtContrib;?><br>
-						<?php echo date('D M d, Y h:i',strtotime($publish_date));?> EDT</p>
+						<?php echo date('D M d, Y h:i',strtotime($publish_date));?> EST</p>
 						<div class="eduArtSocialIcon">
 							<ul>
 								<li><span class="st_facebook_large" displayText='Facebook' st_url="<?=$HTPFX.$HTHOST.$pageurl?>" ></span></li>
-								<li><span class="st_twitter_large" displayText='Tweet' st_via="" st_msg="<?=$eduArtDetail['title'].' via @minyanville';?>" st_url="<?=$HTPFX.$HTHOST.$pageurl?>"></span></li>
+								<li><span class="st_twitter_large" displayText='Tweet' st_via="minyanville" st_url="<?=$HTPFX.$HTHOST.$pageurl?>"></span></li>
 								<li><span class='st_googleplus_large' displayText='Google +1' st_url="<?=$HTPFX.$HTHOST.$pageurl?>"  ></span></li>
 								<li><span class="st_email_large" displayText='Email' st_url="<?=$HTPFX.$HTHOST.$pageurl?>"></span></li>
 
@@ -296,7 +299,8 @@ class eduDesign{
 						$body = str_replace("{VIDEO}","<div>".displayRadioInArticle($eduArtDetail['eduVideo'],'')."</div>", $eduArtDetail['body']);
 					} else {
 						$body = $eduArtDetail['body'];
-					}	?>
+					}	
+					$body = $objCache->buzzAdReplace($body);?>
 					<div class="eduArtBody" id="eduArtBody"><?php echo $body;?></div>
 				</div>
 				<div id="fbcomment_layout">
@@ -333,10 +337,6 @@ class eduDesign{
 				<div id="eduGlossHeader">
 				   <div id="eduGlossBookImg"><img src="<?php echo $IMG_SERVER;?>/images/education/book.PNG" alt=""/></div>
 				   <div class="eduGlossHeading">&#160;Glossary</div>
-				   <div class="eduGlossSearch">
-				   		<input id="eduGlossSearchText" type="text" value="" title="search" placeholder="Search the glossary ..." onkeypress="if(event.keyCode==13){searchEduGlossary();}">
-				   		<img id="eduGlossSearchIcon" src="<?php echo $IMG_SERVER;?>/images/education/serach-glossary.png" alt="" onclick="javascript:searchEduGlossary();" />
-					</div>
 				</div>
 				<div id="eduGlossBody">
 				<div class="eduGlossSearchProg">&nbsp;</div>
@@ -380,19 +380,6 @@ class eduDesign{
 			<div class="eduModuleheading"><a href="<?php echo $HTPFX.$HTHOST;?>/subscription/" >MVP Subscriptions</a></div>
 				<div class="eduMvpContent">
 					<?php 
-					if($_SESSION['ElliottWave']=="1")
-					{
-						$url =  $HTPFX.$HTHOST.'/ewi/';	
-					}
-					else
-					{
-						$url=$productUrlArr['ElliottWave'];
-					}
-					?>
-					<div class="eduMvpListing"><a href="<?php echo $url; ?>">Elliott Wave Insider</a>
-						<p>Market analysis from the Elliott Wave pioneers.</p>
-					</div>
-					<?php 
 					if($_SESSION['peterTchir']=="1")
 					{
 						$url =  $HTPFX.$HTHOST.'/tchir-fixed-income/';	
@@ -403,7 +390,7 @@ class eduDesign{
 					}
 					?>
 					<div class="eduMvpListing"><a href="<?php echo $url; ?>">Peter Tchir's Fixed Income Repor</a>
-						<p><a href="<?php echo $url; ?>">The inside scoop on the bond market.</a></p>
+						<p>The inside scoop on the bond market.</p>
 					</div>
 					<?php 
 					if($_SESSION['Cooper']=="1")
@@ -416,20 +403,20 @@ class eduDesign{
 					}
 					?>
 					<div class="eduMvpListing"><a href="<?php echo $url; ?>">Jeff Cooper's Daily Market Report</a>
-						<p><a href="<?php echo $url; ?>">Day and swing trading setups daily, with market commentary from an expert.</a></p>
+						<p>Day and swing trading setups daily, with market commentary from an expert.</p>
 					</div>
 					<?php 
-					if($_SESSION['ElliottWave']=="1")
+					if($_SESSION['TechStrat']=="1")
 					{
-						$url =  $HTPFX.$HTHOST.'/ewi/';	
+						$url =  $HTPFX.$HTHOST.'/techstrat/';	
 					}
 					else
 					{
-						$url=$productUrlArr['ElliottWave'];
+						$url=$productUrlArr['TechStrat'];
 					}
 					?>
 					<div class="eduMvpListing"><a href="<?php echo $url; ?>">TechStrat Report</a>
-						<p><a href="<?php echo $url; ?>">Get daily insights & ideas from tech expert Sean Udall, so you can jump on tomorrow's winning stocks today!</a></p>
+						<p>Get daily insights & ideas from tech expert Sean Udall, so you can jump on tomorrow's winning stocks today!</p>
 					</div>
 					<?php 
 					if($_SESSION['Optionsmith']=="1")
@@ -441,8 +428,21 @@ class eduDesign{
 						$url=$productUrlArr['Optionsmith'];
 					}
 					?>
-					<div class="eduMvpListing"><a href="<?php echo $url; ?>">Optionsmith by Steve Smith</a>
-						<p><a href="<?php echo $url; ?>">Options trading strategies and portfolio reviews with veteran options trader Steve Smith.</a></p>
+					<div class="eduMvpListing"><a href="<?php echo $url; ?>">OptionSmith by Steve Smith</a>
+						<p>Options trading strategies and portfolio reviews with veteran options trader Steve Smith.</p>
+					</div>
+					<?php 
+					if($_SESSION['keene']=="1")
+					{
+						$url =  $HTPFX.$HTHOST.'/keene/';	
+					}
+					else
+					{
+						$url=$productUrlArr['keene'];
+					}
+					?>
+					<div class="eduMvpListing"><a href="<?php echo $url; ?>">Keene On Options</a>
+						<p>Gain access to Andrew Keene's options daly trading ideas.</p>
 					</div>
 					<?php 
 					if($_SESSION['TheStockPlayBook']=="1")
@@ -455,7 +455,7 @@ class eduDesign{
 					}
 					?>
 					<div class="eduMvpListing"><a href="<?php echo $url; ?>">The Stock Playbook</a>
-						<p><a href="<?php echo $url; ?>">Get Daily Videos detailing Dave Dispennette's market view, portfolio strategy & stocks under $10.</a></p>
+						<p>Get Daily Videos detailing Dave Dispennette's market view, portfolio strategy & stocks under $10.</p>
 					</div>
 				</div>
 		</div>
@@ -471,7 +471,7 @@ class eduDesign{
 				<ul>
 					<?php if(!empty($eduProdlist)){
 						foreach ($eduProdlist as $key=>$val){ ?>
-						<li>
+						<li id="fancy-<?php echo $key;?>">
 							<div class="eduProdImg" onClick="javascript:displayLeavingWindow('<?php  echo $val['productUrl'] ?>');"><img src="<?php echo $IMG_SERVER;?>/assets/edu/images/<?php echo $val['image'];?>" alt=""/></div>
 							<div class="eduProdDetail">
 								<div class="euProdTitle" onClick="javascript:displayLeavingWindow('<?php  echo $val['productUrl'] ?>');"><?php echo $val['title'];?></div>
@@ -494,7 +494,7 @@ class eduDesign{
 		<div style="display:none;">
 			<div id="eduLeavingWindow" class="eduProductPopUp">
 				<div class="eduClosebttn">
-					<img style="margin:-15px 0px 0px -5px;" align="right" src="<?php echo $IMG_SERVER;?>/images/fancybox/bnb_closeBtn.png" alt="" onclick="javascript:redirectToProduct();"/>
+					<img style="margin:-15px 0px 0px -5px;" align="right" src="<?php echo $IMG_SERVER;?>/images/fancybox/bnb_closeBtn.png" alt="" onclick="javascript:closeEduFancyBox();"/>
 					<div class="eduCloseText"><span style="text-decoration:underline;"> Close</span><span> or Esc key</span></div>
 				</div>
 				<div class="eduProdPopUpText">You are now leaving the<br/>  MV Education Center web server.</div>
@@ -528,7 +528,7 @@ class eduDesign{
 							<div class="educatArtImg"><img src="<?php echo $imgPath;?>"></div>
 							<div class="eduCatArtContent">
 								<h1><a href="<?php echo $HTPFX.$HTHOST.$val['url'];?>"><?php echo $val['title'];?></a></h1>
-								<p><?php echo $val['name'];?><br><?php echo date('D M d, Y h:i',strtotime($val['publish_date']));?> EDT</p>
+								<p><?php echo $val['name'];?><br><?php echo date('D M d, Y h:i',strtotime($val['publish_date']));?> EST</p>
 								<div class="eduCatArtDesc"><?php
 									$body = $this->getPartOfEduBody($val['body'],60);
 									echo $body;?>..</div>

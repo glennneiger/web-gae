@@ -2,6 +2,7 @@
 global $D_R;
 include_once($D_R."/lib/config/_syndication_config.php");
 include_once($D_R."/lib/_misc.php");
+include_once($D_R.'/lib/config/_syndication_config.php');
 global $NOTIFY_FEED_ERROR_TO,$NOTIFY_FEED_ERROR_FROM,$NOTIFY_FEED_ERROR_SUBJECT,$feed_error_template;
 
 $port=21;

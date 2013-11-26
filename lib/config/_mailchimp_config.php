@@ -1,5 +1,5 @@
 <?
-//$mailChimpApiKey="5b3e2225fcae0ca609e84a956aacd28b-us5";
+$mailChimpApiKey="5b3e2225fcae0ca609e84a956aacd28b-us5";
 
 $prodList['techstrat'] = "Techstrat test List";
 $prodList['optionsmith'] = "OptionSmith Email List";

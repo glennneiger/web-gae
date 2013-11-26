@@ -2,6 +2,7 @@
 include_once($D_R.'/lib/MemCache.php');
 global $memCache,$articleCacheExpiry;
 $memCache = new memCacheObj();
+include_once("$D_R/lib/json.php");
 $json = new Services_JSON();
 if(!empty($_POST['height'])){
 	$id=$_POST['articleId'];

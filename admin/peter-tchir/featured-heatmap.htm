@@ -1,24 +1,24 @@
 <?php
-global $HTPFX,$HTHOST,$IMG_SERVER,$cloudStorageTool,$D_R;
+global $HTPFX,$HTHOST,$IMG_SERVER,$cloudStorageTool,$D_R,$tempPath,$bucketPath,$CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include($D_R."/lib/config/_peter_tchir_config.php");
 include_once("$D_R/lib/_image_rsync.php");
 include($D_R."/lib/peter-tchir/_peterTchir_data_lib.php");
 
 $handler = $HTPFX.$HTHOST."/admin/peter-tchir/featured-heatmap_mod.htm";
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' => $tempPath ];
 $frm_url = $cloudStorageTool->createUploadUrl($handler, $options);
 
 global $contributorId, $contributorName;
 $objPeterData = new peterTchirData('peter_alerts');
 
 ?>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/peterTchir-admin.css">
-<script src="<?=$HTPFX.$HTHOST?>/js/config.1.2.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/peterTchir.js" ></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/peterTchir-admin.css">
+<script src="<?=$CDN_SERVER?>/js/config.1.2.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/peterTchir.js" ></script>
 
 <div class=adminheader>Peter Tchir's Fixed Income Report - Heatmap</div><br>
 <?  $featuredHeatmap=$AD->getPerm("peterTchir_heatmap"); //set permission

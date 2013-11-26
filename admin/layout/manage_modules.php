@@ -1,5 +1,8 @@
 <?php
 global $HTPFX, $HTHOST,$HTADMINHOST, $HTADMINHOSTPREVIW;
+global $_SESSION,$D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
+include_once("$D_R/lib/_layout_data_lib.php");
 $pageAlias= str_replace(".htm","",getPageAlias($_POST['page_id']));
 $pageURL = $HTPFX.$HTADMINHOSTPREVIW.$pageAlias."?preview=1";
 

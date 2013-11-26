@@ -1,11 +1,11 @@
 <?php include("$D_R/_header_no_nav.htm");
-global $HTPFX,$HTHOST,$IMG_SERVER;
+global $HTPFX,$HTHOST,$IMG_SERVER,$CDN_SERVER;
 $pageName = "semsofttrial_welcome";
 $trackname=$_GET['trackname'];
 $a=$_GET['a'];
 ?>
-<link href="<?=$HTPFX.$HTHOST?>/css/footer-no-nav.css" rel="stylesheet" type="text/css" />
-<link href="<?=$HTPFX.$HTHOST?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
+<link href="<?=$CDN_SERVER?>/css/footer-no-nav.css" rel="stylesheet" type="text/css" />
+<link href="<?=$CDN_SERVER?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
 <?
 if($a){ ?>
 <div class="welcomepage">

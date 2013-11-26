@@ -5,6 +5,7 @@ global $D_R,$HTPFX,$HTHOST,$globalPwd,$REG_EML_REPLYTO;
 	include_once($D_R."/lib/_user_controller_lib.php");
 	include_once($D_R."/lib/_user_exceptionhandler.php");
 	require_once($D_R."/lib/recurly/recurly.php");
+	include_once("$D_R/lib/json.php");
 	include_once($D_R."/lib/config/_recurly_config.php");
 	include_once ($D_R."/lib/recurly/_recurly_data_lib.php");
 	include_once($D_R."/lib/registration/_register_funnel_data_lib.php");
@@ -234,6 +235,7 @@ global $D_R,$HTPFX,$HTHOST,$globalPwd,$REG_EML_REPLYTO;
 	}
 	else if((isset($getType))&& $getType=='articletopic_newsletter'){
 		include_once($D_R."/lib/config/_email_config.php");
+		include_once("$D_R/lib/_layout_data_lib.php");
 		global $dailyDigestPassword;
 
 		$feed_email = $_POST['checkemail'];
@@ -330,6 +332,7 @@ global $D_R,$HTPFX,$HTHOST,$globalPwd,$REG_EML_REPLYTO;
 
 	else if((isset($getType))&& ($getType=='dailydigest' || $getType=='dailydigest_article')){
 		include_once($D_R."/lib/config/_email_config.php");
+		include_once("$D_R/lib/_layout_data_lib.php");
 		global $D_R,$mailChimpApiKey,$dailyDigestListId,$dailyDigestPassword;
 
 		$feed_email = $_POST['checkemail'];

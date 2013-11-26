@@ -1,8 +1,10 @@
 <?
 session_start();
-global $HTPFX,$HTHOST,$D_R;
+global $HTPFX,$HTHOST,$D_R,$CDN_SERVER;
 include_once($D_R."/lib/_article_design_lib.php");
 include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/layout_functions.php");
+include_once($D_R.'/lib/config/_slideshow_config.php');
 $slideUrlArr= explode('/',$_SERVER['REQUEST_URI']);
 $slideArr = getKeyVal('slideshow',$_SERVER['REQUEST_URI']);
 $id = ($slideArr['slideshow']=="" ? $_GET['a'] : $slideArr['slideshow']);
@@ -74,6 +76,7 @@ if(empty($slide))
 }
 $slideTags=array();
 global $slidesCnt;
+include_once($D_R.'/lib/config/_slideshow_config.php');
 $configSlideCnt=$slidesCnt; // get this value from constant
 
 $slideTags=getRelatedSlides($slideid,0,$configSlideCnt,$slideshow_id_type); // returns an array that relates to slide id passed
@@ -135,12 +138,12 @@ include($D_R."/_header.htm");
 ?>
 <div id="fb-root"></div>
 
-<script src="<?=$HTPFX.$HTHOST?>/js/friends.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/Articles.1.9.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/slideshow.1.11.js" language="JavaScript" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/slider.1.1.js" language="JavaScript" type="text/javascript"></script>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/slideshow_styles.1.12.css" type="text/css" />
+<script src="<?=$CDN_SERVER?>/js/friends.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/Articles.1.9.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/slideshow.1.11.js" language="JavaScript" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/slider.1.1.js" language="JavaScript" type="text/javascript"></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/slideshow_styles.1.12.css" type="text/css" />
 <script type="text/javascript">
 var lastRange=<?=$lastrange;?>;
 var anum;

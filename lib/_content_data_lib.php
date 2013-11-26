@@ -11,10 +11,12 @@ Class Content{
 		}
 		else
 		{
-			$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
-			$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
-			$this->contentType=$resGetContentTypeId['id'];
-			$this->contentTable=$resGetContentTypeId['item_table'];
+			if($type!=""){
+				$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
+				$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
+				$this->contentType=$resGetContentTypeId['id'];
+				$this->contentTable=$resGetContentTypeId['item_table'];
+			}
 		}
 	}
 
@@ -494,20 +496,21 @@ Class Content{
 			{
 				$metaData['content']=$metaData['content']." \n ".$value['name'];
 			}
-			if(strlen($metaData['keywords'])>0){
-				$metaData['keywords'].=','.$metaData['section'];
-			}
-			else{
-				$metaData['keywords'].=$metaData['section'];
-			}
-			$arrKeys=make_stock_array($value['body']);
-			$strKeys=implode(',',$arrKeys);
-			if(strlen($strKeys)>0){
 				if(strlen($metaData['keywords'])>0){
-					$metaData['keywords'].=','.$strKeys;
+					$metaData['keywords'].=','.$metaData['section'];
 				}
 				else{
-					$metaData['keywords'].=$strKeys;
+					$metaData['keywords'].=$metaData['section'];
+				}
+				$arrKeys=make_stock_array($value['body']);
+				$strKeys=implode(',',$arrKeys);
+				if(strlen($strKeys)>0){
+					if(strlen($metaData['keywords'])>0){
+						$metaData['keywords'].=','.$strKeys;
+					}
+					else{
+						$metaData['keywords'].=$strKeys;
+					}
 				}
 			}
 			$metaData['content'] = addslashes(mswordReplaceSpecialChars(stripslashes($metaData['content'])));
@@ -534,7 +537,7 @@ Class Content{
 			unset($tickers);
 			unset($keywordsName);
 		}
-	}
+	
 
 	public function setBuzzMeta($maxObjectID){
 		if($this->contentId){
@@ -603,6 +606,9 @@ WHERE B.contrib_id=C.id AND login!='(automated)' AND B.id=".$this->contentId;
 
 	public function setCooperMeta($maxObjectID)
 		{
+			global $D_R;
+			include_once("$D_R/lib/layout_functions.php");
+			
 			if($this->contentId)
 			{
 			 $sqlArticleMeta="SELECT A.id,body,A.title,2 author_id,
@@ -2049,6 +2055,9 @@ WHERE ea.id='".$id."' AND FIND_IN_SET(env.id,ea.category_id)";
 			case '31':
 				$objLogo=$IMG_SERVER."/images/logo/keene_searchIcon.gif";
 				break;
+			case '32':
+				$objLogo=$IMG_SERVER."/images/logo/mvEduCenterSearchicon.gif";
+				break;
 			default:
 				$objLogo=NULL;
 		}
@@ -2785,8 +2794,13 @@ Class Page{
 	 function getMetaData()
 	{
 	  global $HTPFX,$HTHOST;
-	 	$sqlGetMeta="Select LM.title,LM.metakeywords keywords,LM.metadesc description, LM.show_canonical, LP.alias,LM.robots
-					from layout_meta LM,layout_pages LP where LM.page_id=LP.id and LM.page_id='".$this->id."'";
+	 	$sqlGetMeta="SELECT  LP.id,LMN.title as menu_title,LMN.parent_id,CA.cm8cat,CA.ic_tag,LM.title,LM.metakeywords keywords,LM.metadesc description, LM.show_canonical,LP.fbmeta_type, LP.alias,LM.robots,s.name
+					FROM layout_pages LP
+					LEFT JOIN  layout_meta LM ON LM.page_id=LP.id
+					LEFT JOIN section AS s ON LP.id = s.page_id
+					LEFT JOIN layout_pages_adcategories CA  ON CA.page_id=LP.id
+					LEFT JOIN layout_menu AS LMN ON LP.id=LMN.page_id
+					WHERE LM.page_id='".$this->id."' ";
 
 		$resGetMeta=exec_query($sqlGetMeta,1);
 		if($resGetMeta['alias']){
@@ -2853,6 +2867,8 @@ Class Page{
 
 	function getMetaDataRegWelcome($orderStatus)
 	{
+			global $D_R;
+			include_once($D_R.'/lib/config/_products_config.php');
 			global $viaProductsName,$_SESSION;
 			if($orderStatus==0){
 				$resGetMeta['title']="Account information has been updated successfully - Minyanville.com";
@@ -2878,6 +2894,7 @@ Class Page{
 	{
 		$objCache = new Cache();
 		return $objCache->getPageDetails($this->id,$topicPageID);
+
 	}
 	 function build_lang()
 	{

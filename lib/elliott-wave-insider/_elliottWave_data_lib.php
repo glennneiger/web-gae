@@ -10,10 +10,12 @@ class elliottWaveData{
 		}
 		else
 		{
-			$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
-			$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
-			$this->contentType=$resGetContentTypeId['id'];
-			$this->contentTable=$resGetContentTypeId['item_table'];
+			if($type!=""){
+				$sqlGetContentTypeId="select id,item_table from ex_item_type where item_text='".$type."' or item_table='".$type."'";
+				$resGetContentTypeId=exec_query($sqlGetContentTypeId,1);
+				$this->contentType=$resGetContentTypeId['id'];
+				$this->contentTable=$resGetContentTypeId['item_table'];
+			}
 		}
 	}
 

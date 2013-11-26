@@ -33,7 +33,7 @@ border:solid 0px red;
 float:left;
 padding-left:9px;
 padding-right:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/buzzTrial/BuzzmainBg.jpg);
+background-image:url(http://image.minyanville.com/images/buzzTrial/BuzzmainBg.jpg);
 background-repeat:repeat-y;
 background-position:center;
 padding-bottom:50px;
@@ -48,7 +48,7 @@ border:solid 0px red;
 float:left;
 width:955px;
 background-color:#fff;
-background-image:url(http://storage.googleapis.com/mvassets/images/buzzTrial/bodyContentBg.jpg);
+background-image:url(http://image.minyanville.com/images/buzzTrial/bodyContentBg.jpg);
 background-repeat:repeat-x;
 background-position:50% 0%;
 }
@@ -90,7 +90,7 @@ padding:10px 0px 8px 0px;
 background-color:#e4b239;
 width:550px;
 border:solid 1px #000;
-background-image: url(http://storage.googleapis.com/mvassets/images/buzzTrial/BuzzTrialBg.jpg);
+background-image: url(http://image.minyanville.com/images/buzzTrial/BuzzTrialBg.jpg);
 background-repeat:repeat-x;
 }
 .BuzzFreeTrialBox h1{
@@ -135,7 +135,7 @@ margin:0px;
 padding:0px;
 }
 .banter_window_soft_trial_box{
-background-image:url(http://storage.googleapis.com/mvassets/images/buzzTrial/buzz_banter_window_bg.jpg);
+background-image:url(http://image.minyanville.com/images/buzzTrial/buzz_banter_window_bg.jpg);
 background-position:top;
 background-repeat:repeat-x;
 width:600px;

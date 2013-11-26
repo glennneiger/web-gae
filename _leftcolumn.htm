@@ -1,6 +1,7 @@
 <div id="article-left-right" class="konafilter">
 			<?php
-			global $_SESSION;
+			global $_SESSION,$D_R;
+			include_once("$D_R/lib/_layout_design_lib.php");
 			if(empty($objCache)){
 				$objCache = new Cache();
 			}

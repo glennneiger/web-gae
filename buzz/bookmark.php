@@ -1,7 +1,7 @@
 <?php
 include_once("$D_R/lib/_auth.php");
 include_once("$D_R/lib/_module_design_lib.php");
-global $IMG_SERVER,$HTPFX,$HTHOST;
+global $IMG_SERVER,$HTPFX,$HTHOST,$CDN_SERVER;
 $objSubProd= new subViewer();
 session_start();
 
@@ -74,18 +74,18 @@ if(!$sid && !$showFreeBuzz){
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Buzz and Banter</title>
 <link rel="stylesheet" type="text/css" href="includes/bookmark.css" />
-<link rel='stylesheet' href='<?=$HTPFX.$HTHOST?>/css/ibox.css' type='text/css' media='all' />
+<link rel='stylesheet' href='<?=$CDN_SERVER?>/css/ibox.css' type='text/css' media='all' />
 <script type="text/javascript" src="includes/prototype.js"></script>
 <script type="text/javascript" src="includes/AnchorPosition.1.1.js"></script>
 <script type="text/javascript" src="includes/buzz.js"></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/config.1.2.js' type='text/javascript' ></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/prototype.1.3.js' type='text/javascript' ></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/global.1.7.js' type='text/javascript' ></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/ibox.1.3.js' type='text/javascript' ></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/registration_ajax_1.20.js' type='text/javascript' ></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/ibox_registration.1.18.js' type='text/javascript' ></script>
-<script src='<?=$HTPFX.$HTHOST?>/js/redesign.1.21.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/config.1.2.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/prototype.1.3.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/global.1.7.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/ibox.1.3.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/registration_ajax_1.20.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/ibox_registration.1.18.js' type='text/javascript' ></script>
+<script src='<?=$CDN_SERVER?>/js/redesign.1.21.js' type='text/javascript' ></script>
 <script type="text/javascript" language="javascript">
 
 function disableselect(e){

@@ -25,7 +25,7 @@ $css['minyanville_etf']['position']="H";
 $css['minyanville_etf']['defaultLoad']=FALSE;
 $css['minyanville_etf']['name']='minyanville_etf';
 
-$css['layout']['file']='/css/layout_main.1.27.css';
+$css['layout']['file']='/css/layout_main.1.31.css';
 $css['layout']['position']="H";
 $css['layout']['defaultLoad']=TRUE;
 $css['layout']['name']='layout';
@@ -122,7 +122,7 @@ $css['cooper']['position']="H";
 $css['cooper']['defaultLoad']=FALSE;
 $css['cooper']['name']='cooper';
 
-$css['nav']['file']='/css/nav.1.23.css';
+$css['nav']['file']='/css/nav.1.28.css';
 $css['nav']['position']="H";
 $css['nav']['defaultLoad']=FALSE;
 $css['nav']['name']='nav';
@@ -182,8 +182,12 @@ $js['jquery']['position']="H";
 $js['jquery']['defaultLoad']=TRUE;
 $js['jquery']['name']='jquery';
 
+$js['jqueryUI']['file']='/js/min/jquery-ui.min.1.10.1.js';
+$js['jqueryUI']['position']="H";
+$js['jqueryUI']['defaultLoad']=FALSE;
+$js['jqueryUI']['name']='jqueryUI';
 
-$js['global']['file']='/js/global.1.29.js';
+$js['global']['file']='/js/global.1.31.js';
 $js['global']['position']="H";
 $js['global']['defaultLoad']=TRUE;
 $js['global']['name']='global';
@@ -233,7 +237,7 @@ $js['emailalert']['position']="F";
 $js['emailalert']['defaultLoad']=FALSE;
 $js['emailalert']['name']='emailalert';
 
-$js['redesign']['file']='/js/redesign.1.26.js';
+$js['redesign']['file']='/js/redesign.1.28.js';
 $js['redesign']['position']="F";
 $js['redesign']['defaultLoad']=TRUE;
 $js['redesign']['name']='redesign';
@@ -509,7 +513,7 @@ $css['topic']['position']="H";
 $css['topic']['defaultLoad']=FALSE;
 $css['topic']['name']='topic';
 
-$css['fontStylesheet']['file']='/css/fontStylesheet.1.1.css';
+$css['fontStylesheet']['file']='/css/fontStylesheet.1.2.css';
 $css['fontStylesheet']['position']="H";
 $css['fontStylesheet']['defaultLoad']=TRUE;
 $css['fontStylesheet']['name']='fontStylesheet';
@@ -586,7 +590,7 @@ $js['bh_dropdown']['position']="H";
 $js['bh_dropdown']['defaultLoad']=FALSE;
 $js['bh_dropdown']['name']='bh_dropdown';
 
-$js['fancybox']['file']='/js/fancyzoom/jquery.fancybox-1.3.4.3.js';
+$js['fancybox']['file']='/js/fancyzoom/jquery.fancybox-1.3.4.4.js';
 $js['fancybox']['position']="H";
 $js['fancybox']['defaultLoad']=TRUE;
 $js['fancybox']['name']='fancybox';
@@ -617,7 +621,7 @@ $css['mailchimp']['position']="H";
 $css['mailchimp']['defaultLoad']=FALSE;
 $css['mailchimp']['name']='mailchimp';
 
-$css['sub_homepage']['file']='/css/subs_homepage.1.1.css';
+$css['sub_homepage']['file']='/css/subs_homepage.1.2.css';
 $css['sub_homepage']['position']="H";
 $css['sub_homepage']['defaultLoad']=FALSE;
 $css['sub_homepage']['name']='sub_homepage';
@@ -718,13 +722,18 @@ $js['endscroll']['position']="H";
 $js['endscroll']['defaultLoad']=FALSE;
 $js['endscroll']['name']='endscroll';
 
-$css['edu']['file']='/css/edu.1.3.css';
+$css['edu']['file']='/css/edu.1.9.css';
 $css['edu']['position']="H";
 $css['edu']['defaultLoad']=FALSE;
 $css['edu']['name']='edu';
 
-$js['edu']['file']='/js/edu.js';
+$js['edu']['file']='/js/edu.1.4.js';
 $js['edu']['position']="H";
 $js['edu']['defaultLoad']=FALSE;
 $js['edu']['name']='edu';
+
+$css['cooperRedesign']['file']='/css/cooper-redesign.1.3.css';
+$css['cooperRedesign']['position']="H";
+$css['cooperRedesign']['defaultLoad']=FALSE;
+$css['cooperRedesign']['name']='cooperRedesign';
 ?>

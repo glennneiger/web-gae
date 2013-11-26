@@ -1,6 +1,7 @@
 <?
-global $cloudStorageTool,$HTPFX,$HTHOST;
+global $cloudStorageTool,$HTPFX,$HTHOST,$D_R;
 include("$ADMIN_PATH/_header.htm");
+include_once("$D_R/lib/_cart.php");
 
 $postto= $HTPFX.$HTHOST."/admin/store/products.mod.php";
 

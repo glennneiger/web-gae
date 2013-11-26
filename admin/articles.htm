@@ -1,5 +1,5 @@
 <?
-global $S4,$S5,$D_R;
+global $S4,$S5,$D_R,$CDN_SERVER;
 
 include_once("$D_R/lib/_news.php");
 include_once("$D_R/admin/_authenticate.htm");
@@ -150,17 +150,17 @@ var ArtID='<?=$id?>';
 var ArtID=null;
 <?php } ?>
 </script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/jquery.autocomplete.1.2.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/jquery.autocomplete.1.2.js"></script>
 
 
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.jqEasyCharCounter.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST;?>/js/adminArticle.1.10.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=$CDN_SERVER?>/css/jquery.autocomplete.css" />
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.jqEasyCharCounter.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER;?>/js/adminArticle.1.10.js"></script>
 
 <!--
 <style type="text/css">
@@ -179,10 +179,11 @@ box-shadow: 3px 3px 8px #818181;
 
 </style>
 
-<script src="<?=$HTPFX.$HTHOST?>/js/stickynote.js"></script>
+<script src="<?=$CDN_SERVER?>/js/stickynote.js"></script>
 -->
 
-<?php if(!empty($id)) { ?>
+<?php 
+if(!empty($id)) { ?>
 <script>
 //$(window).bind('beforeunload', unlock_content(<?=$id?>));
 window.onbeforeunload = function() {
@@ -339,7 +340,7 @@ foreach($arAllContributors  as $row){
 <td colspan="2">
 <SELECT id="editor_note_title"  name="articles[editor_note_title]" style="width:300px;" onchange="document.getElementById('editor_note').value=this.value">
 <option value="">-select-</option>
-<?selectHashArr($objArticle->getEditorNote(),"text","title")?>
+<?selectHashArr($objArticle->getEditorNote(),"text","title",htmlentities(stripslashes($pagedata[editor_note])));?>
 </SELECT></td></tr>
 
 <tr><td>
@@ -353,7 +354,7 @@ foreach($arAllContributors  as $row){
 		<div id="showerr" style="color:#000;display:block;font-family:Arial,Helvetica,sans-serif;font-size:11px;text-align:left;"><?
 		if($pagedata[audioFile]!=""){
 		?><input type="checkbox" checked="checked" value="<?=$pagedata[audioFile];?>" name="chkMp3" id="chkMp3"><? echo $pagedata[audioFile]; }?></div>
-		<input type="hidden" id="audioFile" name="articles[audioFile]" value="<?=$pagedata[audioFile];?>" />
+		<input type="text" style="border:0px;"  id="audioFile" name="articles[audioFile]" value="<?=$pagedata[audioFile];?>" />
 		<input style="float:left;margin: 12px 10px 0px 0px;" type="file" name="articleFile" id="articleFile">
                 <img style="float:left;cursor:pointer;" src="<?=$IMG_SERVER?>/images/DailyFeed/upload-file.jpg" onClick="uploadArtFile('articleFile','<?=$upload_url?>');" >
                 &nbsp;&nbsp;&nbsp;&nbsp;<div id="output" style=" margin: 15px 0px 0px 10px;float: left; width: 150px; font-weight: bold; color: red; "></div>

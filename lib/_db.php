@@ -1,5 +1,4 @@
 <?
-
 function del_query($table,$param,$value,$optimize=0){//all strings
 	global $dbservwrite,$dbuserwrite,$dbpasswrite,$dbnamewrite;
 	if(!$param || !$value || !$table){
@@ -172,6 +171,7 @@ function exec_query($query,$return_one=0,$field_name=""){
 		if(!mysql_select_db($activedbname,$link)){
 			debug("DB:ERROR:Not able to select Database");
 		}else {
+			//echo "<br>$query</br>";
 			$res = mysql_query($query,$link);
 			if(!$res){
 				debug("DB:ERROR:Could not successfully run query".$query." from DB: ". mysql_error());

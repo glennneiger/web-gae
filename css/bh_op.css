@@ -76,7 +76,7 @@ margin:0px;
   font-size:13px;
   font-weight:normal;
   padding-bottom:15px;
-  background-image: url(http://storage.googleapis.com/mvassets/images/redesign/option_main_bg.jpg);
+  background-image: url(http://image.minyanville.com/images/redesign/option_main_bg.jpg);
   background-position:top;
   background-repeat:repeat-x;
   line-height:25px;
@@ -167,7 +167,7 @@ line-height:15px;
 color:#000;
 font-weight:bold;
 text-align:left;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/smith_subs_cont_bg.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/smith_subs_cont_bg.jpg);
 }
 .smith_subs_container td{
 padding-left:10px;
@@ -201,7 +201,7 @@ color:#323230;
 width:150px;s
 clear:both;
 padding-bottom:10px;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/cooper_title_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/cooper_title_bg.jpg);
 background-position:bottom;
 background-repeat:repeat-x;
 padding-top:10px;
@@ -417,7 +417,7 @@ text-decoration:none;
 text-align:left;
 }
 .option_article_box{
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/quint_article_bg.gif);
+background-image:url(http://image.minyanville.com/images/redesign/quint_article_bg.gif);
 background-position:top;
 background-repeat:repeat-x;
 padding-top:15px;
@@ -467,7 +467,7 @@ width:975px;
 clear:both;
 margin-left:3px;
 #margin-left:2px;
-background-image: url(http://storage.googleapis.com/mvassets/images/redesign/control_panel_bg_option.jpg);
+background-image: url(http://image.minyanville.com/images/redesign/control_panel_bg_option.jpg);
 background-repeat: repeat-x;
 padding-left:10px;
 border-right:solid 0px #000;
@@ -492,7 +492,7 @@ padding-left:15px;
 float:left;
 width:620px;
 clear:both;
-background-image:url(http://storage.googleapis.com/mvassets/images/redesign/recent_part_bg.jpg);
+background-image:url(http://image.minyanville.com/images/redesign/recent_part_bg.jpg);
 background-position:center;
 background-repeat:repeat-y;
 margin-top:15px;
@@ -540,7 +540,7 @@ width:100%;
 .smithBanner{
 	float:left;
 	width:940px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith-banner.jpg);
+	background-image:url(http://image.minyanville.com/images/optionsmith/smith-banner.jpg);
 	background-repeat:no-repeat;
 	height:259px;
 	font-family:Arial, Helvetica, sans-serif;
@@ -588,7 +588,7 @@ width:100%;
 .smithSubscriptionGreen{
 	width:300px;
 	float:left;
-	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_heading_bg.jpg);
+	background-image:url(http://image.minyanville.com/images/optionsmith/smith_heading_bg.jpg);
 	padding:7px 0px 0px 0px;
 	background-repeat:no-repeat;
 	font-family:Arial, Helvetica, sans-serif;
@@ -612,7 +612,7 @@ width:100%;
 .smithSubscriptionContent{
 	width:300px;
 	float:left;
-	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_box_mid.jpg);
+	background-image:url(http://image.minyanville.com/images/optionsmith/smith_box_mid.jpg);
 	background-repeat:repeat-y;
 }
 
@@ -625,7 +625,7 @@ width:100%;
 .smithFeaturesContent{
 	width:930px;
 	float:left;
-	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_bigbox_mid_940.png);
+	background-image:url(http://image.minyanville.com/images/optionsmith/smith_bigbox_mid_940.png);
 	background-repeat:repeat-y;
 	padding:10px;
 	padding-left:15px;
@@ -649,7 +649,7 @@ width:100%;
 	font-size:14px;
 	font-weight:bold;
 	padding:0px 10px 0px 10px;
-	background-image:url(http://storage.googleapis.com/mvassets/images/optionsmith/smith_yellowbullet.gif);
+	background-image:url(http://image.minyanville.com/images/optionsmith/smith_yellowbullet.gif);
 	background-repeat:no-repeat;
 	background-position:0px 8px;
 	list-style-type:none;

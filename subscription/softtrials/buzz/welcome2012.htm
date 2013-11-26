@@ -1,11 +1,11 @@
 <?php 
-global $HTPFX,$HTHOST,$IMG_SERVER;
+global $HTPFX,$HTHOST,$IMG_SERVER,$CDN_SERVER;
 $pageName = "welcome";
 $pageJS=array('config','jquery','global');
 $pageCSS=array("global","nav");
 include("$D_R/_header.htm");
 ?>
-<link href="<?=$HTPFX.$HTHOST?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
+<link href="<?=$CDN_SERVER?>/css/sembuzz.css" rel="stylesheet" type="text/css" />
 <div class="container">
                 <div class="welcome-box" style="float:left;margin-bottom:24px;">
                     <div class="col-01">

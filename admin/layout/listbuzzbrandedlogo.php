@@ -1,5 +1,5 @@
 <?
-global $HTPFX,$HTHOST,$D_R;
+global $HTPFX,$HTHOST,$D_R,$CDN_SERVER;
 include_once("$D_R/lib/_layout_data_lib.php");
 $page = 'Layout Module';
 // $_REQUEST variable
@@ -52,7 +52,7 @@ $cnt       = 0;
 // for get  module
 $getlayoutmodule = get_Buzz_Branded_Logo();
 ?>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/layout.1.13.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/layout.1.14.js"></script>
 <table width="100%" border="0" cellpadding="2" cellspacing="2" class="admin_container">
   <? if(isset($message)){ ?>
 <tr>

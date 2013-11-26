@@ -66,11 +66,15 @@ function backToTop(focusId){
 }
 
 function showHeatMap(){
+	jQuery.fancybox.init();
 	jQuery.fancybox({
         type: 'inline',
         content: '#inline1',
         overlayOpacity : 0.8,
-		overlayColor : '#000'
+		overlayColor : '#000',
+		onClosed: function(){
+			jQuery('#fancybox-wrap').html('');
+	        }
     });
 }
 

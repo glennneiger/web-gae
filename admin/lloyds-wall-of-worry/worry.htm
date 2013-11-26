@@ -1,5 +1,5 @@
 <?
-global $D_R,$HTPFX,$HTHOST;
+global $D_R,$HTPFX,$HTHOST,$CDN_SERVER;
 $page="gazette";
 include("$ADMIN_PATH/_header.htm");
 include_once("$D_R/lib/lloyds-wall-of-worry/_worry_data_lib.php");
@@ -86,10 +86,10 @@ if(!empty($_POST)){
 	}
 }
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js" type='text/javascript' ></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/tablednd.js" type='text/javascript' ></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/worry-admin.js" type='text/javascript' ></script>
+<script src="<?=$CDN_SERVER?>/js/min/prototype.1.4-min.js" type="text/javascript"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js" type='text/javascript' ></script>
+<script src="<?=$CDN_SERVER?>/js/tablednd.js" type='text/javascript' ></script>
+<script src="<?=$CDN_SERVER?>/js/worry-admin.js" type='text/javascript' ></script>
 <style>
 .downdel{
 	width:50px;
@@ -185,6 +185,6 @@ if(!empty($_POST)){
 	</form>	
 	</table>
 	
-<script src="<?=$HTPFX.$HTHOST?>/js/tabled-nd.js" type='text/javascript' ></script>	
+<script src="<?=$CDN_SERVER?>/js/tabled-nd.js" type='text/javascript' ></script>	
 	
 <? include("$ADMIN_PATH/_footer.htm"); ?>

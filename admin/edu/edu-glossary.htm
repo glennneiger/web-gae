@@ -1,5 +1,5 @@
 <?
-global $HTPFX,$HTHOST,$IMG_SERVER,$D_R;
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R,$CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include($D_R."/lib/config/_edu_config.php");
 include($D_R."/lib/edu/_edu_data_lib.php");
@@ -23,12 +23,12 @@ if($pagedata['id']!=""){
 }
 
 ?>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/edu-admin.css">
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/edu.js" ></script>
-<script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/edu-admin.css">
+<script src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/edu.js" ></script>
+<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
 <br><br>
 
 <div class=adminheader>Education Center - Glossary</div>

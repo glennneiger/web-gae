@@ -1,9 +1,12 @@
-<SCRIPT src="<?=$HTPFX.$HTHOST?>/js/overlibmws.js" type=text/javascript></SCRIPT>
-<SCRIPT src="<?=$HTPFX.$HTHOST?>/js/overlibmws_draggable.js" type=text/javascript></SCRIPT>
-<SCRIPT src="<?=$HTPFX.$HTHOST?>/js/overlibmws_filter.js" type=text/javascript></SCRIPT>
-<SCRIPT src="<?=$HTPFX.$HTHOST?>/js/overlibmws_overtwo.js" type=text/javascript></SCRIPT>
-<SCRIPT src="<?=$HTPFX.$HTHOST?>/js/overlibmws_shadow.js" type=text/javascript></SCRIPT>
-<SCRIPT src="<?=$HTPFX.$HTHOST?>/js/overlibmws_bubble.js" type=text/javascript></SCRIPT>
+<?php 
+global $CDN_SERVER;
+?>
+<SCRIPT src="<?=$CDN_SERVER?>/js/overlibmws.js" type=text/javascript></SCRIPT>
+<SCRIPT src="<?=$CDN_SERVER?>/js/overlibmws_draggable.js" type=text/javascript></SCRIPT>
+<SCRIPT src="<?=$CDN_SERVER?>/js/overlibmws_filter.js" type=text/javascript></SCRIPT>
+<SCRIPT src="<?=$CDN_SERVER?>/js/overlibmws_overtwo.js" type=text/javascript></SCRIPT>
+<SCRIPT src="<?=$CDN_SERVER?>/js/overlibmws_shadow.js" type=text/javascript></SCRIPT>
+<SCRIPT src="<?=$CDN_SERVER?>/js/overlibmws_bubble.js" type=text/javascript></SCRIPT>
 
 
 <STYLE type=text/css>

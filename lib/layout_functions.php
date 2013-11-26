@@ -30,11 +30,7 @@ function createArticlesLink($id,$keyword=NULL,$blurb=NULL,$from=NULL,$page=NULL)
 	$objCache = new Cache();
  	return $objCache->getItemLink($id,'1');
  }
-  function makeRssArticleslink($id,$type,$keyword=NULL,$blurb=NULL,$from=NULL,$page=NULL)
- {
-	$objCache = new Cache();
- 	return $objCache->getItemLink($id,$type);
- }
+ 
  function makeArticleslinkcooper($id,$keyword=NULL,$blurb=NULL,$from=NULL,$page=NULL)
  {
 	return "/cooper".createArticlesLink($id,$keyword,$blurb,$from,$page);
@@ -138,9 +134,9 @@ function returnRealAuthorjack($a,$contrib) {
 	}
 }
 function getArticlecooper($articleid) {
-	$sql = "select articles.id id, articles.title, articles.prof_id , contributors_ps.name author, articles.contributor, contributors_ps.disclaimer,articles.position, contrib_id authorid, date, blurb, body, position, character_text, article_categories.title category, keyword ,character_images.asset imageURL ";
+	$sql = "select articles.id id, articles.title, articles.prof_id , contributors_ps.name author, articles.contributor, contributors_ps.disclaimer,articles.position, contrib_id authorid, date, blurb, body, position, character_text, article_categories.title category, keyword ,character_images.asset imageURL,articles.redesign_cat_id  ";
 	$sql .= "from cp_articles articles, cp_contributors contributors_ps, article_categories, cp_character_images character_images ";
-	$sql .= "where articles.id=" . $articleid . " and articles.contrib_id = contributors_ps.id and(character_images.id=articles.character_img_id or articles.character_img_id=0) limit 1 ";
+	$sql .= "where articles.id=" . $articleid . " and(character_images.id=articles.character_img_id or articles.character_img_id=0) limit 1 ";
 
 
 	$results = exec_query($sql);
@@ -150,7 +146,7 @@ function getArticlecooper($articleid) {
 		$article['title'] = $row['title'];
 		$article['author'] = $row['author'];
 		$article['authorid'] = $row['authorid'];
-		$article['date'] = date('M d, Y g:i a',strtotime($row['date']));	//$row['date'];
+		$article['date'] = date('M d, Y g:i a',strtotime(($row['publish_date']=="0000-00-00 00:00:00" || $row['publish_date']=="")?$row['date']:$row['publish_date']));
 		$article['blurb'] = $row['blurb'];
 		$article['body'] = $row['body'];
 		$article['position'] = $row['position'];
@@ -167,44 +163,13 @@ function getArticlecooper($articleid) {
 		$tempAuthor = returnRealAuthorcooper($article['authorid'],$article['contributor']);
 		$article['authorid'] = $tempAuthor['id'];
 		$article['author'] = $tempAuthor['name'];
+		$article['redesign_cat_id'] =  $row['redesign_cat_id'];
 		//rewrite the disclaimer
 		$article['disclaimer'] = getAuthorDisclaimercooper($article['authorid']);
 	}
 	return $article;
 }
-function getArticlejack($articleid) {
-	$sql = "select articles.id id, articles.title, articles.prof_id , contributors_ps.name author, articles.contributor, contributors_ps.disclaimer,articles.position, contrib_id authorid, date, blurb, body, position, character_text, article_categories.title category, keyword ,character_images.asset imageURL ";
-	$sql .= "from jack_articles articles, contributors contributors_ps, article_categories, cp_character_images character_images ";
-	$sql .= "where articles.id=" . $articleid . " and articles.contrib_id = contributors_ps.id and(character_images.id=articles.character_img_id or articles.character_img_id=0) limit 1 ";
-	$results = exec_query($sql);
-	$article = array();
-    foreach($results as $row){
-		$article['id'] = $row['id'];
-		$article['title'] = $row['title'];
-		$article['author'] = $row['author'];
-		$article['authorid'] = $row['authorid'];
-		$article['date'] = date('M d, Y g:i a',strtotime($row['date']));	//$row['date'];
-		$article['blurb'] = $row['blurb'];
-		$article['body'] = $row['body'];
-		$article['position'] = $row['position'];
-		$article['imageURL'] = $row['imageURL'];
-		$article['character_text'] = $row['character_text'];
-		$article['category'] = $row['category'];
-		$article['contributor'] = $row['contributor'];
-		$article['disclaimer'] = $row['disclaimer'];
-		$article['positions'] = $row['positions'];
-		$article['keyword'] = $row['keyword'];
-		$article['prof_id'] = $row['prof_id'];
 
-		//restate the author id
-		//$tempAuthor = returnRealAuthorcooper($article['authorid'],$article['contributor']);
-		//$article['authorid'] = $tempAuthor['id'];
-		//$article['author'] = $tempAuthor['name'];
-		//rewrite the disclaimer
-		//$article['disclaimer'] = getAuthorDisclaimercooper($article['authorid']);
-	}
-	return $article;
-}
 function getcooprearticle($strProfessorId){
 	$sql="select articles.id,articles.keyword,articles.blurb, contrib_id, title, date, contributor, cp_contributors.name author, character_text talkbubble
 from cp_articles articles
@@ -213,130 +178,9 @@ where articles.prof_id='$strProfessorId' and approved='1' and is_live='1' and is
 	$result  = exec_query($sql);
 	return $result;
 }
-//display recent headline in a 2 column table
-function displayRecentHeadlinescooperlogged($titlebar,$sql,$zoneID) {
-    global $HTPFX,$HTHOST,$IMG_SERVER;
-  	$results = exec_query($sql);
-	$counter = 1;
-	?>
-<table border="0" width="100%" cellpadding="5" cellspacing="3"   align="left" style="clear:both;">
-	<tr>
-		<td  valign="top" width="49%">
-		<?
-            foreach($results as $row){
-				$counter++;
-				$realauthorInfo = returnRealAuthorcooper($row['author'],$row['contributor']);
 
-				$realauthorname = $realauthorInfo['name'];
-				//display the article title with link to article.php
-				// also show date and author
 
-				// the function make links of article according to the keywords and headlines
-				//$link=makeArticleslink($row);?>
-				<a class="articleLink" href= <?=$HTPFX.$HTHOST.makeArticleslinkcooper($row['id'],$row['keyword'],$row['blurb']);?>><div class="cooper_market_heading"  ><?= $row['title'] ?></div></a><?
 
-				echo "<div style='text-decoration:none;color: #083d70;'>" . $realauthorname ."</div>" . chr(13);
-				echo  "<div class=\"cooper_recent_common_heading\">". $row[talkbubble] ."</div>". chr(13);
-
-			  ?>
-			 <!-- <a href= <?= $pfk.makeArticleslinkcooper($row['id'],$row['keyword'],$row['blurb']);?> class="ReadMore">Read more...</a>-->
-			 <br />
-				  <?
-				if ($counter > (count($results)/2)) {
-					echo "</td>" . chr(13) . "<td align=\"center\" valign=\"middle\" width=\"1px\" background='". $IMG_SERVER. "/images/recent_div_line.gif' style=\"background-repeat:repeat-y\"></td><td width=\"50%\">";
-					$counter=0;
-				}
-			}
-
-		?>
-		</td>
-	</tr>
-	</table>
-
-	<?
-
-}
-//display recent headline in a 2 column table
-function displayRecentHeadlinesjacklogged($titlebar,$sql,$zoneID) {
-  	$results = exec_query($sql);
-	$counter = 1;
-
-	?>
-<table border="0" width="100%" cellpadding="5" cellspacing="3"   align="left" style="clear:both;">
-	<tr>
-		<td  valign="top" width="49%">
-		<?
-            foreach($results as $row){
-				$counter++;
-				//$realauthorInfo = returnRealAuthorcooper($row['author'],$row['contributor']);
-				$realauthorInfo = returnRealAuthorjack($row['author'],$row['contributor']);
-				$realauthorname = $realauthorInfo['name'];
-				//display the article title with link to article.php
-				// also show date and author
-
-				// the function make links of article according to the keywords and headlines
-				//$link=makeArticleslink($row);?>
-				<a class="articleLink" href= <?= $pfk.makeArticleslinkjack($row['id'],$row['keyword'],$row['blurb']);?>><div class="cooper_market_heading"  ><?= $row['title'] ?></div></a><?
-
-				echo "<div style='text-decoration:none;color: #083d70;'>" . $realauthorname ."</div>" . chr(13);
-				echo  "<div class=\"cooper_recent_common_heading\">". $row[talkbubble] ."</div>". chr(13);
-
-			  ?>
-			 <!-- <a href= <?= $pfk.makeArticleslinkjack($row['id'],$row['keyword'],$row['blurb']);?> class="ReadMore">Read more...</a>-->
-			 <br />
-				  <?
-				if ($counter > (count($results)/2)) {
-					echo "</td>" . chr(13) . "<td align=\"center\" valign=\"middle\" width=\"1px\" background='". $pfx. "/images/recent_div_line.gif' style=\"background-repeat:repeat-y\"></td><td width=\"50%\">";
-					$counter=0;
-				}
-			}
-
-		?>
-		</td>
-	</tr>
-	</table>
-
-	<?
-
-}
-function displayRecentHeadlinescooper($titlebar,$strProfessorId,$zoneID, $logincooper) {
-	global $_SESSION,$HTPFX,$HTHOST;
-	$result = getcooprearticle($strProfessorId);
-	$counter = 1;
-/*	$height=488;$width=532;
-	$url="$HTPFX$HTHOST/subscription/register/iboxindex.htm";*/
-	foreach ($result as $row){
-		if($counter<=5){
-			$realauthorInfo = returnRealAuthorcooper($row['author'],$row['contributor']);
-			$realauthorname = $realauthorInfo['name'];
-			if(!isset($_SESSION['LoggedIn']) ) {
-			//	loginRedirection();
-			// $targeturl=$pfk.makeArticleslinkcooper($row['id'],$row['keyword'],$row['blurb']);
-			// $linkId="navlink_".$row['id'];
-			// $label= '<div class="cooper_recent_heading" >'.$row['title'].'</div>' ;
-			// echo iboxCall($linkId,$label,$url,$height, $width,$targeturl);
-			// echo '<div class="cooper_recent_heading" >'.$row['title'].'</div>' ;
-			?>
-            <a class="articleLink" href= <?= $pfk.makeArticleslinkcooper($row['id'],$row['keyword'],$row['blurb']);?>><div class="cooper_recent_heading" ><?= $row['title'] ?></div></a>
-            <?
-
-			}
-			elseif($_SESSION['LoggedIn'] && !$logincooper){
-			?>
-			<a class="articleLink" style="cursor:pointer;" onclick="Javascript:alert('Please register for Cooper. ');document.location.href='<?$HTPFX.$HTHOST?>/register/'"><div class="cooper_recent_heading" ><?= $row['title'] ?></div></a>
-			<?
-			}
-
-			else  {
-			?>
-			<a class="articleLink" href= <?= $pfk.makeArticleslinkcooper($row['id'],$row['keyword'],$row['blurb']);?>><div class="cooper_recent_heading" ><?= $row['title'] ?></div></a>
-			<?
-			}
-			echo  "<div class=\"cooper_recent_common_heading\">". $row[talkbubble] ."</div>". chr(13);
-		}
-		$counter++;
-	}
-}
 
 function get_article_title_cooper($articleid){
 	$arrArticleIds=explode(",",$articleid);
@@ -352,49 +196,7 @@ function get_article_title_cooper($articleid){
 		return $title;
 	}
 }
-function get_article_title_jack($articleid)
-{
-	$arrArticleIds=explode(",",$articleid);
-	if(count($arrArticleIds)>1){
-		return "Articles";
-	}
-	else{
-		$qry="select title from jack_articles where id=$articleid";
-		$result=mysql_query($qry);
-		if(isset($result)){
-			$row=mysql_fetch_row($result);
-		}
-		return $row[0];
-	}
-}
-/***********************************************************************/
-function tagstockinfo($tag)
-{
-	$tag_query="SELECT CompanyName,exchange FROM ex_stock
-	WHERE stocksymbol='".$tag."'";
 
-	$tag_result=exec_query($tag_query,1);
-	if(count($tag_result)){
-	 $CompanyName=$tag_result['CompanyName'];
-	 $exchange=$tag_result['exchange'];
-	}
-	return $tag_result;
-}
-function is_exchange($subscription_id)
-{
-	$exchange_query="SELECT s.is_exchange is_exchange,s.type stype FROM subscription s
-	WHERE id='".$subscription_id."' and is_exchange='1'";
-
-	$exchange_result=exec_query($exchange_query,1);
-	if(count($exchange_result)){
-	 $isExchange=1;
-	}
-	else
-	{
-	 $isExchange=0;
-	}
-	return $isExchange;
-}
 
 function checkblockip()
 {
@@ -510,30 +312,7 @@ and ebs.subscription_id='".$subscription_id."' and ebs.blockservice_id='".$block
 		return true;
 	}
 }
-function allPagesDropList() {
 
-$pageList = exec_query("SELECT * from layout_pages ORDER BY name");
-foreach($pageList as $row){
-$pages .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>" . chr(13);
-}
-
-return $pages;
-}
-
-
-//-----------------------------------------------------------------------------
-// query the database for all the columns from a requested page.
-//-----------------------------------------------------------------------------
-
-function getPageColumns($rPage) {
-$sql = "SELECT * from layout_columns where pageID=" . $rPage . " order by name";
-$columnList = exec_query($sql);
-foreach($columnList as $row){
-$columns[] = $row;
-}
-
-return $columns;
-}
 
 //-----------------------------------------------------------------------------
 // send in page name, return id
@@ -595,31 +374,6 @@ function moduleExists($moduleid) {
 	return $module_data;
 }
 
-
-
-function getModules() {
-$listmodules = exec_query("SELECT id, name FROM layout_modules");
-foreach($listmodules as $row){
-$modules[$row['id']] = $row['name'];
-}
-
-return $modules;
-}
-
-function getAuthorName($id) {
-	$sql = "select name from contributors where id=". $id . " limit 1";
-	$result = exec_query($sql,1);
-	if($result)
-		return $result['name'];
-	return 0;
-}
-
-function getColumnModuleOrder($columnid) {
-$moduleOrder = exec_query("SELECT moduleOrder from layout_columns where id=" . $columnid);
-	foreach($moduleOrder as $row){
-return $row['moduleOrder'];
-}
-}
 
 function listModules($page,$column) {
 	$listmodules = exec_query("SELECT moduleOrder from layout_columns WHERE layout_columns.id=$column and layout_columns.pageID=$page");
@@ -776,179 +530,6 @@ function refresh_Column_Module_List($pageid,$columnName,$modulesArray,$extraData
 }
 
 
-//***********************************************************************************************
-function refresh_Portlet_List($pageid,$columnName,$modulesArray,$extraData,$div) {
-
-	$links['archive'] = $D_R . "/library/search.htm";
-	$links['profiles'] = $D_R . "/gazette/bios.htm";
-	$links['univ'] = $D_R . "/university/";
-
-	//if $pageid is not numeric, then query the database for the id with the given name.
-	if (!is_numeric($pageid)) {
-		$pageid = getPageId($pageid);
-	}
-
-	// get the column id with the given column name.
-	if (!is_numeric($columnName)) {
-		//request column id from function because column name was submitted to function.
-		$columnid = getColumnId($pageid, $columnName);
-	} else {
-		//$columnName is actually submitted as id
-		$columnid = $columnName;
-
-	}
-
-
-	//get modules
-	$modList = listModules($pageid,$columnid);
-	$intoArray = explode(",",$modList);
-	//get column name for the available information columnid and pageid
-	$getColumnName = exec_query("SELECT name FROM layout_columns WHERE id=" . $columnid . " AND pageid=" . $pageid);
-	foreach($getColumnName as $row){
-		$columnName = $row['name'];
-	}
-
-		if ($intoArray[0] != "") {
-		//if (count($intoArray) != 0) {
-			//echo "contents of the array = " . print_r(array_values($intoArray));
-			$moduleCounter = 0;
-			foreach($intoArray as $mod) {
-				$dynamic = false;
-				$moduleCounter++;
-				//if ($showType == "show")  {
-					$getModuleInfo = moduleExists($mod);
-					$title=$getModuleInfo['name'];
-					unset($getModuleInfo['name']);
-					//remove portlet from the uniquename of the module.
-					$name = str_replace("portlet-","",$getModuleInfo['uniqueName']);
-
-					if ($getModuleInfo != false) {
-						foreach ($getModuleInfo as $key => $value) {
-							//determine the type of the module . dynamic or static
-							if (($key =="type") && ($value=="dynamic")) {
-								$dynamic = true;
-							}
-
-							if ($key == "html") {
-								$previewItems[$key] = htmlentities($value);
-								//$$key = htmlentities($value);
-								$htmlShow = stripslashes($value);
-							} else {
-								$previewItems[$key] = $value;
-								$$key = $value;
-							}
-						}
-
-					}
-
-				?>
-				<?
-	if ($name == "partners" || $name == "mvtv_sidebar" || $name == "creditcards") {
-					?>
-
-	                    <img src="<?=$IMG_SERVER;?>/images/portlet_<?= $name; ?>_top.gif" alt=""><br />
-						<div id="portlet-<?= $name; ?>">
-						<div id="portlet-<?= $name; ?>-main">
-					<? } elseif ($name == "archive" || $name == "profiles" || $name == "univ")  { ?>
-						<a href="<?= $links[$name]; ?>" style="padding:0px;margin:0px;text-decoration:none;cursor:hand">
-	                    <!--<img style="padding:0px;margin:0px;" src="<?=$IMG_SERVER;?>/images/portlet_<?= $name; ?>_top.gif" alt="" />-->
-	                    <div id="portlet-<?= $name; ?>">
-	                    <div id="portlet-<?= $name; ?>-header">
-	                    <div id="portlet-<?= $name; ?>-headertitle"><?=$title;?></div></div></a>
-						<div id="portlet-<?= $name; ?>-main">
-
-				<? } else { ?>
-
-		  		<div id="portlet-general">
-				<div id="portlet-general-main">
-				<?}?>
-
-
-				<?
-				//display module type
-				if ($dynamic==true) {
-
-					//if extraData is an array, then extra information is needed for the dynamic modules.
-					if (is_array($extraData)) {
-						$authorid = $extraData['authorid'];
-						$articleid = $extraData['id'];
-					}
-
-
-
-
-					//search for variables and replace with the current data
-					//this is used with page / article specific dynamic modules.
-					$sql = str_replace("AUTHOR_ID", $authorid, $sql);
-					$sql = str_replace("ARTICLE_ID",$articleid, $sql);
-
-
-					$results = exec_query($sql);
-					foreach($results as $row){
-						//reformat the date from the database
-						$row['date'] = date('F d, Y g:i a',strtotime($row['date']));
-						$tempHTML = $htmlShow;
-
-						//loop through each field returned from the query, replace [keywords] with matching field names, ie. [title] replaced with $title, [author] replaced with $author
-						foreach($row as $field => $value) {
-							$tempHTML = str_replace("[".$field."]",$value,$tempHTML);
-						}
-
-						//if < (&lt;) or > (&gt;) then insert the link
-						$tempHTML = str_replace("&lt;","<a class=\"articleLink\" href=\"" . $pfx . "/layout/article.php?a=". $row['id'] . "\">",$tempHTML);
-						$tempHTML = str_replace("&gt;","</a>",$tempHTML);
-						echo $tempHTML;
-
-					}
-				?>
-
-					<? if ($moduleCounter != 1) { ?><a href="#" class="reorder" onclick="requestHTTP('module_reorder.php?pageid=<?=$pageid;?>&columnid=<?=$columnid;?>&moduleid=<?=$mod;?>&direction=up&div=<?=$div;?>','<?=$div;?>')">up</a><? } ?>
-					<? if ($moduleCounter < count($intoArray)) { ?><a href="#" class="reorder" onclick="requestHTTP('module_reorder.php?pageid=<?=$pageid;?>&columnid=<?=$columnid;?>&moduleid=<?=$mod;?>&direction=down&div=<?=$div;?>','<?=$div;?>')">down</a><? } ?>
-					<a href="#" class="deleteModule" onclick="requestHTTP('module_remove_from_column.php?pageid=<?=$pageid;?>&columnid=<?=$columnid;?>&moduleid=<?=$mod;?>&div=<?=$div;?>','<?=$div;?>')">remove</a>
-					<a href="module_admin.php?moduleid=<?= $mod; ?>">edit</a>
-
-				<?
-				} else {
-				?>
-
-					<?= $htmlShow; ?><br>
-					<? if ($moduleCounter != 1) { ?><a href="#" class="reorder" onclick="requestHTTP('module_reorder.php?pageid=<?=$pageid;?>&columnid=<?=$columnid;?>&moduleid=<?=$mod;?>&direction=up&div=<?=$div;?>','<?=$div;?>')">up</a><? } ?>
-					<? if ($moduleCounter < count($intoArray)) { ?><a href="#" class="reorder" onclick="requestHTTP('module_reorder.php?pageid=<?=$pageid;?>&columnid=<?=$columnid;?>&moduleid=<?=$mod;?>&direction=down&div=<?=$div;?>','<?=$div;?>')">down</a><? } ?>
-					<a href="#" class="deleteModule" onclick="requestHTTP('module_remove_from_column.php?pageid=<?=$pageid;?>&columnid=<?=$columnid;?>&moduleid=<?=$mod;?>&div=<?=$div;?>','<?=$div;?>')">remove</a>
-					<a href="module_admin.php?moduleid=<?= $mod; ?>">edit</a>
-
-
-				<?
-				} //end display module
-				?>
-				</div>
-				</div>
-				<?
-				//}
-			}
-
-		} else {
-			echo "<font color=red>add modules below</font><br>";
-
-		}
-
-		echo "<br>";
-		addModuleDropListPortlet($pageid,$columnid,$div);
-		echo "<br>";
-		echo "<a href='module_create.php'>Create New Module</a>";
-
-}
-
-
-function setNewModuleOrder($pageid, $columnid, $moduleOrder) {
-	// $orderQuery = "UPDATE layout_columns SET moduleOrder='$moduleOrder' WHERE id=$columnid AND pageid=$pageid";
-	//echo $orderQuery . "<br>";
-	$modulecol['moduleOrder']=$moduleOrder;
-	$moduleid[id]=$columnid;
-	$moduleid[pageid]=$pageid;
-	update_query("layout_columns",$modulecol,$moduleid);
-	// mysql_query($orderQuery);
-}
 
 
 function articleInfo($articles) {
@@ -960,53 +541,6 @@ function articleInfo($articles) {
 	//print_r($theArticles);
 	return $theArticles;
 }
-
-/*function articleInfo($articles) {
-	$articleArray = explode(",",$articles);
-
-	foreach($articleArray as $i => $value) {
-
-	//for($i=0;$i<count($articleArray);i++) {
-		if ($i > 0) {
-			$where .= " OR articles.id=" . $articleArray[$i];
-		} else {
-			$where = "articles.id=" . $articleArray[$i];
-		}
-	}
-
-	$query = "SELECT articles.id, title, name author, date, character_text,body ";
-	$query .= "from articles, contributors ";
-	$query .= "where contrib_id = contributors.id and ";
-	$query .= "($where)";
-	echo $query;
-	$results = mysql_query($query);
-	$counter = 0;
-	while($row = mysql_fetch_assoc($results)) {
-		$theArticles[$counter]['id'] = $row['id'];
-		$theArticles[$counter]['title'] = $row['title'];
-		$theArticles[$counter]['author'] =  $row['author'];
-		$theArticles[$counter]['date'] = date('F d, Y g:i a',strtotime($row['date']));
-		$theArticles[$counter]['character_text'] = $row['blurb'];
-		$theArticles[$counter]['fulltext'] = $row['body'];
-		$theArticles[$counter]['imageURL'] = $row['imageURL'];
-		$theArticles[$counter]['contributor'] = $row['contributor'];
-
-
-		$counter++;
-	}
-
-	return $theArticles;
-}*/
-
-/*
-	function will return the information about the articles .
-	the returned content goes into the editor wysiwyg textbox.
-
-
-*/
-
-// used in the handpicked articles section of the module admin.
-// this function will display the title, date, author and optional blurb or link the title to the articles page.
 
 
 function addModuleDropList($page,$column,$div) {
@@ -1026,47 +560,6 @@ function addModuleDropList($page,$column,$div) {
 	</div>
 <?
 }
-
-function addModuleDropListPortlet($page,$column,$div) {
-
- ?>
-	<div class="bottomOfColumn">
-		<form name="addModule<?= $column; ?>">
-
-		<select name="moduleid" class="moduledropdown">
-			<?= allModulesDropList(); ?>
-		</select>
-		<br>
-		<input type="hidden" class="moduleDropList" name="columnid" value="<?= $div; ?>">
-		<input type="button" class="addModuleButton" value="Add Module" onClick="requestHTTP('addModulePortlet.php?pageid=<?= $page; ?>&moduleid=' + document.addModule<?= $column; ?>.moduleid.options[document.addModule<?= $column; ?>.moduleid.selectedIndex].value + '&columnid=<?= $column; ?>&div=<?= $div; ?>','<?= $div; ?>')">
-
-		</form>
-	</div>
-<?
-}
-
-function slideshow_exists($slideshowid)
- {
-
-   $results = exec_query("select * from slideshow where id=".$slideshowid." ");
-   foreach($results as $row)
-	   {
-		$slideid[id]=$row[id];
-	   }
-   return $slideid;
-   }
-
-   function getFullslideshow($slideid) // slideshow with all slides together
-    {
-	   $sql = "select s.id id, s.title,s.total_slides, contributors.name author, s.contributor, s.contrib_id authorid, s.date, sc.body, sc.slideshow_id,sc.slide_title,sc.slide_no
-	from slideshow s, contributors,slideshow_content sc
-	where s.id=" . $slideid . "  and  sc.slideshow_id=s.id and  s.contrib_id = contributors.id order by slide_no";
-
-	$results = exec_query($sql);
-	$slide=$results;
-	return($slide);
-	 }
-
 
 
 /****** get latest slide show as default for index page************/
@@ -1111,17 +604,6 @@ function getlatestslideshow() { //slideshow with one slide at time
 	}
 }
 
-function getTotalSlideCount($slideid,$slideshow_id_type,$slidetags=NULL){
-	$total=0;
-	$sql_total="select distinct(eit.item_id),s.title from ex_item_tags eit,slideshow s where (item_id!='$slideid' and item_type='$slideshow_id_type' and tag_id in($slidetags)) and s.approved='1' and s.id=eit.item_id";
-	//$sql_total="select distinct(eit.item_id) from ex_item_tags eit,slideshow s where (item_id!='$slideid' and item_type='$slideshow_id_type' and tag_id in($slidetags)) and s.approved='1' and s.id=eit.item_id";
-	//echo $sql_total;
-	$results_count = exec_query($sql_total);
-	if(count($results_count)){
-		$total = count($results_count);
-	}
-	return $total;
-}
 
 function getSlideContent($totalslides,$slideTags,$slideid){
 	global $IMG_SERVER;
@@ -1232,6 +714,8 @@ function getSlideShow($slideid,$slide_no,$preview) { //slideshow with one slide 
 	$results = exec_query($sql);
 	if (count($results) )
 	{
+		global $D_R;
+		include_once($D_R.'/lib/config/_slideshow_config.php');
 		global $maximagewidth;
 		global $maximageheight;
 
@@ -1556,615 +1040,7 @@ function call_Column_Module_List($pageid,$columnName,$modulesArray,$extraData,$d
 
 }
 
-function call_Column_Module_List_Image($pageid,$columnName,$modulesArray,$extraData,$div) {
 
-	//if $pageid is not numeric, then query the database for the id with the given name.
-	if (!is_numeric($pageid)) {
-		$pageid = getPageId($pageid);
-	}
-
-	// get the column id with the given column name.
-	if (!is_numeric($columnName)) {
-		//request column id from function because column name was submitted to function.
-		$columnid = getColumnId($pageid, $columnName);
-	} else {
-		//$columnName is actually submitted as id
-		$columnid = $columnName;
-
-	}
-
-	//get modules
-	$modList = listModules($pageid,$columnid);
-	$intoArray = explode(",",$modList);
-
-	//get column name for the available information columnid and pageid
-	$getColumnName = exec_query("SELECT name FROM layout_columns WHERE id=" . $columnid . " AND pageid=" . $pageid);
-    foreach($getColumnName as $row){
-		$columnName = $row['name'];
-	}
-
-		if ($intoArray[0] != "") {
-		//if (count($intoArray) != 0) {
-			//echo "contents of the array = " . print_r(array_values($intoArray));
-			$moduleCounter = 0;
-			foreach($intoArray as $mod) {
-				$dynamic = false;
-				$moduleCounter++;
-				//if ($showType == "show")  {
-					$getModuleInfo = moduleExists($mod);
-
-					if ($getModuleInfo != false) {
-						foreach ($getModuleInfo as $key => $value) {
-							//determine the type of the module . dynamic or static
-							if (($key =="type") && ($value=="dynamic")) {
-								$dynamic = true;
-							}
-
-							if ($key == "html") {
-								$previewItems[$key] = htmlentities($value);
-								//$$key = htmlentities($value);
-								$htmlShow = stripslashes($value);
-							} else {
-								$previewItems[$key] = stripslashes($value);
-								$$key = stripslashes($value);
-							}
-						}
-
-					}
-
-				//special catch for articles' also by this author module where the author listed is not a real contributor.
-				// i.e if hoofy writes an article, do not display 'also by this author' instead display recent headlines
-				if (($dynamic==true) && ($extraData['category'] == "") && ($extraData['authorid'] == 0 || $extraData['authorid']=="")) {
-					$sql = "select articles.id id, title, name author, date,articles.keyword keyword,blurb, contributor from articles, contributors where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' and articles.is_public='1' order by date desc limit 4";
-					$name = "Recent Headlines";
-				}
-
-				//display module type
-				if ($dynamic==true) { ?>
-
-					<div class="modulebox">
-					<? if ($name != "") { ?>
-					<div class="FeatureHeaderGrayBgDouble">
-						<?= $name; ?> </div>
-						<? } ?>
-
-				<?
-					//if extraData is an array, then extra information is needed for the dynamic modules.
-					if (is_array($extraData)) {
-						$authorid = $extraData['authorid'];
-						$articleid = $extraData['id'];
-						$category = $extraData['category']; //used for modules that display most recent articles from a specific category
-					} else {
-
-
-					}
-
-
-
-					//search for variables and replace with the current data
-					//this is used with page / article specific dynamic modules.
-					$sql = str_replace("AUTHOR_ID", $authorid, $sql);
-					$sql = str_replace("ARTICLE_ID",$articleid, $sql);
-					$sql = str_replace("CATEGORY",$category, $sql);
-
-					$results = exec_query($sql);
-					foreach($results as $row){
-						//reformat the date from the database
-						$authorInfo= returnRealAuthor($row['author'],$row['contributor']);
-						$row['author'] = $authorInfo['name'];
-						$row['date'] = date('F d, Y g:i a',strtotime($row['date']));
-						$tempHTML = $htmlShow;
-
-						//loop through each field returned from the query, replace [keywords] with matching field names, ie. [title] replaced with $title, [author] replaced with $author
-						foreach($row as $field => $value) {
-							$tempHTML = str_replace("[".$field."]",$value,$tempHTML);
-						}
-
-						$tempHTML = str_replace("&lt;","<a class=\"articleLink\" href=\"" . makeArticleslink($row['id'],$row['keyword'],$row['blurb']). "\">",$tempHTML);
-						$tempHTML = str_replace("&gt;","</a>",$tempHTML);
-						echo $tempHTML;
-
-					}
-				?>
-
-					</div>
-				<?
-				} else {
-				?>
-
-				<div class="modulebox">
-					<? if ($name != "") { ?>
-					<div class="FeatureHeaderGrayBgDouble">
-						<?= $name; ?> </div>
-						<? } ?>
-
-						<div  class="moduleinnerimage"><?= $htmlShow; ?></div><br>
-
-					</div>
-
-
-				<?
-				} //end display module
-
-				//}
-			}
-
-		} else {
-			//echo "<font color=red>add modules below</font><br>";
-		}
-
-
-}
-
-
-
-function call_Column_Module_List_mailbag($pageid,$columnName,$modulesArray,$extraData,$div) {
-
-	//if $pageid is not numeric, then query the database for the id with the given name.
-	if (!is_numeric($pageid)) {
-		$pageid = getPageId($pageid);
-	}
-
-	// get the column id with the given column name.
-	if (!is_numeric($columnName)) {
-		//request column id from function because column name was submitted to function.
-		$columnid = getColumnId($pageid, $columnName);
-	} else {
-		//$columnName is actually submitted as id
-		$columnid = $columnName;
-
-	}
-
-	//get modules
-	$modList = listModules($pageid,$columnid);
-	$intoArray = explode(",",$modList);
-
-	//get column name for the available information columnid and pageid
-	$getColumnName =exec_query("SELECT name FROM layout_columns WHERE id=" . $columnid . " AND pageid=" . $pageid);
-	foreach($getColumnName as $row){
-		$columnName = $row['name'];
-	}
-
-		if ($intoArray[0] != "") {
-		//if (count($intoArray) != 0) {
-			//echo "contents of the array = " . print_r(array_values($intoArray));
-			$moduleCounter = 0;
-			foreach($intoArray as $mod) {
-				$dynamic = false;
-				$moduleCounter++;
-				//if ($showType == "show")  {
-					$getModuleInfo = moduleExists($mod);
-
-					if ($getModuleInfo != false) {
-						foreach ($getModuleInfo as $key => $value) {
-							//determine the type of the module . dynamic or static
-							if (($key =="type") && ($value=="dynamic")) {
-								$dynamic = true;
-							}
-
-							if ($key == "html") {
-								$previewItems[$key] = htmlentities($value);
-								//$$key = htmlentities($value);
-								$htmlShow = stripslashes($value);
-							} else {
-								$previewItems[$key] = stripslashes($value);
-								$$key = stripslashes($value);
-							}
-						}
-
-					}
-
-				//special catch for articles' also by this author module where the author listed is not a real contributor.
-				// i.e if hoofy writes an article, do not display 'also by this author' instead display recent headlines
-				if (($dynamic==true) && ($extraData['category'] == "") && ($extraData['authorid'] == 0 || $extraData['authorid']=="")) {
-					$sql = "select articles.id id, title, name author, date,articles.keyword keyword,blurb, contributor from articles, contributors where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' and articles.is_public='1' order by date desc limit 4";
-					$name = "Recent Headlines";
-				}
-
-				//display module type
-				if ($dynamic==true) { ?>
-
-					<div class="modulebox">
-					<? if ($name != "") { ?>
-					<div class="FeatureHeaderGrayBgDouble">
-						<?= $name; ?> </div>
-						<? } ?>
-
-				<?
-					//if extraData is an array, then extra information is needed for the dynamic modules.
-					if (is_array($extraData)) {
-						$authorid = $extraData['authorid'];
-						$articleid = $extraData['id'];
-						$category = $extraData['category']; //used for modules that display most recent articles from a specific category
-					} else {
-
-
-					}
-
-
-
-					//search for variables and replace with the current data
-					//this is used with page / article specific dynamic modules.
-					$sql = str_replace("AUTHOR_ID", $authorid, $sql);
-					$sql = str_replace("ARTICLE_ID",$articleid, $sql);
-					$sql = str_replace("CATEGORY",$category, $sql);
-
-					$results = exec_query($sql);
-					foreach($results as $row){
-						//reformat the date from the database
-						$authorInfo= returnRealAuthor($row['author'],$row['contributor']);
-						$row['author'] = $authorInfo['name'];
-						$row['date'] = date('F d, Y g:i a',strtotime($row['date']));
-						$tempHTML = $htmlShow;
-
-						//loop through each field returned from the query, replace [keywords] with matching field names, ie. [title] replaced with $title, [author] replaced with $author
-						foreach($row as $field => $value) {
-							$tempHTML = str_replace("[".$field."]",$value,$tempHTML);
-						}
-
-						$tempHTML = str_replace("&lt;","<a class=\"articleLink\" href=\"" . makeArticleslink($row['id'],$row['keyword'],$row['blurb']). "\">",$tempHTML);
-						$tempHTML = str_replace("&gt;","</a>",$tempHTML);
-						echo $tempHTML;
-
-					}
-				?>
-
-					</div>
-				<?
-				} else {
-				?>
-
-				<div class="modulebox">
-					<? if ($name != "") { ?>
-					<div class="FeatureHeaderGrayBgDouble">
-						<?= $name; ?> </div>
-						<? } ?>
-						<div class="mailbox">
-						<?= $htmlShow; ?></div><br>
-
-					</div>
-
-
-				<?
-				} //end display module
-
-				//}
-			}
-
-		} else {
-			//echo "<font color=red>add modules below</font><br>";
-		}
-
-
-}
-
-function call_Column_Module_List_featured($pageid,$columnName,$modulesArray,$extraData,$div) {
-
-	//if $pageid is not numeric, then query the database for the id with the given name.
-	if (!is_numeric($pageid)) {
-		$pageid = getPageId($pageid);
-	}
-
-	// get the column id with the given column name.
-	if (!is_numeric($columnName)) {
-		//request column id from function because column name was submitted to function.
-		$columnid = getColumnId($pageid, $columnName);
-	} else {
-		//$columnName is actually submitted as id
-		$columnid = $columnName;
-
-	}
-
-	//get modules
-	$modList = listModules($pageid,$columnid);
-	$intoArray = explode(",",$modList);
-
-	//get column name for the available information columnid and pageid
-	$getColumnName = exec_query("SELECT name FROM layout_columns WHERE id=" . $columnid . " AND pageid=" . $pageid);
-	foreach($getColumnName as $row){
-		$columnName = $row['name'];
-	}
-
-		if ($intoArray[0] != "") {
-		//if (count($intoArray) != 0) {
-			//echo "contents of the array = " . print_r(array_values($intoArray));
-			$moduleCounter = 0;
-			foreach($intoArray as $mod) {
-				$dynamic = false;
-				$moduleCounter++;
-				//if ($showType == "show")  {
-					$getModuleInfo = moduleExists($mod);
-
-					if ($getModuleInfo != false) {
-						foreach ($getModuleInfo as $key => $value) {
-							//determine the type of the module . dynamic or static
-							if (($key =="type") && ($value=="dynamic")) {
-								$dynamic = true;
-							}
-
-							if ($key == "html") {
-								$previewItems[$key] = htmlentities($value);
-								//$$key = htmlentities($value);
-								$htmlShow = stripslashes($value);
-							} else {
-								$previewItems[$key] = stripslashes($value);
-								$$key = stripslashes($value);
-							}
-						}
-
-					}
-
-				//special catch for articles' also by this author module where the author listed is not a real contributor.
-				// i.e if hoofy writes an article, do not display 'also by this author' instead display recent headlines
-				if (($dynamic==true) && ($extraData['category'] == "") && ($extraData['authorid'] == 0 || $extraData['authorid']=="")) {
-					$sql = "select articles.id id, title, name author, date,articles.keyword keyword,blurb, contributor from articles, contributors where articles.contrib_id = contributors.id and articles.approved='1' and articles.is_live='1' and articles.is_public='1' order by date desc limit 4";
-					$name = "Recent Headlines";
-				}
-
-				//display module type
-				if ($dynamic==true) { ?>
-
-					<div class="modulebox">
-					<? if ($name != "") { ?>
-					<div class="FeatureHeaderGrayBgDouble">
-						<?= $name; ?> </div>
-						<? } ?>
-
-				<?
-					//if extraData is an array, then extra information is needed for the dynamic modules.
-					if (is_array($extraData)) {
-						$authorid = $extraData['authorid'];
-						$articleid = $extraData['id'];
-						$category = $extraData['category']; //used for modules that display most recent articles from a specific category
-					} else {
-
-
-					}
-
-
-
-					//search for variables and replace with the current data
-					//this is used with page / article specific dynamic modules.
-					$sql = str_replace("AUTHOR_ID", $authorid, $sql);
-					$sql = str_replace("ARTICLE_ID",$articleid, $sql);
-					$sql = str_replace("CATEGORY",$category, $sql);
-
-					$results = exec_query($sql);
-					foreach($results as $row){
-						//reformat the date from the database
-						$authorInfo= returnRealAuthor($row['author'],$row['contributor']);
-						$row['author'] = $authorInfo['name'];
-						$row['date'] = date('F d, Y g:i a',strtotime($row['date']));
-						$tempHTML = $htmlShow;
-
-						//loop through each field returned from the query, replace [keywords] with matching field names, ie. [title] replaced with $title, [author] replaced with $author
-						foreach($row as $field => $value) {
-							$tempHTML = str_replace("[".$field."]",$value,$tempHTML);
-						}
-
-						$tempHTML = str_replace("&lt;","<a class=\"articleLink\" href=\"" . makeArticleslink($row['id'],$row['keyword'],$row['blurb']). "\">",$tempHTML);
-						$tempHTML = str_replace("&gt;","</a>",$tempHTML);
-						echo $tempHTML;
-
-					}
-				?>
-
-					</div>
-				<?
-				} else {
-				?>
-
-				<div class="modulebox">
-
-
-						<?= $htmlShow; ?><br>
-
-					</div>
-
-
-				<?
-				} //end display module
-
-				//}
-			}
-
-		} else {
-			//echo "<font color=red>add modules below</font><br>";
-		}
-
-
-}
-
-
-
-//***********************************************************************************************
-function call_Portlet_List($pageid,$columnName,$modulesArray,$extraData,$div) {
-
-	$links['archive'] = $D_R . "/library/search.htm";
-	$links['profiles'] = $D_R . "/gazette/bios.htm";
-	$links['univ'] = $D_R . "/university/";
-	//if $pageid is not numeric, then query the database for the id with the given name.
-	if (!is_numeric($pageid)) {
-		$pageid = getPageId($pageid);
-	}
-
-	// get the column id with the given column name.
-	if (!is_numeric($columnName)) {
-		//request column id from function because column name was submitted to function.
-		$columnid = getColumnId($pageid, $columnName);
-	} else {
-		//$columnName is actually submitted as id
-		$columnid = $columnName;
-
-	}
-
-
-	//get modules
-	$modList = listModules($pageid,$columnid);
-	$intoArray = explode(",",$modList);
-
-	//get column name for the available information columnid and pageid
-	$getColumnName = exec_query("SELECT name FROM layout_columns WHERE id=" . $columnid . " AND pageid=" . $pageid);
-	foreach($getColumnName as $row){
-		$columnName = $row['name'];
-	}
-
-		if ($intoArray[0] != "") {
-		//if (count($intoArray) != 0) {
-			//echo "contents of the array = " . print_r(array_values($intoArray));
-			$moduleCounter = 0;
-			foreach($intoArray as $mod) {
-				$dynamic = false;
-				$moduleCounter++;
-				//if ($showType == "show")  {
-					$getModuleInfo = moduleExists($mod);
-					$title=$getModuleInfo['name'];
-					unset($getModuleInfo['name']);
-					//remove portlet from the uniquename of the module.
-					$name = str_replace("portlet-","",$getModuleInfo['uniqueName']);
-
-					if ($getModuleInfo != false) {
-						foreach ($getModuleInfo as $key => $value) {
-							//determine the type of the module . dynamic or static
-							if (($key =="type") && ($value=="dynamic")) {
-								$dynamic = true;
-							}
-
-							if ($key == "html") {
-								$previewItems[$key] = htmlentities($value);
-								//$$key = htmlentities($value);
-								$htmlShow = stripslashes($value);
-							} else {
-								$previewItems[$key] = $value;
-								$$key = $value;
-							}
-						}
-
-					}
-
-				if ($name == "partners" || $name == "mvtv_sidebar" || $name == "creditcards") {
-				?>
-
-                    <img src="<?=$IMG_SERVER;?>/images/portlet_<?= $name; ?>_top.gif" alt=""><br />
-					<div id="portlet-<?= $name; ?>">
-					<div id="portlet-<?= $name; ?>-main">
-				<? } elseif ($name == "archive" || $name == "profiles" || $name == "univ")  { ?>
-					<a href="<?= $links[$name]; ?>" class="portletheadertext">
-                    <div id="portlet-<?= $name; ?>">
-                    <div id="portlet-<?= $name; ?>-header">
-                    <div id="portlet-<?= $name; ?>-headertitle"><?=$title;?></div></div></a>
-					<div id="portlet-<?= $name; ?>-main">
-				<? } else { ?>
-		  			<div id="portlet-general">
-					<div id="portlet-general-main">
-
-				<?}?>
-				<?
-				//display module type
-				if ($dynamic==true) {
-
-					//if extraData is an array, then extra information is needed for the dynamic modules.
-					if (is_array($extraData)) {
-						$authorid = $extraData['authorid'];
-						$articleid = $extraData['id'];
-					}
-
-					//search for variables and replace with the current data
-					//this is used with page / article specific dynamic modules.
-					$sql = str_replace("AUTHOR_ID", $authorid, $sql);
-					$sql = str_replace("ARTICLE_ID",$articleid, $sql);
-
-
-					$results = exec_query($sql);
-					foreach($results as $row){
-						//reformat the date from the database
-						$row['date'] = date('F d, Y g:i a',strtotime($row['date']));
-						$tempHTML = $htmlShow;
-
-						//loop through each field returned from the query, replace [keywords] with matching field names, ie. [title] replaced with $title, [author] replaced with $author
-						foreach($row as $field => $value) {
-							$tempHTML = str_replace("[".$field."]",$value,$tempHTML);
-						}
-
-						//if < (&lt;) or > (&gt;) then insert the link
-						$tempHTML = str_replace("&lt;","<a class=\"articleLink\" href=\"" . $pfx . "/layout/article.php?a=". $row['id'] . "\">",$tempHTML);
-						$tempHTML = str_replace("&gt;","</a>",$tempHTML);
-						echo $tempHTML;
-
-					}
-
-				} else {
-				?>
-					<?= $htmlShow; ?><br>
-
-				<?
-				} //end display module
-				?>
-				</div>
-				</div></div>
-				<?
-				//}
-			}
-
-		} else {
-			//echo "<font color=red>add modules below</font><br>";
-
-		}
-
-
-
-}
-
-
-//display the date
-
-function displayDate() {
-	$dateInfo = getDate();
-	$todaysDate = $dateInfo['weekday'] . " " . $dateInfo['month'] . " " . $dateInfo['mday'] . ", " . $dateInfo['year'];
-	return $todaysDate;
-}
-
-//returns the contents of the portlet module for a given name
-function getPortlet($name) {
-	$sql = "select * from layout_modules where uniqueName='portlet-" . $name . "' limit 1";
-	$results = exec_query($sql);
-
-	// get data out of query's results, store in array.
-foreach($results as $row) {
-		$portlet['id'] = $row['id'];
-		$portlet['uniqueName'] = $row['uniqueName'];
-		$portlet['type'] = $row['type'];
-		$portlet['html'] = $row['html'];
-		$portlet['sql'] = $row['sql'];
-	}
-
-	//send back the data in an array.
-	return $portlet;
-}
-
-
-//admin side of the portlets
-//returns the contents of the portlet module for a given name
-function editPortlet($name) {
-	$sql = "select * from layout_modules where uniqueName='portlet-" . $name . "' limit 1";
-	$results = exec_query($sql);
-
-	// get data out of query's results, store in array.
-	foreach($results as $row){
-		$portlet['id'] = $row['id'];
-		$portlet['uniqueName'] = $row['uniqueName'];
-		$portlet['type'] = $row['type'];
-		$portlet['html'] = $row['html'];
-		$portlet['sql'] = $row['sql'];
-	}
-
-	//send back the data in an array.
-	return $portlet;
-}
-
-function textBubble($text) {
-	return wordwrap($text, 23,"<br>",1);
-}
 
 //display recent headline in a 2 column table
 function displayRecentHeadlines($titlebar,$sql,$zoneID) {
@@ -2215,48 +1091,6 @@ function displayRecentHeadlines($titlebar,$sql,$zoneID) {
 	</table>
 	<?
 }
-function displayRecentHeadlinesLayout($titlebar,$sql,$zoneID) {
-	$results = exec_query($sql);
-	$counter = 1;
-	?>
-</h2>
-	<table border="0" width="405" cellpadding="2" cellspacing="3">
-	<tr>
-		<td width="48%">
-		<?
-				foreach($results as $row){
-				$counter++;
-				$realauthorInfo = returnRealAuthor($row['author'],$row['contributor']);
-
-				$realauthorname = $realauthorInfo['name'];
-				//display the article title with link to article.php
-				// also show date and author
-
-            ?>
-				<a class="articleLink" href="article.php"><div class="NewsArticleTitle"><?= $row['title'] ?></div></a><?
-
-				echo "<div class=\"AuthorName\">" . $realauthorname ."</div>" . chr(13);
-				echo  "<div class=\"ArticleDescription\">". $row[talkbubble] ."</div>". chr(13);
-
-			  ?>
-			<!--  <a href= <?= $pfk.makeArticleslink($row['id'],$row['keyword'],$row['blurb']);?> class="ReadMore">Read more...</a>-->
-			<br />
- <?
-				if ($counter > (count($results)/2)) {
-					echo "</td>" . chr(13) . "<td align=\"center\" valign=\"middle\" width=\"1\" background='". $pfx. "/images/recent_div_line.gif' style=\"background-repeat:repeat-y\"></td><td width=\"48%\">";
-					$counter=0;
-				}
-			}
-
-		?>
-		</td>
-	</tr>
-	</table>
-
-	<?
-
-}
-
 
 
 
@@ -2290,113 +1124,6 @@ function displayRecentCategoryArticle($category) {
 	echo displayArticleInfo2($article);
 }
 //-----------------------------------------------
-
-function displayRecentCategoryArticle2($category,$pageName,$modules) {
-
-	$sql = "SELECT articles.* , character_images.asset imageURL, contributors.name author, contributors.disclaimer, articles.position, article_categories.title category ";
-//	$sql = "select articles.id id, articles.title, contributors.name author, articles.contributor, contributors.disclaimer,articles.position, contrib_id authorid, date, blurb, body, position, character_text, article_categories.title category, character_images.asset imageURL ";
-	$sql .= "FROM article_categories, articles, contributors, character_images ";
-	$sql .= "WHERE articles.contrib_id = contributors.id ";
-	$sql .= "and articles.approved = '1' articles.is_live='1' ";
-	//$sql .= "and articles.is_public = '1' ";
-	$sql .= "and character_images.id = articles.character_img_id ";
-	$sql .= "and article_categories.name = '" . $category . "' ";
-	$sql .= "and find_in_set( article_categories.id, articles.category_ids ) ";
-	$sql .= "ORDER BY date ";
-	$sql .= "desc ";
-	$sql .= "LIMIT 1 ";
-
-	$results = exec_query($sql);
-    foreach($results as $row){
-		$article = $row;
-		//restate the author id
-		$tempAuthor = returnRealAuthor($article['authorid'],$article['contributor']);
-		$article['authorid'] = $tempAuthor['id'];
-		$article['author'] = $tempAuthor['name'];
-		//rewrite the disclaimer
-		$article['disclaimer'] = getAuthorDisclaimer($article['authorid']);
-	}
-
-	echo displayArticleInfo($article,$pageName,$modules,$category);
-}
-
-
-//must pass function , article and correct page name
-function displayArticleInfo($articles,$pageName, $modules,$category) {
-	//print_r($options);
-	if ($articles == 0) {
-		$article['title'] = "Sorry no article could be found";
-	} else {
-		$article = $articles;
-	}
-
-?>
-		<table id="news" cellpadding="0" cellspacing="0">
-			  <tr>
-
-			  <!-- left column-->
-			  <td class="main-content" style="padding:0px; vertical-align:top;">
-				<div id="left-content">
-				<h1 class="bar"><?= $article['title']; ?></h1>
-					<!-- begin subheader baloon -->
-					<p class="header-separator">&nbsp;</p>
-					<div id="articleOptions" style="size:xx-small;margin:0px;padding:3px 0 0 0;">
-						 <p style="text-align:right"><a href="javascript:print(<?= $article['id']; ?>);" target="_self">print this page</a></p>
-					</div>
-					<div id="related-module">
-						<?
-						//get recent headlines for the point figure  or retail roundup
-						$dynamicModuleInfo['category'] = $category;
-						call_Column_Module_List($pageName,'column2',$modules,$dynamicModuleInfo,'right-content');
-
-						?>
-						</div>
-						<!--spacer for fixed column width; do not delete -->
-						<img src="http://storage.googleapis.com/mvassets/images/spacer.gif" width="186" height="1" alt="" />
-					</div>
-					<br>
-				<!-- display the author, date, character_text, and character -->
-					<table border="0" width="380">
-						<tr>
-							<td nowrap>
-								<br>
-								<?= displayAuthorLink($article['author'],$article['authorid']); ?>
-								<!-- <h5><?= $article['author']; ?></h5> -->
-								<h6> <?= date('M d, Y g:i a',strtotime($article['date'])); ?></h6>
-							</td>
-
-							<td width=1% nowrap valign=middle>
-								<? if ($article['character_text'] != "") {
-									showTalkBubble($article['character_text']);
-								 } ?>
-							</td>
-
-							<td valign="bottom"><br><br>
-								<img valign="bottom" src="<?= $pfx . $article['imageURL']; ?>" width="70" height="77">
-							</td>
-							</tr>
-						</table>
-					<div class="articleBody">
-					<br>
-					<?= $article['body']; ?>
-					</div>
-					<br><br>
-
-
-				<!-- positions -->
-				<div class="positions">
-					<font color="red"><?= $article['position']; ?></font>
-				</div>
-				<br>
-				<!-- disclaimer -->
-				<div class="disclaimer">
-					<?= $article['disclaimer']; ?>
-					</div>
-
-
-
-<?
-}
 
 
 function displayArticleInfo2($articles) {
@@ -2464,55 +1191,6 @@ function displayArticleInfo2($articles) {
 }
 
 
-
-function printArticleInfo($articles,$options) {
-
-
-	if ($articles == 0) {
-		return;
-	}
-
-		if (($options['fulltext'] == "on") || ($options == "fulltext")) {
-
-			$info.="<h4>" .  $articles[0]['title']. "</h4>";
-			$info .= displayAuthorLink($articles[0]['author'],$articles[0]['authorid']);
-			//$info .= "<h5>" . $articles[0]['author'] . "</h5>" .chr(13);
-			$info .= "<h6>" . $articles[0]['character_text'] . "</h6><br>" . chr(13);
-			$info.=$articles[0]['body'] . "<br>";
-			$curTitlelink = makeArticleslink($articles[0]['id'],$articles[0]['keyword'],$articles[0]['blurb']);
-			$info.="<a href=\"".$curTitlelink  ."\"><h4 class=\"ReadMore\">Read more...</h4></a>";
-		//	$info.="<a href=\"". $pfx . "/articles/index.php?a=" . $articles[0]['id'] ."\"><h4 class=\"ReadMore\">Read more...</h4></a>";
-
-			//print_r($articles);
-			return $info;
-
-		} else {
-			for($i=0;$i<count($articles);$i++) {
-				if ($options['linkTitle'] == "on") {
-					$curTitlelink = makeArticleslink($articles[$i]['id'],$articles[$i]['keyword'],$articles[$i]['blurb']);
-				$curTitle = "<a class=\"articleLink\" href=\"".$curTitlelink."\"><h4>" . $articles[$i]['title'] . "</h4></a>";
-				//	$curTitle = "<a class=\"articleLink\" href=\"" . $pfx . "/articles/".$articles[$i]['title']."/index/a/" . $articles[$i]['id'] . "\"><h4>" . $articles[$i]['title'] . "</h4></a>";
-				} else {
-					$curTitle = $articles[$i]['title'];
-				}
-				$info .= "<H4>" . $curTitle . "</H4>" . chr(13) . "<H5>" . $articles[$i]['author'] . "</H5>"  . chr(13) . "<H6>".$articles[$i]['character_text'] . "</H6>";
-
-				//insert blurb if requested
-				if ($options['blurb'] == "on") {
-						$info .= "<P>" . $articles[$i]['blurb'] . "</P>";
-				}
-
-				$info.="<a href=\"".$curTitlelink."\"><h4 class=\"ReadMore\">Read more...</h4></a>";
-				//$info.="<a href=\"". $pfx . "/articles/index.php?a=" . $articles[$i]['id'] ."\"><h4 class=\"ReadMore\">Read more...</h4></a>";
-			}
-
-
-
-
-		}
-
-	return $info;
-}
 // this function will correctly display the author or contributor of an article
 // if no contributor is given, or = " " then display a link to the author link. If contributor is
 //this function will return the real author of between when passed author and contributor.
@@ -3621,7 +2299,7 @@ function showfoxnews()
     <div class="foxbusiness">
     <table border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td colspan="3" style="background-image:url(http://storage.googleapis.com/mvassets/images/Minyanville_FXB_header_new.jpg);height:33px;"></td>
+      <td colspan="3" style="background-image:url(<?=$IMG_SERVER?>/images/Minyanville_FXB_header_new.jpg);height:33px;"></td>
     </tr>
     <tr><td height="7px"></td></tr>
       <tr><td><center><h6 class="foxbussinessTopStories">TOP STORIES </h6> </center></td></tr>
@@ -5784,7 +4462,7 @@ function updatePrivacy($subid,$arr)
 }	//Privacy setting ends here
 function displayPeopleExchange($subscription_id=NULL)
 {
-	global $profileMatchingFields,$lang,$page_config,$peopleexchnglmt,$pageName;
+	global $profileMatchingFields,$lang,$page_config,$peopleexchnglmt,$pageName,$CDN_SERVER;
 
 	//print_r($profileMatchingFields);
 	$objfriend=new friends();
@@ -5855,7 +4533,7 @@ function displayPeopleExchange($subscription_id=NULL)
 	}
 	}
 	?>
-			<script src="<?=$HTPFX.$HTHOST?>/js/Discussion.1.2.js" type="text/javascript"></script>
+			<script src="<?=$CDN_SERVER?>/js/Discussion.1.2.js" type="text/javascript"></script>
 		<table border="0" width="100%" style="border-left:1px solid #cccccc; padding:0px; margin:0px; border-top:1px solid #cccccc; border-bottom:1px solid #cccccc; border-right:1px solid #cccccc; margin:0px; text-align:left;" cellpadding="0" cellspacing="0" align="left">
 		<tr>
 		<td valign="top">
@@ -6283,6 +4961,7 @@ function getLatestRandomSlideShow($slideid)
 
 function getPageNoofSlideshow($slideshowid)
 {
+	include_once($D_R.'/lib/config/_slideshow_config.php');
 	global $slidesCnt; // now its 4
 	$sql="select s.id as id from slideshow s,slideshow_content sc where s.approved='1' and s.id=sc.slideshow_id and sc.slide_no='1' ORDER BY s.id desc";
 	$slidesarray = exec_query($sql);

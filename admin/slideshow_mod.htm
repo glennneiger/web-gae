@@ -1,5 +1,5 @@
 <?php
-global $HTPFX,$HTHOST,$D_R;
+global $HTPFX,$HTHOST,$D_R,$bucketPath;
 include_once($D_R."/admin/_authenticate.htm");
 include_once($D_R."/lib/_misc.php");
 include_once($D_R."/lib/layout_functions.php");
@@ -19,14 +19,14 @@ $datefield = $_POST['datefield'];
 function image_upload($imagefile,$key){
 	  $imageLocation="/assets/slideshow/".str_replace(" ","_",$imagefile[0][name][slide_image][$key]);
 	  $gs_name = $newimg['tmp_name'];
-	  move_uploaded_file($gs_name,"gs://mvassets".$imgpath);
+	  move_uploaded_file($gs_name,$bucketPath.$imgpath);
 	  return 1;
 }
 
 function thumbnail_upload($imagefile){
  	$imageLocation="/assets/slideshow/".str_replace(" ","_",$imagefile[0][name]);
     $gs_name = $imagefile[0]['tmp_name'];
-	move_uploaded_file($gs_name,"gs://mvassets".$imageLocation);
+	move_uploaded_file($gs_name,$bucketPath.$imageLocation);
 	return 1;
 }
 

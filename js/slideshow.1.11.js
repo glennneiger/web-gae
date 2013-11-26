@@ -69,7 +69,7 @@ function slideupd(req)
 {
 var resposnseval;
 var responsearr= new Array();
-var img_server = "http://storage.googleapis.com/mvassets";
+var img_server = "http://image.minyanville.com";
  resposnseval =req.responseText;	
 if(resposnseval==""){
 		$("bt_left").src = image_server + "/images/slideshow/previous_button_disable.jpg";//disabled nav_back_disabled.png";

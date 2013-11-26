@@ -1,14 +1,14 @@
 <?php
-global $lang, $EX_INVALIDLOGIN, $HTPFX, $HTHOST, $page_config,$D_R,$HTADMINHOST ;
+global $lang, $EX_INVALIDLOGIN, $HTPFX, $HTHOST, $page_config,$D_R,$HTADMINHOST,$CDN_SERVER ;
 $SUGGESTIONTICKERTALKJSSCRIPT=$HTPFX.$HTHOST."/assets/tickertalk/js/suggestion_tt.js";
-$SUGGESTIONJSSCRIPT=$HTPFX.$HTHOST."/js/suggestion.js";
-$STOCKSUGGESTIONJSSCRIPT=$HTPFX.$HTHOST."/js/stock_suggestion.js";
+$SUGGESTIONJSSCRIPT=$CDN_SERVER."/js/suggestion.js";
+$STOCKSUGGESTIONJSSCRIPT=$CDN_SERVER."/js/stock_suggestion.js";
 $LATESTARTICLEJSSCRIPT= $HTPFX.$HTHOST."/assets/data/latestArticle.txt";
 $SUBSCRIBEDBLOGSJSSCRIPT= $HTPFX.$HTHOST."/assets/data/subscribedBlogs.txt";
 $timeinterval="30 MINUTE";
-$ACTBJSSCRIPT=$HTPFX.$HTHOST."/js/actb.js";
-$STOCKACTBJSSCRIPT=$HTPFX.$HTHOST."/js/stock_actb.js";
-$ACTB_COMMONJSSCRIPT=$HTPFX.$HTHOST."/js/actb_common.js";
+$ACTBJSSCRIPT=$CDN_SERVER."/js/actb.js";
+$STOCKACTBJSSCRIPT=$CDN_SERVER."/js/stock_actb.js";
+$ACTB_COMMONJSSCRIPT=$CDN_SERVER."/js/actb_common.js";
 $TEASURE_COUNT=250;
 $relatedExchangeDuration="14 day";
 $relatedExchangeOffset = 0;

@@ -1,5 +1,6 @@
 <?
 include("$ADMIN_PATH/_header.htm");
+global $bucketPath;
 
 /*============set up permissions=================*/
 $adminall=$AD->getPerm(array("admin_users_all", "shops_edit"));
@@ -30,7 +31,7 @@ $files=array(
 );
 
 if($filename){
-	$draftpath="gs://mvassets".dirname($filename)."/.".basename($filename);
+	$draftpath=$bucketPath.dirname($filename)."/.".basename($filename);
 	if(!is_file($draftpath)) copy($D_R.$filename,$draftpath);  
 
 	if($content && ($draft || $makelive)){//post of data
@@ -38,7 +39,7 @@ if($filename){
 		$ctx = stream_context_create($options);
 		file_put_contents($draftpath, strip($content), 0, $ctx);
 		if($makelive){
-			file_put_contents("gs://mvassets".$filename, strip($content), 0, $ctx);
+			file_put_contents($bucketPath.$filename, strip($content), 0, $ctx);
 			$error.=" - Your changes were posted live to the site.<br>";
 		}
 		if($draft){

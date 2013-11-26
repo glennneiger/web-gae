@@ -1,5 +1,5 @@
 <?
-global $ADMIN_PATH,$D_R,$HTADMINHOST,$HTPFX,$HTHOST;
+global $ADMIN_PATH,$D_R,$HTADMINHOST,$HTPFX,$HTHOST,$CDN_SERVER;
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-cache");
@@ -19,17 +19,17 @@ if(!$performtransaction){	// Check Permission
 
 $transobj=new techstratTransaction();
 ?>
-	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/techstrat-admin.css">
-	<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/min/jquery-ui-datepicker.1.1.css" type="text/css" media="all" />
-	<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/css/jquery.autocomplete.css" />
-	<script src="<?=$HTPFX.$HTHOST?>/js/stock_actb.js" language="javascript" type="text/javascript"></script>
-	<script src="<?=$HTPFX.$HTHOST?>/js/actb_common.js" language="javascript" type="text/javascript"></script>
-	<script src="<?=$HTPFX.$HTHOST?>/js/stock_suggestion.js" language="javascript" type="text/javascript" ></script>
-	<script src="<?=$HTPFX.$HTHOST?>/js/transaction.js" type="text/javascript"></script>
-	<script src="<?=$HTPFX.$HTHOST?>/js/techstratPortfolio.js" type="text/javascript"></script>
-	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.techstrat.autocomplete.1.1.js"></script>
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/techstrat-admin.css">
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/min/jquery-ui-datepicker.1.1.css" type="text/css" media="all" />
+	<link rel="stylesheet" type="text/css" href="<?=$CDN_SERVER?>/css/jquery.autocomplete.css" />
+	<script src="<?=$CDN_SERVER?>/js/stock_actb.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/actb_common.js" language="javascript" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/stock_suggestion.js" language="javascript" type="text/javascript" ></script>
+	<script src="<?=$CDN_SERVER?>/js/transaction.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/techstratPortfolio.js" type="text/javascript"></script>
+	<script type="text/javascript" src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.techstrat.autocomplete.1.1.js"></script>
 	<script type="text/javascript">
 	$(function() {
 		$( "#date" ).datepicker({

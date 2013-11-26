@@ -7,7 +7,7 @@ body {
 	margin: 25px 0 0 0;	
 	text-align: center;
 	font-size: x-small;
-	background: #F3F6D0 url(http://storage.googleapis.com/mvassets/images/bg.jpg) top left repeat-x;
+	background: #F3F6D0 url(http://image.minyanville.com/images/bg.jpg) top left repeat-x;
 }
 
 p, td, li, form, label {
@@ -173,7 +173,7 @@ input {
 .grey-sections-divider {
   margin: 0;
   padding: 1px;
-  background: url(http://storage.googleapis.com/mvassets/images/grey_divider.gif) center top no-repeat;
+  background: url(http://image.minyanville.com/images/grey_divider.gif) center top no-repeat;
   line-height: 1px;
   font-size: 1px;
 }
@@ -297,7 +297,7 @@ td.rb {
   width: 141px;
   padding: 0 0 30px 0;
   margin: 0;
-  background: url(http://storage.googleapis.com/mvassets/images/menu_bar_bg.gif) top left repeat-y;
+  background: url(http://image.minyanville.com/images/menu_bar_bg.gif) top left repeat-y;
 }
 
 #content-c {
@@ -384,14 +384,14 @@ td.rb {
 /* left menu */
 
 #left-nav li.single-blue {
-   background: url(http://storage.googleapis.com/mvassets/images/bond.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/bond.gif) left center no-repeat;
    list-style: none;
    padding: 0;
    margin: 0;
 }
 
 #left-nav li.single-blue p {
-   background: url(http://storage.googleapis.com/mvassets/images/blue_bg.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/blue_bg.gif) left center no-repeat;
    margin: 0 0 2px 22px;
    padding: 6px 0 0 8px;
    width: 126px;
@@ -409,14 +409,14 @@ td.rb {
 }
 
 #left-nav li.single-brown {
-   background: url(http://storage.googleapis.com/mvassets/images/bond.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/bond.gif) left center no-repeat;
    list-style: none;
    padding: 0;
    margin: 0;
 }
 
 #left-nav li.single-brown p {
-   background: url(http://storage.googleapis.com/mvassets/images/brown_bg.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/brown_bg.gif) left center no-repeat;
    margin: 7px 0 2px 22px;
    padding: 6px 0 0 8px;
    width: 126px;
@@ -433,14 +433,14 @@ td.rb {
 }
 
 #left-nav li.top-blue {
-   background: url(http://storage.googleapis.com/mvassets/images/bond.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/bond.gif) left center no-repeat;
    list-style: none;
    padding: 0;
    margin: 0;
 }
 
 #left-nav li.top-blue p {
-   background: url(http://storage.googleapis.com/mvassets/images/blue_top_bg.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/blue_top_bg.gif) left center no-repeat;
    margin: 9px 0 0 22px;
    padding: 6px 0 0 8px;
    width: 126px;
@@ -465,7 +465,7 @@ td.rb {
 
 #left-nav .ul-submenu  {
    padding: 0 0 8px 0; 
-   background: url(http://storage.googleapis.com/mvassets/images/submenu_bottom.gif) left bottom no-repeat;
+   background: url(http://image.minyanville.com/images/submenu_bottom.gif) left bottom no-repeat;
 }
 
 #left-nav .submenu  {
@@ -477,7 +477,7 @@ td.rb {
 #left-nav .submenu p {
    margin: 0 0  0 11px;
    padding: 5px 5px 2px 8px;
-   background: url(http://storage.googleapis.com/mvassets/images/submenu_bg.gif) left top repeat-y;
+   background: url(http://image.minyanville.com/images/submenu_bg.gif) left top repeat-y;
    font-size: 10px;
 }
 
@@ -497,14 +497,14 @@ td.rb {
 
 /* brown submenus */
 #left-nav li.top-brown {
-   background: url(http://storage.googleapis.com/mvassets/images/bond.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/bond.gif) left center no-repeat;
    list-style: none;
    padding: 0;
    margin: 0;
 }
 
 #left-nav li.top-brown p {
-   background: url(http://storage.googleapis.com/mvassets/images/brown_bg_top.gif) left center no-repeat;
+   background: url(http://image.minyanville.com/images/brown_bg_top.gif) left center no-repeat;
    margin: 9px 0 0 22px;
    padding: 6px 0 0 8px;
    width: 126px;
@@ -536,7 +536,7 @@ td.rb {
 #left-nav .submenu-brown p {
    margin: 0 0  0 22px;
    padding: 5px 5px 2px 8px;
-   background: url(http://storage.googleapis.com/mvassets/images/submenu_brown_bg.gif) left top repeat-y;
+   background: url(http://image.minyanville.com/images/submenu_brown_bg.gif) left top repeat-y;
    font-size: 10px;
 }
 
@@ -546,7 +546,7 @@ td.rb {
 
 #left-nav .ul-submenu-brown  {
    padding: 0 0 8px 0; 
-   background: url(http://storage.googleapis.com/mvassets/images/submenu_brown_bottom.gif) left bottom no-repeat;
+   background: url(http://image.minyanville.com/images/submenu_brown_bottom.gif) left bottom no-repeat;
 }
 
 
@@ -562,7 +562,7 @@ td.rb {
 
 #left-nav li.main-slate {
    list-style: none;
-   background: url(http://storage.googleapis.com/mvassets/images/our_town.gif) left top no-repeat;
+   background: url(http://image.minyanville.com/images/our_town.gif) left top no-repeat;
    padding: 0;
    margin: 7px 0 0 8px;
    width: 135px;
@@ -585,7 +585,7 @@ td.rb {
    margin: 5px 0 0 8px;
    width: 111px;
    height: 79px;
-   background: url(http://storage.googleapis.com/mvassets/images/mail.gif) left bottom no-repeat;
+   background: url(http://image.minyanville.com/images/mail.gif) left bottom no-repeat;
 }
 
 #left-nav li.mail p {
@@ -629,7 +629,7 @@ td.rb {
 }
 
 #left-nav li.chain {
-  background: url(http://storage.googleapis.com/mvassets/images/chain.gif) left top no-repeat;
+  background: url(http://image.minyanville.com/images/chain.gif) left top no-repeat;
   padding: 0 0 0 25px;
   margin: 0 0 0 12px;
   list-style: none;
@@ -651,7 +651,7 @@ td.rb {
 }
 
 #town-area {
-  background: url(http://storage.googleapis.com/mvassets/images/town_bg.gif) left top no-repeat;
+  background: url(http://image.minyanville.com/images/town_bg.gif) left top no-repeat;
   margin: 0;
   padding: 0 0 0 0;
 }
@@ -667,7 +667,7 @@ td.rb {
    margin: 230px 0 0 0px;
    width: 141px;
    height: 604px;
-   background: url(http://storage.googleapis.com/mvassets/images/adv_frame.gif) left bottom no-repeat;
+   background: url(http://image.minyanville.com/images/adv_frame.gif) left bottom no-repeat;
 }
 
 
@@ -680,27 +680,27 @@ td.rb {
 }
 
 #home-news .top{
-  background:#d9efda url(http://storage.googleapis.com/mvassets/images/top.gif) left top repeat-x;
+  background:#d9efda url(http://image.minyanville.com/images/top.gif) left top repeat-x;
   margin: 0 0 0 0;
   padding: 0;
 }
 
 #home-news .left-border{
-  background:#FFF url(http://storage.googleapis.com/mvassets/images/bl.gif) left top repeat-y;
+  background:#FFF url(http://image.minyanville.com/images/bl.gif) left top repeat-y;
   margin: 0 0 0 0;
   padding: 0;
   font-size: 18px;
 }
 
 #home-news .right-border{
-  background: url(http://storage.googleapis.com/mvassets/images/right_border.gif) left top repeat-y;
+  background: url(http://image.minyanville.com/images/right_border.gif) left top repeat-y;
   margin: 0 0 0 0;
   padding: 0;
   font-size: 18px;
 }
 
 #home-news .bottom{
-  background: url(http://storage.googleapis.com/mvassets/images/bottom.gif) left top repeat-x;
+  background: url(http://image.minyanville.com/images/bottom.gif) left top repeat-x;
   margin: 0;
 }
 
@@ -767,7 +767,7 @@ td.rb {
 }
 
 #news .main-content #subheader{
-  //background: url(http://storage.googleapis.com/mvassets/images/subh_borders.gif) right top no-repeat;
+  //background: url(http://image.minyanville.com/images/subh_borders.gif) right top no-repeat;
   float:right;
   margin: 0 5px 0 0;
   padding: 0;
@@ -781,7 +781,7 @@ td.rb {
 }
 
 #news .main-content #baloon{
-  background: url(http://storage.googleapis.com/mvassets/images/baloon.gif) left top no-repeat;
+  background: url(http://image.minyanville.com/images/baloon.gif) left top no-repeat;
   width: 184px;
   height: 77px;
   margin: 0 0 0 10px;
@@ -1081,7 +1081,7 @@ td.rb {
 }
 
 #white-area .top-adv {
-  background: url(http://storage.googleapis.com/mvassets/images/adv_top.jpg) left top no-repeat;
+  background: url(http://image.minyanville.com/images/adv_top.jpg) left top no-repeat;
   margin: 0;
   padding: 0;
   line-height: 8px;
@@ -1089,13 +1089,13 @@ td.rb {
 }
 
 #white-area .bottom-adv {
-  background: url(http://storage.googleapis.com/mvassets/images/adv_bottom.gif) left top no-repeat;
+  background: url(http://image.minyanville.com/images/adv_bottom.gif) left top no-repeat;
   line-height: 1px;
   font-size: 1px;
 }
 
 #white-area #frame-bg {
-  background: url(http://storage.googleapis.com/mvassets/images/adv_bg.jpg) left top repeat-y;
+  background: url(http://image.minyanville.com/images/adv_bg.jpg) left top repeat-y;
   margin: 0;
   padding: 9px;
 }
@@ -1155,7 +1155,7 @@ td.rb {
   font-family: Century Gothic;
   font-size: 11px;
   font-weight: bold;
-  background: url(http://storage.googleapis.com/mvassets/images/arrow_right.gif) top right no-repeat;
+  background: url(http://image.minyanville.com/images/arrow_right.gif) top right no-repeat;
 }
 
 #posts {
@@ -1163,7 +1163,7 @@ td.rb {
 }
 
 #posts td {
-  background: url(http://storage.googleapis.com/mvassets/images/dotted_line.jpg) left bottom repeat-x; 
+  background: url(http://image.minyanville.com/images/dotted_line.jpg) left bottom repeat-x; 
   font-size: 11px;
 }
 
@@ -1292,7 +1292,7 @@ td.rb {
   margin: 0;
   padding: 0;
   font-size: 3px;
-  background: url(http://storage.googleapis.com/mvassets/images/profiles_title.gif) center top no-repeat;
+  background: url(http://image.minyanville.com/images/profiles_title.gif) center top no-repeat;
 }
 
 #portlet-profiles-main span {
@@ -1320,7 +1320,7 @@ td.rb {
 }
 
 #portlet-profiles-main .profiles-frame {
-  background: url(http://storage.googleapis.com/mvassets/images/profiles_frame.gif) left top no-repeat;
+  background: url(http://image.minyanville.com/images/profiles_frame.gif) left top no-repeat;
   width: 86px;
   height: 86px;
   padding: 4px;
@@ -1340,7 +1340,7 @@ td.rb {
   font-size: 11px;
   font-weight: bold;
   color: #707A5B;
-  background: url(http://storage.googleapis.com/mvassets/images/arrow_right_profiles.gif) top right no-repeat;
+  background: url(http://image.minyanville.com/images/arrow_right_profiles.gif) top right no-repeat;
 }
 
 #portlet-profiles-footer {
@@ -1399,7 +1399,7 @@ td.rb {
   font-size: 11px;
   font-weight: bold;
   color: #772700;
-  background: url(http://storage.googleapis.com/mvassets/images/arrow_right_univ.gif) top right no-repeat;
+  background: url(http://image.minyanville.com/images/arrow_right_univ.gif) top right no-repeat;
 }
 
 #portlet-univ-footer {
@@ -1440,7 +1440,7 @@ td.rb {
   font-size: 11px;
   font-weight: bold;
   color: #585858;
-  background: url(http://storage.googleapis.com/mvassets/images/arrow_right_archive.gif) top right no-repeat;
+  background: url(http://image.minyanville.com/images/arrow_right_archive.gif) top right no-repeat;
 }
 
 #portlet-archive-main h5 {
@@ -1508,21 +1508,21 @@ td.rb {
 }
 
 #fixed-center-area .left-border{
-  background: url(http://storage.googleapis.com/mvassets/images/fixed-area-left-border.gif) left top repeat-y;
+  background: url(http://image.minyanville.com/images/fixed-area-left-border.gif) left top repeat-y;
   margin: 0 0 0 0;
   padding: 0;
   width: 10px;
 }
 
 #fixed-center-area .right-border{
-  background: url(http://storage.googleapis.com/mvassets/images/fixed-area-right-border.gif) right top repeat-y;
+  background: url(http://image.minyanville.com/images/fixed-area-right-border.gif) right top repeat-y;
   margin: 0 0 0 0;
   padding: 0;
   width: 4px;
 }
 
 #fixed-center-area .bottom{
-  background: url(http://storage.googleapis.com/mvassets/images/fixed-area-bottom.gif) left top repeat-x;
+  background: url(http://image.minyanville.com/images/fixed-area-bottom.gif) left top repeat-x;
   margin: 0;
 }
 

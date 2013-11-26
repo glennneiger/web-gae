@@ -3,6 +3,7 @@ header('Content-type: text/xml;charset=utf-8');
 include("$D_R/layout/dbconnect.php");
 include("$D_R/lib/layout_functions.php");
 include("$D_R/lib/email_alert/_lib.php");
+include_once($D_R.'/lib/config/_syndication_config.php');
 
 global $HTPFX,$HTHOST;
 

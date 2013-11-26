@@ -1,4 +1,5 @@
 <?php
+global $CDN_SERVER;
 include_once($D_R.'/lib/_exchange_lib.php');
 require_once($D_R.'/lib/ap/_view.php');
 $pageType = "apArticle";
@@ -34,9 +35,9 @@ $subscription_id=$_SESSION['SID'];
 		$parentid['parent_id']=$parentid['id'];
 	$securl=getSubsectionUrl($secaid['page_id']);
 ?>
-	<script src="<?=$HTPFX.$HTHOST?>/js/friends.js" type="text/javascript"></script>
-	<script src="<?=$HTPFX.$HTHOST?>/js/Articles.1.9.js" type="text/javascript"></script>
-	<script src="<?=$HTPFX.$HTHOST?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/friends.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/Articles.1.9.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/AC_RunActiveContent.js" type="text/javascript"></script>
 <?
 if($subscription_id){
 		$profile_exchange=$_SESSION['EID'];

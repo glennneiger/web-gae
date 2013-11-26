@@ -1,5 +1,5 @@
 <? 
-global $D_R,$HTHOST,$HTPFX,$IMG_SERVER;
+global $D_R,$HTHOST,$HTPFX,$IMG_SERVER,$CDN_SERVER;
 session_start();
 global $cm8_ads_MediumRectangle;
 $bannernameMR =$cm8_ads_MediumRectangle;
@@ -16,11 +16,11 @@ $objWorryData = new worryData();
 $objWorryDesign = new worryDesign();
 
 ?>
-	<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/min/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?=$CDN_SERVER?>/js/min/jquery-1.9.1.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
   	<script src="http://ui.jquery.com/latest/ui/effects.core.js"></script>
 	<script src="http://ui.jquery.com/latest/ui/effects.explode.js"></script>
-    <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.betterTooltip.1.2.js"></script>
+    <script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.betterTooltip.1.2.js"></script>
     <script type="text/javascript">
 		$(document).ready(function(){
 			jQuery('.tTip').betterTooltip({speed: 150, delay: 300});

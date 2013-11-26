@@ -1,4 +1,6 @@
 <?
+global $D_R;
+include_once("$D_R/lib/_cart.php");
 $hide_ui=1;
 include("./_header.php");
 $store=new Store();

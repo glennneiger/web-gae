@@ -9,6 +9,16 @@ cron:
   schedule: every 2 minutes 
   timezone: America/New_York
   
+- description: Timed Publishing buzz post
+  url: /admin/publish_post.php
+  schedule: every 2 minutes 
+  timezone: America/New_York  
+  
+- description: Timed Publishing techstrat
+  url: /admin/publish_techstrat.php
+  schedule: every 2 minutes 
+  timezone: America/New_York    
+  
 - description: Timed Publishing Video
   url: /admin/publish_video.php
   schedule: every 2 minutes 
@@ -24,6 +34,12 @@ cron:
   schedule: every day 09:00
   timezone: America/New_York
   
+- description: truncateTable logs
+  url: /admin/truncate_logtables.htm
+  schedule: every day 05:00
+  timezone: America/New_York  
+  
+  
 - description: truncate_translog
   url: /admin/truncate_translog.htm
   schedule: every day 05:00
@@ -32,4 +48,34 @@ cron:
 - description: buzzDataPublish
   url: /admin/robot.buzzcontentapi.php
   schedule: every 2 minutes
+  timezone: America/New_York 
+  
+- description: Timed Publishing Articles thestreet
+  url: /admin/robot.thestreet-article.php
+  schedule: every 15 minutes
+  timezone: America/New_York  
+  
+- description: Timed Publishing Posts realMoneySilver
+  url: /admin/robot.article-realMoneySilver.php
+  schedule: every 15 minutes
   timezone: America/New_York    
+  
+- description: Timed Publishing worry
+  url: /admin/publish_worry.php
+  schedule: every 5 minutes 
+  timezone: America/New_York  
+  
+- description: Timed Publishing Articles sending mails
+  url: /admin/publish_sendemai_alertl_cron.php
+  schedule: every 5 minutes 
+  timezone: America/New_York  
+  
+- description: user expire mail
+  url: /admin/robot.expired-user.php
+  schedule: every day 12:00
+  timezone: America/New_York
+  
+- description: Filter buzzpost
+  url: /admin/robot.journaldigest.php
+  schedule: every 5 minutes 
+  timezone: America/New_York  

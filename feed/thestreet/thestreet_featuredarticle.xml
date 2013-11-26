@@ -35,7 +35,7 @@ contributor_groups CG WHERE CG.id=CGM.group_id AND CGM.contributor_id NOT IN ($c
 	<link><?=$HTPFX.$HTHOST?>?from=thestreet</link>
 	<copyright><?=date("Y")?> Minyanville Publishing and Multimedia, LLC. All Rights Reserved</copyright>
 	<ttl>1</ttl>
-	<lastBuildDate><?php echo $LBD;?> EDT</lastBuildDate>';
+	<lastBuildDate><?php echo $LBD;?> EST</lastBuildDate>';
 	<language>en</language>
 	<?php
 	foreach($results as $recentArticlerow)

@@ -682,7 +682,7 @@ float:left;
 	padding:1px 0px 0px 5px;
 	width:295px;
 	height:20px;
-	background:url(http://storage.googleapis.com/mvassets/images/topic/etf_archivebg.gif);
+	background:url(http://image.minyanville.com/images/topic/etf_archivebg.gif);
 	background-repeat:no-repeat;
  }
 
@@ -990,7 +990,7 @@ padding:0px 0px 10px 0px;
 }
 
 #dRecap-hedline {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: 0 0;
 height: 54px;
 margin-bottom: 5px;
@@ -1020,13 +1020,13 @@ width: 300px
 
 
 #dRecap-outter-field #outter-topCorners {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: 0 -56px;
 height: 4px;
 }
 
 #dRecap-outter-field #sU-shelf {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: 0 -62px;
 height: 36px;
 }
@@ -1046,7 +1046,7 @@ width: 206px;
 }
 
 #dRecap-outter-field #sU-shelf #sU-inputField #sU-topCorner {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: 0 -106px;
 height: 5px;
 }
@@ -1072,7 +1072,7 @@ border-radius: 0;
 }
 
 #dRecap-outter-field #sU-shelf #sU-inputField #sU-btmCorner {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: 0 -135px;
 height: 5px;
 }
@@ -1093,7 +1093,7 @@ width: 80px;
 }
 
 #dRecap-outter-field #sU-shelf #sU-cta #sU-cta-topCorner {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: -208px -106px;
 height: 5px;
 }
@@ -1103,7 +1103,7 @@ height: 20px;
 }
 
 #dRecap-outter-field #sU-shelf #sU-cta #sU-cta-center #signUp-btn {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: -208px -110px;
 border: 0;
 border-width: 0;
@@ -1127,14 +1127,14 @@ border-radius: 0;
 }
 
 #dRecap-outter-field #sU-shelf #sU-cta #sU-cta-btmCorner {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: -208px -135px;
 height: 5px;
 }
 
 
 #dRecap-outter-field #outter-btmCorners {
-background: url(http://storage.googleapis.com/mvassets/images/dailyRecap_sprites_032112.png) no-repeat;
+background: url(http://image.minyanville.com/images/dailyRecap_sprites_032112.png) no-repeat;
 background-position: 0 -100px;
 height: 4px;
 }
@@ -1562,12 +1562,12 @@ table#frm-table tbody tr.selected:hover td{
     height:19px;
     margin:-1px 4px 0 20px;
     vertical-align:middle;
-    background:url("http://storage.googleapis.com/mvassets/images/newsletter/freReportGreyChk.png") left top no-repeat;
+    background:url("http://image.minyanville.com/images/newsletter/freReportGreyChk.png") left top no-repeat;
     cursor:pointer;
 }
 
 .frm-form input[type="checkbox"]:checked + label span {
-   background: url("http://storage.googleapis.com/mvassets/images/newsletter/freReportChk.png");
+   background: url("http://image.minyanville.com/images/newsletter/freReportChk.png");
 }
 
 #fmrSubmit {

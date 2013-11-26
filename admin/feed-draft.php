@@ -12,7 +12,7 @@ $feed['body']=$_POST['editorDatafld'];
 
 $feed['contrib_id']=$_POST['feed']['contrib_id'];
 $feed['position']=addslashes(mswordReplaceSpecialChars(stripslashes($_POST['feed']['position'])));
-$currenttime= strtotime(date('Y-m-d h:i:s')
+$currenttime= strtotime(date('Y-m-d h:i:s'));
 $feed['publish_date']=strtotime($_POST['year']."-".$_POST['mo']."-".$_POST['day']." ".$_POST['hour'].":".$_POST['minute'] .":0");
 
 $feed['quicktitle']=addslashes(mswordReplaceSpecialChars(stripslashes($_POST['quicktitle'])));

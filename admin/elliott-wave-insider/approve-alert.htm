@@ -1,6 +1,6 @@
 <?
 session_start();
-global $DATE_STR,$D_R;
+global $DATE_STR,$D_R,$CDN_SERVER;
 include_once($D_R."/lib/_robots.php");
 $p=$_GET['p'];
 $page = "gazette";
@@ -101,7 +101,7 @@ $pagedata = exec_query($qry);
 
 ?>
 <br>
-<link rel="stylesheet" href="<?=$HTPFX.$HTHOST?>/css/elliot-wave-admin.1.1.css">
+<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/elliot-wave-admin.1.1.css">
 <div class=adminheader>Elliott Wave Insider - Approve/Unapprove Alerts</div><br>
 <?  $approveAlert=$AD->getPerm("elliotWave_approve"); //set permission
 if(!$approveAlert){	// Check Permission

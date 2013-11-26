@@ -1,5 +1,5 @@
 <?
-global $D_R,$ADMIN_PATH,$cloudStorageTool,$IMG_SERVER;
+global $D_R,$ADMIN_PATH,$cloudStorageTool,$IMG_SERVER,$tempPath,$CDN_SERVER;
 include_once($D_R."/admin/lib/_contributor_class.php");
 $page = $_GET['page'];
 if(!$page)$page="admintools";
@@ -9,11 +9,11 @@ include($ADMIN_PATH."/_header.htm");
 
 $handler = $HTPFX.$HTHOST."/admin/contributors_mod.htm";
 
-$options = [ 'gs_bucket_name' => 'mvassets/temp' ];
+$options = [ 'gs_bucket_name' => $tempPath ];
 $frm_url = $cloudStorageTool->createUploadUrl($handler, $options);
 $error = $_GET['error'];
 ?>
-<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/admin.1.8.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
 <?
 $id = $_GET['id'];

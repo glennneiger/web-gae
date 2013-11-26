@@ -43,6 +43,8 @@ if($_GET['showcall']=='showcall'){
 
 build_lang('subscription_product');
 build_lang('manage_setting');
+global $D_R;
+include_once($D_R.'/lib/config/_products_config.php');
 global $_SESSION, $lang, $viaProductsName,$viaPromoProductName; 
 $btn ='';
 $msg ='';

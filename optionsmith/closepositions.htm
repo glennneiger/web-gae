@@ -5,6 +5,7 @@ $tile728x90=1;
 $tile120x30=5;
 $tile300x250=3;
 $tile160x600top=4;
+global $CDN_SERVER;
 $pageJS=array("config","registration","iboxregistration","nav","search");
 $pageCSS=array("global","rightColumn","nav","minyanville","optionsmith");
 include("../_header.htm");
@@ -85,9 +86,9 @@ $oid = obejctid('ss_alert');
    	 <div class="open_main_container">
         <link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/ext-al.1.1.css">
         <link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/xtheme-gray.css"><!-- LIBS -->
-        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/ext-base.js"></script><!-- ENDLIBS -->
-        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/ext-all.1.1.js"></script>
-        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/closepositions_optionsmith.js"></script>
+        <script type="text/javascript" src="<?=$CDN_SERVER?>/js/paging_js/ext-base.js"></script><!-- ENDLIBS -->
+        <script type="text/javascript" src="<?=$CDN_SERVER?>/js/paging_js/ext-all.1.1.js"></script>
+        <script type="text/javascript" src="<?=$CDN_SERVER?>/js/paging_js/closepositions_optionsmith.js"></script>
         <!--<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/lib.css">-->
         <div id="topic-grid" ></div>
      </div>

@@ -2,6 +2,7 @@
 ob_start();
 session_start();
 include_once ($D_R."/lib/registration/_manageAccountDesignLib.php");
+include_once($D_R.'/lib/config/_products_config.php');
 $objDesign=new manageAccountDesignLib();
 $orderDetails=array();
 global $viaPrdouctsarray,$HTPFXSSL,$HTHOST;

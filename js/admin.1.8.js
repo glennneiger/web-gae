@@ -1,5 +1,5 @@
 var host=window.location.protocol+"//"+window.location.host;
-var image_server="http://storage.googleapis.com/mvassets";	
+var image_server="http://image.minyanville.com";	
 
 function saveLogo(){
 		logoname=$("logoname").value;
@@ -69,7 +69,51 @@ function saveLogo(){
                 }); 
    }
 
-        
+
+	function uploadradioFile(uploadFilePath,filePath)
+	{
+		 var postUrl = '/admin/lib/uploadFileBucket.php';  
+		 jQuery.ajax({
+                type: "POST",
+                url: host+"/admin/lib/uploadFileBucket.php",
+                data:"text=getUploadUrl&posturl="+postUrl,
+                success: function (req){
+                 var post = eval('('+req+')');
+                 if(post.status=="1" )
+                 {
+				var fd = new FormData();
+				fd.append( "fileInput", '');
+				fd.append( "text", "radioUpload");
+				fd.append( "uploadFilePath", uploadFilePath);
+				fd.append( "filePath", filePath);
+				jQuery.ajax({
+				    url: post.url,
+				    type: 'POST',
+				    cache: false,
+				    data: fd,
+				    processData: false,
+				    contentType: false,
+				    beforeSend: function () {
+					jQuery("#output").html("Uploading, please wait....");
+				    },
+				    success: function (req) { 
+					var post = eval('('+req+')');
+					jQuery("#output").html(post.msg);
+					jQuery("#audioFile").val(post.file);
+				    },
+				    error: function () {
+					alert("ERROR in upload");
+				    }
+				});
+                             }
+			     else{
+				alert("Upload URL could not be created");
+			    }
+                }
+                }); 
+                
+   }
+
         function editUser(id)
         {
                 var action = $('#edit_'+id).val();
@@ -183,7 +227,7 @@ function saveLogo(){
 	}
 	 function showEditor(divID,width,height){
 		 var host=window.location.protocol+"//"+window.location.host;
-		 var image_server="http://storage.googleapis.com/mvassets";
+		 var image_server="http://image.minyanville.com";
 		 editor= CKEDITOR.replace( divID,
 					{
 						extraPlugins : 'autosave,placeholder,tableresize,uicolor,iframe,imagebrowser',

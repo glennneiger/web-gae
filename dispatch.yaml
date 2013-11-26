@@ -1,0 +1,9 @@
+application: minyanville-buzz
+
+dispatch:
+  - url: "admin.minyanville.com"
+    module: admin
+    
+  - url: "videos.minyanville.com"
+    module: videos 
+    

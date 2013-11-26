@@ -228,7 +228,8 @@ function adminSubmenuItems($item,$id)
 	@param flag true -return sting of ids , false return array of data
 	*/
 	function getprodsubdefid($pName,$flag){
-
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $viaProducts;
 		$str ="";
 		$pName = strtolower(stripslashes($pName));
@@ -1915,6 +1916,8 @@ function getTheStockPlayBooksubsView(){
 	}
 
 	function getcartaction($arr,$ocID=NULL){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		build_lang('subscription_product');
 		global $lang,$viaProductsName,$viaOrderClassId;
 		if(array_key_exists($ocID,$viaProductsName)){
@@ -2012,6 +2015,8 @@ function getTheStockPlayBooksubsView(){
 
 	/*	function add valid new  products into yourcart area*/
 	function addProdInCart($product, $price, $typeSpecificId, $orderItemType,$orderClassId,$redirectCart){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $lang, $show_disclaimers,$viaProducts,$promoCodeSourceCodeNoFreeTrial,$pageName,$show_free_trial,$viaOrderClassId;
 		if(in_array($_SESSION['promoCodeSourceCode'], $promoCodeSourceCodeNoFreeTrial)){
 			$show_free_trial = "showPrice";
@@ -2178,6 +2183,8 @@ function getTheStockPlayBooksubsView(){
 	}
 	/* payment display for version 2 in case of step 1 */
 	function showPaymentInfoV2(){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $viaProducts;
 		$str.='<div class="usercart">
                 	<div class="usrcart_txt">Total</div>
@@ -2207,6 +2214,8 @@ function getTheStockPlayBooksubsView(){
 	}
 	/*	function all the Annula prods to calculate Discount*/
 	function  getViaAnuualProds(){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $viaProducts;
 		$arr = getViaAnnual();
 
@@ -2348,6 +2357,8 @@ function getTheStockPlayBooksubsView(){
 	}
 	/*	function returns corrospinding premium sub_def_id for trail sub_def_ids required for IBOX trail registration*/
 	function getTrialProdPremium(){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $viaProducts, $viaPrdouctsarray;
 
 		$arr = array($viaProducts['BuzzMonthlyTrial']['typeSpecificId']=>$viaProducts['BuzzMonthly']['typeSpecificId'],
@@ -2388,6 +2399,8 @@ $viaProducts['JackMonthlyTrial']['typeSpecificId']=>$viaProducts['JackMonthlyTri
 	function getPayableProds($ids=null, $viacart=null){//$ids ='3,8,10';
 		global $globaldummyViaId,$viaProducts,$D_R;
 		include_once("$D_R/lib/_via_data_lib.php");
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		$objVia = new Via();
 		if($_SESSION['LoggedIn'] && strtoupper($_SESSION['ccType'])!='NILL' &&  $_SESSION['ccType']!=''){
 			 $dummyViaId = $_SESSION['viaid'];
@@ -2735,6 +2748,8 @@ $viaProducts['JackMonthlyTrial']['typeSpecificId']=>$viaProducts['JackMonthlyTri
 	}
 
 function productPriceDisplay(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 	global $_SESSION,$viaProducts,$viaProductsName,$viaProductDiscount;
 	echo '<div class="productError" id="productdiv">&nbsp;</div>';
 	foreach($_SESSION['viacart']['SUBSCRIPTION'] as $orderClassId){
@@ -3502,6 +3517,8 @@ function emailAlert($isloggedin,$userEmail,$targeturl)
 
 
 function validatecartlogged(){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $_SESSION, $arrcases,$viaProducts,$HTPFXSSL;
 
 		validate_cart();
@@ -5408,6 +5425,8 @@ function displayCartMsg($viacart, $validatecart,$getpcval,$redirectCart){
 
 
 function getYourCartActionMsg($arr,$ocID=NULL){
+	global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		build_lang('subscription_product');
 		global $lang,$viaProductsName,$viaOrderClassId;
 		if(array_key_exists($ocID,$viaProductsName)){
@@ -5486,6 +5505,8 @@ function getYourCartActionMsg($arr,$ocID=NULL){
 	}
 
 	function getFreeTrailProductDetail($pName,$orderItemType){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $viaProducts;
 		$str ="";
 		$pName = strtolower($pName);

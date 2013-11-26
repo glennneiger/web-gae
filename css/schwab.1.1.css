@@ -11,8 +11,8 @@ body {font-family: Arial;}table{font-size:inherit;}pre,code,kbd,samp,tt{font-fam
 /*//////////////END//////////////*/
 
 /*//////////////MAIN ELEMENTS STYLE//////////////*/
-html {background: url(http://storage.googleapis.com/mvassets/images/schwab/paper.jpg) 0 0 repeat;}
-body {font-family:Arial; font-size: 10px; color: #262626; background: url(http://storage.googleapis.com/mvassets/images/schwab/header.gif) center top no-repeat;}
+html {background: url(http://image.minyanville.com/images/schwab/paper.jpg) 0 0 repeat;}
+body {font-family:Arial; font-size: 10px; color: #262626; background: url(http://image.minyanville.com/images/schwab/header.gif) center top no-repeat;}
 a {color: #8e0100; text-decoration: none;}
 a:hover {text-decoration: underline;}
 a:visited {color: #600;}
@@ -47,7 +47,7 @@ textarea:focus {color: #262626 !important;}
 #ttc-sponsorship { width: 378px; margin-bottom:50px; margin-top:45px; float:right; clear:both; margin-right:5px;}
 #ttc-img { float:right; }
 #sponsored-img { float: left; margin-left:20px; margin-top:10px }
-#info-form { clear:both; background-image: url(http://storage.googleapis.com/mvassets/images/schwab/form_background_1.gif);background-repeat:no-repeat;; width:321px; padding: 20px 40px 0px 26px; float: right; margin:0; height:542px;}
+#info-form { clear:both; background-image: url(http://image.minyanville.com/images/schwab/form_background_1.gif);background-repeat:no-repeat;; width:321px; padding: 20px 40px 0px 26px; float: right; margin:0; height:542px;}
 #pls-mssg { margin-bottom: 5px; margin-top:0px; }
 .login-box-name   { width: 100px; height: 20px; text-align: right; display: inline; font-size:12px; font-weight: bold; color: #FFFFFF; padding-top: 5px; float: left; margin-bottom: 5px; margin-left: 8px; margin-top:0px; padding-bottom:0px; }
 .text_label   {font-size:12px; font-weight: normal; color: #FFFFFF; padding-top: 5px; float: left; margin-bottom: 5px; margin-left: 8px; margin-top:0px; padding-bottom:0px; }
@@ -71,7 +71,7 @@ textarea:focus {color: #262626 !important;}
 #login-box-name-req { width: 100px; height: 20px; text-align: right; display: inline; font-size:12px; font-weight: bold; color: #FFFFFF; padding-top: 5px; float: left; margin: 0px 0 7px 8px; }
 .button { width: 100%; margin-left: 0px; float:left }
 .button submit { }
-.submit {width:148px; border:0px; background-position: 0 0;float: left; height: 33px; text-indent: -9999px; background-image: url(http://storage.googleapis.com/mvassets/images/schwab/submitBtn1.png); outline: none;}
+.submit {width:148px; border:0px; background-position: 0 0;float: left; height: 33px; text-indent: -9999px; background-image: url(http://image.minyanville.com/images/schwab/submitBtn1.png); outline: none;}
 .submit:hover, .submit.active {background-position: right bottom;}
 #disclaimer { float:left; size:9px; color: #FFFFFF; height: 140px; width: 312px; margin-top: 10px; line-height: 10px; padding-bottom:10px;}
 .dis-link { color: #FFFFFF; text-decoration:underline; }

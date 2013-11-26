@@ -22,7 +22,7 @@ $transObj=new techstratTransaction('1');
 $ytObj=new techstratYTDRET();
 $performanceobj=new Performance();
 $categoryName="Close Position";
-global $ytObj, $transObj, $performanceobj;
+global $ytObj, $transObj, $performanceobj,$CDN_SERVER;
 ?>
 <div id="content-container">
 	<?=showBreadCrum($breadcrum); ?>
@@ -32,9 +32,9 @@ global $ytObj, $transObj, $performanceobj;
 			<div class="techPortfolioCloseBox">
 				<link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/ext-al.1.2.css">
 		        <link rel="stylesheet" type="text/css" href="<?=$HTPFX.$HTHOST?>/ext/css/xtheme-gray.css"><!-- LIBS -->
-		        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/ext-base.js"></script><!-- ENDLIBS -->
-		        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/ext-all.1.1.js"></script>
-		        <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/paging_js/closepositions_techStrat.js"></script>
+		        <script type="text/javascript" src="<?=$CDN_SERVER?>/js/paging_js/ext-base.js"></script><!-- ENDLIBS -->
+		        <script type="text/javascript" src="<?=$CDN_SERVER?>/js/paging_js/ext-all.1.1.js"></script>
+		        <script type="text/javascript" src="<?=$CDN_SERVER?>/js/paging_js/closepositions_techStrat.js"></script>
 		        <div id="techStratClosePosition" ></div>
 			</div>
 			<div class="techValPerformanceBox">

@@ -4,6 +4,7 @@ if($_GET['pagename'])
 	$pageName=$_GET['pagename'];
 }
 global $D_R;
+include_once("$D_R/lib/_layout_design_lib.php");
 $pageJS=array('config','dailyfeed','jquery','global','featuredslider','mobileredirect');
 $pageCSS=array("global","layout","nav","codaslider","homepage","rightColumn");
 include("../_header.htm");

@@ -226,6 +226,8 @@ function generateBlogsYahooXml($id,$blogPost,$itemType,$syndchannel){
 
 function ftpYahooXML($feedId,$item_text,$uid,$strfeed,$title)
 {
+	global $D_R;
+	include_once($D_R.'/lib/config/_syndication_config.php');
 	global $yahoouser,$yahoopass,$yahoohost,$yahoopath,$D_R,$feed_error_template,$NOTIFY_FEED_ERROR_TO,$NOTIFY_FEED_ERROR_FROM,$NOTIFY_FEED_ERROR_SUBJECT;
 	$feedName=$D_R."/assets/yahoofeed/minyanville/".$uid.".xml";
 	$feedFile=fopen($feedName,"w+");

@@ -44,6 +44,8 @@ foreach($arUrl as $urlKey => $url)
 	}
 	$arContents[] = $data;
 }
+global $D_R;
+include_once("$D_R/lib/json.php");
 $json = new Services_JSON();
 echo $output = $json->encode($arContents);
 ?>

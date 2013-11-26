@@ -63,7 +63,7 @@ width:500px;
 line-height:20px;
 padding-top:5px;
 font-size:14px;
-background-image:url(http://storage.googleapis.com/mvassets/images/mv_money/signup_arrow.gif);
+background-image:url(http://image.minyanville.com/images/mv_money/signup_arrow.gif);
 background-position: 320px 5px;
 background-repeat:no-repeat;
 padding-right:15px;
@@ -94,7 +94,7 @@ float:left;
 width:332px;
 border:solid 1px #000;
 padding:10px 15px 10px 15px;
-background-image: url(http://storage.googleapis.com/mvassets/images/mv_money/winner_box_bg.gif);
+background-image: url(http://image.minyanville.com/images/mv_money/winner_box_bg.gif);
 background-repeat:repeat-x;
 }
 .winner_header{

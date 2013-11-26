@@ -229,7 +229,7 @@ jQuery(document).ready(function(){
 
 function callTags(val)
 {
-	var img_server = "http://storage.googleapis.com/mvassets";
+	var img_server = "http://image.minyanville.com";
 	
 	if(!val)
 	{
@@ -267,7 +267,7 @@ function callTags(val)
 
 function callTickers(val)
 {
-	var img_server = "http://storage.googleapis.com/mvassets";
+	var img_server = "http://image.minyanville.com";
 	if(!val)
 	{
 		alert("Please enter some data in 'Entry' box.");

@@ -1,4 +1,6 @@
 <?php 
+global $D_R;
+include_once("$D_R/lib/_layout_data_lib.php");
 $arPageResult = getLayoutEditablePages();
 global $is_ssl;
 $pageno=$_GET[p];

@@ -1,7 +1,7 @@
 <?php
-global $lang, $EX_INVALIDLOGIN, $HTPFX, $HTHOST, $page_config,$D_R,$HTADMINHOST ;
+global $lang, $EX_INVALIDLOGIN, $HTPFX, $HTHOST, $page_config,$D_R,$HTADMINHOST,$CDN_SERVER ;
 $SUGGESTIONTICKERTALKJSSCRIPT=$HTPFX.$HTHOST."/assets/tickertalk/js/suggestion_tt.js";
-$SUGGESTIONJSSCRIPT=$HTPFX.$HTHOST."/js/suggestion.js";
+$SUGGESTIONJSSCRIPT=$CDN_SERVER."/js/suggestion.js";
 $STOCKSUGGESTIONJSSCRIPT=$HTPFX.$HTHOST."/js/stock_suggestion.js";
 $LATESTARTICLEJSSCRIPT= $HTPFX.$HTHOST."/assets/data/latestArticle.txt";
 $SUBSCRIBEDBLOGSJSSCRIPT= $HTPFX.$HTHOST."/assets/data/subscribedBlogs.txt";
@@ -99,9 +99,9 @@ $character_images=array('boo'=>'boo.gif',
 $blogsubscrcnt=5;// this is for blogs you follows in profile page
 
 //QPM
-$SPAM_EML_SINGLE_ALERT_TMPL=$HTPFX.$HTADMINHOST."/emails/_eml_single_alert.htm";
+$SPAM_EML_SINGLE_ALERT_TMPL=$HTPFX.$HTHOST."/emails/_eml_single_alert.htm";
 // for email alert
-$SPAM_EML_SUBS_ALERT_TMPL=$HTPFX.$HTADMINHOST."/emails/_eml_email_alert.htm";
+$SPAM_EML_SUBS_ALERT_TMPL=$HTPFX.$HTHOST."/emails/_eml_email_alert.htm";
 // size of bulk mailer for email alert
 $size_emailalert=30;
 //Added for visitor count in exchange purpose

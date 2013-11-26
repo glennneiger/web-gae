@@ -1,7 +1,8 @@
 <?
 session_start();
-global $D_R;
+global $D_R,$CDN_SERVER;
 include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/layout_functions.php");
 include_once("$D_R/lib/config/_article_config.php");
 handle_ssl();
 global $IMG_SERVER,$HTPFX,$HTHOST,$default_section;
@@ -47,7 +48,7 @@ $titleMetaData.=' | Minyanville.com';
 show_adds_checkmate('print');
 ?>
 <!-- Checkm8 script ends -->
-	<link rel="stylesheet" href="../css/print.1.1.css">
+	<link rel="stylesheet" href="<?=$CDN_SERVER?>/css/print.1.1.css">
 	<script language="javascript">
 	<!--// <![CDATA[
 	<?
@@ -59,7 +60,7 @@ show_adds_checkmate('print');
 	</script>
 	<!-- <script src="<?=$pfx?>/js/ads.js" type="text/javascript"></script>  -->
 
-	<script src="../js/print.js" type="text/javascript"></script>
+	<script src="<?=$CDN_SERVER?>/js/print.js" type="text/javascript"></script>
 </head>
 <body>
 <SCRIPT language="JavaScript" src="http://minyanvilledigital.checkm8.com/adam/cm8adam_1_call.js"></SCRIPT>

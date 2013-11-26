@@ -13,6 +13,7 @@ $mobile_itemID="";
 $mvPremiumArr = getKeyVal('tid,source,cid,category,tag,p,id',$_SERVER['REQUEST_URI']);
 include_once($D_R."/admin/lib/_dailyfeed_data_lib.php");
 include_once($D_R."/lib/_content_data_lib.php");
+include_once("$D_R/lib/_layout_data_lib.php");
 include_once($D_R."/lib/config/_dailyfeed_config.php");
 include_once($D_R."/lib/_dailyfeed_design_lib.php");
 include_once($D_R."/lib/_bitly_lib.php");
@@ -20,11 +21,9 @@ include_once($D_R."/lib/_article_design_lib.php");
 include_once($D_R.'/lib/config/_cache_config.php');
 include_once($D_R."/lib/MemCache.php");
 include_once($D_R."/lib/config/_article_config.php");
-include_once($D_R.'/lib/_disqus_lib.php');
-include_once($D_R."/lib/disqus/disqusapi/disqusapi.php");
-include_once($D_R.'/lib/_misc.php');
+
 $objCache= new Cache();
-global $dailyfeedLandingItems,$dailyfeedTopicInterval,$cm8_ads_1x1_Text;
+global $dailyfeedLandingItems,$dailyfeedTopicInterval,$cm8_ads_1x1_Text,$CDN_SERVER;
 $objDailyfeed 	=	new Dailyfeed("daily_feed","");
 
 $objContent 	= 	 new Content();
@@ -86,7 +85,7 @@ $show_df_news_signup = 0;
 }
  $threadid	=	$feedId;
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/Articles.1.9.js" type="text/javascript"> </script>
+<script src="<?=$CDN_SERVER?>/js/Articles.1.9.js" type="text/javascript"> </script>
 <div class="shadow">
 	<div id="content-container">
 	<div id="article-left">

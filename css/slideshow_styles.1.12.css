@@ -4,16 +4,16 @@ body{ margin:0px; vertical-align:bottom;
 }
 
 .slide_left_div{width:720px;height:auto;float:left; margin-left:20px; text-align:left;margin-top:20px;}
-.nav_buttns{vertical-align:bottom; background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/bottom_nav_bg.jpg);}
-.nav_buttns_1{vertical-align: bottom; background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/bottom_nav_bg.jpg);}
-.slide_header_bg{background-image: url(http://storage.googleapis.com/mvassets/images/slideshow/header_center.gif);}
-.slide_left_bg{background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/left.jpg); width:14px;}
-.slide_right_bg{background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/right.jpg); width:14px;}
-/*.more_slide_bg{background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/moreslide_center.gif);}*/
-.bottom_title{color:#CCCCCC;font-weight:bold; vertical-align: middle; padding-left:3px;font-size:15px; background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/bottom_center.jpg);}
+.nav_buttns{vertical-align:bottom; background-image:url(http://image.minyanville.com/images/slideshow/bottom_nav_bg.jpg);}
+.nav_buttns_1{vertical-align: bottom; background-image:url(http://image.minyanville.com/images/slideshow/bottom_nav_bg.jpg);}
+.slide_header_bg{background-image: url(http://image.minyanville.com/images/slideshow/header_center.gif);}
+.slide_left_bg{background-image:url(http://image.minyanville.com/images/slideshow/left.jpg); width:14px;}
+.slide_right_bg{background-image:url(http://image.minyanville.com/images/slideshow/right.jpg); width:14px;}
+/*.more_slide_bg{background-image:url(http://image.minyanville.com/images/slideshow/moreslide_center.gif);}*/
+.bottom_title{color:#CCCCCC;font-weight:bold; vertical-align: middle; padding-left:3px;font-size:15px; background-image:url(http://image.minyanville.com/images/slideshow/bottom_center.jpg);}
 .speedometer_1{border:0px solid red;width:70px;height:24px;}
 .bottom_heading{padding-left:5px;padding-top:12px; color:#0c4a71;font-family:Times New Roman;font-size:16px;  font-weight:bold;text-align:center;font-weight:bold;}
-.moreresultdiv{height:90px;border:0px solid red;background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/moreslide_center01.gif);}
+.moreresultdiv{height:90px;border:0px solid red;background-image:url(http://image.minyanville.com/images/slideshow/moreslide_center01.gif);}
 .slideimages{verical-align:top;width:15%;padding-top:10px;padding-right:20px;padding-left:20px;}
 .sepaclass{border-left:1px solid #CCCCCC;height:100%;}
 .slideconts{padding-top:10px;padding-left:10px;font-size:10px;font-family:Arial,Helvetica,sans-serif;}
@@ -35,7 +35,7 @@ float:left;
 }
 
 .mv_slideshow_left{
-backgruond-image:url(http://storage.googleapis.com/mvassets/images/slideshow/mv_slideshow_header_bg.jpg);
+backgruond-image:url(http://image.minyanville.com/images/slideshow/mv_slideshow_header_bg.jpg);
 background-repeat:repeat-x;
 float:left;
 }
@@ -71,7 +71,7 @@ font-family: Arial, Helvetica, sans-serif;
 
 .mv_mid_container{
     background-color: #F2F2F2;
-    background-image: url("http://storage.googleapis.com/mvassets/images/slideshow/mv_slideshow_bg.jpg");
+    background-image: url("http://image.minyanville.com/images/slideshow/mv_slideshow_bg.jpg");
     background-position: center bottom;
     background-repeat: repeat-x;
     border-color: #F2F2F2 red red;
@@ -223,7 +223,7 @@ border-right: solid 0px #306593;
 float:right;
 /*position: relative;*/
 padding-top:8px;
-background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/speed_slider_bg.gif);
+background-image:url(http://image.minyanville.com/images/slideshow/speed_slider_bg.gif);
 background-repeat:no-repeat;
 overflow:visible;
 }
@@ -244,12 +244,12 @@ padding-top:0px;
 
 
 .mv_mono_header_image{
-background-image:(http://storage.googleapis.com/mvassets/images/mv_slideshow_header_bg.jpg);
+background-image:(http://image.minyanville.com/images/mv_slideshow_header_bg.jpg);
 background-repeat:repeat-x;
 }
 
 .mv_slideshow_left{
-backgruond-image:url(http://storage.googleapis.com/mvassets/images/mv_slideshow_header_bg.jpg);
+backgruond-image:url(http://image.minyanville.com/images/mv_slideshow_header_bg.jpg);
 background-repeat:repeat-x;
 float:left;
 }
@@ -512,7 +512,7 @@ float:left;
 .slide_main_container{
 width:100%;
 background-color:#FFF;
-background-image:url(http://storage.googleapis.com/mvassets/images/slideshow/slide_divider.jpg);
+background-image:url(http://image.minyanville.com/images/slideshow/slide_divider.jpg);
 background-repeat:repeat-y;
 background-position:75% 25%;
 float:left;
@@ -613,7 +613,7 @@ padding-top:0px;
 
 }
 .control_main{
-background-image:(http://storage.googleapis.com/mvassets/images/header_top_right_corner.jpg);
+background-image:(http://image.minyanville.com/images/header_top_right_corner.jpg);
 background-repeat:no-repeat;
 float:right;
 background-position:right;
@@ -644,7 +644,7 @@ padding-top:5px;
 
 .mv_slideshow_head
 {
-	background-image: url("http://storage.googleapis.com/mvassets/images/slideshow/BG.jpg");
+	background-image: url("http://image.minyanville.com/images/slideshow/BG.jpg");
     float: left;
     background-repeat: no-repeat;
 }
@@ -689,7 +689,7 @@ font-family:Arial,Helvetica,sans-serif;
 padding-bottom:5px;
 }
 .speed_divder{
-	image: url("http://storage.googleapis.com/mvassets/images/slideshow/speedometer_bottom_bg_new.gif");
+	image: url("http://image.minyanville.com/images/slideshow/speedometer_bottom_bg_new.gif");
     background-position: right top;
     background-repeat: no-repeat;
     border-left: 4px solid #F2F2F2;

@@ -1,6 +1,6 @@
 <?
 		include_once("$D_R/lib/email_alert/_lib.php");
-
+		include_once("$D_R/lib/json.php");
 		$json = new Services_JSON();
 		$email_ids = $_POST['emaillist'];
 		$user_sess_id = $_POST['sessuserid'];

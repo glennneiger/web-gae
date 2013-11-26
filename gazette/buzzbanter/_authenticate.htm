@@ -5,6 +5,7 @@ $ERR_PAGE=$HTPFX.$HTHOST."/buzz/msg.htm";
 $SIGNIN_PAGE=$HTPFX.$HTHOST."/gazette/buzzbanter/signin.htm";
 mcookie("autologin",1);
 include_once("$D_R/lib/_auth.php");
+include_once("$D_R/lib/json.php");
 $pageName = "exchange_registration";
 build_lang($pageName);
 global $lang,$HTPFX,$HTHOST,$HTPFXSSL;

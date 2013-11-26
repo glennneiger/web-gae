@@ -1,5 +1,7 @@
 <?
+global $D_R;
 $hide_ui=1;
+include_once("$D_R/lib/_cart.php");
 include("./_header.php");
 
 /*============set up permissions=================*/

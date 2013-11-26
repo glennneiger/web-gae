@@ -8,6 +8,8 @@ if(stristr($HTTP_HOST,"buzzandbanter.com")){
 session_set_cookie_params(50800,"/");
 session_start();
 mcookie("PHPSESSID",session_id());
+global $D_R;
+include_once("$D_R/lib/_cart.php");
 $cart=new CartDisplay();
 
 if(!$is_store){

@@ -7,6 +7,7 @@ include_once($D_R."/lib/recurly/_recurly_data_lib.php");
 include_once($D_R."/lib/registration/_register_funnel_data_lib.php");
 include_once($D_R."/lib/config/_products_config.php");
 include_once($D_R."/lib/config/_recurly_config.php");
+include_once($D_R.'/lib/config/_syndication_config.php');
 include_once($D_R."/lib/recurly/recurly.php");
 include_once($D_R."/lib/config/_coreg_config.php");
 include_once($D_R."/lib/config/_email_config.php");

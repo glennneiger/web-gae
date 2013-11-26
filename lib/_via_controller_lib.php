@@ -121,6 +121,8 @@ class ViaController {
 	}
 
 	function isSetAdsFree(){
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $_SESSION, $viaProducts, $productAd, $arrcases;
 		if($_SESSION['AdsFree']){
 			$case = $arrcases['already_have_subscribed_product'];

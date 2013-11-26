@@ -1,5 +1,5 @@
 <?php
-global $HTHOST,$HTPFX;
+global $HTHOST,$HTPFX,$CDN_SERVER;
 $pageName="contributor";
 global $cm8_ads_Button_160x30,$cm8_ads_MediumRectangle;
 $bannernameMR =$cm8_ads_MediumRectangle;
@@ -14,7 +14,7 @@ include_once("../lib/layout_functions.php");
 include_once($D_R."/admin/lib/_contributor_class.php");
 $objCont = new contributor();
 ?>
-<link type="text/css" href="<?$D_R?>/css/mvBios.css" rel="stylesheet" />
+<link type="text/css" href="<?=$CDN_SERVER?>/css/mvBios.css" rel="stylesheet" />
 <?php
 $contrib_id=0;
 $contrib_id=0;

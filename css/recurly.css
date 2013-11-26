@@ -86,7 +86,7 @@
 
 .recurly .setup_fee {
 	clear: both;
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/solid.jpg") repeat-x 1px top;
+	background: url("http://image.minyanville.com/images/recurly/solid.jpg") repeat-x 1px top;
 	overflow: hidden;
 	padding-top: 20px;
 }
@@ -107,7 +107,7 @@
 	height: 24px;
 	padding: 20px 20px;
 	display: none;
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/solid.jpg") repeat-x 1px top;
+	background: url("http://image.minyanville.com/images/recurly/solid.jpg") repeat-x 1px top;
 }
 
 .recurly .vat.applicable {
@@ -240,7 +240,7 @@
 }
 
 .recurly .add_ons .add_on.selected {
-	background: #fff url("http://storage.googleapis.com/mvassets/images/recurly/check.png") no-repeat 10px
+	background: #fff url("http://image.minyanville.com/images/recurly/check.png") no-repeat 10px
 		center;
 }
 
@@ -249,7 +249,7 @@
 }
 
 .recurly .add_ons .add_on.selected:hover {
-	background: #fcf5f0 url("http://storage.googleapis.com/mvassets/images/recurly/uncheck.png") no-repeat 10px
+	background: #fcf5f0 url("http://image.minyanville.com/images/recurly/uncheck.png") no-repeat 10px
 		center;
 }
 
@@ -264,7 +264,7 @@
 	color: #333;
 	padding: 15px 20px;
 	position: relative;
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/solid.jpg") repeat-x 1px top;
+	background: url("http://image.minyanville.com/images/recurly/solid.jpg") repeat-x 1px top;
 }
 
 .recurly .coupon .check {
@@ -277,39 +277,39 @@
 	margin: 3px 0 1px 10px;
 	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.35), 0 1px 1px 0
 		rgba(0, 0, 0, 0.10);
-	background: #43bef9 url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat
+	background: #43bef9 url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat
 		center center;
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center,
 		-webkit-linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%,
 		#71CEFB 100%);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center,
 		-moz-linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%, #71CEFB
 		100%);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center,
 		-o-linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%, #71CEFB
 		100%);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center
 		linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%, #71CEFB 100%);
 }
 
 .recurly .coupon .check:hover {
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center,
 		-webkit-linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%,
 		#71CEFB 100%);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center,
 		-moz-linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%, #71CEFB
 		100%);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center,
 		-o-linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%, #71CEFB
 		100%);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center
 		linear-gradient(top, #71CDFA 0%, #43BEF9 50%, #00B1F6 50%, #71CEFB 100%);
 	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.75), 0 1px 1px 0
@@ -317,20 +317,20 @@
 }
 
 .recurly .coupon .check:active {
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center, -webkit-linear-gradient(top, #f0f0f0, #fff);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center, -moz-linear-gradient(top, #f0f0f0, #fff);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center, -o-linear-gradient(top, #f0f0f0, #fff);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/coupon_check.png") no-repeat center
+	background: url("http://image.minyanville.com/images/recurly/coupon_check.png") no-repeat center
 		center linear-gradient(top, #f0f0f0, #fff);
 	box-shadow: inset 0 3px 3px 0 rgba(0, 0, 0, 0.03);
 	border: 1px solid #999;
 }
 
 .recurly .coupon.checking .check {
-	background: #f0f0f0 url("http://storage.googleapis.com/mvassets/images/recurly/coupon_checking.gif")
+	background: #f0f0f0 url("http://image.minyanville.com/images/recurly/coupon_checking.gif")
 		no-repeat center center;
 	box-shadow: inset 0 3px 3px 0 rgba(0, 0, 0, 0.03);
 	border: 1px solid #999;
@@ -385,7 +385,7 @@
 
 .recurly .server_errors .error {
 	padding-left: 26px;
-	background: rgba(240, 250, 0, 0.50) url("http://storage.googleapis.com/mvassets/images/recurly/error.png")
+	background: rgba(240, 250, 0, 0.50) url("http://image.minyanville.com/images/recurly/error.png")
 		no-repeat 5px 9px;
 }
 
@@ -436,11 +436,11 @@
 }
 
 .recurly .contact_info {
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/solid.jpg") repeat-x 1px bottom;
+	background: url("http://image.minyanville.com/images/recurly/solid.jpg") repeat-x 1px bottom;
 }
 
 .recurly .accept_tos {
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/solid.jpg") repeat-x 1px top;
+	background: url("http://image.minyanville.com/images/recurly/solid.jpg") repeat-x 1px top;
 	overflow: visible;
 	zoom: 1;
 	float:left;
@@ -692,19 +692,19 @@
 }
 
 .recurly .card.mastercard {
-	background-image: url("http://storage.googleapis.com/mvassets/images/recurly/credit_cards/mastercard.png");
+	background-image: url("http://image.minyanville.com/images/recurly/credit_cards/mastercard.png");
 }
 
 .recurly .card.american_express {
-	background-image: url("http://storage.googleapis.com/mvassets/images/recurly/credit_cards/amex.png");
+	background-image: url("http://image.minyanville.com/images/recurly/credit_cards/amex.png");
 }
 
 .recurly .card.visa {
-	background-image: url("http://storage.googleapis.com/mvassets/images/recurly/credit_cards/visa.png");
+	background-image: url("http://image.minyanville.com/images/recurly/credit_cards/visa.png");
 }
 
 .recurly .card.discover {
-	background-image: url("http://storage.googleapis.com/mvassets/images/recurly/credit_cards/discover.png");
+	background-image: url("http://image.minyanville.com/images/recurly/credit_cards/discover.png");
 }
 
 .recurly .card.no_match {
@@ -761,7 +761,7 @@
 	position: relative;
 	vertical-align: middle;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.50);
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/due_now.png") no-repeat top left;
+	background: url("http://image.minyanville.com/images/recurly/due_now.png") no-repeat top left;
 }
 
 .recurly .due_now .title {
@@ -792,7 +792,7 @@
 }
 
 .recurly.submitting .footer {
-	background: url("http://storage.googleapis.com/mvassets/images/recurly/submitting.gif") no-repeat 180px 28px;
+	background: url("http://image.minyanville.com/images/recurly/submitting.gif") no-repeat 180px 28px;
 }
 
 .recurly button.submit {

@@ -1,0 +1,181 @@
+<?
+
+$SECTION="university";
+$LOGO="/assets/univ-logo.gif";
+$HRULE=1;
+$homepage=1;
+$CAT_ID=get_category_id($CAT_NAME);
+$HEADERBGCLASS="univheader";
+$CENTERBGCLASS="univcenter";
+$data=array();
+if($id){
+	$data=get_full_article($id,1,1);
+}else{
+	$data=get_newest_article($CAT_ID,1,$GET_NEW_UNI?0:1);
+}
+$printlink=$PHP_SELF.qsa(array(PHPSESSID=>$PHPSESSID,mvpopup=>1,$row[article_id]));
+$title="Minyanville : University : $pagetitle";
+
+$related=get_classroom_articles($CAT_NAME,0,$GET_NEW_UNI?0:1);//2nd arg gets a week
+list($m,$d,$y)=explode("|",date("n|j|Y",$data[udate]));
+$archivelink=urlqsa("/library/search.htm?advanced=1&q=",array(category_id=>$CAT_ID,mo=>$m,day=>$d,year=>$y),"*");
+
+include("$D_R/_header.htm");?>
+<style>
+.articlelinks:visited{
+	color:purple;
+}
+</style>
+<table cellpadding=0 cellspacing=0 border=0>
+<TR><TD><img src="<?=$IMG_SERVER?>/assets/papertop.gif" border=0></TD></TR>
+<TR>
+<TD style="background:url('/assets/univ-slice.gif');background-repeat:repeat-y">
+<div style="width:535;margin-left:51px;">
+
+<?if(count($data)){?>
+	<table width=100% cellpadding=0 cellspacing=0 border=0>
+	<TR valign=top>
+	<TD class=journalday><?=date("F j, Y",$data[udate])?></TD>
+	<TD align=right>
+		<?mOver("button-archive.gif","button-archive-over.gif",$archivelink)?><br>&nbsp;
+		<?if(count($related)){?>
+			<div class=journalbuttons><a href="#related">More Articles</a></div>
+		<?}?>
+	</TD>
+	</TR>
+	</table>
+
+	<br>
+		<div class=uniseparator>
+			<div class=slimpadding>
+				<table cellpadding=0 cellspacing=0 border=0 width=100%>
+				<TR>
+				<TD class=journalheadingtime><?=ampmtime($data[udate])?></TD>
+				<TD align=right><?printPage()?>&nbsp;&nbsp;</TD>
+				</TR>
+				</table>
+			</div>
+		</div>
+	
+		<div class=padding style="padding-left:3px">
+			<div class=bigtitle><?=$data[title]?></div>
+			by <?=$data[contributor]?><br><br>
+			
+			<span class=journalblurb><?=$data[blurb]?></span>
+			<br clear=all>
+
+<!-- bio image and character -->
+<table cellpadding=3 cellspacing=0 border=0 width=100%>
+		<TR>
+		<TD width=50% nowrap>
+			<table cellpadding=0 border=0 cellspacing=0><TR><TD align=center>
+			<?if(is_file("$D_R${data[bio_asset]}")){?>
+			<img src="<?=$data[bio_asset]?>" border=0><br>
+			<?}?>
+			<a href="/gazette/bios.htm?id=<?=$data[contrib_id]?>"><?=$data[contributor]?></a>
+			</TD></TR></table>
+		</TD>
+		<TD>
+
+<!-- character -->			
+<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<TR valign=top>
+<?if(trim($data[character_text])){?>
+<!-- character talk bubble -->
+	<TD width=1% nowrap valign=middle>
+		<table width="160"  border="0" cellspacing="0" cellpadding="0" style="margin-right:7px">
+		<tr>
+		<td colspan="3" valign="bottom"><img src="<?=$IMG_SERVER?>/assets/dlg-top.gif" width="140" height="9"></td>
+		<td>&nbsp;</td>
+		</tr>
+		<tr>
+		<td width="2" height="10" bgcolor="#000000"><?=spacer(2,10)?></td>
+		<td width="140" rowspan="2" bgcolor="#F0C870">
+		<div style="padding:5px"><?=$data[character_text]?></div>
+		</td>
+		<td width="2" height="10" bgcolor="#000000"><?=spacer(2,10)?></td>
+		<td>&nbsp;</td>
+		</tr>
+		<tr>
+		<td bgcolor="#000000"><?=spacer(2,10)?></td>
+		<td width="2" bgcolor="#000000"><span style="background-color:#F0C870"><?=spacer(2,8)?></span></td>
+		<td><img src="<?=$IMG_SERVER?>/assets/dlg-otherside.gif" width="20" height="12"></td>
+		</tr>
+		<tr>
+		<td colspan="3" valign="top"><img src="<?=$IMG_SERVER?>/assets/dlg-bottom.gif" width="140" height="10"></td>
+		<td>&nbsp;</td>
+		</tr>
+		</table>
+	</TD>
+<!-- /end character talk bubble -->
+<?}?>
+<TD align=center width=50% nowrap>
+	<?if($data[character_id]){?>
+		<img src="<?=$data[character_asset]?>" border=0 style="border:1px #000 solid"><br>
+			<a href="/townhall/characterbios.htm#<?=lc($data[character])?>"><?=$data[character]?></a>
+	<?}else{?>
+			 <img src="<?=$IMG_SERVER?>/assets/characters/noopinion_01.jpg" border=0 style="border:1px #000 solid">
+	<?}?>
+</TD>
+
+</TR>
+</table>			
+<!-- / end character -->
+</TD>
+</TR>
+</table>
+<!-- /emd bio image and character -->
+<br>
+
+		<table width=100%>
+			<TR valign=top>
+			<TD width=99% class=journalbody>
+				<?=$data[body]?>
+				
+			
+							<br><br>
+			<div class="error"><?=$data[position]?></div>
+			
+
+				
+				<?if($data[disclaimer]){?>
+						<div class=journaldisclaimer><?=$data[disclaimer]?></div>
+				<?}?>
+				<p align=right>
+				<br><?printPage()?>
+				</p>
+			</TD>
+			</TR>
+			</table>
+		</div>
+	
+	<?=spacer(1,10)?>
+	
+		<div class="uniseparator slimpadding">
+			<table width=95% cellpadding=0 cellspacing=0 border=0 align=center>
+			<TR>
+			<?if(count($related)){?>
+				<TD><b>Other Related Articles</b></TD>
+			<?}?>
+			<TD align=right><?mOver("topup.gif","topover.gif","#");?></TD>
+			</TR>
+			</table>
+		</div>
+	<br>
+		<div style="padding-left:12px;margin-top:5px">
+		<a name="related"></a>
+		<?foreach($related as $row){?>
+			<?=href($row[article_url],$row[title],"class=articlelinks")?><br>
+			<i style="font-weight:bold"><?=date($DATE_STR,$row[udate])?></i><br>
+			by <?=$row[name]?><br>
+			<?if($blurb=trim(strip_tags($row[blurb])) ){?>
+				<?=$blurb?>...<br>
+			<?}?><br>
+		<?}?>
+		</div>
+<?}else{//no articles in this section?>
+	<div class="bigtitle">Nothing Written Today</div>
+<?}?>
+</div><TR><TD><img src="<?=$IMG_SERVER?>/assets/univ-bottom.gif" border=0 width=679 height=125></TD></TR>
+</table>
+<?include("$D_R/_footer.htm");?>

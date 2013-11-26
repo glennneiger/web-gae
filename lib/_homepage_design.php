@@ -88,7 +88,7 @@ class homeDesign{
 	}
 	
 	public function homeProducts(){
-	global $IMG_SERVER, $HTPFX,$HTHOST,$HTPFXNSSL,$productUrl;
+	global $IMG_SERVER, $HTPFX,$HTHOST,$HTPFXNSSL,$productUrl,$CDN_SERVER;
 	if($_SESSION['SID'])
 	{
 	   $param = "&email=".$_SESSION['EMAIL']."&first_name=".$_SESSION['nameFirst'];
@@ -207,7 +207,7 @@ class homeDesign{
 						</li><!-- ADS GROUP END-->
 					</ul>
 				</div>
-			<script src="'.$HTPFX.$HTHOST.'/js/jquery.cbpFWSlider.min.js"></script>
+			<script src="'.$CDN_SERVER.'/js/jquery.cbpFWSlider.min.js"></script>
 			<script>
 				 jQuery.noConflict();
                  jQuery( function() {
@@ -227,8 +227,9 @@ class homeDesign{
 
 
 	public function homeBloggerPosts(){
-	global $IMG_SERVER, $HTPFX,$HTHOST;/*<img src="'.$IMG_SERVER.'/images/redesign/mv_homePage_bloggercommunity.gif"
+	global $IMG_SERVER, $HTPFX,$HTHOST,$D_R;/*<img src="'.$IMG_SERVER.'/images/redesign/mv_homePage_bloggercommunity.gif"
 		alt="Bloggers Community" class="bloggerImage">*/
+	include_once("$D_R/lib/_layout_design_lib.php");
 	print '<div class="bloggerContainer"><ul id="all-articles-home">
 	<div class="bloggerContainerHead"><a href="http://blogs.minyanville.com/"><h3 class="new-head">BLOGGER COMMUNITY</h3></a></div>
             ';

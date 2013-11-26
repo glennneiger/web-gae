@@ -1,14 +1,41 @@
 application: minyanville-buzz
-version: 8-nidhi
+version: 14
 runtime: php
 api_version: 1
+threadsafe: true
+
+instance_class: F1
+
+automatic_scaling:
+  max_idle_instances: 1
+  min_pending_latency: 15s
 
 default_expiration: "30d"
 
 handlers:
-- url: /(.*\.(css$|js$|swf$|ico$|jpg$|png$|gif$|xls$|$p12|svg$|eot$|ttf$|woff$|flv$|mwv$))
+- url: /(.*\.(css$|js$|swf$|ico$|jpg$|png$|gif$|xls$|$p12))
   static_files: \1
-  upload: (.*\.(css$|js$|swf$|ico$|jpg$|png$|gif$|xls$|$p12|svg$|eot$|ttf$|woff$|flv$|mwv$))
+  upload: (.*\.(css$|js$|swf$|ico$|jpg$|png$|gif$|xls$|$p12))
+
+- url: /(.*\.(svg$|eot$|ttf$|woff$))
+  static_files: \1
+  upload: (.*\.(svg$|eot$|ttf$|woff$))
+  mime_type: font
+  
+- url: /(.*\.(flv$|mwv$))
+  static_files: \1
+  upload: (.*\.(flv$|mwv$))
+  mime_type: video
+  
+- url: /(.*\.(pdf$))
+  static_files: \1
+  upload: (.*\.(pdf$))
+  mime_type: pdf
+  
+- url: /manual_sitemap.xml
+  static_files: manual_sitemap.xml
+  upload: manual_sitemap.xml 
+  mime_type: xml
   
 - url: /admin/?$
   script: admin/index.htm
@@ -37,12 +64,27 @@ handlers:
     
 - url: /laveryinsight/articles/index/a/(.*)$
   script: index.htm
-      
+    
+- url: /cooper/jeff-cooper/?$
+  script: cooper/bio.htm
+  
+- url: /cooper/([a-zA-z-]+)/?$
+  script: cooper/index.htm
+  
+- url: /cooper/([a-zA-z-]+)/p/(.*?)$
+  script: cooper/index.htm
+  
 - url: /cooper/articles/(.*)index/a/(.*)/(p|from)/(.*)
   script: cooper/articles/index.php
   
 - url: /cooper/articles/(.*)index/a/(.*)
   script: cooper/articles/index.php
+  
+- url: /cooper/([a-zA-z-]+)/yr/(.*)/mo/(.*)/p/(.*?)
+  script: cooper/index.htm
+  
+- url: /cooper/([a-zA-z-]+)/yr/(.*)/mo/(.*?)$
+  script: cooper/index.htm    
   
 - url: /articles/(.*)index/a/(.*)/p/(.*)
   script: articles/index.htm
@@ -253,6 +295,9 @@ handlers:
 
 - url: /(mvpremium|buzz|dailyfeed)?(_?)news_sitemap.xml$
   script: sitemap/gsitemap.xml
+
+- url: /(.*\.(xml$))
+  script: lib/redirect.php
   
 - url: /rss/(podCastFeed|articlerss)\.(xml|rss)/(cat_id|sec_id)/([0-9]*)/
   script: lib/redirect.php
@@ -274,4 +319,4 @@ handlers:
 
 - url: /.*
   script: lib/redirect.php
-  
+ 

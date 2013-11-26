@@ -1,15 +1,15 @@
 <?php
-global $HTPFX,$HTHOST;
+global $HTPFX,$HTHOST, $IMG_SERVER,$CDN_SERVER;
 ?>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-min.1.2.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/min/jquery-ui.min.js"></script>
-<script src="<?=$HTPFX.$HTHOST?>/js/jquery.autocomplete.1.2.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-min.1.2.js"></script>
+<script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
+<script src="<?=$CDN_SERVER?>/js/jquery.autocomplete.1.2.js"></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTADMINHOST?>/admin/ckeditor/ckeditor.js"></script>
 <script>
 var host=window.location.protocol+"//"+window.location.host;
 function showEditor(divID,width,height){
 		 var host=window.location.protocol+"//"+window.location.host;
-		 var image_server="https://storage.googleapis.com/mvassets";
+		 var image_server= '<?=$IMG_SERVER?>';
 		 editor= CKEDITOR.replace( divID,
 					{
 						extraPlugins : 'autosave,placeholder,tableresize,uicolor,iframe,imagebrowser',

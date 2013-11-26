@@ -690,6 +690,8 @@ WHERE p.recurly_plan_code=sco.`recurly_plan_code` AND `subscription_id`='".$id."
 
 	function getSubcriptionProductDetails($userid='')
 	{
+		global $D_R;
+		include_once($D_R.'/lib/config/_products_config.php');
 		global $viaProducts,$_SESSION;
 
 		$productCache = new Cache();

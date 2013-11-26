@@ -25,8 +25,11 @@ $articles[title]=addslashes(mswordReplaceSpecialChars(stripslashes($articles[tit
 $articles[character_text]=addslashes(mswordReplaceSpecialChars(stripslashes($articles[character_text])));
 $articles[blurb]=addslashes(mswordReplaceSpecialChars(stripslashes($articles[blurb])));
 $articles[position]=addslashes(mswordReplaceSpecialChars(stripslashes($articles[position])));
-
-
+if(empty($articles['redesign_cat_id'])){
+	$articles['redesign_cat_id'] = '2';
+}else{
+	$articles['redesign_cat_id'] = implode(",",$articles['redesign_cat_id']);
+}
 if($articles[is_featured]=="on")
 {
 	$articles[is_featured]='1';

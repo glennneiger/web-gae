@@ -1,7 +1,7 @@
 <?php
 class subRedesign{
 	public function displaySubPage(){
-		global $IMG_SERVER,$objSubViewer,$lang,$HTPFX,$HTHOST; ?>
+		global $IMG_SERVER,$objSubViewer,$lang,$HTPFX,$HTHOST,$CDN_SERVER; ?>
 		<div class="subRedesignLogo"><img src="<?=$IMG_SERVER;?>/images/subscription/mvp_mainHeader_454x70.png" /></div>
 		<div class="subRedesignProductLogosBox">
 			<div id="ca-container" class="ca-container">
@@ -55,11 +55,11 @@ class subRedesign{
 			</div>
 		</div>
 
-		<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.easing.1.3.js"></script>
+		<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.easing.1.3.js"></script>
 		<!-- the jScrollPane script -->
-		<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.mousewheel.js"></script>
-		<script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/js/jquery.contentcarousel.js"></script>
+		<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="<?=$CDN_SERVER?>/js/jquery.contentcarousel.js"></script>
 		<script type="text/javascript">
 			$('#ca-container').contentcarousel();
 		</script>

@@ -1,0 +1,439 @@
+<?xml version="1.0" ?>
+<professors>
+  <numprofessors>25</numprofessors>
+  <professor>
+    <id>00</id>
+    <name>Todd Harrison</name>
+    <logo></logo>
+    <website></website>
+    <title>Founder & CEO</title>
+	<company>Minyanville</company>
+    <image>Todd_Harrison.jpg</image>
+    <story>Todd has fifteen years of experience on Wall Street. After graduating from Syracuse University with honors (1991), he spent seven years on the worldwide equity derivative desk at Morgan Stanley (vice president).
+
+In 1997, he became a managing director of derivatives at The Galleon Group. Three years later, he joined a $400 million hedge fund as partner (head of trading) and was President from January 2001 until January 2003.
+
+From July of 2000 through September 2001, Todd was the featured columnist on TheStreet.com's Realmoney.com financial website.
+
+Todd has appeared on CNBC, CNN, Bloomberg television, E-Entertainment and featured in Fortune, Barron's, Trader's magazine, New York magazine, New York Newsday, CBS MarketWatch and The Wall Street Journal.</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Greg Collins</name>
+    <logo> </logo>
+    <website></website>
+    <title>Professor</title>
+ 	<company>Minyanville</company>
+    <image>Greg_Collins.jpg</image>
+    <story>Greg Collins is the Chief Operating Officer and a Portfolio Manager of the Orlando-based Tuttle Asset Management, LLC. He served for two years with Todd Harrison (former President of the $400 mln hedge fund Cramer Berkowitz) culminating in the role of Editor in Chief of Minyanville.com. 
+
+Previously he worked with a Boston-based hedge fund as an analyst / trader. Mr. Collins began his career in sales with SG Cowen and later Lehman Brothers covering mid-market institutional and bank clients and has spent the last eight years analyzing the market via a blended technical and fundamental approach. †He has been quoted in financial publications such as the wsj.com. †
+
+Greg received a B.S. in accounting and a minor in economics from Saint Michael's College as well as an MBA in finance from the University at Albany.
+
+Mr. Collins welcomes your comments and / or feedback at Collins@tuttlemgmt.com.</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Rod David</name>
+    <logo></logo>
+    <website></website>
+    <title>President</title>
+    <company>AvidTrader</company>
+	<image>Rod_David.jpg</image>
+    <story>Rod David is President of AvidTrader.com , which he founded in 1995 as one of the web's original technical analysis sites. AvidTrader launched the web's first free-access traders chatroom in 1996, for technical analysis newcomers from around the world to mingle with experts throughout each trading day.
+
+Through AvidTrader, Rod developed an analytical technique that is designed to efficiently identify targets and turning points for any liquid stock or market in any time frame. He primarily applies his technique to analyzing and trading the S&Ps. Other AvidTrader analysts that have been taught the methodologies assist in producing and publishing analysis, opinion and specific actionable parameters for various high-profile futures markets and many individual equities.
+
+Besides AvidTrader and Minyanville, Rod's analysis has also been published or quoted on CBS MarketWatch, CNBC, The New York Times, Futures Magazine, and Technical Analysis of Stocks & Commodities, among others. Rod graduated Summa Cum Laude from Park University and resides in the Kansas City area.</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Kevin Depew</name>
+    <logo></logo>
+    <website></website>
+    <title>Managing Editor</title>
+    <company>Minyanville</company>
+	<image>Kevin_Depew.jpg</image>
+    <story>Kevin Depew is the Managing Editor of Minyanville.com. Prior to joining Minyanville, Kevin spent more than five years as an analyst with Dorsey, Wright & Associates where he contributed to and edited the firm's daily research. 
+
+After graduating from the University of Kentucky with a B.A. in Philosophy, Kevin naturally joined the Daily Racing Form as an editor / handicapper / writer where he spent five years covering, and occasionally wagering on, thoroughbred horse racing. 
+
+He also served as Editorial Director for The Lane Report, a monthly business magazine based in Kentucky, and was formerly editor of Technically Speaking, the monthly newsletter for the Market Technicians Association.</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Neal Dingmann</name>
+    <logo></logo>
+    <website>http://www.mshowells.com</website>
+    <title>Analyst</title>
+	<company>M.S. Howellís</company>
+    <image>Neal_Dingmann.jpg</image>
+    <story>Neal Dingmann, is currently Senior Research Analyst at M.S. Howells & Co. covering the Energy Sector. Mr. Dingmann focuses on micro to mid cap names along with situational plays of larger caps. 
+
+Neal has over 10 years experience in the investment community, with the majority of that time spent in equity research covering the energy sector. 
+
+After attending the University of Arkansas, Mr. Dingmann joined Arvest Bank Group, a private bank group run by the Walton family, where his focus was fixed income trading. Next, Mr. Dingmann received his MBA at the University of Minnesota where he was one of the leaders in a multi-million dollar run equity fund. After graduation, Mr. Dingmann began working for Dain Rauscher in Dallas, Texas, where he covered the merchant energy group, utilities, and master limited partnerships. Then Mr. Dingmann moved to Banc of America Securities where he worked as part of the number one Oilfield Services Team as ranked by Institutional Investors. 
+
+Mr. Dingmann uses his equity and fixed income expertise to derive his comprehensive energy research, focusing on services and exploration and production companies and to provide clients with an understanding of stock specific and industry wide trends.</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Tony Dwyer</name>
+    <logo></logo>
+    <website></website>
+    <title>Equity Market Strategist</title>
+    <company>FTN Midwest Research</company>
+    <image>Tony_Dwyer.jpg</image>
+    <story>Anthony F. Dwyer is the New York-based Managing Director/Equity Strategist for FTN Midwest Research, a firm headquartered in Cleveland.
+
+Prior to joining FTN Midwest, Tony was chief market strategist for Kirlin Holding Corp. and managing director and chief market strategist of Ladenburg Thalmann & Co., Inc.
+
+After graduating from LeMoyne College in 1987, Mr. Dwyer began his career at Prudential Securities working his way up to market analyst and eventually becoming a member of the Prudential Securities Stock Selection Committee.
+
+Tony has differentiated himself by adopting a unique approach in analyzing the financial markets by combining fundamental and technical analysis.</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Philip B. Erlanger</name>
+    <logo>Erlanger.gif</logo>
+    <website>http://www.erlanger.com/</website>
+    <title>President</title>
+    <company>Erlanger Research</company>
+    <image>Philip_Erlanger.jpg</image>
+    <story>Philip B. Erlanger, CMT is President of Phil Erlanger Research Co., Inc. (www.erlangerresearch.com). Following his experience as Advest's Chief Technical Analyst in the 1980s, and his 5-year tenure as Senior Technical Analyst for Fidelity Management & Research Co., Inc., Mr. Erlanger in 1994 formed his own company with the goal of providing high quality, unique information and technical analysis research. His company also includes software development (www.erlangerquote.com and www.erlangerchartroom.com). Mr. Erlanger is a two-time past president of the Market Technicians Association. In 1997, Mr. Erlanger won the MTA Best of the Best Award for Computer Assisted Analysis. 
+
+Mr. Erlanger has lectured at Universities such as Rutgers, MIT, Boston University, Emory and as an adjunct Professor at Bentley College where he taught a course in Technical Analysis.</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>William Fleckenstein</name>
+    <logo>Fleckstein.gif</logo>
+    <website>http://www.fleckensteincapital.com</website>
+    <title>President</title>
+	<company>Fleckenstein Capital</company>
+    <image>William_Fleckenstein.jpg</image>
+    <story>William Fleckenstein is the president of Seattle-based Fleckenstein Capital, which manages a short-only hedge fund. He also writes a daily Market Rap column and a weekly Contrarian Chronicles column and has his own website (www.fleckensteincapital.com). In 1980, he left the computer business to become a stockbroker. He founded a money management firm in 1982, and has been bullish (and bearish) on almost every industry group, commodity and asset class at one time or another during his investment career. His time-horizon a an investor is long-term (three to five years).
+</story>
+  </professor>
+  
+  <professor>
+    <id>00</id>
+    <name>Jason Goepfert</name>
+    <logo>Goepfert.jpg</logo>
+    <website>http://www.sentimentrader.com</website>
+    <title>President & CEO </title>
+    <company>Sentiment Trader</company>
+	<image>Jason_Goepfert.jpg</image>
+    <story>Jason Goepfert is the founder, President and CEO of Sundial Capital Research, Inc. a company dedicated to the research and practical application of mass psychology to the financial markets. 
+
+www.sentimenTrader.com is a publication of Sundial Capital Research, Inc. 
+
+Jason has been trading stocks, stock and index options, index futures, currencies and commodities for more than nine years. He holds several securities licenses (Registered Representative, General Securities Principal and Options Principal) and has most recently managed the operations departments of a large hedge fund and top-10 online brokerage. Jason was awarded the 2004 Charles H. Dow Award for Excellence in Technical Analysis from the Market Technician's Association.
+</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Herb Greenberg</name>
+    <logo>Greenberg.jpg</logo>
+    <website>http://www.marketwatch.com/commerce/RealityCheck.asp?siteid=mktw&dist=LAtabstore</website>
+    <title>Financial Reporter</title>
+  	 <company>Reality Check</company>
+    <image>Herb_Greenberg.jpg</image>
+    <story>Herb Greenberg has been a reporter for over 30 years, and has specialized in spotting trouble on Wall Street for the past 15 years. He comes to MarketWatch from TheStreet.com and can now be seen on TV as a regular guest on CNBCís Mad Money. Herbís previous experience includes reporting for the St. Paul Pioneer Press, Crain's Chicago Business, the Chicago Tribune, and the San Francisco Chronicle, where he was a financial columnist. His track record includes early warnings on EDS, Tyco, Planet Hollywood, WorldCom and Network Solutions, among others. Herbís proprietary investigative reports have been sold for as much as $30,000.
+</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Rich Gula</name>
+    <logo>Gula.gif</logo>
+    <website></website>
+    <title>Founder</title>
+   	<company>Argyle Investments, LLC</company>
+    <image>Rich_Gula.jpg</image>
+    <story>Rich Gula founded Argyle Investments, LLC in 1999. Argyle Investments creates customized valuation and trend/timeliness models for hedge funds and opportunistic investment managers. Rich has book-ended a career as a portfolio manager and global strategist (Batterymarch, Oecshle International) and Chief Investment Officer (Baybanks Investment management) with Chief Technical Analyst positions at Putnam (1981-84) and Fidelity (1996-1999.) He has tested, back-tested and innovated quantitative fundamental systematic models merged with trend-persistence and market-juncture models over 8 market cycles. 
+
+More recently, Argyle has designed short-term, risk-averse trading models to exploit the increasing volatility and uncertainty surrounding equity valuations and market prospects in a likely interest rate-rising investment environment. Employing techniques that integrate slower-moving monthly data series with daily and hourly inputs, the current generation of models are particularly robust and adapted to current market conditions. 
+</story>
+  </professor>
+  <professor>
+    <id>00</id>
+    <name>Vitaliy Katsenelson</name>
+    <logo>Katsenelson.gif</logo>
+    <website> </website>
+    <title>Vice President </title>
+ 	<company>Investment Management Associates Inc.</company>
+    <image>Vitaliy_Katsenelson.jpg</image>
+    <story>Vitaliy Katsenelson, CFA, has worked in the asset management industry since 1995. He is currently vice president and portfolio manager with Investment Management Associates Inc., a private portfolio management firm based in Denver, where he manages portfolios for individual and corporate clients. 
+
+Katsenelson performs fundamental security analysis of mid- and large-cap publicly traded companies. 
+
+Katsenelson is an adjunct professor at the University of Colorado, where he teaches practical equity analysis and portfolio management. He holds a B.S. in Finance and an M.S. in Finance from the University of Colorado. 
+
+He is a member of the CFA Institute, a member of the Denver Society of Security Analysts, and sits on the board of the Denver Society, where he heads the education committee. Mr. Katsenelson is also a contributor to the Financial Times.  
+</story>
+	</professor>
+    <professor>
+    <id>00</id>
+    <name>Jeff Macke</name>
+    <logo></logo>
+    <website></website>
+    <title>President </title>
+    <company>Macke Asset Management</company>
+	<image>Jeff_Macke.jpg</image>
+    <story>Jeff Macke is a founder and president of Macke Asset Management (MAM).
+
+Prior to founding MAM, Macke was a partner and co-founder of Macke Partners, an investment partnership. Macke also has been an analyst with Palo-Alto Investors and a consultant with Senn-Delaney Retail Consultants where he developed the associate training program for Sears that is still in use today in addition to working on projects with a wide variety of Fortune 500 retailers. Macke is currently on the board of directors for Duckwall-Alco. 
+
+He has a master's of business administration from Stanford University Graduate School of Business (1997) and a bachelor's degree from Dartmouth College (1991).  
+</story>
+	</professor>
+    <professor>
+    <id>00</id>
+    <name>Laurie McGuirk</name>
+    <logo></logo>
+    <website></website>
+    <title>Director-Strategic Investment</title>
+    <company>Endeavour Funds Management Limited</company>
+    <image>Laurie_McGuirk.jpg</image>
+    <story>Laurie McGuirk is Director-Strategic Investment at Endeavour Funds Management Limited (a specialist funds management company), based in Sydney Australia. He is responsible for "Augusta", the Real Asset focused strategy at Endeavour. He is also responsible for Commodity research and analysis on both the physical commodity and their associated equities. 
+
+He was appointed Chief Investment Officer of Trans Media Group in March 2002, after spending the previous 14 years at Citigroup in Commodity, Interest rate and Currency Derivatives. Prior to Citi, he traded on the equities floor of the Australian Stock Exchange for a small local brokerage. His last 7 years at Citi were concentrated specifically on Commodity Derivatives, with a major focus on Precious Metals and Energy. This included project assessment and financing, commodity price risk management and physical offtake arrangements. 
+
+Laurie has lectured at the Securities Institute of Australia on Financial Market Risk Management (1992-1996) as well as many internal and external seminars whilst at Citi. He has been published in local and International trade journals, websites, newspapers and magazines since 1995. 
+
+He is an AFMA accredited dealer (Australian Financial Markets Association) and socially is a member of the Australian Jockey Club, NSW Racehorse Owners Association, Northern Suburbs Rugby Club and Taxation Pistol Club NSW.   
+</story>
+	</professor>
+	<professor>
+    <id>00</id>
+    <name>David Miller</name>
+    <logo>Miller.jpg</logo>
+    <website>http://www.biotechmonthly.com/</website>
+    <title>President</title>
+ 	<company>Biotech Monthly</company>
+    <image>David_Miller.jpg</image>
+    <story>David Miller is the CEO and co-founder of Biotech Stock Research, LLC, the publisher of Biotech Monthly. Biotech Monthly was launched in October of 2001 and combines a monthly newsletter format with Alerts published when breaking news hits one of the more than two-dozen development-stage biotechnology companies under coverage. His firm is one of the few truly independent research firms in that it accepts no money from the companies it covers, does no outside consulting in the biotech space, runs no mutual or hedge fund, and is 100% subscriber-supported. Staff members are allowed to own positions in the stocks covered, but must detail all transactions within 24 hours on the Biotech Monthly web site. 
+
+In addition to co-founding Biotech Monthly, Mr. Miller was CEO of a successful technology company and a university professor (MBA operations and undergraduate business communications). He received his Bachelor's degree in communications, with minors in business, English, and political science, at Western Washington University in 1990.    
+</story>
+	</professor>
+	<professor>
+    <id>00</id>
+    <name>Jon 'Doctor J' Najarian</name>
+    <logo>Najarian.gif</logo>
+    <website>http://www.insideoptions.com</website>
+    <title>Co-founder</title>
+   <company>Inside Options</company>
+    <image>Jon_Najarian.jpg</image>
+    <story>Jon 'Doctor J' Najarian is a co-founder and partner in www.NajarianCapital.com, principal of www.PTISecurities.com and founder of www.insideoptions.com, an online publisher of stock, options and futures commentary. After a brief stint as a linebacker with the Chicago Bears in 1981, Doctor J came to the option trading pits of Chicago. After nearly 24 years, he's still there. 
+
+He founded Mercury Trading in 1989, a firm that makes markets in more than 70 high-tech and biotech stocks and single stock futures at the CBOE. He has been a member and seat owner of the CBOE, CBOT & NYSE. Since 1994 Doctor J has been a business correspondent for Fox television and appears daily on "Fox News in the Morning". He is the host of the CBS radio show, "Taking Care of Business with Doctor J", which is carried in Chicago and reaches 38 states. He also appears daily on www.FirstBusiness.us, a business news magazine that airs on CBS, NBC, FOX and ABC affiliates in over 180 cities across the country. 
+
+He has served on the Boards of The CBOE, Wit Soundview and 3CV and is active in icstars, a technology venture that empowers inner-city young adults to harness the strength of technology for social and economic leadership.     
+</story>
+</professor>
+
+
+	<professor>
+    <id>00</id>
+    <name>Tom Peterson</name>
+    <logo>Tom_Peterson.gif</logo>
+    <website>http://www.bullseyeresearch.com</website>
+    <title>Founder</title>
+   <company>Bullseye Research</company>
+    <image>Tom_Peterson.jpg</image>
+    <story>Tom Peterson is the founder of Bulls Eye Research Ltd., a firm which provides investment research and consulting to institutional investors and hedge funds. His approach combines both fundamental and technical data. Using classic techniques such as Richard D. Wyckoff Analysis, which facilitates identifying large-scale accumulation and distribution, he has specialized in stock selection and overall market timing with a highly accurate track record yielding results which have consistently out-performed market averages. He received recognition for outstanding portfolio performance in BarronÅfs Financial Weekly in January of 2000. 
+
+Prior to founding Bulls Eye Research, Tom received his Bachelor of Commerce and Business Administration Degree from the University of British Columbia in 1979. He is a 26 year veteran of the capital markets. He began his successful career with a major international investment dealer, Wood Gundy, Inc. (now a division of CIBC World Markets) from 1979 to 1989, serving institutional and retail clients on the equity side and winning several awards. He went on to success at Prudential-Bache. He left the sell side and founded Brookfield Capital, a venture capital company focusing on raising mezzanine capital for private and public technology companies.    
+</story>
+
+
+	</professor>
+    <professor>
+    <id>00</id>
+    <name>Scott Reamer</name>
+    <logo></logo>
+    <website></website>
+    <title>Hedge Fund Manager</title>
+   <company>Union Tree Capital</company>
+    <image>Scott_Reamer.jpg</image>
+    <story>Scout Research Partners is a research shop founded by Scott Reamer, hedge fund manager of Union Tree Capital. Scout Research is focused on providing actionable fundamental and technical research calls that incorporate macroeconomic, company specific fundamentals, and technical analysis. Trading calls are both stock and index specific, focusing on consumer, media, and technology sectors. Scout Research's goal is to provide PMs, analysts, and traders with independent research ideas from a buy-side perspective. 
+
+Scott Reamer has more than 9 years of investment experience as an institutional sell-side research analyst. Most recently he was a Managing Director, Institutional Research at SG Cowen. Prior to SG Cowen, Mr. Reamer worked as an institutional research analyst at both Bear Stearns and Donaldson, Lufkin, and Jenrette. Mr. Reamer covered some of the largest technology and media companies in the world, including Microsoft, Oracle, PeopleSoft, SAP, Time Warner, Viacom, Disney, Yahoo!, Amazon.com, and Ebay, among others.      
+</story>
+	</professor>
+	<professor>
+    <id>00</id>
+    <name>Brian Reynolds</name>
+    <logo>Reynolds.gif</logo>
+    <website>http://www.mshowells.com</website>
+    <title>Chief Market Strategist</title>
+   <company>M.S. Howellís</company>
+    <image>Brian_Reynolds.jpg</image>
+    <story>Brian Reynolds is the Chief Market Strategist at M.S. Howells & Co. and is also a contributing writer for Minyanville.com. Prior to joining M.S. Howells & Co., Brian held positions as the Chief Strategist at Kirlin Securities, Inc. and as the fixed income and economic columnist for TheStreet.com. Prior to working for TheStreet.com, Brian spent 16 years at David L. Babson & Co., an investment counseling firm in Cambridge, Massachusetts, where he was a Senior Vice President and Portfolio Manager. He joined Babson in 1984 as the firm's economic analyst. In addition to his position as an economic analyst, brian was an equity trader from 1985 to 1987, the manager of the company's taxable retail and institutional money market funders from 1986 through 2000, and a member of the portfolio management team of the company's fixed income separate accounts and mutual funds from 1987 through 2000. Brian received his A.B. in Economics from Harvard College in 1983 and became a CFA charterholder in 1989. Brian is the President of the Fixed Income Management Society of Boston. Brian's unique combination of experience in economics and the equity, bond and money markets gathered over a twenty year investment career bring an independent an unbiased perspective of the financial markets to his work.      
+</story>
+	</professor>
+	<professor>
+    <id>00</id>
+    <name>Greg Roberts</name>
+    <logo></logo>
+    <website></website>
+    <title>Research Trader</title>
+   <company>Vicis Capital</company>
+    <image>Greg_Roberts.jpg</image>
+    <story>Greg Roberts (a.k.a. "Fokker") is a research trader for a New York based hedge fund. 
+
+Prior to this role, Mr. Roberts served as a futures and commodities trader for four years at Goldman Sachs on their New York Fixed Income Derivatives desk and on their Equity Derivatives desk in San Francisco. Greg graduated from the University of Delaware in 1995 with a degree in business and economics.      
+</story>
+	</professor>
+	<professor>
+    <id>00</id>
+    <name>Jason Roney</name>
+    <logo></logo>
+    <website></website>
+    <title>Vice President</title>
+   <company>Sharmac Capital</company>
+    <image>Jason_Roney.jpg</image>
+    <story>Jason Roney is the Vice President of a Chicago based futures fund, Sharmac Capital. He primarily focuses on equity index futures in the United States and abroad. Before joining the fund in 2000, Jason was a proprietary trader for The Gelber Group in Chicago. He graduated from the University of Kentucky in 1993. 
+
+Jason utilizes the Logistics Information Machine along with proprietary systems to analyze short-term patterns in the equity markets.       
+</story>
+	</professor>
+	
+	<professor>
+    <id>00</id>
+    <name>Bernie Schaeffer</name>
+    <logo>Schaeffer.gif</logo>
+    <website>http://www.schaeffersresearch.com/</website>
+    <title>Chairman & CEO</title>
+ <company>Schaeffer Investment Research</company>
+    <image>Bernie_Schaeffer.jpg</image>
+    <story>Bernie Schaeffer is Chairman and CEO of Schaeffer's Investment Research, Inc. and author of The Option Advisor: Wealth-Building Techniques Using Equity and Index Options. Mr. Schaeffer has edited the Option Advisor newsletter since its inception in 1981, and it has since grown to be the nation's leading options newsletter. He also contributed a chapter on sentiment analysis to the Bloomberg Press book, New Thinking in Technical Analysis: Trading Models from the Masters. In 2003 Bernie penned a chapter on Technical and Sentiment Trading for the Bloomberg Press book, Investing Under Fire: Winning Strategies from the Masters for the Bulls, Bears, and the Bewildered.
+
+Mr. Schaeffer's award-winning website, SchaeffersResearch.com, provides daily market analysis and commentary, sentiment research and education, and trading tools for stock and option investors. Both Forbes magazine and Barron's have accredited the site as the top options website.
+
+Mr. Schaeffer often contributes option columns and market commentaries to various magazines and websites such as CBSMarketWatch.com. He is a CNBC Market Maven and regularly appears on CNN, The Nightly Business Report, Bloomberg Television, Fox News Channel and has also been interviewed on Wall Street Week with Fortune and ABC's World News Now. His views on the stock market and the economy are regularly quoted in The Wall Street Journal, The New York Times, Business Week, Investor's Business Daily, and USA TODAY. Additionally, he has been the subject of "Q&A" interviews in Barron's and The New York Times.        
+</story>
+	</professor>
+	
+	<professor>
+    <id>00</id>
+    <name>Bennet Sedacca</name>
+	<logo></logo>
+    <website>http://www.atlanticadvisors.com</website>
+    <title>Founder</title>
+ <company>Atlantic Advisors</company>
+    <image>Bennet_Sedacca.jpg</image>
+    <story>Bennett Sedacca is President of Atlantic Advisors, and brings with him more than 26 years of securities industry experience. Providing expertise in the fixed income arena, equity markets, and cash management, Bennet has assisted both individuals and institutions in the implementation of their investment objectives.
+From 1981 to 1997 he worked for several major investment banks, specializing in high grade fixed income securities marketing, trading and portfolio management. While working for PaineWebber as a Senior Vice President, Bennet was a member of the Chairman's Council for four consecuitive years. During his years with Salomon Smith Barney as a Vice President, Bennet established an institutional fixed income presence in Central Florida.
+In 1997, Bennet formed Sedacca Capital Management, focusing on portfolio management for high-net worth individuals and small to mid-sized institutions. In addition, Sedacca Capital Management was the investment manager for two hedge funds, Sedcap Partners I & II. Bennet graduated from Rutgers University in 1982 with a degree in Economics and was a member of the International Honor Society of Economics.       
+</story>
+	</professor>
+	
+	<professor>
+    <id>00</id>
+    <name>Sanjay Somaney</name>
+    <logo></logo>
+    <website>http://www.globaltechstocks.com/</website>
+    <title>Partner and Fund Manager </title>
+   <company>Global Tech Stocks</company>
+    <image>Sanjay_Somaney.jpg</image>
+    <story>Jay Somaney is a Partner and Fund Manager with TSG Capital Partners, a hedge fund based in Plano, Texas. Previously, Somaney worked at TSG Tech Fund, a hedge fund focused on the shares of companies involved in the internet and related technology. Prior to that, Somaney worked on the sell side as a tech and telecom analyst. Before that, he was a fund manager and partner with SMS International, a hedge fund specializing in tech investments in the Far East (non-Japan). Somaney holds a master's in business administration from the University of Texas. Somaney has appeared on many television and radio shows and has also been quoted in almost every major newspaper and financial publication.        
+</story>
+	</professor>
+	
+	<professor>
+    <id>00</id>
+    <name>John Succo</name>
+    <logo></logo>
+    <website></website>
+    <title>Co-founder </title>
+   <company>Vicis Capital</company>
+    <image>John_Succo.jpg</image>
+    <story>John Succo graduated from Indiana University with a graduate degree in finance concentrating in option pricing theory in 1984. He worked at Morgan Stanley from 1984 to 1992 where he was influential in the growth and expansion of the institutional equity derivatives market. As a principal and head of index and structured product trading, he helped develop dispersion methodology in trading and managing derivative risks, which greatly increased the liquidity and consequently the application of derivative products in asset-liability management. 
+
+In 1992 he became Managing Director in charge of global equity derivative trading at Paine Webber Inc. In 1996 he joined Lehman Brothers and ran derivative trading until 1998. He then joined Alpha Investments of New York heading risk management and as a director of the Investment Management Committee, managing internal and external capital investing in hedge funds. In 2001 he jointly founded Vicis Capital, a multi-strategy hedge fund where he manages overall risk and a portfolio concentrating in volatility extraction by opportunistically trading derivative instruments.        
+</story>
+	</professor>
+	
+	<professor>
+    <id>00</id>
+    <name>Kevin Tuttle</name>
+    <logo></logo>
+    <website></website>
+    <title>President and Co-founder </title>
+    <company>Church Street Capital, LLC</company>
+	<image>Kevin_Tuttle.jpg</image>
+    <story>Kevin A. Tuttle is the President and co-founder of the Orlando-based investment firm Church Street Capital, LLC. He currently runs a managed growth portfolio for high net worth clientele with his partner John W. DuBrule -- the CEO of Church Street Capital. Mr. Tuttle writes a weekly independent technical newsletter called "The Morning Cup of Jo -- Technical Inspiration for Serious Investors!"
+
+Prior to Church Street Capital, Mr. Tuttle has worked at Wachovia Securities Financial Network, First Union Securities, JW Genesis and a small regional firm -- where he began his career in 1992.
+
+He received his Bachelors degree in economics, minor in statistics, with several Graduate level Economics courses at Colorado Statue University in 1991.        
+</story>
+	</professor>
+	
+	<professor>
+    <id>00</id>
+    <name>Adam Warner</name>
+    <logo></logo>
+    <website>http://www.globaltechstocks.com/ </website>
+    <title>Proprietary Option Trader </title>
+  <company>Global Tech Stocks</company>
+    <image>Adam_Warner.jpg</image>
+    <story>Adam is a proprietary option trader with Addormar Co, Inc. He traded as a member of the American Stock Exchange from 1988-2001, and in several off-floor locations since then. He co-wrote the options column on Street Insight from spring 2003 to spring 2005, and currently pens a blog dedicated primarily to education about options.        
+</story>
+	</professor>
+	
+	<professor>
+    <id>00</id>
+    <name>Kevin Wassong</name>
+    <logo></logo>
+    <website></website>
+    <title>President</title>
+  <company>Minyanville Publishing and Multimedia</company>
+    <image>Kevin_Wassong.jpg</image>
+    <story>In 1998, Kevin launched the digital marketing arm for JWT in the flagship New York office, digital@jwt which grew to over 200 specialists in technology, database marketing, design and production throughout eight offices in North America offering complete digital, direct and database marketing.
+
+As a member of J. Walter Thompson's five person North American Management Team and of the parent WPP.com international board, Kevin has been a key proponent of communications integration resulting in the growth of diversified services for more than 20 leadership companies, including Merrill Lynch, Unilever, Pfizer, HSBC, The Diamond Trading Company, Nasdaq and Sun Microsystems.
+
+Kevin's diverse background spans marketing, communications, information technology, and entertainment; which combined have led to the development of digital communications first including Sotheby's first web site and Mercedes Benz's first networked kiosk system. Kevin previously oversaw the Javasoft, Sun Soft and Sun Microelectronics marketing for Sun Microsystems at Lowe & Partners Worldwide and helped establish Lowe's first West Coast Office. Prior to his career in marketing management he worked as an agent trainee and as an associate to the Chairman of Creative Artists Agency in California.
+
+As an industry leader, Kevin has established a group within the AAAAs to change the testing methodologies that drive integrated marketing mix. He is currently the chair of the Art Directors Club Awards for Interactive and Integrated Marketing and has judged the marketing industry's Effie Awards for Marketing Effectiveness for two years. Kevin is also a member of numerous advisory boards, helping marketing technology companies like Revenue Science further define their technologies and offerings. He has been featured on CNN, on the cover of the Wall Street Journal and in the New York Times, Wire Magazine, Adweek, AdAge and numerous other industry publications.        
+</story>
+	</professor>
+	<professor>
+    <id>00</id>
+    <name>Greg Weldon</name>
+    <logo>Weldon.bmp</logo>
+    <website></website>
+    <title>Founder</title>
+  <company>Weldon Financial</company>
+    <image>Greg_Weldon.jpg</image>
+    <story>After studying English at Colgate University, Greg began his successful career in the financial markets in the Comex Gold and Silver Pits. As foreign debt futures emerged in the mid-'80's, he joined Lehman Brothers as a broker, and was later hired by Prudential Securities as an institutional sales trader. 
+
+In 1990, Greg joined the now legendary hedge fund Moore Capital Management, first in trade execution and then eventually as a proprietary trader. 
+
+He joined Commodity Corporation in Princeton, New Jersey in 1995 as a proprietary money manager. He became one of their top risk-adjusted performers, returning 65% with a peak to trough draw down of only 11% during his 2-year tenure. 
+
+In 1998, as Goldman Sachs bought out the CC partnership, Greg decided to start his own company, forming Weldon Financial. His vision was to not only successfully manage money, but to offer his methodical and now proven research regime to other fund managers. His daily routine, so to speak, was the product. Weldon's Money Monitor and The Morning Metal Monitor (now simply called Metal Monitor) were born. These two newsletters were/are a window into Greg's trading world. 
+
+Greg became a regular guest on CNBC and was often quoted by the major newswires (Bloomberg, Reuters, etc). Greg also produced a ? hour cable TV show called Weldon on Wall Street. 
+
+Few publications offer the macro-perspective with such scope and breadth. He fluidly presents the fundamental, technical, inter-market, psychological, and intuitive elements of market action. Weldon Financial is now a highly regarded and profitable publishing company, having garnered some of the world's most respected fund managers as loyal readers. 
+
+He has been active in a myriad of charitable causes, including "Playing-4-Peace", an organization started by Colgate University Alumni. "Playing-4-Peace" seeks to support the education of children and more harmonious race relations in North Ireland and South Africa, using basketball as the springboard. More recently, with his time spent in St. Croix, Greg has become actively involved with the Queen Louise Home for Orphans and Abused Children, a charity with sponsorship from Major League Baseball.        
+</story>
+	</professor>
+	<professor>
+    <id>00</id>
+    <name>Fil Zucchi</name>
+    <logo></logo>
+    <website></website>
+    <title>Founder</title>
+  <company>Zebra Investment Advisors LLC</company>
+    <image>Fil_Zucchi.jpg</image>
+    <story>Fil Zucchi is the founder and manager of Zebra Investment Advisors LLC, a Virginia registered investment advisor, and Zebra Fund, LLC, a long/short hedge fund. Before founding the Zebra companies, Zucchi managed individual long/short accounts. Prior to that, he was a bankruptcy and commercial litigation attorney in a Washington, D.C. law firm. Zucchi is also currently involved in his family's commercial real estate development and management operations.        
+</story>
+	</professor>
+</professors>
