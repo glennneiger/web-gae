@@ -25,16 +25,18 @@ if($partner=="buzzMinyan761")
 		break;
 		case "buzzData":
 			$td_buzz_id = $_GET['td_buzz_id'];
-			$sql="SELECT id,date,updated,is_live,show_in_app,show_on_web,author,login,image,position,body,approved,
-			title,contrib_id,publish_date,section_id FROM buzzbanter where id > '$td_buzz_id' and is_live='1'";
+		 	$sql="SELECT id,date,updated,is_live,show_in_app,show_on_web,author,login,image,position,body,approved,
+			title,contrib_id,publish_date,section_id FROM buzzbanter where id > $td_buzz_id and is_live='1' 
+			and approved='1' ";
 			$result = exec_query($sql);
 			$data['data'] = $result;
 		break;
 		case "buzzTemp":
 			$td_buzz_id = $_GET['td_buzz_id'];
 			$td_buzz = $_GET['td_buzz'];
-			$sql="SELECT id,date,updated,is_live,show_in_app,show_on_web,author,login,image,position,body,approved,title,
-			contrib_id,publish_date,section_id FROM buzzbanter where id <= '$td_buzz_id' and updated >'$td_buzz' and is_live='1'";
+		 	$sql="SELECT id,date,updated,is_live,show_in_app,show_on_web,author,login,image,position,body,approved,title,
+			contrib_id,publish_date,section_id FROM buzzbanter where id <= $td_buzz_id and updated >'$td_buzz' and is_live='1'
+			 and approved='1' ";
 			$result = exec_query($sql);
 			$data['data'] = $result;
 		break;

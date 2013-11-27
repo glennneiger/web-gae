@@ -773,7 +773,8 @@ ORDER BY publish_date DESC LIMIT ".$start.",".$limit;
 		    );
 		    
 		$context = stream_context_create($context);
-		$results = file_get_contents("", false, $context);
+		$url = "http://api.chartbeat.com/live/toppages/v3/?apikey=c6e7a6c28565da05b0a469871e43d4b7&host=minyanville.com&limit=25";
+		$results = file_get_contents($url, false, $context);
 		
 		$resArtId = array();
         if(!empty($results->pages))

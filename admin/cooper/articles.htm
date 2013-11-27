@@ -1,5 +1,5 @@
 <?php
-
+global $D_R,$IMG_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include($D_R."/lib/config/_cooper_config.php");
 include($D_R."/lib/cooper/_cooper_data_lib.php");
@@ -8,7 +8,7 @@ global $contributor_id, $contributorName,$CDN_SERVER;
 
 $id=$_GET['id'];
 $page="gazette";
-
+$error=$_GET['error'];
 $objCooperData = new cooperData();
 $cancreate=$AD->getPerm("cp_articles");
 
@@ -123,7 +123,7 @@ function setAutorName(frm,frmobj)
 <script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
 <?if($AD->getPerm(array("cp_approve"))){?>
-	<a href="/admin/cooper/approve.htm">Approve Articles</a><br><br />
+	<a href=<?=$D_R?>"/admin/cooper/approve.htm">Approve Articles</a><br><br />
 <?}?>
 <br><br>
 <form method=get action="<?=$PHP_SELF?>">
@@ -149,7 +149,7 @@ function setAutorName(frm,frmobj)
 	</table>
 	<input type="hidden" name="submitname" value="">
 </form>
-<?if($error){?><div class=error><?=strip($error)?></div><?}?>
+<?if($error){?><div class=error><? echo strip($error)?></div><?}?>
 <form method="post" action="<?=$handler?>" name="articleForm">
 	<?input_hidden("id")?>
 	<?input_hidden("articles[sent]",$pagedata[sent])?>
@@ -250,8 +250,12 @@ function setAutorName(frm,frmobj)
 					WHERE chi.character_id =ch.id and  chi.prof_id=ch.prof_id and ch.prof_id='2' ";
 	 $chardata=exec_query($char_query);
 	if($contributor_id){
-	 $pagedata[character_asset]=$chardata[0]['asset'];
-	}
+	  $pagedata[character_asset]=$chardata[0]['asset'];
+//$pagedata[character_img_id];
+   $pagedata[character_asset]=$IMG_SERVER.$pagedata[character_asset];
+	}else{
+ //$pagedata[character_asset]=$IMG_SERVER."/spacer.gif";
+}
 ?>
 <script>
 chars=new Array();
@@ -261,6 +265,7 @@ chars=new Array();
 
 function changeChar(frmObj){
 	var selid=frmObj[frmObj.selectedIndex].value;
+	chars[selid]="http://image.minyanville.com/assets/characters/jeffcooper.jpg";
 	if(!selid)return;
 	rollOver("swapper",chars[selid])
 }
@@ -279,7 +284,7 @@ function changeChar(frmObj){
 			<option value="">--Select a character--
 			<?selectHashArr($chardata,"id","name",$pagedata[character_img_id])?>
 		</select><br>
-		<div class=border><img src="<?=$pagedata[character_asset]?$pagedata[character_asset]:"/space.gif"?>" border=0 name="swapper" width=126 height=140></div>
+		<div class=border><img src="<?=$pagedata[character_asset]?>" border=0 name="swapper" width=126 height=140></div>
 
 <TR>
 			<TD colspan=2 align=center>

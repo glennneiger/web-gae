@@ -1,0 +1,10 @@
+<?php
+global $D_R;
+$emlTitle=$_POST['Subject'];
+$emlBody=$_POST['Body'];
+$emlProduct=$_POST['ProductName'];
+include_once($D_R."/lib/ws/_emailAlert.php");
+header('Content-type: text/xml');
+$objEmailAlert= new emailAlert($emlProduct);
+$objEmailAlert->sendEmail($emlTitle,$emlBody);
+?>

@@ -23,105 +23,85 @@ function validateData($size,$allowedSize,$fileName,$arAllowedExt)
         return $error;
 }
 
-function createRadioArt($fname,$val){
-	$fileUrl = file_get_contents($StorageListPath."?prefix=assets/radio/".fname);
-		 	//$fileUrl = file_get_contents($StorageListPath."?prefix=assets/radio/Nov2113165232.mp3");
-			$bucketFileData = json_decode($fileUrl);
-			htmlprint_r($bucketFileData);
-			$bucketFileData = $bucketFileData->items;
-			htmlprint_r($bucketFileData);
-			if(!empty($bucketFileData))
-			{			
-			 	$bucketFileTime = $bucketFileData[0]->generation;
-				$modify_time = date('F d  H:i:s',$bucketFileTime);
-				$article['contrib_id'] ="809";
-				$article['approved']="0";
-				$article['sent']="0";
-				$article['is_public']="0";
-				$article['position']="No positions in stocks mentioned.";
-				$article['date']=date('Y-m-d H:i:s');
-				$article['title']="Money Matters Radio File(".$val->name.") uploaded on ".$modify_time;
-				$article['body']="<br />
-{RADIO}<br />
-<br />
-<br />
-<em>Twitter: <a href='https://twitter.com/moneymattersfn'>@MoneyMattersFN</a></em>";
-				$article['contributor']="Money Matters Radio";
-				$article['keyword']="";
-				$article['is_live']="";
-				$article['publish_date']="";
-				$article['section_id']="51";
-				$article['navigation_section_id']="98";
-				$article['is_marketwatch']="0";
-				$article['is_fox']="0";
-				$article['hosted_by']="Minyanville";
-				$article['subsection_ids']="93,98,51";
-				$article['is_msnfeed']="0";
-				$article['is_yahoofeed']="0";
-				$article['is_buzzalert']="0";
-				$article['layout_type']="radio";
-				htmlprint_r($article);
+function createBuzzThumbs($pathToImages,$pathToThumbs,$thumbWidth,$imagename)
+	{
 
-				$id=insert_query("articles",$article);
-				if($id>0)
-				{
-					 $fileUrl = file_get_contents("http://admin01a.minyanville.com/admin/robot.RemoveFileBucket.php?type=radio&file=".$fname);
-					 $bucketRemoveData = json_decode($fileUrl); 
-					 htmlprint_r($bucketRemoveData);
-					 die;		 
-					if($upload=="1")
-					{
-						$article_id[] = $id;
-						$article_revision['article_id'] = $id;
-						$article_revision['revision_number'] = "1";
-						$article_revision['body'] = "<br />
-		{RADIO}<br />
-		<br />
-		<br />
-		<em>Twitter: <a href='https://twitter.com/moneymattersfn'>@MoneyMattersFN</a></em>";
-						$article_revision['updated_by'] = "mediaagility";
-						$article_revision['updated_date'] = date('Y-m-d H:i:s');
-						$article_revision['page_no'] ="1";
+	  $fname=$imagename;
 
-						htmlprint_r($article_revision);
-						insert_query("article_revision",$article_revision);
+		// continue only if this is a JPEG image
+		  // load image and get image size
+		  $extension = pathinfo("{$pathToImages}{$fname}");
+		 $extension = $extension[extension];
+		  if($extension == "jpg" || $extension == "jpeg" || $extension == "JPG"){
+		            $img = imagecreatefromjpeg( "{$pathToImages}{$fname}" );
+		          }
 
-						$article_meta['item_id'] =$id;
-						$article_meta['item_type'] ="1";
-						$article_meta['item_key'] ='radiofile';
-						$article_meta['item_value'] =$VIDEO_SERVER."assets/radio/".$date.".mp3";
-						htmlprint_r($article_meta);
-						insert_query("article_meta",$article_meta);
-						$obContent = new Content(1,$id);
-						$obContent->setArticleMeta();
-					}
-					else
-					{
-						del_query('articles','id',$id);
-						$to="nidhi.singh@mediaagility.co.in";
-						$from=$NOTIFY_FEED_ERROR_FROM;
-						$subject="Radio Artcile Not Posted";
-						$msg = "Article has been deleted for file ".$val->name." having article id ".$id;
-						mymail($to,$from,$subject,$msg);
-					}
-				}
-				else
-				{
-					$to="nidhi.singh@mediaagility.co.in";
-					$from=$NOTIFY_FEED_ERROR_FROM;
-					$subject="Radio Artcile Not Posted";
-					$msg = "radio not posted for ".$val->name;
-					mymail($to,$from,$subject,$msg);
-				}
+		          if($extension == "png") {
+		            $img = imagecreatefrompng( "{$pathToImages}{$fname}" );
+		          }
+
+		          if($extension == "gif") {
+		           	$img = imagecreatefromgif( "{$pathToImages}{$fname}" );
+          }
+
+		  $width = imagesx( $img );
+		  $height = imagesy( $img );
+		  // calculate thumbnail size
+		  if($width>$thumbWidth)
+		  {
+                $new_width = $thumbWidth;
+			  	$new_height = floor(($height * $thumbWidth )/$width );
+		  }
+		  else
+		  {
+			  $new_width = $width;
+			  $new_height = $height;
+		  }
+
+		  // create a new temporary image
+		  $tmp_img = imagecreate( intval($new_width), intval($new_height) );
+
+		  if($extension == "gif")
+		 {
+			$trnprt_indx = imagecolortransparent($img);
+
+      		// If we have a specific transparent color
+			if ($trnprt_indx >= 0)
+			{
+				// Get the original image's transparent color's RGB values
+				@$trnprt_color    = imagecolorsforindex($image, $trnprt_indx);
+
+				// Allocate the same color in the new image resource
+				$trnprt_indx    = imagecolorallocate($tmp_img, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
+
+				// Completely fill the background of the new image with allocated color.
+				imagefill($tmp_img, 0, 0, $trnprt_indx);
+
+				// Set the background color for new image to transparent
+				imagecolortransparent($tmp_img, $trnprt_indx);
 			}
-			if(is_array($article_id)){
-				$articleList = implode(",",$article_id);
-				$to="nidhi.singh@mediaagility.co.in,news@minyanville.com";
-				$from=$NOTIFY_FEED_ERROR_FROM;
-				$subject="Radio Artcile Posted";
-				$strurl = "?article_id=".$articleList."&type=radio";
-				mymail($to,$from,$subject,inc_web($feed_error_template.$strurl));
-			}
+			//$transparent = imagecolorallocate($tmp_img, "255", "255", "255");
+			//imagefill($tmp_img, 0, 0, $transparent);
+		 }
+		  // copy and resize old image into new image
+		  imagecopyresized( $tmp_img, $img, 0, 0, 0, 0, intval($new_width),intval($new_height), intval($width), intval($height) );
+		  // save thumbnail into a file
+		  if($extension == "jpg" || $extension == "jpeg" || $extension == "JPG")
+		  {
+		      $thumbImage = imagejpeg( $tmp_img, $pathToThumbs.$fname );
+		  }else if($extension == "png") {
+			 $thumbImage = imagepng( $tmp_img, $pathToThumbs.$fname );
+		  }else if($extension == "gif") {
+		      $thumbImage = imagegif( $tmp_img, $pathToThumbs.$fname );
+          }
+		  if($thumbImage)
+		  {
+		  	return true;
+		  }
+		  else
+		  {
+		  	return false;
+		  }
 }
 
 
@@ -193,9 +173,11 @@ switch($action)
             $front_name = str_replace(" ","_",substr($filename, 0, 15));
             $newFileName = $front_name."_".time().".".$fileExt;
             $imgpath =  "/assets/buzzbanter/charts/original/".date('mdy').'/'.$newFileName;
-            $thumbImgpath =  "/assets/buzzbanter/charts/thumbnail/".date('mdy').'/'.$newFileName;
-            copy($_FILES['fileInput']['tmp_name'], $bucketPath.$thumbImgpath);
+            $pathimg =  "/assets/buzzbanter/charts/original/".date('mdy').'/';
+            $thumbImgpath =  "/assets/buzzbanter/charts/thumbnail/".date('mdy').'/';
             move_uploaded_file($_FILES['fileInput']['tmp_name'],$bucketPath.$imgpath);
+            $thumbWidth="165";
+            createBuzzThumbs($bucketPath.$pathimg,$bucketPath.$thumbImgpath,$thumbWidth,$newFileName);
             $value['status']="1";
             $value['msg']="Uploaded Sucessfully";
             $value['file']=$newFileName;

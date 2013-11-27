@@ -74,7 +74,7 @@ switch($_POST['action']){
 	case "updateSummary":
 		$id = $_POST['id'];
 		$worryId = $_POST['worryId'];
-		$summary = $_POST['summary'];
+		$summary = addslashes(mswordReplaceSpecialChars(stripslashes($_POST['summary'])));
 		$objWryData->updateSummary($id,$worryId,$summary);
 		break;
 		

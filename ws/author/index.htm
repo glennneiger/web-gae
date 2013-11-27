@@ -1,0 +1,17 @@
+<?php
+global $D_R;
+include_once($D_R."/lib/ws/_author.php");
+$objAuthors= new mvAuthors();
+
+$_POST['type']='buzzbanter';
+
+if(!empty($_POST)){
+    $objAuthors->authorAuthentication($_POST);
+   
+}else{
+   $result='Fail';
+   $error='Invalid data or not data found';
+   $objAuthors->setResponse($result,$error);
+}
+
+?>

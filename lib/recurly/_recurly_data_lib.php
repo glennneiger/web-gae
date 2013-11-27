@@ -402,7 +402,7 @@ and SCO.viaid<>'0' limit 2000";
         $params['subid']=$subId;
         $params['viaid']=$viaId;
         $params['email']=$email;
-        $params['error']=$error;
+        $params['error']=addslashes(mswordReplaceSpecialChars(stripslashes($error)));      
         $id=insert_query('recurly_error',$params,$safe=0);
         if(!empty($id)){
             return true;

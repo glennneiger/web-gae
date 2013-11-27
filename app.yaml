@@ -1,5 +1,5 @@
 application: minyanville-buzz
-version: 14
+version: 8
 runtime: php
 api_version: 1
 threadsafe: true
@@ -32,9 +32,9 @@ handlers:
   upload: (.*\.(pdf$))
   mime_type: pdf
   
-- url: /manual_sitemap.xml
-  static_files: manual_sitemap.xml
-  upload: manual_sitemap.xml 
+- url: /(manual_sitemap|sitemap).xml
+  static_files: \1.xml
+  upload: (manual_sitemap|sitemap).xml 
   mime_type: xml
   
 - url: /admin/?$
@@ -273,7 +273,7 @@ handlers:
   script: mvtv/index.htm
   
 - url: /audiovideo/(.*?)/?(.*?)
-  script: /mvtv/index.htm
+  script: mvtv/index.htm
   
 - url: /audiovideo$
   script: mvtv/index.htm

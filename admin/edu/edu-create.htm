@@ -1,5 +1,5 @@
 <?
-global $HTPFX,$HTHOST,$IMG_SERVER,$D_R,$bucketPath, $tempPath.$CDN_SERVER;
+global $HTPFX,$HTHOST,$IMG_SERVER,$D_R,$bucketPath, $tempPath,$CDN_SERVER;
 include("$ADMIN_PATH/_header.htm");
 include($D_R."/lib/config/_edu_config.php");
 include($D_R."/lib/edu/_edu_data_lib.php");
@@ -21,7 +21,7 @@ $frm_url = $cloudStorageTool->createUploadUrl($handler , $options);
 <script src="<?=$CDN_SERVER?>/js/min/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?=$CDN_SERVER?>/js/admin.1.9.js" ></script>
 <script type="text/javascript" src="<?=$HTPFX.$HTHOST?>/admin/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?=$CDN_SERVER?>/js/edu.js" ></script>
+<script type="text/javascript" src="<?=$CDN_SERVER?>/js/edu.1.4.js" ></script>
 
 <div class=adminheader>Education Center - Create/Edit Alert</div><br>
 <?  $createAlert=$AD->getPerm("edu_create"); //set permission

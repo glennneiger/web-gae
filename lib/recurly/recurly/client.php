@@ -17,7 +17,7 @@ class Recurly_Client
   /**
    * Base API URL
    */
-  public static $apiUrl = 'https://minyanvilleqa.recurly.com/v2';
+  public static $apiUrl = 'https://api.recurly.com/v2';
 
   /**
    * API Key instance, may differ from the static key
@@ -114,7 +114,7 @@ class Recurly_Client
 						'method'=>'POST', 
 						'header'=> "Content-Type: application/xml; charset=utf-8\r\n". 
 						"Accept: application/xml\r\n". 
-						"Authorization: Basic ".base64_encode("8f1a8fe801b24e6a9207701bffe4b585:"),
+						"Authorization: Basic ".base64_encode("16f21b3f898e44dea3999d4983a8dcac:"),
 						'content'=>$data
 						) 
 						);
@@ -132,7 +132,7 @@ class Recurly_Client
 						'method'=>'PUT', 
 						'header'=> "Content-Type: application/xml; charset=utf-8\r\n". 
 						"Accept: application/xml\r\n". 
-						"Authorization: Basic ".base64_encode("8f1a8fe801b24e6a9207701bffe4b585:"),
+						"Authorization: Basic ".base64_encode("16f21b3f898e44dea3999d4983a8dcac:"),
 						'content'=>$data
 						) 
 						);
@@ -150,7 +150,7 @@ class Recurly_Client
 							'header'=> "Content-Type: application/xml; charset=utf-8\r\n". 
 							"Accept: application/xml\r\n". 
 							"Accept-Language: en-US\r\n". 
-							"Authorization: Basic ".base64_encode("8f1a8fe801b24e6a9207701bffe4b585:")
+							"Authorization: Basic ".base64_encode("16f21b3f898e44dea3999d4983a8dcac:")
 							
 							) 
 							);

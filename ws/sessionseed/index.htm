@@ -1,0 +1,22 @@
+<?php
+session_start();
+global $D_R;
+include_once($D_R."/lib/ws/_sessionSeed.php");
+header('Content-type: text/xml');
+$vendorid	=	trim($_REQUEST['vendorid']);
+$cd_domain_id	=	trim($_REQUEST['CDI']);
+if(empty($cd_domain_id)){
+	$cd_domain_id	=	trim($_REQUEST['user_id']);
+}
+
+switch($vendorid)
+{
+	case 'MAGVDO':
+		$objSessionSeed= new sessionSeed($cd_domain_id,$vendorid,FALSE);
+		$objSessionSeed->displayMagnifyResponse();
+	break;
+	default:
+		$objSessionSeed= new sessionSeed($cd_domain_id,$vendorid,TRUE);
+		$objSessionSeed->displayResponse();
+}
+?>

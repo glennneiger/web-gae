@@ -6,7 +6,7 @@ header("Cache-Control: post-check=0,pre-check=0");
 header("Cache-Control: max-age=0");
 header("Pragma: no-cache");
 $page="selltransaction";
-global $CDN_SERVER;
+global $D_R,$CDN_SERVER;
 include_once("$ADMIN_PATH/_header.htm");
 include_once("$D_R/admin/ss/ss_classes/class_Optiontransaction.php");
 include_once("$D_R/lib/layout_functions.php");
@@ -34,10 +34,21 @@ $ACTB_COMMONJSSCRIPT=$CDN_SERVER."/js/actb_common.js";
 <script src="<?=$CDN_SERVER?>/js/sstransaction.js" type="text/javascript"></script>
 <script src="<?=$CDN_SERVER?>/js/optiontransaction.1.2.js" type="text/javascript"></script>
 <?php
-$updatemode=$_POST['mode'];
-$serchexchgname=$_POST['exchangename'];
-$serchsymname=$_POST['serchsymname'];
-$quoteidserched=$_POST['quoteidserched'];
+
+//htmlprint_r($_POST);
+$postData=array();
+$postData=$_POST;
+
+$stockid_get_all1=$postData['stockid_get_all1'];
+
+//htmlprint_r($updatedidsarr);
+ $totrecords=$postData['totrecords'];
+ $quoteidserched=$postData['quoteidserched'];
+$serchexchgname=$postData['exchangename'];
+$serchsymname=$postData['serchsymname'];
+ $updatemode=$postData['mode'];
+
+
 $objPortfolio = new optionPortfolio();
 
 if(!isset($updatemode))
@@ -51,46 +62,59 @@ else{
 		case 'save':
 		{
 			global $contractqty;
-			$stockid_get_all_get="\$stockid_get_all1=&\$stockid_get_all1;";
-			eval($stockid_get_all_get);
+            
 			$updatedidsarr=explode(',',$stockid_get_all1);
 			$cntLT1=count($updatedidsarr);
 					// process items
-					if($cntLT1>0){for($x=0;$x<$cntLT1;$x++){$allids[]=$updatedidsarr[$x];}}
+					if($cntLT1>0)
+                     {
+                        for($x=0;$x<$cntLT1;$x++)
+                        {
+                        $allids[]=$updatedidsarr[$x];
+                         }
+                     }
+                  
 					$noofrecords = $totrecords-1;
 					for($i = 0; $i <= $noofrecords; $i++){
-					$autoids=$allids[$i];
+                     
+					    $autoids=$allids[$i];
+              		    $buyDate=$postData[buydate_.$autoids];
+						$strike_price=$postData[strike_price_.$autoids];
+						$option_type=$postData[option_type_.$autoids];
+						$expiry=$postData[expiry_.$autoids];
+						$base_stock_symbol=$postData[base_stock_symbol_.$autoids];
+						$buyqty=$postData[buyqty_.$autoids];
+						$sellqty=$postData[sellqty_.$autoids];
+						$sellprice=$postData[sellprice_.$autoids];
+						$selldate=$postData[selldate_.$autoids];
+						$sellnote=$postData[sellnote_.$autoids];
+						$sellchk=$postData[sellchk_.$autoids];
+				
 					$status=0;
-					$selectedchk="\$isselected=&\$sellchk_".$autoids.";";
-					eval($selectedchk);
-					if((isset($isselected)) && ($isselected!='')){$status=0;}else{$status=1;}
+					$selectedchk=$sellchk;
+					
+					if((isset($selectedchk)) && ($selectedchk!='')){$status=0;}else{$status=1;}
 
 					if($status==0)
 					{
-								$sharesval="\$updatedshares=&\$sellqty_".$autoids.";";
-								eval($sharesval);
-								$pershare="\$unitsellprice=&\$sellprice_".$autoids.";";
-								eval($pershare);
-								$selldate="\$selldateentered=&\$selldate_".$autoids.";";
-								eval($selldate);
+								$updatedshares=$sellqty;
+								
+								$unitsellprice=$sellprice;
+								
+								$selldateentered=$selldate;
+								
 								$selldateentered=$optiontransobj->formatdate2dbSTD($selldateentered);
 								$selldateconv=$selldateentered." ".date('H:i:s');
-								$descriptions="\$description=&\$sellnote_".$autoids.";";
-								eval($descriptions);
-								$stockauto=$isselected;
+								$description=$sellnote;
+								
+								$stockauto=$selectedchk;
 								$datetime = date('Y-m-d h:i:s');
 
-								$baseOption="\$baseOptions=&\$base_stock_symbol_".$autoids.";";
-								eval($baseOption);
-
-								$Optionexpiry="\$expiry=&\$expiry_".$autoids.";";
-								eval($Optionexpiry);
-
-								$OptionSP="\$strike_price=&\$strike_price_".$autoids.";";
-								eval($OptionSP);
-
-								$Optiontype="\$option_type=&\$option_type_".$autoids.";";
-								eval($Optiontype);
+								$baseOptions=$base_stock_symbol;
+								
+								
+								$option_type=$option_type;
+								
 
 								$transactiondata=array(
 													   'quote_id'=>$quoteidserched,
@@ -110,7 +134,7 @@ else{
 								//***echo "New id entered : ".$insertid."<br>";
 
 								if(isset($insertid))
-								{
+								{ 
 									$memCacheDelete = new memCacheObj();
 									$key="ssOpenPositiontrade";
 									$memCacheDelete->deleteKey($key);

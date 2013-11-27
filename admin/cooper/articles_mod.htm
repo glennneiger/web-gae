@@ -5,6 +5,7 @@ include_once("$D_R/lib/_content_data_lib.php");
 include_once("$D_R/lib/layout_functions.php");
 
 $id=$_POST['id'];
+$prof_id = $_POST['prof_id'];
 $articles=$_POST['articles'];
 $datefield=$_POST['$datefield'];
 $approvearticle=$_POST['approvearticle'];
@@ -66,7 +67,7 @@ if($id){
 		/*-------create subscribers file------*/
 		$listfile=prepare_prof_subs_list($prof_id,$SCRIPT_DIR);
 		$professor_details=get_prof_domain_name($prof_id);
-		$sitename=$professor_details['sitename'];
+		$sitename=$HTHOST."/cooper";
 		$to=$NOTIFY_JOURNAL_TO;
 		$from= $prof_lang['FROM_email_template']."<".$REG_EML_REPLYTO_PROFESSOR.">";
 		$subject=htmlentities("[{$professor_details['name']}"."'s] - ".$articles['title'],ENT_QUOTES);
