@@ -62,4 +62,5 @@ $relatedArticleCacheExpiry = "86400";
 $articleKeyMatchCacheExpiry = "86400";
 $outboundArticleCacheExpiry = "86400";
 $articleDetailCacheExpiry = "86400";
+$partnerFeedCacheExpiry = "900";
 ?>

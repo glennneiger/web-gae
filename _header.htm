@@ -187,7 +187,9 @@ if($pageMetaData['publish_date']!="" && $pageMetaData['publish_date']!="0000-00-
 $article_keywords = mswordReplaceSpecialChars($pageMetaData['keywords']);
 if($pageMetaData['show_standout']){ ?>
 	<link rel="standout" href="<?php echo $HTPFX.$HTHOST.$pageMetaData['url']; ?>" />
-<?php  }
+<?php  }  ?>
+<link rel="apple-touch-icon" href="<?=$HTPFX.$HTHOST?>/images/mv_social_icon.jpg"/>
+<?php 
 if($pageMetaData['show_canonical']){
 	if($pageName=='dailyfeed' || $pageName=='dailyfeed_article'){
         $canonical=$pageMetaData['url']==""?$pageMetaData['alias']:$pageMetaData['url'];

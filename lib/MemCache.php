@@ -2441,18 +2441,6 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
 	function getFeedPartnerData($type=NULL,$partnerId=NULL,$maxItemLimit=NULL,$currentFilter=NULL,$durationFilter=NULL,$startTimeFilter=NULL)
 	{
 		$keyCache="FeedPartnerData_".$partnerId."_type_".$type;
-		if(!empty($maxItemLimit)){
-			$keyCache.="_limit_".$maxItemLimit;
-		}
-		if(!empty($currentFilter)){
-			$keyCache.="_curfilter_".$currentFilter;
-		}
-		if(!empty($startTimeFilter)){
-			$keyCache.="_startTime_".$startTimeFilter;
-		}
-		if(!empty($durationFilter)){
-			$keyCache.="_duration_".$durationFilter;
-		}
 		$resFeedPartnerData = $this->getKey($keyCache);
 		if(!empty($resFeedPartnerData))
 		{
@@ -2466,25 +2454,22 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
 
 	function setFeedPartnerData($type,$partnerId,$maxItemLimit,$currentFilter,$durationFilter,$startTimeFilter){
 		global $FeedPartnerDataExpiry,$D_R,$HTHOST,$HTPFX;
-	$keyCache="FeedPartnerData_".$partnerId."_type_".$type;
+		$keyCache="FeedPartnerData_".$partnerId."_type_".$type;
 		$objFeedView= new feedViewer($type,$partnerId);
-		if(!empty($maxItemLimit)){
-			$keyCache.="_limit_".$maxItemLimit;
-		}
-		if(!empty($currentFilter)){
-			$keyCache.="_curfilter_".$currentFilter;
-		}
 		if(!empty($startTimeFilter)){
-			$keyCache.="_startTime_".$startTimeFilter;
 			$objFeedView->addFilter('startTime',$startTimeFilter);
 		}
 		if(!empty($durationFilter)){
-			$keyCache.="_duration_".$durationFilter;
 			$objFeedView->addFilter('durationFilter',$durationFilter);
 		}
 		$result=$objFeedView->showRSS($maxItemLimit,$currentFilter);
 		$this->setKey($keyCache,$result,$FeedPartnerDataExpiry);
 		return $result;
+	}
+	
+	function deleteFeedPartnerData(){
+		$keyCache="FeedPartnerData_eccbc87e4b5ce2fe28308fd9f2a7baf3_type_articlebuzz";
+		$this->setKey($keyCache,'','0');
 	}
 
 	############ Extracting Feeds ###########
@@ -2608,6 +2593,40 @@ AND df.is_approved='1' AND is_deleted='0' AND eth.content_table='daily_feed'
 </rss>';
 		$this->setKey($keyCache,$result,$MinyanFeedDataExpiry);
 		return $result;
+	}
+	
+	function setFeedForPartners($partnerId,$type,$maxItemLimit,$thread_id,$currentFilter){
+		global $partnerFeedCacheExpiry,$D_R;
+		$partnerFeedKey = 'partnerFeed_'.$type;
+		include_once($D_R."/lib/feed/_design_lib.php");
+		$objFeedView= new feedViewer($type,$partnerId);
+		$result = $objFeedView->showRSS($maxItemLimit,$thread_id,$currentFilter);
+		if(!empty($result)){
+			$this->setKey($partnerFeedKey,$result,$partnerFeedCacheExpiry);
+			
+		}
+		return $result;
+	}
+	
+	function getFeedForPartners($partnerId,$type,$maxItemLimit,$thread_id,$currentFilter){
+		global $partnerFeedCacheExpiry;
+		$partnerFeedKey = 'partnerFeed_'.$type;
+		$feedRss = $this->getKey($partnerFeedKey);
+		if(!empty($feedRss)){
+			return $feedRss;
+		}else{
+			return $this->setFeedForPartners($partnerId,$type,$maxItemLimit,$thread_id,$currentFilter);
+		}
+	}
+	
+	function deleteFeedForPartners(){
+		global $rssArrayForCache,$D_R;
+		include_once ($D_R.'/lib/config/_rss_config.php');
+		foreach($rssArrayForCache as $k){
+			$keyToReset = 'partnerFeed_'.$k;
+			$this->setKey($keyToReset,'','0');
+		}
+		
 	}
 
 	############ Extracting RSS #############

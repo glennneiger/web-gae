@@ -25,6 +25,7 @@ if(!$maxItemLimit || $maxItemLimit>500){
 	$maxItemLimit=25;
 }
 $objFeedView= new feedViewer($feedType,$partnerId);
+$objCache = new Cache();
 if (trim($partnerId) == trim($partnerIdYahooLiveStand)){
 	echo $objFeedView->showFeed($maxItemLimit,$thread_id,$currentFilter);
 }
@@ -32,6 +33,7 @@ else{
 header('Content-type: text/xml');
 echo "<?xml version='1.0' encoding='ISO-8859-1'?>";
 
-echo $objFeedView->showRSS($maxItemLimit,$thread_id,$currentFilter);
+//echo $objFeedView->showRSS($maxItemLimit,$thread_id,$currentFilter);
+echo $objCache->getFeedForPartners($partnerId,$feedType,$maxItemLimit,$thread_id,$currentFilter);
 }
 ?>

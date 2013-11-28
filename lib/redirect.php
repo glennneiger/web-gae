@@ -306,6 +306,9 @@ class redirectPage{
 			case 'feed/':
 				return "/feed/getFeed.htm";
 				break;
+			case 'google_feed/':
+				return "/google_feed/getFeed.htm";
+				break;
 			case 'manual_sitemap.xml':
 				return "manual_sitemap.xml";
 				break;

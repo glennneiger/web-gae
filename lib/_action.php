@@ -60,6 +60,8 @@ class Action{
 		$objCache->setPageMetaDataCache('1',$this->data);
 		$objCache->setMostRecentArticles();
 		$objCache->setArticleContributors();
+		$objCache->deleteFeedForPartners();			/*All Feeds*/
+		$objCache->deleteFeedPartnerData();			/*td_tradeArchitect.rss*/
 		$this->flushArticleLayoutModule();
 		$this->topicCacheUpdate();
 		$yahooFullBody = $objArticleData->getYahooFullBodySynd($this->data);
@@ -90,6 +92,8 @@ class Action{
 		$objCache->setMostRead('1,18',$limit=5);
 		$this->flushArticleLayoutModule();
 		$this->topicCacheUpdate();
+		$objCache->deleteFeedForPartners();			/*All Feeds*/
+		$objCache->deleteFeedPartnerData();			/*td_tradeArchitect.rss*/
 		$objCache->deleteArticleContentCache($this->data);
 		$yahooFullBody = $objArticleData->getYahooFullBodySynd($this->data);
 		if($yahooFullBody=="1")

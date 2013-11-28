@@ -732,7 +732,7 @@ $js['edu']['position']="H";
 $js['edu']['defaultLoad']=FALSE;
 $js['edu']['name']='edu';
 
-$css['cooperRedesign']['file']='/css/cooper-redesign.1.3.css';
+$css['cooperRedesign']['file']='/css/cooper-redesign.1.4.css';
 $css['cooperRedesign']['position']="H";
 $css['cooperRedesign']['defaultLoad']=FALSE;
 $css['cooperRedesign']['name']='cooperRedesign';

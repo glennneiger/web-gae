@@ -40,4 +40,14 @@ $arHeadlineFeedPartners = array( "z1" => array("tracking_name"=>"zacks")
 								);
 define('ARTICLE_ITEM_ID','1');
 define('DAILYFEED_ITEM_ID','18');
+
+$rssArrayForCache=array();
+$rssArrayForCache[]='featuredarticles';
+$rssArrayForCache[]='featuredarticlesdailyfeed';
+$rssArrayForCache[]='nasdaq';
+$rssArrayForCache[]='yahoo';
+$rssArrayForCache[]='yahooFull';
+$rssArrayForCache[]='mvpremiumyahoo';
+$rssArrayForCache[]='googlecurrents';
+$rssArrayForCache[]='gravity';
 ?>

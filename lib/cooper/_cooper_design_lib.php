@@ -191,6 +191,7 @@ class cooperDesign{
 	            	$produrl2='http://www.invest-store.com/cgi-bin/minyanville-bin/moreinfo.cgi?item=5197574';
 	            	$produrl3='http://www.invest-store.com/cgi-bin/minyanville-bin/moreinfo.cgi?item=3156887';
 	            	$produrl4='http://www.invest-store.com/cgi-bin/minyanville-bin/moreinfo.cgi?item=3156889';
+	            	global $IMG_SERVER;
 	            	?>
 	            	<div id="ca-container" class="ca-container"><div class="ca-wrapper">
 		            	<div class="ca-item fade">
